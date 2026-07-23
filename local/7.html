@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html class='v2' dir='ltr' lang='en-US' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<head>
+<link href='https://www.blogger.com/static/v1/widgets/2872013778-css_bundle_v2.css' rel='stylesheet' type='text/css'/>
+<meta charset='UTF-8'/>
+<meta content='width=device-width, initial-scale=1' name='viewport'/>
+<title>book1011</title>
+<!-- external libraries -->
+<script src='https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js'></script>
+<script src='https://unpkg.com/turndown/dist/turndown.js'></script>
+<!-- font links -->
+<link href='https://fonts.googleapis.com' rel='preconnect'/>
+<link href='https://fonts.gstatic.com' rel='preconnect'/>
+<link href='https://fonts.googleapis.com/css2?family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900' rel='stylesheet'/>
+<link href='https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900' rel='stylesheet'/>
+<!-- button icon -->
+<link href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0' rel='stylesheet'/>
+<style id='page-skin-1' type='text/css'><!--
+:root {
+--font-zoom: 1;
+--page-bg: #f8fafc;
+--surface: #ffffff;
+--surface-soft: #f1f5f9;
+--surface-muted: #e2e8f0;
+--text: #172033;
+--text-muted: #64748b;
+--heading: #0f172a;
+--accent: #2563eb;
+--accent-strong: #1d4ed8;
+--accent-soft: #dbeafe;
+--danger: #dc2626;
+--warning: #fef3c7;
+--border: #dbe3ee;
+--shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+--shadow-md: 0 12px 30px rgba(15, 23, 42, 0.12);
+--shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.18);
+--radius-sm: 0.5rem;
+--radius-md: 0.85rem;
+--radius-lg: 1.35rem;
+}
+* {
+box-sizing: border-box;
+}
+html {
+scroll-behavior: smooth;
+}
+body {
+margin: 0;
+min-height: 100vh;
+font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+font-weight: 400;
+font-style: normal;
+font-size: calc(1rem  * var(--font-zoom));
+line-height: 1.72;
+color: var(--text);
+background: var(--page-bg);
+text-rendering: optimizeLegibility;
+-webkit-font-smoothing: antialiased;
+}
+.module{
+display:none
+}
+h1:has(span.header-section-number){
+display:none;
+}
+.material-symbols-outlined{
+font-size: calc(1rem  * var(--font-zoom));
+cursor:pointer;
+user-select:none;
+}
+summary::marker {
+color: var(--text-muted);
+}
+#msg-galley{
+position:fixed;
+top:0;
+right:0;
+height:100vh;
+min-width:calc(20rem  * var(--font-zoom));
+max-width:50%;
+z-index:12;
+background-color: transparent;
+pointer-events: none;
+padding: 1rem 1rem 0 0;
+font-family: "Roboto", sans-serif;
+font-optical-sizing: auto;
+font-weight: 400;
+font-style: normal;
+font-variation-settings: "wdth" 100;
+}
+.msg-close{
+position:absolute;
+top:calc(3px  * var(--font-zoom));
+right:calc(3px  * var(--font-zoom));
+display: inline-flex;
+align-items: center;
+justify-content: center;
+width: 1.25rem;
+height: 1.25rem;
+padding: 0;
+background-color:var(--danger);
+color: white;
+font-weight:700;
+font-size:calc(.7rem  * var(--font-zoom));
+border-radius: 999px;
+cursor:pointer;
+}
+.msg-dialog{
+position: relative;
+background-color:var(--surface);
+margin-bottom:.75rem;
+pointer-events: auto;
+border-radius:var(--radius-md);
+border: 1px solid var(--border);
+box-shadow: var(--shadow-md);
+overflow: hidden;
+}
+.msg-button-{
+margin: 0 .5rem .5rem 0;
+}
+.msg-button-bar{
+background-color:var(--surface-soft);
+text-align:center;
+padding:.75rem;
+border-top: 1px solid var(--border);
+}
+.msg-title{
+background:var(--accent);
+color:white;
+font-weight:700;
+padding:.55rem 2rem .55rem .85rem;
+}
+.msg-message{
+background-color:var(--surface);
+padding: .85rem;
+}
+#page-data{
+display:none
+}
+#menu{
+top:0;
+left:-100px;
+position:fixed;
+display:none;
+background:var(--surface);
+padding:0;
+z-index:11;
+transition: left .25s ease, box-shadow .25s ease;
+height:100vh;
+min-width:min(22rem, 88vw);
+max-width:75vw;
+overflow: auto;
+border-right: 1px solid var(--border);
+box-shadow: var(--shadow-lg);
+}
+#book-data{display:none}
+#menu-content{
+padding:1rem 1.25rem 2rem;
+}
+.menu-button{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+min-width:2.4rem;
+height:2.4rem;
+padding:0 .6rem;
+cursor:pointer;
+color:var(--text-muted);
+border-radius:999px;
+transition: background .18s ease, color .18s ease, transform .18s ease;
+vertical-align:middle;
+}
+.menu-button:hover{
+background:var(--accent-soft);
+color:var(--accent-strong);
+transform: translateY(-1px);
+}
+.menu-header{
+top:0;
+position:sticky;
+background:var(--surface);
+opacity:1;
+margin:0;
+padding:.45rem .6rem;
+border-bottom:1px solid var(--border);
+box-shadow: var(--shadow-sm);
+z-index:1;
+}
+#book-title{
+font-weight:700;
+letter-spacing:.02em;
+}
+#search-div{
+width:100%;
+white-space: nowrap;
+margin-top: 1.5rem;
+}
+#search-div h6{
+margin:0 0 .45rem 0;
+font-size:.78rem;
+font-weight:700;
+letter-spacing:.08em;
+text-transform:uppercase;
+color:var(--text-muted);
+}
+#search{
+width: calc(100% - 2.25rem);
+border:1px solid var(--border);
+border-radius:999px;
+padding:.55rem .85rem;
+font: inherit;
+font-size:.92rem;
+color:var(--text);
+background:var(--surface);
+box-shadow: var(--shadow-sm);
+outline:none;
+transition: border-color .18s ease, box-shadow .18s ease;
+}
+#search:focus{
+border-color:var(--accent);
+box-shadow:0 0 0 4px rgba(37, 99, 235, .13);
+}
+#search-button{
+padding-left:.45rem;
+color:var(--accent);
+vertical-align:middle;
+}
+#search-results{
+font-size:.86rem;
+margin-top: .85rem;
+}
+.search-result{
+margin-top:.65rem;
+padding:.75rem;
+cursor:pointer;
+border:1px solid var(--border);
+border-radius:var(--radius-sm);
+background:var(--surface);
+box-shadow: var(--shadow-sm);
+transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.search-result:hover{
+background-color:#f8fbff;
+border-color:#bfdbfe;
+box-shadow:0 10px 24px rgba(37, 99, 235, .1);
+transform: translateY(-1px);
+}
+.search-result-title{
+font-weight:bold;
+color:var(--heading);
+}
+.search-result-line{
+margin:.25rem 0 .35rem .75rem;
+color:var(--text-muted);
+}
+.search-term{
+background-color:var(--warning);
+border-radius:.2rem;
+padding:0 .15rem;
+}
+.chapter-result-link{
+color:var(--heading);
+}
+.toc-section-container{
+margin-left:.75rem;
+}
+.toc-text-container{
+margin-left:1.25rem;
+color:var(--text-muted);
+}
+.chapter-section{
+margin-top: calc(3rem  * var(--font-zoom));
+margin-bottom: calc(3rem  * var(--font-zoom));
+}
+.hide{
+display:none
+}
+img{
+max-width:100%;
+height:auto;
+border-radius:var(--radius-md);
+}
+.entry-header{
+position:fixed;
+top:0;
+left: 0;
+width: 100%;
+transition:opacity 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+padding: .35rem .75rem;
+-webkit-user-select: none; /* Safari */
+user-select: none; /* Standard syntax */
+background: var(--surface);
+border-bottom:1px solid var(--border);
+box-shadow:var(--shadow-sm);
+z-index:10;
+}
+button.nav{
+border-radius:999px;
+border:1px solid var(--border);
+background:var(--surface);
+color:var(--accent);
+box-shadow: var(--shadow-md);
+width:2.8rem;
+height:2.8rem;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+}
+.nav{
+position: fixed;
+bottom: 1rem;
+opacity:1.0;
+transition:opacity 0.35s ease, transform 0.18s ease, box-shadow 0.18s ease;
+pointer-events: all;
+}
+.nav:hover{
+transform: translateY(-2px);
+box-shadow: var(--shadow-lg);
+}
+.dim-button:hover{opacity: 1.0;}
+.dim-button{opacity: .35;}
+.dim-header:hover{opacity: 1.0;}
+.dim-header{opacity: 0;}
+#prior-button {
+left: 1rem;
+}
+#next-button {
+right: 1rem;
+}
+.span-link{
+cursor:pointer;
+color:var(--accent);
+font-weight:500;
+}
+.span-link:hover{
+text-decoration: underline;
+color:var(--accent-strong);
+}
+a:link {color: var(--accent); text-decoration:none}
+a:visited {color: #4f46e5;}
+a:hover {background-color: var(--accent-soft); color: var(--accent-strong); border-radius:.25rem;}
+a:active {color: var(--accent-strong);}
+.book-title{
+margin-top: 6rem;
+font-family:"Taviraj", Georgia, serif;
+font-size:clamp(2.4rem, 7vw, calc(4rem  * var(--font-zoom)));
+line-height:1.05;
+text-align: center;
+font-weight: 700;
+color:var(--heading);
+}
+.book-author{
+margin-top: 1rem;
+font-size:calc(1.45rem  * var(--font-zoom));
+text-align: center;
+color:var(--text-muted);
+}
+.book-toc{
+text-align: center;
+margin-top:2rem;
+}
+.book-chapters{
+display: inline-block;
+}
+.book-chapter{
+text-align:left;
+padding-left: 1rem;
+text-indent: -1rem;
+margin-bottom: 0.55rem;
+}
+.tool {
+cursor:pointer;
+font-size:calc(18px  * var(--font-zoom));
+font-weight:400;
+vertical-align: middle;
+padding-left:.6rem;
+color:var(--text-muted);
+transition: color .18s ease, transform .18s ease;
+}
+.tool:hover {
+color:var(--accent);
+transform: translateY(-1px);
+}
+.lead-in{
+margin-top:4rem;
+}
+.example, .indent, .category{
+margin:1rem 0 0 1.1rem;
+}
+.category div:first-child{
+color:var(--danger);
+font-weight:700;
+}
+.example div:first-child{
+color:var(--danger);
+font-style: italic;
+}
+h1{
+font-family:"Taviraj", Georgia, serif;
+font-size:clamp(1.35rem, 4vw, calc(2.1rem * var(--font-zoom)));
+line-height:1.18;
+color:var(--heading);
+font-weight:700;
+margin:0;
+}
+h2, h3{
+font-family:"Taviraj", Georgia, serif;
+color:var(--heading);
+line-height:1.24;
+letter-spacing:-.015em;
+}
+h2{
+font-size:clamp(1.55rem, 4vw, calc(2.15rem * var(--font-zoom)));
+margin:3rem 0 1rem;
+padding-top:.5rem;
+}
+h3{
+font-size:clamp(1.2rem, 3vw, calc(1.45rem * var(--font-zoom)));
+margin:2.25rem 0 .8rem;
+}
+.header-section-number{
+color:var(--accent);
+font-weight:700;
+}
+p{
+margin-top:0;
+margin-bottom:1.15rem;
+}
+p.vignette{
+color:var(--danger)
+}
+.no-dot{
+list-style-type: none;
+}
+ul.no-dot li{
+padding-left: 1rem;
+text-indent: -1rem;
+margin-bottom: 0.3rem;
+}
+audio{
+height:30px;
+width:100%;
+max-width:34rem;
+}
+div.post-body{
+max-width:940px;
+margin:0 auto;
+padding:clamp(5.2rem, 7vw, 6.25rem) clamp(1.15rem, 4vw, 3.5rem) 4rem;
+background:transparent;
+}
+div.index-boxnbt{
+background:var(--surface);
+padding-bottom:2rem;
+}
+.material-symbols-outlined {
+font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+font-size: 18px;
+line-height: 1;
+}
+blockquote{
+margin:1.75rem 0;
+padding:1rem 1.25rem 1rem 1.35rem;
+background:var(--surface-soft);
+border-left:.35rem solid var(--accent);
+border-radius:0 var(--radius-md) var(--radius-md) 0;
+color:#334155;
+}
+blockquote p:last-child{
+margin-bottom:0;
+}
+hr{
+height:1px;
+border:0;
+background:var(--border);
+margin:2.75rem 0;
+}
+ul, ol{
+padding-left:1.45rem;
+margin:0 0 1.25rem;
+}
+li{
+margin:.45rem 0;
+}
+code{
+font-family:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+font-size:.92em;
+color:#0f766e;
+background:#ecfdf5;
+border:1px solid #bbf7d0;
+border-radius:.35rem;
+padding:.08rem .32rem;
+}
+pre code,
+.sourceCode code{
+color:inherit;
+background:transparent;
+border:0;
+border-radius:0;
+padding:0;
+font-size:inherit;
+}
+pre,
+pre.javascript-code,
+pre.javascript-example,
+pre.spreadsheet,
+div.sourceCode pre{
+margin:1rem 0;
+padding:.75rem .85rem;
+overflow:auto;
+background:#0f172a;
+color:#dbeafe;
+border:1px solid rgba(148, 163, 184, .28);
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-md);
+font-family:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+font-size:.88rem;
+line-height:1.38;
+tab-size:2;
+white-space:pre;
+}
+div.sourceCode{
+margin:1rem 0;
+}
+div.sourceCode pre{
+margin:0;
+}
+.sourceCode .kw,
+.sourceCode .cf{
+color:#93c5fd;
+}
+.sourceCode .fu,
+.sourceCode .at{
+color:#67e8f9;
+}
+.sourceCode .st{
+color:#86efac;
+}
+.sourceCode .dv{
+color:#fbbf24;
+}
+.sourceCode .co{
+color:#94a3b8;
+font-style:italic;
+}
+table{
+display:block;
+width:max-content;
+max-width:100%;
+border-collapse:separate;
+border-spacing:0;
+margin:1.5rem 0 2rem;
+overflow-x:auto;
+-webkit-overflow-scrolling:touch;
+border:1px solid var(--border);
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-sm);
+background:var(--surface);
+}
+th,
+td{
+padding:.72rem .85rem;
+border-bottom:1px solid var(--border);
+text-align:left;
+vertical-align:top;
+white-space:nowrap;
+}
+th{
+font-size:.86rem;
+font-weight:700;
+color:var(--heading);
+background:var(--surface-soft);
+}
+tr:last-child td{
+border-bottom:0;
+}
+tr:nth-child(even) td{
+background:#f8fafc;
+}
+.monaco {
+width: 100%;
+margin: 1.5rem 0;
+border-radius: var(--radius-md);
+overflow: hidden;
+box-shadow: var(--shadow-lg);
+border: 1px solid rgba(148, 163, 184, 0.22);
+}
+.monaco-bar {
+display: flex;
+align-items: center;
+justify-content: flex-end;
+gap: 2px;
+padding: 8px 10px;
+background: linear-gradient(180deg, #1f2937, #111827);
+border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.monaco-bar-label {
+flex: 1;
+font-family: "Roboto", sans-serif;
+font-size: 11px;
+font-weight: 700;
+color: #94a3b8;
+letter-spacing: 0.5px;
+text-transform: uppercase;
+padding-left: 4px;
+}
+.monaco-tool {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 30px;
+height: 30px;
+border-radius: 6px;
+color: #8b949e;
+cursor: pointer;
+transition: background 0.15s ease, color 0.15s ease;
+}
+.monaco-tool:hover {
+background: rgba(255, 255, 255, 0.1);
+color: #e6edf3;
+}
+.monaco-tool:active {
+background: rgba(255, 255, 255, 0.06);
+transform: scale(0.92);
+}
+.monaco-tool[data-action="run"]:hover {
+background: rgba(63, 185, 80, 0.18);
+color: #3fb950;
+}
+.editor-holder {
+background-color: #1e1e1e;
+padding: 8px 0;
+}
+.editor {
+margin: 0;
+padding: 0;
+}
+.console {
+background: #161b22;
+border-top: 1px solid rgba(255, 255, 255, 0.07);
+padding: 8px 0 6px;
+position: relative;
+min-height: 36px;
+font-family: 'Consolas', 'Cascadia Code', 'Courier New', monospace;
+font-size: 13px;
+}
+.console-line {
+color: #c9d1d9;
+padding: 2px 40px 2px 14px;
+line-height: 1.6;
+white-space: pre-wrap;
+word-break: break-all;
+}
+.console-line:first-of-type {
+margin-top: 2px;
+}
+.console-line.error {
+color: #f85149;
+background: rgba(248, 81, 73, 0.06);
+}
+span.exitButton {
+position: absolute;
+top: 6px;
+right: 8px;
+display: flex;
+align-items: center;
+justify-content: center;
+width: 22px;
+height: 22px;
+border-radius: 4px;
+color: #6e7681;
+cursor: pointer;
+transition: background 0.15s ease, color 0.15s ease;
+}
+span.exitButton:hover {
+background: rgba(255, 255, 255, 0.1);
+color: #c9d1d9;
+}
+span.exitButton .material-symbols-outlined {
+font-size: 15px;
+}
+pre.code {
+color: #a8ff78;
+background: #0d1117;
+padding: 1rem 1.15rem;
+margin: 1.35rem 0;
+font-size: 14px;
+border-radius: var(--radius-md);
+border: 1px solid rgba(255, 255, 255, 0.07);
+overflow-x: auto;
+}
+@media (max-width: 700px) {
+body {
+font-size: calc(.98rem * var(--font-zoom));
+}
+#msg-galley {
+left: 0;
+right: 0;
+max-width: none;
+min-width: 0;
+padding: .75rem;
+}
+#menu {
+max-width: 92vw;
+}
+.entry-header {
+padding: .25rem .4rem;
+}
+div.post-body {
+padding-left: 1rem;
+padding-right: 1rem;
+}
+.nav {
+bottom: .75rem;
+}
+#prior-button {
+left: .75rem;
+}
+#next-button {
+right: .75rem;
+}
+}
+
+--></style>
+<script>
+    const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
+	async function initialize(){
+
+      const kind = document.getElementById(`kind`).innerHTML
+      console.log(`kind`, kind)
+      switch(kind){
+        case `redirect`:
+          location.href=document.getElementById(`post-json`).innerText
+          return
+        case `chapter`:
+          console.log(`processing Chapter`)
+          // load any modules used in the chapter
+          for(const module of document.querySelectorAll(`div.module`)){
+            console.log(`module:`, module.innerText)
+            loadModule(module.innerText)
+    
+    
+    
+          }
+      }
+    
+    // calls the page that has our code in it
+    //const response = await fetch(`/1970/01/system.html`)
+  	//const code = await response.text()
+    
+ 
+	//const s = document.createElement('script')
+	//s.replaceChildren(code.split(`<p`+`re>`)[1].split(`</pre>`)[0])
+	//document.head.appendChild(s)
+    //console.log("got system")
+    await loadModule("system")
+	init()
+    
+    }
+    
+    async function loadModule(label){// get the first post of a specified label and load the code
+      const code = await getPage(label)
+      const s = document.createElement(`script`)
+      s.replaceChildren(code)
+      document.head.appendChild(s)          
+    }
+    
+    async function getPage(label){//get the first post with the specified label.
+        
+        if(localhost){
+          const url=`/tools/api/${label}.js`
+          const response = await fetch(url)
+          const code = await response.text()  
+          return code
+        }else{
+          const url=`${location.origin}/feeds/posts/default/-/${label}?alt=json`
+          const response = await fetch(url)
+          console.log("feed url", url)
+          const page = await response.json()
+          return page.feed.entry[0].content.$t
+        }
+    }    
+
+  </script>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=1676106165289640444&amp;zx=6bdbd94f-4c00-46a7-9f85-9e3213cc543c' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=1676106165289640444&amp;zx=6bdbd94f-4c00-46a7-9f85-9e3213cc543c' rel='stylesheet'/></noscript>
+<meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
+<meta name='google-adsense-platform-domain' content='blogspot.com'/>
+
+</head>
+<body onload='initialize()'>
+<div class='sitenbt' id='pagenbt'>
+<div class='site-contentnbt' id='contentnbt'>
+<div class='testing' id='item'></div>
+<div class='content-areanbt' id='primarynbt'>
+<div class='site-mainnbt' id='mainnbt' role='main'>
+<div class='section' id='mainblogsec'><div class='widget Blog' data-version='1' id='Blog1'>
+<div class='blog-posts hfeed'>
+<div class='post-outer'>
+<article class='post'>
+<div id='msg-galley'></div>
+<div class='hide' id='kind'>chapter</div>
+<div class='index-boxnbt'>
+<header class='entry-header'>
+<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>7. Loops and Repetition</span></h1>
+</header>
+<div id='menu'>
+<div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
+<div id='menu-content'>
+<div id='toc'></div>
+<div id='tools'>
+                  Text Size: 
+                  <span class='material-symbols-outlined tool' onclick='fontSize(.1)'>text_increase</span>
+<span class='material-symbols-outlined tool' onclick='fontSize(-.1)'>text_decrease</span>
+<span class='material-symbols-outlined tool' onclick='fontSize()'>rotate_auto</span>
+</div>
+<div id='search-div'>
+<h6>Search Book</h6>
+<input id='search' placeholder='search book'/><span class='material-symbols-outlined tool' id='search-button'>search</span></div>
+<div id='search-results'></div>
+</div>
+</div>
+<div class='post-body entry-content' data-blog-id='1676106165289640444' data-post-id='1867706787166155116'>
+<button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
+<button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
+              
+              <!--postBegin--><div class="module">monaco</div>
+<div class="module">appsscript</div>
+<h1 data-number="7" id="loops-and-repetition"><span
+class="header-section-number">7</span> Loops and Repetition</h1>
+<blockquote>
+<p><strong>Before you start.</strong> This chapter assumes you are
+comfortable with Chapters 4 through 6: declaring variables, the
+primitive types (numbers, strings, booleans), <code>if</code> /
+<code>else if</code> / <code>else</code> decisions with comparison
+operators, and arrays &#8212; including reading a range from a sheet with
+<code>getValues()</code> and writing one back with
+<code>setValues()</code>.</p>
+</blockquote>
+<p>Every program you have written so far has done each task exactly
+once. You declared a variable once, evaluated a condition once, read a
+cell once. That was the right pace for learning the vocabulary of the
+language. But real supply chain work is almost never about doing
+something once. It is about doing the <em>same</em> thing to hundreds of
+products, or repeating a calculation period after period until some
+target is reached.</p>
+<p>This chapter introduces the language feature that makes that possible
+&#8212; the <strong>loop</strong> &#8212; and shows how a handful of lines can carry
+as much work as you ask of them.</p>
+<hr />
+<h2 data-number="7.1" id="why-loops-matter"><span
+class="header-section-number">7.1</span> Why Loops Matter</h2>
+<p>Supply chains are repetitive by their very nature. A catalog has
+thousands of SKUs. A production line has a series of workstations. A
+planning horizon has fifty-two weeks. A manifest has hundreds of
+shipments. Almost any analysis you would want to run &#8212; flag the items
+that need reordering, find the slowest station, project demand forward &#8212;
+is the same small piece of logic applied over and over.</p>
+<p>You have already met that &#8220;small piece of logic.&#8221; In Chapter 5 you
+wrote a decision that compares an inventory level to a reorder point.
+That decision is correct. The problem is scale. Imagine a workbook with
+500 products. You could copy your <code>if</code> statement 500 times,
+once per row. Three things go wrong immediately:</p>
+<ol type="1">
+<li><strong>It is tedious.</strong> Five hundred near-identical blocks
+is a lot of typing.</li>
+<li><strong>It is error-prone.</strong> Somewhere around row 217 you
+will paste a cell reference wrong, and you will never find it.</li>
+<li><strong>It cannot be maintained.</strong> When the logic changes &#8212;
+say, the company adds a &#8220;critical stockout&#8221; category &#8212; you now have 500
+edits to make.</li>
+</ol>
+<p>And often you do not even know the count in advance. How many rows of
+data are in this week&#8217;s import? How many weeks until this product runs
+out? You cannot copy-paste a block of code a number of times you do not
+know yet.</p>
+<p>A <strong>loop</strong> solves all of this. A loop pairs a block of
+code with a <em>rule</em> for how many times that block runs. You write
+the logic once; the loop applies it as many times as the situation
+demands.</p>
+<p>Every loop answers two questions:</p>
+<ul>
+<li><strong>What do I repeat?</strong> &#8212; the block of code called the
+<em>body</em>.</li>
+<li><strong>When do I stop?</strong> &#8212; the <em>condition</em> that is
+checked over and over.</li>
+</ul>
+<p>Repetition in supply chain work tends to come in two natural shapes,
+and JavaScript gives you a loop built for each:</p>
+<ul>
+<li><strong>&#8220;Do this for every item in a known list.&#8221;</strong> Process
+every SKU in the catalog; check every workstation; total every line of
+an order. The number of repetitions is known up front. This is the job
+of the <strong><code>for</code> loop</strong> (Section 7.4).</li>
+<li><strong>&#8220;Keep going until something changes.&#8221;</strong> Keep
+depleting inventory until it hits zero; keep reading rows until you
+reach a blank one. The number of repetitions is <em>not</em> known in
+advance &#8212; it is often the very thing you are trying to discover. This is
+the job of the <strong><code>while</code> loop</strong> (Section
+7.2).</li>
+</ul>
+<p>One more idea ties this chapter to the last one. Arrays (Chapter 6)
+gave you a way to <em>hold</em> many values; loops give you a way to
+<em>act on</em> many values. They are partners. A column in a
+spreadsheet is, in effect, an array. A loop is how you touch every cell
+in it.</p>
+<hr />
+<h2 data-number="7.2" id="the-while-loop"><span
+class="header-section-number">7.2</span> The <code>while</code>
+Loop</h2>
+<p>A <code>while</code> loop is the simpler of the two loops to read. In
+plain English it says: <em>&#8220;as long as this condition is true, keep
+running this block.&#8221;</em></p>
+<pre class="javascript-example"><code>while (condition) {
+  // body: the code to repeat
+  
+}</code></pre>
+<p>When the program reaches the loop, it checks the condition. If the
+condition is <code>true</code>, it runs the body once, then returns to
+check the condition again. If the condition is still <code>true</code>,
+it runs the body again. This continues until a check finds the condition
+<code>false</code>, at which point the program skips past the loop and
+continues with whatever comes next.</p>
+<h3 data-number="7.2.1" id="the-four-parts-of-a-working-loop"><span
+class="header-section-number">7.2.1</span> The four parts of a working
+loop</h3>
+<p>Every correct <code>while</code> loop has four moving parts. Three of
+them are inside the loop&#8217;s structure; one comes just before it.</p>
+<ol type="1">
+<li><strong>Initialization</strong> &#8212; <em>before</em> the loop, you set
+up the variable(s) the condition depends on.</li>
+<li><strong>Condition</strong> &#8212; checked at the top of every pass;
+decides whether the body runs again.</li>
+<li><strong>Body</strong> &#8212; the work you want repeated.</li>
+<li><strong>Update</strong> &#8212; somewhere inside the body, you change
+something the condition depends on, so the loop can eventually
+stop.</li>
+</ol>
+<p>If any of the four is missing or wrong, the loop misbehaves. The
+fourth &#8212; the update &#8212; is the one beginners forget, and forgetting it is
+serious. We will return to that.</p>
+<h3 data-number="7.2.2" id="a-worked-example-weeks-of-supply"><span
+class="header-section-number">7.2.2</span> A worked example: weeks of
+supply</h3>
+<p>Here is a supply chain question with a number for an answer: <em>a
+product has 100 units on hand and sells 25 units per week &#8212; how many
+weeks until it stocks out?</em> Notice that the answer (4) is also the
+number of times we will repeat a calculation. That is the signature of a
+<code>while</code> loop.</p>
+<pre class="javascript-code"><code>function weeksOfSupply() {
+  let inventory = 100;      // initialization
+  let weeklyDemand = 25;
+  let weeks = 0;
+
+  while (inventory &gt; 0) {   // condition
+    inventory = inventory - weeklyDemand;   // body
+    weeks = weeks + 1;                      // update
+    console.log(&quot;After week &quot; + weeks + &quot;, inventory = &quot; + inventory);
+  }
+
+  console.log(&quot;The product stocks out in week &quot; + weeks);
+}
+
+weeksOfSupply()</code></pre>
+<p>In the Apps Script editor, select <code>weeksOfSupply</code> from the
+function dropdown and click <strong>Run</strong>. The
+<code>console.log</code> output appears in the execution log at the
+bottom of the editor &#8212; the same kind of output you met in Chapter 2.</p>
+<h3 data-number="7.2.3" id="tracing-the-loop-by-hand"><span
+class="header-section-number">7.2.3</span> Tracing the loop by hand</h3>
+<p>The single most valuable habit you can build in this chapter is the
+<strong>hand-trace</strong>: stepping through a loop on paper, one pass
+at a time, writing down every variable as it changes. Here is the trace
+for <code>weeksOfSupply</code>.</p>
+<table>
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 27%" />
+<col style="width: 25%" />
+<col style="width: 26%" />
+<col style="width: 12%" />
+</colgroup>
+<thead>
+<tr>
+<th>Pass</th>
+<th><code>inventory</code> before</th>
+<th><code>inventory &gt; 0</code>?</th>
+<th><code>inventory</code> after</th>
+<th><code>weeks</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>100</td>
+<td>true</td>
+<td>75</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>75</td>
+<td>true</td>
+<td>50</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>50</td>
+<td>true</td>
+<td>25</td>
+<td>3</td>
+</tr>
+<tr>
+<td>4</td>
+<td>25</td>
+<td>true</td>
+<td>0</td>
+<td>4</td>
+</tr>
+<tr>
+<td>&#8212;</td>
+<td>0</td>
+<td><strong>false</strong> &#8594; stop</td>
+<td>&#8212;</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<p>The loop ran four times, and <code>weeks</code> ended at 4. Look
+closely at one thing: <strong>nowhere in the code did you write the
+number 4.</strong> The loop <em>discovered</em> it. That is the whole
+reason a <code>while</code> loop exists. When the number of repetitions
+is itself the answer &#8212; or simply unknown until the work is done &#8212;
+<code>while</code> is the right tool.</p>
+<blockquote>
+<p><strong>Working With Your AI Tutor</strong> A hand-trace is how a
+loop stops feeling like magic. If the table above is still fuzzy, paste
+the <code>weeksOfSupply</code> function into your AI tutor and ask:
+<em>&#8220;Trace this loop one pass at a time and show me every variable in a
+table after each pass.&#8221;</em> Then change the starting inventory to 130,
+predict the new answer yourself, and ask the tutor to check your
+prediction.</p>
+</blockquote>
+<h3 data-number="7.2.4" id="the-cardinal-danger-the-infinite-loop"><span
+class="header-section-number">7.2.4</span> The cardinal danger: the
+infinite loop</h3>
+<p>A loop that never stops is called an <strong>infinite loop</strong>,
+and it is the defining bug of this chapter. It happens when the update
+never moves the condition toward <code>false</code>.</p>
+<p>Look again at <code>weeksOfSupply</code>. What if
+<code>weeklyDemand</code> were <code>0</code>? Then
+<code>inventory = inventory - 0</code> never changes
+<code>inventory</code>, the condition <code>inventory &gt; 0</code> is
+true forever, and the loop runs without end. (Apps Script will
+eventually halt the script on its own after several minutes and report
+nothing useful &#8212; not a result, just a stopped script.)</p>
+<p>There are three classic ways to write an infinite loop:</p>
+<ul>
+<li><strong>Forget the update entirely.</strong> No
+<code>weeks = weeks + 1</code>, no change to anything the condition
+tests.</li>
+<li><strong>Update the wrong thing.</strong> You change a variable, but
+not one the condition depends on.</li>
+<li><strong>Update in the wrong direction.</strong> The condition wants
+the variable to shrink, and your body grows it.</li>
+</ul>
+<p>The discipline that prevents all three: every time you write a
+<code>while</code> loop, stop and ask one question &#8212; <em>&#8220;What does my
+body change that my condition checks, and does that change move toward
+<code>false</code>?&#8221;</em> If you cannot answer that clearly, you have a
+bug.</p>
+<hr />
+<h2 data-number="7.3"
+id="example-using-a-while-loop-to-process-data-in-a-sheet"><span
+class="header-section-number">7.3</span> 7.3 Example: Using a
+<code>while</code> Loop to Process Data in a Sheet</h2>
+<p>In Section 7.2 the numbers were hard-coded into the program. That is
+fine for learning the mechanics, but it is not how real tools work. In
+practice the data lives in the sheet, and the program reads it,
+processes it, and writes a result back.</p>
+<h3 data-number="7.3.1" id="setting-up-the-sheet"><span
+class="header-section-number">7.3.1</span> Setting up the sheet</h3>
+<p>Create a sheet named <strong><code>Stockout</code></strong> and lay
+it out as a small label-and-value form:</p>
+<pre class="spreadsheet">{"label":"sample"}</pre>
+<p>Column A holds labels for a human reader; column B holds the values
+the program will use. Cell <strong>B5</strong> is empty &#8212; that is where
+the answer goes.</p>
+<h3 data-number="7.3.2" id="the-program"><span
+class="header-section-number">7.3.2</span> The program</h3>
+<pre class="javascript-code"><code>function weeksUntilStockout() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(&quot;Stockout&quot;);
+
+  let inventory = sheet.getRange(&quot;B2&quot;).getValue();          // read input
+  const weeklyDemand = sheet.getRange(&quot;B3&quot;).getValue();     // read input
+  let weeks = 0;
+
+  while (inventory &gt; 0) {
+    inventory = inventory - weeklyDemand;
+    weeks = weeks + 1;
+  }
+
+  sheet.getRange(&quot;B5&quot;).setValue(weeks);                     // write the result
+  console.log(&quot;Code Finished.  Check sheet for results&quot;)
+}
+
+</code></pre>
+<p>The structure is exactly the loop from Section 7.2, with two changes
+at the edges. The <em>inputs</em> are read from the sheet with
+<code>getValue()</code> instead of being typed into the code, and the
+<em>result</em> is written back with <code>setValue()</code> instead of
+printed to the log. The loop in the middle is untouched.</p>
+<p>With 480 units and demand of 60 per week, the loop runs eight times
+and cell <strong>B5</strong> fills with <code>8</code>.</p>
+<p>This is where the value of a <code>while</code> loop becomes
+concrete. You did not know &#8220;8&#8221; when you wrote the program &#8212; and you did
+not need to. Change <strong>B2</strong> to 540 and run it again: the
+loop simply runs nine times instead of eight. <strong>The loop adapts to
+the data.</strong> That is something a <code>for</code> loop, which
+commits to a count up front, cannot do as naturally.</p>
+<h3 data-number="7.3.3" id="guarding-against-the-infinite-loop"><span
+class="header-section-number">7.3.3</span> Guarding against the infinite
+loop</h3>
+<p>Section 7.2 warned that a weekly demand of <code>0</code> produces an
+infinite loop. With the demand now coming from a cell, a user could
+easily type <code>0</code>. A robust tool defends against that, and you
+already have the tool to do it &#8212; the <code>if</code>/<code>else</code>
+decision from Chapter 5:</p>
+<pre class="javascript-code"><code>function weeksUntilStockout() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(&quot;Stockout&quot;);
+
+  let inventory = sheet.getRange(&quot;B2&quot;).getValue();
+  const weeklyDemand = sheet.getRange(&quot;B3&quot;).getValue();
+
+  if (weeklyDemand &lt;= 0) {
+    sheet.getRange(&quot;B5&quot;).setValue(&quot;No demand &#8212; will not stock out&quot;);
+  } else {
+    let weeks = 0;
+    while (inventory &gt; 0) {
+      inventory = inventory - weeklyDemand;
+      weeks = weeks + 1;
+    }
+    sheet.getRange(&quot;B5&quot;).setValue(weeks);
+  }
+}</code></pre>
+<p>The <code>if</code> runs <em>before</em> the loop and decides whether
+the loop should run at all. This pattern &#8212; a decision that protects a
+loop from bad input &#8212; is everywhere in production code.</p>
+<h3 data-number="7.3.4"
+id="a-second-while-pattern-walking-down-rows"><span
+class="header-section-number">7.3.4</span> A second <code>while</code>
+pattern: walking down rows</h3>
+<p>There is another, very common reason to use <code>while</code> with a
+sheet: you want to process every row of data, but you do not know how
+many rows there are. This week&#8217;s import might have 40 rows; next week&#8217;s
+might have 312.</p>
+<p>Suppose a sheet named <strong><code>Receipts</code></strong> lists
+received products down column A, starting in row 2, with the data ending
+wherever it ends. You can walk down the rows until you reach a blank
+cell:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">countReceipts</span>() {</span>
+<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a>  <span class="kw">const</span> sheet <span class="op">=</span> SpreadsheetApp<span class="op">.</span><span class="fu">getActiveSpreadsheet</span>()<span class="op">.</span><span class="fu">getSheetByName</span>(<span class="st">&quot;Receipts&quot;</span>)<span class="op">;</span></span>
+<span id="cb5-3"><a aria-hidden="true" href="#cb5-3" tabindex="-1"></a>  <span class="kw">let</span> row <span class="op">=</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb5-4"><a aria-hidden="true" href="#cb5-4" tabindex="-1"></a>  <span class="kw">let</span> count <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb5-5"><a aria-hidden="true" href="#cb5-5" tabindex="-1"></a></span>
+<span id="cb5-6"><a aria-hidden="true" href="#cb5-6" tabindex="-1"></a>  <span class="cf">while</span> (sheet<span class="op">.</span><span class="fu">getRange</span>(row<span class="op">,</span> <span class="dv">1</span>)<span class="op">.</span><span class="fu">getValue</span>() <span class="op">!==</span> <span class="st">&quot;&quot;</span>) {</span>
+<span id="cb5-7"><a aria-hidden="true" href="#cb5-7" tabindex="-1"></a>    count <span class="op">=</span> count <span class="op">+</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb5-8"><a aria-hidden="true" href="#cb5-8" tabindex="-1"></a>    row <span class="op">=</span> row <span class="op">+</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb5-9"><a aria-hidden="true" href="#cb5-9" tabindex="-1"></a>  }</span>
+<span id="cb5-10"><a aria-hidden="true" href="#cb5-10" tabindex="-1"></a></span>
+<span id="cb5-11"><a aria-hidden="true" href="#cb5-11" tabindex="-1"></a>  <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">&quot;Found &quot;</span> <span class="op">+</span> count <span class="op">+</span> <span class="st">&quot; receipts.&quot;</span>)<span class="op">;</span></span>
+<span id="cb5-12"><a aria-hidden="true" href="#cb5-12" tabindex="-1"></a>}</span></code></pre></div>
+<p>Trace the four parts: <code>row</code> starts at 2
+(<strong>initialization</strong>); each pass reads cell
+<code>(row, 1)</code> and checks that it is not the empty string
+<code>""</code> (<strong>condition</strong>); the body counts the row
+(<strong>body</strong>); and <code>row = row + 1</code> moves the cursor
+down (<strong>update</strong>). When the read finally lands on a blank
+cell, the value is <code>""</code>, the condition becomes
+<code>false</code>, and the loop stops. The &#8220;unknown count&#8221; is the
+number of data rows &#8212; discovered, not declared.</p>
+<blockquote>
+<p><strong>An honest note on performance.</strong> Reading one cell per
+pass, as <code>countReceipts</code> does, is perfectly fine while you
+are learning and for small sheets. For large sheets it is slow, because
+each <code>getRange().getValue()</code> is a separate trip to the
+spreadsheet. The professional approach is to read the whole column at
+once with <code>getValues()</code> (Chapter 6) and then loop over the
+resulting array &#8212; which is exactly the job the <code>for</code> loop in
+Section 7.4 was built for. (Note also that walking until a blank cell
+assumes the data has no blank rows in the middle; a gap would stop the
+loop early.)</p>
+</blockquote>
+<hr />
+<h2 data-number="7.4" id="the-for-loop"><span
+class="header-section-number">7.4</span> 7.4 The <code>for</code>
+Loop</h2>
+<p>Look back at the loops you have written. Many of them follow an
+identical shape: set up a counter, check the counter against a limit, do
+some work, bump the counter. That shape is so common that JavaScript
+gives it its own dedicated syntax &#8212; the <code>for</code> loop.</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="cf">for</span> (initialization<span class="op">;</span> condition<span class="op">;</span> update) {</span>
+<span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a>  <span class="co">// body</span></span>
+<span id="cb6-3"><a aria-hidden="true" href="#cb6-3" tabindex="-1"></a>}</span></code></pre></div>
+<p>A <code>for</code> loop is not a new <em>idea</em>. It is the same
+<code>while</code> loop you already understand, with three of its four
+parts gathered onto a single line. Compare them directly. Here is a loop
+that prints &#8220;Step 0&#8221; through &#8220;Step 4,&#8221; written both ways:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="co">// As a while loop</span></span>
+<span id="cb7-2"><a aria-hidden="true" href="#cb7-2" tabindex="-1"></a><span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span>                       <span class="co">// initialization</span></span>
+<span id="cb7-3"><a aria-hidden="true" href="#cb7-3" tabindex="-1"></a><span class="cf">while</span> (i <span class="op">&lt;</span> <span class="dv">5</span>) {                  <span class="co">// condition</span></span>
+<span id="cb7-4"><a aria-hidden="true" href="#cb7-4" tabindex="-1"></a>  <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">&quot;Step &quot;</span> <span class="op">+</span> i)<span class="op">;</span>      <span class="co">// body</span></span>
+<span id="cb7-5"><a aria-hidden="true" href="#cb7-5" tabindex="-1"></a>  i <span class="op">=</span> i <span class="op">+</span> <span class="dv">1</span><span class="op">;</span>                     <span class="co">// update</span></span>
+<span id="cb7-6"><a aria-hidden="true" href="#cb7-6" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="co">// As a for loop &#8212; same behavior</span></span>
+<span id="cb8-2"><a aria-hidden="true" href="#cb8-2" tabindex="-1"></a><span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">5</span><span class="op">;</span> i<span class="op">++</span>) {    <span class="co">// initialization; condition; update</span></span>
+<span id="cb8-3"><a aria-hidden="true" href="#cb8-3" tabindex="-1"></a>  <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">&quot;Step &quot;</span> <span class="op">+</span> i)<span class="op">;</span>      <span class="co">// body</span></span>
+<span id="cb8-4"><a aria-hidden="true" href="#cb8-4" tabindex="-1"></a>}</span></code></pre></div>
+<p>The three parts in the parentheses, separated by semicolons, are
+<em>initialization</em>, <em>condition</em>, and <em>update</em> &#8212; in
+that order. The body is what remains in the braces. Everything you
+learned about the four parts of a <code>while</code> loop still applies;
+the <code>for</code> loop just keeps them in one tidy place, where they
+are hard to forget.</p>
+<p>Two small pieces of new notation appear above:</p>
+<ul>
+<li><strong><code>i++</code></strong> is shorthand for
+<code>i = i + 1</code>. The two are identical; <code>i++</code> is
+simply the form you will see most often in real code, especially in
+<code>for</code> loops.</li>
+<li><strong><code>i</code></strong> is the conventional name for a loop
+counter. It is short for &#8220;index,&#8221; and you will see it constantly.</li>
+</ul>
+<h3 data-number="7.4.1" id="looping-over-an-array"><span
+class="header-section-number">7.4.1</span> Looping over an array</h3>
+<p>The single most important use of the <code>for</code> loop is walking
+through an array. Recall from Chapter 6 that an array of length 5 has
+indices <code>0, 1, 2, 3, 4</code> &#8212; counting starts at 0, and the last
+index is one <em>less</em> than the length. The standard array loop is
+built around exactly that fact:</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> items<span class="op">.</span><span class="at">length</span><span class="op">;</span> i<span class="op">++</span>) {</span>
+<span id="cb9-2"><a aria-hidden="true" href="#cb9-2" tabindex="-1"></a>  <span class="co">// items[i] is the current element</span></span>
+<span id="cb9-3"><a aria-hidden="true" href="#cb9-3" tabindex="-1"></a>}</span></code></pre></div>
+<p>Read the three parts carefully. Start <code>i</code> at
+<code>0</code> because that is the first index. Continue <strong>while
+<code>i</code> is less than</strong> <code>items.length</code> &#8212;
+<em>not</em> less than or equal. An array of length 5 has no index 5;
+reading <code>items[5]</code> gives back <code>undefined</code>. Using
+<code>&lt;=</code> instead of <code>&lt;</code> is the famous
+<strong>off-by-one error</strong>, and it is worth checking for every
+single time you write an array loop.</p>
+<h3 data-number="7.4.2"
+id="worked-example-flagging-items-that-need-reordering"><span
+class="header-section-number">7.4.2</span> Worked example: flagging
+items that need reordering</h3>
+<p>Now the synthesis. This example uses variables, primitive types,
+<code>if</code> / <code>else if</code> / <code>else</code>, comparison
+operators, arrays, <code>getValues()</code>, <code>setValues()</code> &#8212;
+and the <code>for</code> loop to tie them all together.</p>
+<p>Create a sheet named <strong><code>Inventory</code></strong> with a
+row of headers and one row per product:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td>SKU</td>
+<td>On Hand</td>
+<td>Reorder Point</td>
+<td>Status</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td>SKU-100</td>
+<td>480</td>
+<td>150</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td>SKU-101</td>
+<td>90</td>
+<td>150</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td>SKU-102</td>
+<td>0</td>
+<td>75</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>5</strong></td>
+<td>SKU-103</td>
+<td>220</td>
+<td>200</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>6</strong></td>
+<td>SKU-104</td>
+<td>60</td>
+<td>120</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Column D is empty. The program will fill it with one of three
+statuses for every product:</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb10-1"><a aria-hidden="true" href="#cb10-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">flagReorders</span>() {</span>
+<span id="cb10-2"><a aria-hidden="true" href="#cb10-2" tabindex="-1"></a>  <span class="kw">const</span> sheet <span class="op">=</span> SpreadsheetApp<span class="op">.</span><span class="fu">getActiveSpreadsheet</span>()<span class="op">.</span><span class="fu">getSheetByName</span>(<span class="st">&quot;Inventory&quot;</span>)<span class="op">;</span></span>
+<span id="cb10-3"><a aria-hidden="true" href="#cb10-3" tabindex="-1"></a></span>
+<span id="cb10-4"><a aria-hidden="true" href="#cb10-4" tabindex="-1"></a>  <span class="kw">const</span> lastRow <span class="op">=</span> sheet<span class="op">.</span><span class="fu">getLastRow</span>()<span class="op">;</span></span>
+<span id="cb10-5"><a aria-hidden="true" href="#cb10-5" tabindex="-1"></a>  <span class="kw">const</span> numItems <span class="op">=</span> lastRow <span class="op">-</span> <span class="dv">1</span><span class="op">;</span>        <span class="co">// subtract the header row</span></span>
+<span id="cb10-6"><a aria-hidden="true" href="#cb10-6" tabindex="-1"></a></span>
+<span id="cb10-7"><a aria-hidden="true" href="#cb10-7" tabindex="-1"></a>  <span class="co">// Read the On Hand and Reorder Point columns in one batch</span></span>
+<span id="cb10-8"><a aria-hidden="true" href="#cb10-8" tabindex="-1"></a>  <span class="kw">const</span> data <span class="op">=</span> sheet<span class="op">.</span><span class="fu">getRange</span>(<span class="dv">2</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> numItems<span class="op">,</span> <span class="dv">2</span>)<span class="op">.</span><span class="fu">getValues</span>()<span class="op">;</span></span>
+<span id="cb10-9"><a aria-hidden="true" href="#cb10-9" tabindex="-1"></a>  <span class="kw">let</span> statuses <span class="op">=</span> []<span class="op">;</span></span>
+<span id="cb10-10"><a aria-hidden="true" href="#cb10-10" tabindex="-1"></a></span>
+<span id="cb10-11"><a aria-hidden="true" href="#cb10-11" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> data<span class="op">.</span><span class="at">length</span><span class="op">;</span> i<span class="op">++</span>) {</span>
+<span id="cb10-12"><a aria-hidden="true" href="#cb10-12" tabindex="-1"></a>    <span class="kw">let</span> onHand <span class="op">=</span> data[i][<span class="dv">0</span>]<span class="op">;</span>           <span class="co">// column B for this row</span></span>
+<span id="cb10-13"><a aria-hidden="true" href="#cb10-13" tabindex="-1"></a>    <span class="kw">let</span> reorderPoint <span class="op">=</span> data[i][<span class="dv">1</span>]<span class="op">;</span>     <span class="co">// column C for this row</span></span>
+<span id="cb10-14"><a aria-hidden="true" href="#cb10-14" tabindex="-1"></a>    <span class="kw">let</span> status <span class="op">=</span> <span class="st">&quot;&quot;</span><span class="op">;</span></span>
+<span id="cb10-15"><a aria-hidden="true" href="#cb10-15" tabindex="-1"></a></span>
+<span id="cb10-16"><a aria-hidden="true" href="#cb10-16" tabindex="-1"></a>    <span class="cf">if</span> (onHand <span class="op">&lt;=</span> <span class="dv">0</span>) {</span>
+<span id="cb10-17"><a aria-hidden="true" href="#cb10-17" tabindex="-1"></a>      status <span class="op">=</span> <span class="st">&quot;STOCKOUT&quot;</span><span class="op">;</span></span>
+<span id="cb10-18"><a aria-hidden="true" href="#cb10-18" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (onHand <span class="op">&lt;=</span> reorderPoint) {</span>
+<span id="cb10-19"><a aria-hidden="true" href="#cb10-19" tabindex="-1"></a>      status <span class="op">=</span> <span class="st">&quot;REORDER&quot;</span><span class="op">;</span></span>
+<span id="cb10-20"><a aria-hidden="true" href="#cb10-20" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb10-21"><a aria-hidden="true" href="#cb10-21" tabindex="-1"></a>      status <span class="op">=</span> <span class="st">&quot;OK&quot;</span><span class="op">;</span></span>
+<span id="cb10-22"><a aria-hidden="true" href="#cb10-22" tabindex="-1"></a>    }</span>
+<span id="cb10-23"><a aria-hidden="true" href="#cb10-23" tabindex="-1"></a></span>
+<span id="cb10-24"><a aria-hidden="true" href="#cb10-24" tabindex="-1"></a>    statuses<span class="op">.</span><span class="fu">push</span>([status])<span class="op">;</span>           <span class="co">// wrap in [ ] &#8212; see note below</span></span>
+<span id="cb10-25"><a aria-hidden="true" href="#cb10-25" tabindex="-1"></a>  }</span>
+<span id="cb10-26"><a aria-hidden="true" href="#cb10-26" tabindex="-1"></a></span>
+<span id="cb10-27"><a aria-hidden="true" href="#cb10-27" tabindex="-1"></a>  <span class="co">// Write the whole Status column back in one batch</span></span>
+<span id="cb10-28"><a aria-hidden="true" href="#cb10-28" tabindex="-1"></a>  sheet<span class="op">.</span><span class="fu">getRange</span>(<span class="dv">2</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> statuses<span class="op">.</span><span class="at">length</span><span class="op">,</span> <span class="dv">1</span>)<span class="op">.</span><span class="fu">setValues</span>(statuses)<span class="op">;</span></span>
+<span id="cb10-29"><a aria-hidden="true" href="#cb10-29" tabindex="-1"></a>}</span></code></pre></div>
+<p>Walk through what happens:</p>
+<ul>
+<li><strong><code>getLastRow()</code></strong> reports the last row that
+has data, so <code>numItems</code> is the product count, however many
+that is. Add a product to the sheet and the program adapts with no
+edit.</li>
+<li><strong><code>getRange(2, 2, numItems, 2).getValues()</code></strong>
+reads a block starting at row 2, column 2 (B), spanning
+<code>numItems</code> rows and 2 columns. The result, <code>data</code>,
+is a two-dimensional array: <code>data[i]</code> is one product&#8217;s row,
+<code>data[i][0]</code> is its On Hand, <code>data[i][1]</code> is its
+Reorder Point.</li>
+<li>The <strong><code>for</code> loop</strong> visits every row index
+from <code>0</code> to <code>data.length - 1</code>.</li>
+<li>Inside the loop, the <strong><code>if</code> / <code>else if</code>
+/ <code>else</code></strong> chain &#8212; straight from Chapter 5 &#8212; assigns
+one of three statuses. Order matters: <code>STOCKOUT</code> is tested
+first because a stocked-out item is also below its reorder point, and
+you want the more urgent label to win.</li>
+<li><strong><code>statuses.push([status])</code></strong> adds the
+result to an array. Each pushed value is itself a one-element array &#8212;
+<code>[status]</code>, not <code>status</code> &#8212; because
+<code>setValues()</code> expects a two-dimensional array, and a single
+column is a stack of one-cell rows.</li>
+<li><strong><code>setValues()</code></strong> writes the entire column
+back in one operation.</li>
+</ul>
+<p>Run it, and column D fills: <code>OK</code>, <code>REORDER</code>,
+<code>STOCKOUT</code>, <code>OK</code>, <code>REORDER</code>. The
+decisive point: <strong>this same function processes 5 products or 5,000
+with not one character changed.</strong> That is the payoff the
+copy-paste approach of Section 7.1 could never deliver.</p>
+<h3 data-number="7.4.3" id="worked-example-finding-the-bottleneck"><span
+class="header-section-number">7.4.3</span> Worked example: finding the
+bottleneck</h3>
+<p>The <code>for</code> loop is also the natural home for a pattern
+called the <strong>running comparison</strong> &#8212; scanning a list to find
+its largest or smallest value. In supply chain terms, that is exactly
+how you find a <strong>bottleneck</strong>.</p>
+<p>A process is a sequence of steps, and each step has a
+<em>capacity</em> &#8212; the most it can produce per hour. A chain is only as
+strong as its weakest link, and a process line is only as fast as its
+slowest step. The bottleneck is the step with the <em>minimum</em>
+capacity, and that minimum is also the throughput of the entire
+line.</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb11-1"><a aria-hidden="true" href="#cb11-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">findBottleneck</span>() {</span>
+<span id="cb11-2"><a aria-hidden="true" href="#cb11-2" tabindex="-1"></a>  <span class="kw">const</span> stepCapacities <span class="op">=</span> [<span class="dv">120</span><span class="op">,</span> <span class="dv">95</span><span class="op">,</span> <span class="dv">140</span><span class="op">,</span> <span class="dv">80</span><span class="op">,</span> <span class="dv">110</span>]<span class="op">;</span>   <span class="co">// units/hour, steps 1&#8211;5</span></span>
+<span id="cb11-3"><a aria-hidden="true" href="#cb11-3" tabindex="-1"></a></span>
+<span id="cb11-4"><a aria-hidden="true" href="#cb11-4" tabindex="-1"></a>  <span class="kw">let</span> bottleneck <span class="op">=</span> stepCapacities[<span class="dv">0</span>]<span class="op">;</span>   <span class="co">// assume step 1 is slowest, for now</span></span>
+<span id="cb11-5"><a aria-hidden="true" href="#cb11-5" tabindex="-1"></a>  <span class="kw">let</span> bottleneckStep <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb11-6"><a aria-hidden="true" href="#cb11-6" tabindex="-1"></a></span>
+<span id="cb11-7"><a aria-hidden="true" href="#cb11-7" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> stepCapacities<span class="op">.</span><span class="at">length</span><span class="op">;</span> i<span class="op">++</span>) {</span>
+<span id="cb11-8"><a aria-hidden="true" href="#cb11-8" tabindex="-1"></a>    <span class="cf">if</span> (stepCapacities[i] <span class="op">&lt;</span> bottleneck) {</span>
+<span id="cb11-9"><a aria-hidden="true" href="#cb11-9" tabindex="-1"></a>      bottleneck <span class="op">=</span> stepCapacities[i]<span class="op">;</span></span>
+<span id="cb11-10"><a aria-hidden="true" href="#cb11-10" tabindex="-1"></a>      bottleneckStep <span class="op">=</span> i <span class="op">+</span> <span class="dv">1</span><span class="op">;</span>           <span class="co">// human-friendly step number</span></span>
+<span id="cb11-11"><a aria-hidden="true" href="#cb11-11" tabindex="-1"></a>    }</span>
+<span id="cb11-12"><a aria-hidden="true" href="#cb11-12" tabindex="-1"></a>  }</span>
+<span id="cb11-13"><a aria-hidden="true" href="#cb11-13" tabindex="-1"></a></span>
+<span id="cb11-14"><a aria-hidden="true" href="#cb11-14" tabindex="-1"></a>  <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">&quot;Bottleneck is step &quot;</span> <span class="op">+</span> bottleneckStep <span class="op">+</span></span>
+<span id="cb11-15"><a aria-hidden="true" href="#cb11-15" tabindex="-1"></a>              <span class="st">&quot; at &quot;</span> <span class="op">+</span> bottleneck <span class="op">+</span> <span class="st">&quot; units/hour.&quot;</span>)<span class="op">;</span></span>
+<span id="cb11-16"><a aria-hidden="true" href="#cb11-16" tabindex="-1"></a>  <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">&quot;The whole line can produce at most &quot;</span> <span class="op">+</span></span>
+<span id="cb11-17"><a aria-hidden="true" href="#cb11-17" tabindex="-1"></a>              bottleneck <span class="op">+</span> <span class="st">&quot; units/hour.&quot;</span>)<span class="op">;</span></span>
+<span id="cb11-18"><a aria-hidden="true" href="#cb11-18" tabindex="-1"></a>}</span></code></pre></div>
+<p>Two design choices are worth pausing on:</p>
+<ul>
+<li><strong>Why seed <code>bottleneck</code> with the first element and
+start the loop at <code>i = 1</code>?</strong> You need
+<em>something</em> to compare against on the first pass. Treating step 1
+as the provisional answer, then checking steps 2 onward, does exactly
+that. (An alternative is to seed with a deliberately huge number and
+loop from <code>i = 0</code>; both are valid.)</li>
+<li><strong>Why <code>i + 1</code>?</strong> The array is indexed from
+0, but people number process steps from 1.
+<code>bottleneckStep = i + 1</code> translates the machine&#8217;s count into
+a human&#8217;s.</li>
+</ul>
+<p>For the data above, the loop reports <strong>step 4, at 80
+units/hour</strong> &#8212; and that 80 is the ceiling on the entire line&#8217;s
+output, no matter how fast the other four steps run.</p>
+<h3 data-number="7.4.4" id="choosing-between-for-and-while"><span
+class="header-section-number">7.4.4</span> Choosing between
+<code>for</code> and <code>while</code></h3>
+<p>Because a <code>for</code> loop is just a packaged <code>while</code>
+loop, the two are interchangeable in principle. The choice is about
+making your <em>intent</em> obvious to the next person who reads the
+code &#8212; often a future you.</p>
+<ul>
+<li>Reach for <strong><code>for</code></strong> when the number of
+repetitions, or the collection, is known up front. <em>&#8220;Do this for
+every SKU.&#8221; &#8220;Repeat for all twelve months.&#8221; &#8220;Visit every process
+step.&#8221;</em> If you can phrase the task with the words <strong>&#8220;for
+each,&#8221;</strong> a <code>for</code> loop will read naturally.</li>
+<li>Reach for <strong><code>while</code></strong> when the number of
+repetitions depends on something that unfolds <em>as the loop runs</em>.
+<em>&#8220;Keep depleting until the product stocks out.&#8221; &#8220;Keep reading rows
+until a blank one.&#8221;</em> If you phrase the task with
+<strong>&#8220;until&#8221;</strong> or <strong>&#8220;as long as,&#8221;</strong> a
+<code>while</code> loop will read naturally.</li>
+</ul>
+<hr />
+<h2 data-number="7.5" id="chapter-summary"><span
+class="header-section-number">7.5</span> Chapter Summary</h2>
+<ul>
+<li>A <strong>loop</strong> pairs a block of code with a rule for how
+many times it runs, letting you write logic once and apply it many times
+&#8212; across many items, or across many repetitions.</li>
+<li>A <strong><code>while</code> loop</strong> runs its body as long as
+a condition stays <code>true</code>. Every correct <code>while</code>
+loop has four parts: <strong>initialization</strong> before the loop,
+and a <strong>condition</strong>, a <strong>body</strong>, and an
+<strong>update</strong> working together.</li>
+<li>A <strong><code>while</code> loop</strong> is the right choice when
+the number of repetitions is unknown in advance &#8212; and is often the very
+answer you are computing (weeks until stockout, number of data
+rows).</li>
+<li>An <strong>infinite loop</strong> happens when the update never
+moves the condition toward <code>false</code>. Always ask: <em>what does
+my body change that my condition checks, and does it move toward
+stopping?</em></li>
+<li>A <strong><code>for</code> loop</strong> is the same four parts as a
+<code>while</code> loop, gathered onto one line:
+<code>for (initialization; condition; update)</code>. It is the right
+choice when the count or the collection is known up front.</li>
+<li>The standard pattern for looping an array is
+<code>for (let i = 0; i &lt; arr.length; i++)</code>. Use
+<code>&lt;</code>, not <code>&lt;=</code> &#8212; the <strong>off-by-one
+error</strong> is the most common bug in array loops.</li>
+<li>Loops and arrays are partners: arrays <em>hold</em> many values;
+loops <em>act on</em> them. Combined with <code>getValues()</code> and
+<code>setValues()</code>, a single loop can process a spreadsheet of any
+size.</li>
+</ul>
+<hr />
+<h2 data-number="7.6" id="practice-problems"><span
+class="header-section-number">7.6</span> Practice Problems</h2>
+<blockquote>
+<p><strong>Working With Your AI Tutor</strong> Treat these as
+conversations, not quizzes. A productive prompt is not <em>&#8220;give me the
+answer to problem 3&#8221;</em> but <em>&#8220;Here is my code for problem 3 and the
+error I&#8217;m getting &#8212; ask me questions until I can find the bug
+myself.&#8221;</em> The goal is to leave each problem able to write the loop
+unaided.</p>
+</blockquote>
+<p><strong>1. Average demand (forecasting).</strong> A sheet named
+<code>Demand</code> holds twelve monthly demand values in cells
+<code>B2:B13</code>. Write a <code>for</code> loop that computes the
+average monthly demand and writes it to <code>B15</code>. <em>Hint: keep
+a running total inside the loop, then divide by the number of values
+after the loop ends.</em></p>
+<p><strong>2. Moving average (forecasting).</strong> Harder. Using the
+same <code>Demand</code> sheet, compute a <strong>3-month moving
+average</strong> and write each result into column C. <em>Hint: think
+carefully about which rows can have a 3-month average at all &#8212; the first
+two cannot.</em></p>
+<p><strong>3. Weeks of supply for every product (inventory).</strong>
+Combine Sections 7.3 and 7.4. A sheet named <code>Inventory</code> has
+columns for SKU, On Hand, and Weekly Demand. For <em>every</em> product,
+compute the weeks until stockout and write it into a new column.
+<em>Hint: this is your first <strong>nested loop</strong> &#8212; a
+<code>while</code> loop (the stockout simulation) running inside a
+<code>for</code> loop (one pass per product).</em></p>
+<p><strong>4. Step utilization (process flow capacity).</strong> Given
+the step capacities <code>[120, 95, 140, 80, 110]</code>, the line
+throughput equals the bottleneck (Section 7.4). For each step, compute
+its <strong>utilization</strong> = throughput &#247; step capacity, expressed
+as a percentage. Which step comes out at 100%, and why does that make
+sense?</p>
+<p><strong>5. Fix the infinite loop (debugging).</strong> The loop below
+never stops. Explain precisely why, then fix it so it counts down from
+500 to 0.</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a><span class="kw">let</span> units <span class="op">=</span> <span class="dv">500</span><span class="op">;</span></span>
+<span id="cb12-2"><a aria-hidden="true" href="#cb12-2" tabindex="-1"></a><span class="cf">while</span> (units <span class="op">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb12-3"><a aria-hidden="true" href="#cb12-3" tabindex="-1"></a>  <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(units)<span class="op">;</span></span>
+<span id="cb12-4"><a aria-hidden="true" href="#cb12-4" tabindex="-1"></a>}</span></code></pre></div>
+<p><em>Hint: review the four parts of a <code>while</code> loop from
+Section 7.2. One of them is missing.</em></p>
+<!--postEnd-->
+              </div>
+</div>
+</article>
+</div>
+</div>
+</div></div>
+</div><!-- #main -->
+</div><!-- #primary -->
+<!--end of error vs non error block-->
+</div><!-- #content -->
+<footer class='site-footernbt' id='colophonnbt' role='contentinfo'>
+<div id='supplementarynbt'>
+<div class='footer-widgetsnbt widget-areanbt clearnbt' id='footer-widgetsnbt' role='complementary'>
+<div class='sidebarwidgetsarea no-items section' id='sidebarwidgetsarea'></div>
+</div><!-- #footer-sidebar -->
+</div><!-- #supplementary -->
+</footer><!-- #colophon -->
+</div><!-- #page -->
+
+<script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
+<script type='text/javascript'>
+window['__wavt'] = 'AEUoTZr2xo8bpnlV6-KifUapJx5x:1784765284378';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d1676106165289640444','//book1011.blogspot.com/2000/02/7.html','1676106165289640444');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '1676106165289640444', 'title': 'book1011', 'url': 'https://book1011.blogspot.com/2000/02/7.html', 'canonicalUrl': 'https://book1011.blogspot.com/2000/02/7.html', 'homepageUrl': 'https://book1011.blogspot.com/', 'searchUrl': 'https://book1011.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1011.blogspot.com/', 'blogspotFaviconUrl': 'https://book1011.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://book1011.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1011 - RSS\x22 href\x3d\x22https://book1011.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/1676106165289640444/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://book1011.blogspot.com/feeds/1867706787166155116/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/37c4cc789ad2acf9', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '1867706787166155116', 'pageName': '7. Loops and Repetition', 'pageTitle': 'book1011: 7. Loops and Repetition'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '7. Loops and Repetition', 'description': 'monaco  appsscript  7  Loops and Repetition \r \r Before you start.  This chapter assumes you are\r comfortable with Chapters 4 through 6: decl...', 'url': 'https://book1011.blogspot.com/2000/02/7.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 1867706787166155116}}]);
+_WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
+</script>
+</body>
+</html>

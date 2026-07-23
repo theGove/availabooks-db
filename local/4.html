@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html class='v2' dir='ltr' lang='en-US' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<head>
+<link href='https://www.blogger.com/static/v1/widgets/2872013778-css_bundle_v2.css' rel='stylesheet' type='text/css'/>
+<meta charset='UTF-8'/>
+<meta content='width=device-width, initial-scale=1' name='viewport'/>
+<title>book1011</title>
+<!-- external libraries -->
+<script src='https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js'></script>
+<script src='https://unpkg.com/turndown/dist/turndown.js'></script>
+<!-- font links -->
+<link href='https://fonts.googleapis.com' rel='preconnect'/>
+<link href='https://fonts.gstatic.com' rel='preconnect'/>
+<link href='https://fonts.googleapis.com/css2?family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900' rel='stylesheet'/>
+<link href='https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900' rel='stylesheet'/>
+<!-- button icon -->
+<link href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0' rel='stylesheet'/>
+<style id='page-skin-1' type='text/css'><!--
+:root {
+--font-zoom: 1;
+--page-bg: #f8fafc;
+--surface: #ffffff;
+--surface-soft: #f1f5f9;
+--surface-muted: #e2e8f0;
+--text: #172033;
+--text-muted: #64748b;
+--heading: #0f172a;
+--accent: #2563eb;
+--accent-strong: #1d4ed8;
+--accent-soft: #dbeafe;
+--danger: #dc2626;
+--warning: #fef3c7;
+--border: #dbe3ee;
+--shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+--shadow-md: 0 12px 30px rgba(15, 23, 42, 0.12);
+--shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.18);
+--radius-sm: 0.5rem;
+--radius-md: 0.85rem;
+--radius-lg: 1.35rem;
+}
+* {
+box-sizing: border-box;
+}
+html {
+scroll-behavior: smooth;
+}
+body {
+margin: 0;
+min-height: 100vh;
+font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+font-weight: 400;
+font-style: normal;
+font-size: calc(1rem  * var(--font-zoom));
+line-height: 1.72;
+color: var(--text);
+background: var(--page-bg);
+text-rendering: optimizeLegibility;
+-webkit-font-smoothing: antialiased;
+}
+.module{
+display:none
+}
+h1:has(span.header-section-number){
+display:none;
+}
+.material-symbols-outlined{
+font-size: calc(1rem  * var(--font-zoom));
+cursor:pointer;
+user-select:none;
+}
+summary::marker {
+color: var(--text-muted);
+}
+#msg-galley{
+position:fixed;
+top:0;
+right:0;
+height:100vh;
+min-width:calc(20rem  * var(--font-zoom));
+max-width:50%;
+z-index:12;
+background-color: transparent;
+pointer-events: none;
+padding: 1rem 1rem 0 0;
+font-family: "Roboto", sans-serif;
+font-optical-sizing: auto;
+font-weight: 400;
+font-style: normal;
+font-variation-settings: "wdth" 100;
+}
+.msg-close{
+position:absolute;
+top:calc(3px  * var(--font-zoom));
+right:calc(3px  * var(--font-zoom));
+display: inline-flex;
+align-items: center;
+justify-content: center;
+width: 1.25rem;
+height: 1.25rem;
+padding: 0;
+background-color:var(--danger);
+color: white;
+font-weight:700;
+font-size:calc(.7rem  * var(--font-zoom));
+border-radius: 999px;
+cursor:pointer;
+}
+.msg-dialog{
+position: relative;
+background-color:var(--surface);
+margin-bottom:.75rem;
+pointer-events: auto;
+border-radius:var(--radius-md);
+border: 1px solid var(--border);
+box-shadow: var(--shadow-md);
+overflow: hidden;
+}
+.msg-button-{
+margin: 0 .5rem .5rem 0;
+}
+.msg-button-bar{
+background-color:var(--surface-soft);
+text-align:center;
+padding:.75rem;
+border-top: 1px solid var(--border);
+}
+.msg-title{
+background:var(--accent);
+color:white;
+font-weight:700;
+padding:.55rem 2rem .55rem .85rem;
+}
+.msg-message{
+background-color:var(--surface);
+padding: .85rem;
+}
+#page-data{
+display:none
+}
+#menu{
+top:0;
+left:-100px;
+position:fixed;
+display:none;
+background:var(--surface);
+padding:0;
+z-index:11;
+transition: left .25s ease, box-shadow .25s ease;
+height:100vh;
+min-width:min(22rem, 88vw);
+max-width:75vw;
+overflow: auto;
+border-right: 1px solid var(--border);
+box-shadow: var(--shadow-lg);
+}
+#book-data{display:none}
+#menu-content{
+padding:1rem 1.25rem 2rem;
+}
+.menu-button{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+min-width:2.4rem;
+height:2.4rem;
+padding:0 .6rem;
+cursor:pointer;
+color:var(--text-muted);
+border-radius:999px;
+transition: background .18s ease, color .18s ease, transform .18s ease;
+vertical-align:middle;
+}
+.menu-button:hover{
+background:var(--accent-soft);
+color:var(--accent-strong);
+transform: translateY(-1px);
+}
+.menu-header{
+top:0;
+position:sticky;
+background:var(--surface);
+opacity:1;
+margin:0;
+padding:.45rem .6rem;
+border-bottom:1px solid var(--border);
+box-shadow: var(--shadow-sm);
+z-index:1;
+}
+#book-title{
+font-weight:700;
+letter-spacing:.02em;
+}
+#search-div{
+width:100%;
+white-space: nowrap;
+margin-top: 1.5rem;
+}
+#search-div h6{
+margin:0 0 .45rem 0;
+font-size:.78rem;
+font-weight:700;
+letter-spacing:.08em;
+text-transform:uppercase;
+color:var(--text-muted);
+}
+#search{
+width: calc(100% - 2.25rem);
+border:1px solid var(--border);
+border-radius:999px;
+padding:.55rem .85rem;
+font: inherit;
+font-size:.92rem;
+color:var(--text);
+background:var(--surface);
+box-shadow: var(--shadow-sm);
+outline:none;
+transition: border-color .18s ease, box-shadow .18s ease;
+}
+#search:focus{
+border-color:var(--accent);
+box-shadow:0 0 0 4px rgba(37, 99, 235, .13);
+}
+#search-button{
+padding-left:.45rem;
+color:var(--accent);
+vertical-align:middle;
+}
+#search-results{
+font-size:.86rem;
+margin-top: .85rem;
+}
+.search-result{
+margin-top:.65rem;
+padding:.75rem;
+cursor:pointer;
+border:1px solid var(--border);
+border-radius:var(--radius-sm);
+background:var(--surface);
+box-shadow: var(--shadow-sm);
+transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.search-result:hover{
+background-color:#f8fbff;
+border-color:#bfdbfe;
+box-shadow:0 10px 24px rgba(37, 99, 235, .1);
+transform: translateY(-1px);
+}
+.search-result-title{
+font-weight:bold;
+color:var(--heading);
+}
+.search-result-line{
+margin:.25rem 0 .35rem .75rem;
+color:var(--text-muted);
+}
+.search-term{
+background-color:var(--warning);
+border-radius:.2rem;
+padding:0 .15rem;
+}
+.chapter-result-link{
+color:var(--heading);
+}
+.toc-section-container{
+margin-left:.75rem;
+}
+.toc-text-container{
+margin-left:1.25rem;
+color:var(--text-muted);
+}
+.chapter-section{
+margin-top: calc(3rem  * var(--font-zoom));
+margin-bottom: calc(3rem  * var(--font-zoom));
+}
+.hide{
+display:none
+}
+img{
+max-width:100%;
+height:auto;
+border-radius:var(--radius-md);
+}
+.entry-header{
+position:fixed;
+top:0;
+left: 0;
+width: 100%;
+transition:opacity 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+padding: .35rem .75rem;
+-webkit-user-select: none; /* Safari */
+user-select: none; /* Standard syntax */
+background: var(--surface);
+border-bottom:1px solid var(--border);
+box-shadow:var(--shadow-sm);
+z-index:10;
+}
+button.nav{
+border-radius:999px;
+border:1px solid var(--border);
+background:var(--surface);
+color:var(--accent);
+box-shadow: var(--shadow-md);
+width:2.8rem;
+height:2.8rem;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+}
+.nav{
+position: fixed;
+bottom: 1rem;
+opacity:1.0;
+transition:opacity 0.35s ease, transform 0.18s ease, box-shadow 0.18s ease;
+pointer-events: all;
+}
+.nav:hover{
+transform: translateY(-2px);
+box-shadow: var(--shadow-lg);
+}
+.dim-button:hover{opacity: 1.0;}
+.dim-button{opacity: .35;}
+.dim-header:hover{opacity: 1.0;}
+.dim-header{opacity: 0;}
+#prior-button {
+left: 1rem;
+}
+#next-button {
+right: 1rem;
+}
+.span-link{
+cursor:pointer;
+color:var(--accent);
+font-weight:500;
+}
+.span-link:hover{
+text-decoration: underline;
+color:var(--accent-strong);
+}
+a:link {color: var(--accent); text-decoration:none}
+a:visited {color: #4f46e5;}
+a:hover {background-color: var(--accent-soft); color: var(--accent-strong); border-radius:.25rem;}
+a:active {color: var(--accent-strong);}
+.book-title{
+margin-top: 6rem;
+font-family:"Taviraj", Georgia, serif;
+font-size:clamp(2.4rem, 7vw, calc(4rem  * var(--font-zoom)));
+line-height:1.05;
+text-align: center;
+font-weight: 700;
+color:var(--heading);
+}
+.book-author{
+margin-top: 1rem;
+font-size:calc(1.45rem  * var(--font-zoom));
+text-align: center;
+color:var(--text-muted);
+}
+.book-toc{
+text-align: center;
+margin-top:2rem;
+}
+.book-chapters{
+display: inline-block;
+}
+.book-chapter{
+text-align:left;
+padding-left: 1rem;
+text-indent: -1rem;
+margin-bottom: 0.55rem;
+}
+.tool {
+cursor:pointer;
+font-size:calc(18px  * var(--font-zoom));
+font-weight:400;
+vertical-align: middle;
+padding-left:.6rem;
+color:var(--text-muted);
+transition: color .18s ease, transform .18s ease;
+}
+.tool:hover {
+color:var(--accent);
+transform: translateY(-1px);
+}
+.lead-in{
+margin-top:4rem;
+}
+.example, .indent, .category{
+margin:1rem 0 0 1.1rem;
+}
+.category div:first-child{
+color:var(--danger);
+font-weight:700;
+}
+.example div:first-child{
+color:var(--danger);
+font-style: italic;
+}
+h1{
+font-family:"Taviraj", Georgia, serif;
+font-size:clamp(1.35rem, 4vw, calc(2.1rem * var(--font-zoom)));
+line-height:1.18;
+color:var(--heading);
+font-weight:700;
+margin:0;
+}
+h2, h3{
+font-family:"Taviraj", Georgia, serif;
+color:var(--heading);
+line-height:1.24;
+letter-spacing:-.015em;
+}
+h2{
+font-size:clamp(1.55rem, 4vw, calc(2.15rem * var(--font-zoom)));
+margin:3rem 0 1rem;
+padding-top:.5rem;
+}
+h3{
+font-size:clamp(1.2rem, 3vw, calc(1.45rem * var(--font-zoom)));
+margin:2.25rem 0 .8rem;
+}
+.header-section-number{
+color:var(--accent);
+font-weight:700;
+}
+p{
+margin-top:0;
+margin-bottom:1.15rem;
+}
+p.vignette{
+color:var(--danger)
+}
+.no-dot{
+list-style-type: none;
+}
+ul.no-dot li{
+padding-left: 1rem;
+text-indent: -1rem;
+margin-bottom: 0.3rem;
+}
+audio{
+height:30px;
+width:100%;
+max-width:34rem;
+}
+div.post-body{
+max-width:940px;
+margin:0 auto;
+padding:clamp(5.2rem, 7vw, 6.25rem) clamp(1.15rem, 4vw, 3.5rem) 4rem;
+background:transparent;
+}
+div.index-boxnbt{
+background:var(--surface);
+padding-bottom:2rem;
+}
+.material-symbols-outlined {
+font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+font-size: 18px;
+line-height: 1;
+}
+blockquote{
+margin:1.75rem 0;
+padding:1rem 1.25rem 1rem 1.35rem;
+background:var(--surface-soft);
+border-left:.35rem solid var(--accent);
+border-radius:0 var(--radius-md) var(--radius-md) 0;
+color:#334155;
+}
+blockquote p:last-child{
+margin-bottom:0;
+}
+hr{
+height:1px;
+border:0;
+background:var(--border);
+margin:2.75rem 0;
+}
+ul, ol{
+padding-left:1.45rem;
+margin:0 0 1.25rem;
+}
+li{
+margin:.45rem 0;
+}
+code{
+font-family:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+font-size:.92em;
+color:#0f766e;
+background:#ecfdf5;
+border:1px solid #bbf7d0;
+border-radius:.35rem;
+padding:.08rem .32rem;
+}
+pre code,
+.sourceCode code{
+color:inherit;
+background:transparent;
+border:0;
+border-radius:0;
+padding:0;
+font-size:inherit;
+}
+pre,
+pre.javascript-code,
+pre.javascript-example,
+pre.spreadsheet,
+div.sourceCode pre{
+margin:1rem 0;
+padding:.75rem .85rem;
+overflow:auto;
+background:#0f172a;
+color:#dbeafe;
+border:1px solid rgba(148, 163, 184, .28);
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-md);
+font-family:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+font-size:.88rem;
+line-height:1.38;
+tab-size:2;
+white-space:pre;
+}
+div.sourceCode{
+margin:1rem 0;
+}
+div.sourceCode pre{
+margin:0;
+}
+.sourceCode .kw,
+.sourceCode .cf{
+color:#93c5fd;
+}
+.sourceCode .fu,
+.sourceCode .at{
+color:#67e8f9;
+}
+.sourceCode .st{
+color:#86efac;
+}
+.sourceCode .dv{
+color:#fbbf24;
+}
+.sourceCode .co{
+color:#94a3b8;
+font-style:italic;
+}
+table{
+display:block;
+width:max-content;
+max-width:100%;
+border-collapse:separate;
+border-spacing:0;
+margin:1.5rem 0 2rem;
+overflow-x:auto;
+-webkit-overflow-scrolling:touch;
+border:1px solid var(--border);
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-sm);
+background:var(--surface);
+}
+th,
+td{
+padding:.72rem .85rem;
+border-bottom:1px solid var(--border);
+text-align:left;
+vertical-align:top;
+white-space:nowrap;
+}
+th{
+font-size:.86rem;
+font-weight:700;
+color:var(--heading);
+background:var(--surface-soft);
+}
+tr:last-child td{
+border-bottom:0;
+}
+tr:nth-child(even) td{
+background:#f8fafc;
+}
+.monaco {
+width: 100%;
+margin: 1.5rem 0;
+border-radius: var(--radius-md);
+overflow: hidden;
+box-shadow: var(--shadow-lg);
+border: 1px solid rgba(148, 163, 184, 0.22);
+}
+.monaco-bar {
+display: flex;
+align-items: center;
+justify-content: flex-end;
+gap: 2px;
+padding: 8px 10px;
+background: linear-gradient(180deg, #1f2937, #111827);
+border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.monaco-bar-label {
+flex: 1;
+font-family: "Roboto", sans-serif;
+font-size: 11px;
+font-weight: 700;
+color: #94a3b8;
+letter-spacing: 0.5px;
+text-transform: uppercase;
+padding-left: 4px;
+}
+.monaco-tool {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 30px;
+height: 30px;
+border-radius: 6px;
+color: #8b949e;
+cursor: pointer;
+transition: background 0.15s ease, color 0.15s ease;
+}
+.monaco-tool:hover {
+background: rgba(255, 255, 255, 0.1);
+color: #e6edf3;
+}
+.monaco-tool:active {
+background: rgba(255, 255, 255, 0.06);
+transform: scale(0.92);
+}
+.monaco-tool[data-action="run"]:hover {
+background: rgba(63, 185, 80, 0.18);
+color: #3fb950;
+}
+.editor-holder {
+background-color: #1e1e1e;
+padding: 8px 0;
+}
+.editor {
+margin: 0;
+padding: 0;
+}
+.console {
+background: #161b22;
+border-top: 1px solid rgba(255, 255, 255, 0.07);
+padding: 8px 0 6px;
+position: relative;
+min-height: 36px;
+font-family: 'Consolas', 'Cascadia Code', 'Courier New', monospace;
+font-size: 13px;
+}
+.console-line {
+color: #c9d1d9;
+padding: 2px 40px 2px 14px;
+line-height: 1.6;
+white-space: pre-wrap;
+word-break: break-all;
+}
+.console-line:first-of-type {
+margin-top: 2px;
+}
+.console-line.error {
+color: #f85149;
+background: rgba(248, 81, 73, 0.06);
+}
+span.exitButton {
+position: absolute;
+top: 6px;
+right: 8px;
+display: flex;
+align-items: center;
+justify-content: center;
+width: 22px;
+height: 22px;
+border-radius: 4px;
+color: #6e7681;
+cursor: pointer;
+transition: background 0.15s ease, color 0.15s ease;
+}
+span.exitButton:hover {
+background: rgba(255, 255, 255, 0.1);
+color: #c9d1d9;
+}
+span.exitButton .material-symbols-outlined {
+font-size: 15px;
+}
+pre.code {
+color: #a8ff78;
+background: #0d1117;
+padding: 1rem 1.15rem;
+margin: 1.35rem 0;
+font-size: 14px;
+border-radius: var(--radius-md);
+border: 1px solid rgba(255, 255, 255, 0.07);
+overflow-x: auto;
+}
+@media (max-width: 700px) {
+body {
+font-size: calc(.98rem * var(--font-zoom));
+}
+#msg-galley {
+left: 0;
+right: 0;
+max-width: none;
+min-width: 0;
+padding: .75rem;
+}
+#menu {
+max-width: 92vw;
+}
+.entry-header {
+padding: .25rem .4rem;
+}
+div.post-body {
+padding-left: 1rem;
+padding-right: 1rem;
+}
+.nav {
+bottom: .75rem;
+}
+#prior-button {
+left: .75rem;
+}
+#next-button {
+right: .75rem;
+}
+}
+
+--></style>
+<script>
+    const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
+	async function initialize(){
+
+      const kind = document.getElementById(`kind`).innerHTML
+      console.log(`kind`, kind)
+      switch(kind){
+        case `redirect`:
+          location.href=document.getElementById(`post-json`).innerText
+          return
+        case `chapter`:
+          console.log(`processing Chapter`)
+          // load any modules used in the chapter
+          for(const module of document.querySelectorAll(`div.module`)){
+            console.log(`module:`, module.innerText)
+            loadModule(module.innerText)
+    
+    
+    
+          }
+      }
+    
+    // calls the page that has our code in it
+    //const response = await fetch(`/1970/01/system.html`)
+  	//const code = await response.text()
+    
+ 
+	//const s = document.createElement('script')
+	//s.replaceChildren(code.split(`<p`+`re>`)[1].split(`</pre>`)[0])
+	//document.head.appendChild(s)
+    //console.log("got system")
+    await loadModule("system")
+	init()
+    
+    }
+    
+    async function loadModule(label){// get the first post of a specified label and load the code
+      const code = await getPage(label)
+      const s = document.createElement(`script`)
+      s.replaceChildren(code)
+      document.head.appendChild(s)          
+    }
+    
+    async function getPage(label){//get the first post with the specified label.
+        
+        if(localhost){
+          const url=`/tools/api/${label}.js`
+          const response = await fetch(url)
+          const code = await response.text()  
+          return code
+        }else{
+          const url=`${location.origin}/feeds/posts/default/-/${label}?alt=json`
+          const response = await fetch(url)
+          console.log("feed url", url)
+          const page = await response.json()
+          return page.feed.entry[0].content.$t
+        }
+    }    
+
+  </script>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=1676106165289640444&amp;zx=6bdbd94f-4c00-46a7-9f85-9e3213cc543c' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=1676106165289640444&amp;zx=6bdbd94f-4c00-46a7-9f85-9e3213cc543c' rel='stylesheet'/></noscript>
+<meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
+<meta name='google-adsense-platform-domain' content='blogspot.com'/>
+
+</head>
+<body onload='initialize()'>
+<div class='sitenbt' id='pagenbt'>
+<div class='site-contentnbt' id='contentnbt'>
+<div class='testing' id='item'></div>
+<div class='content-areanbt' id='primarynbt'>
+<div class='site-mainnbt' id='mainnbt' role='main'>
+<div class='section' id='mainblogsec'><div class='widget Blog' data-version='1' id='Blog1'>
+<div class='blog-posts hfeed'>
+<div class='post-outer'>
+<article class='post'>
+<div id='msg-galley'></div>
+<div class='hide' id='kind'>chapter</div>
+<div class='index-boxnbt'>
+<header class='entry-header'>
+<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>4. Variables and Data</span></h1>
+</header>
+<div id='menu'>
+<div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
+<div id='menu-content'>
+<div id='toc'></div>
+<div id='tools'>
+                  Text Size: 
+                  <span class='material-symbols-outlined tool' onclick='fontSize(.1)'>text_increase</span>
+<span class='material-symbols-outlined tool' onclick='fontSize(-.1)'>text_decrease</span>
+<span class='material-symbols-outlined tool' onclick='fontSize()'>rotate_auto</span>
+</div>
+<div id='search-div'>
+<h6>Search Book</h6>
+<input id='search' placeholder='search book'/><span class='material-symbols-outlined tool' id='search-button'>search</span></div>
+<div id='search-results'></div>
+</div>
+</div>
+<div class='post-body entry-content' data-blog-id='1676106165289640444' data-post-id='6701322407338045706'>
+<button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
+<button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
+              
+              <!--postBegin--><div class="module">monaco</div>
+<h1 data-number="4" id="variables-and-data"><span
+class="header-section-number">4</span> Variables and Data</h1>
+<h2 data-number="4.1" id="what-variables-are-and-why-they-matter"><span
+class="header-section-number">4.1</span> What Variables Are and Why They
+Matter</h2>
+<p>As you begin writing programs that do more than print a message or
+perform a single calculation, you need a way to store information &#8212;
+something your code can remember, reuse, and change as it runs. That&#8217;s
+exactly what <strong>variables</strong> are for. A variable is a named
+container that holds a piece of data. Think of it as a labeled box: you
+put something inside, give the box a name, and later you can open it,
+change what&#8217;s inside, or use its contents in a calculation.</p>
+<p>We&#8217;ll spend this chapter on one small operations situation, so the
+values you store always mean something. The BYU-Idaho University Store
+buys classroom clickers from a supplier. Demand runs about 3,600 units a
+year; it costs $70 to place and receive an order; holding one clicker in
+stock costs $2.20 a year; and the clickers arrive in cases of 20 for
+$360. By the end of the chapter those figures will become the variables
+in a real inventory calculation &#8212; how many to order at a time. For now,
+just meet the numbers.</p>
+<p>In JavaScript and Google Apps Script, variables let you keep track of
+values such as numbers, text, dates, or even entire lists of data.
+Without variables, every program would be rigid and repetitive. With
+them, your code becomes flexible, dynamic, and able to respond to
+different situations.</p>
+<p>A simple example looks like this:</p>
+<pre class="javascript-example"><code>let annualDemand = 3600</code></pre>
+<p>Here, <code>annualDemand</code> is the variable&#8217;s name, and
+<code>3600</code> is the value stored inside it. Once you&#8217;ve created the
+variable, you can use it anywhere in your script:</p>
+<pre class="javascript-example"><code>console.log(annualDemand)</code></pre>
+<p>To see this execute in Google Apps Script, do the following:</p>
+<ol type="1">
+<li>Open a new Google Sheet</li>
+<li>From the menu bar, choose &#8220;Extensions&#8221; then &#8220;Apps Script&#8221; <img alt="{width:334, alt=&#8220;Opening Apps Script Editor&#8221;}" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi3j_ZQ5HXTAbC-DQiRbQOngEJNc3rQ-OHiKKCTnsovgeU16k4zbgiuLsrmReTfJSmFhBOMVNyUiVv4rMuF9kES2x3O7TkNbn7s1UqLZxURDNscVa79jioBfRWZrp_OCqShjwpMeK_0Ayr6yTFGs8OJJjcr1W6EUwWiYhtSRSOtbL1VpbxMEM-xkaFaLa0/s1600/84cd1741.png" /></li>
+</ol>
+<p>This opens the Google Apps Script editor with a new script file named
+&#8220;Code.gs&#8221;:</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi8B09kVhscTTl6lJyGzklWN2kqMt7ZSY4Aa-vct7HmHR6GjRXVmIfFPC8G_DM0WaOMikBZMn784e6vapHIWLVVCf3jdXQsRuuzjKIO2zKTwFO8a6xq5130b4_q2-Q40qMQTPnDO4834vEnHiJMsqLMTnd-1gXK5yhiSH0ycr2Dw6XELt-zbi7OwtGjLl8/s1600/d467b986.png" /></p>
+<p>Notice that there&#8217;s already some code here in the Code.gs file. What
+you see is the basic structure of a function. We&#8217;ll talk more about
+functions later, but it&#8217;s the structure that lets us group multiple
+lines of code to execute together. To run code, write (or paste) the
+lines between the braces:</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiQH1PqnDqi-QXT6DoByjraPWqGCbkdbNc8dJHFaY2fUd9befeIjBFcLDATgGGPTERA47c_XO5i9ALj9tRj2ESXQiyfH_BDugG0TvpDIt2YagNWtP-XD5nXRlddIS6WRwnnDFmMPCL5kEabRe7ohn_JG3t2JGzScvkwV5dSCb5APZKCqzKAlQID0kx5XZM/s1600/1637cacb.png" /></p>
+<p>Now your code is ready to execute. Click the &#8220;Run&#8221; button.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhmFx67OG_2-F0Or2T_2_nUhmnNcYMEpW-6mXcqTI8YP5BEyazIg8w56aMMiD8co-Gv_RLapr3CCQ9cw6Jh5OQ-rrPH73Uj1Xnp0kXvD0XDdH_wCb4Vtig4t7JQZ3gcT_axtXVrwRCQydhAH1yofuQ7yK1xCJI96CHLdPsEWWWlSx9_AovzmVfnHOnFTl4/s1600/8029f1d6.png" /></p>
+<p>This runs the function and opens the execution log:</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjP3hh-YYHn0EgM_VPlCLHqfmQ-CtJbjkncf_Ylaf5caooCSraRp5jF2c-wxQArAEuzWiu0NbzIjnrrJHmrfGfy_wbcvOs8EEB926WDeOrZMNPdbE1J7P7vwk6whzUGGxCYR1a-MSpgTA6spM2uWhofYUpNdMT6Vucm__o9vaI3bCdmslDaatH4Mew0qTw/s1600/9109882d.png" /></p>
+<p>There are three entries in the execution log: the first and last just
+show the times the function began and finished. The remaining item
+displays the value of the variable on the line that logged it. You can
+modify the code in the <code>myFunction</code> function to run any of
+the examples in this section.</p>
+<p>Now let&#8217;s continue with variables. Modify the code as follows:</p>
+<pre class="javascript-example"><code>let onHand = 500
+onHand = 460
+onHand = onHand - 20
+console.log(onHand)</code></pre>
+<p>The first statement defines <code>onHand</code> and gives it a value
+of 500 &#8212; the clickers currently in stock. The second statement changes
+it to 460, perhaps after a shipment of orders went out. The third
+statement sets a new value, but to calculate it the computer must first
+read the current one: at this point <code>onHand</code> is 460, so
+<code>onHand - 20</code> evaluates to 440, and that becomes the new
+value. The final statement prints 440 into the execution log. Give it a
+try.</p>
+<p>This ability to store and update information is at the heart of
+programming. It&#8217;s how you track stock as it moves, remember inputs,
+process spreadsheet data, or build tools that adapt to whatever
+information they&#8217;re given.</p>
+<p>Variables matter because they let your programs:</p>
+<ul>
+<li><strong>Reuse values</strong> without rewriting them</li>
+<li><strong>Respond to changing data</strong></li>
+<li><strong>Store results</strong> from calculations</li>
+<li><strong>Organize information</strong> in a clear, meaningful
+way</li>
+<li><strong>Build more complex logic</strong> that depends on what&#8217;s
+happening in the program</li>
+</ul>
+<p>In Google Apps Script, variables become especially powerful because
+they can hold values pulled directly from a spreadsheet &#8212; a column of
+demand figures, a list of items, or a single cell&#8217;s content. Once that
+data is in a variable, your script can analyze it, transform it, or
+write new results back into the sheet.</p>
+<p>As you move through this chapter, you&#8217;ll learn to create variables,
+choose good names for them, and work with different kinds of data. These
+skills are the foundation for everything you&#8217;ll build next.</p>
+<h2 data-number="4.2"
+id="primitive-types-strings-numbers-booleans"><span
+class="header-section-number">4.2</span> Primitive Types: Strings,
+Numbers, Booleans</h2>
+<p>Every programming language needs a way to represent basic kinds of
+information. In JavaScript &#8212; and therefore in Apps Script &#8212; these
+fundamental building blocks are called <strong>primitive types</strong>.
+They&#8217;re the simplest forms of data your program can work with, and they
+show up everywhere: in calculations, text, decisions, and interactions
+with spreadsheet values.</p>
+<p>Understanding these types will help you write clearer code and avoid
+common mistakes as you start working with real data from Google
+Sheets.</p>
+<h3 data-number="4.2.1" id="strings-working-with-text"><span
+class="header-section-number">4.2.1</span> Strings: Working With
+Text</h3>
+<p>A <strong>string</strong> is any piece of text &#8212; words, symbols, even
+empty space. Strings are written inside quotes:</p>
+<pre class="javascript-example"><code>let item = &quot;classroom clicker&quot;
+let supplier = &quot;campus electronics supplier&quot;
+let note = &quot;&quot;</code></pre>
+<p>Strings are useful for labels and descriptions, messages you log or
+display, data pulled from spreadsheet cells, and building dynamic text.
+You can combine them with the <code>+</code> operator:</p>
+<pre class="javascript-example"><code>let label = &quot;Reorder report for: &quot; + item</code></pre>
+<p>In Apps Script, strings are especially common because spreadsheet
+data often arrives as text &#8212; even when it looks like a number.</p>
+<h3 data-number="4.2.2" id="numbers-doing-math-and-calculations"><span
+class="header-section-number">4.2.2</span> Numbers: Doing Math and
+Calculations</h3>
+<p>Numbers in JavaScript represent both whole numbers and decimals:</p>
+<pre class="javascript-example"><code>let orderingCost = 70
+let holdingCost = 2.20
+let casePrice = 360</code></pre>
+<p>You can perform all the usual arithmetic. For instance, a case holds
+20 clickers, so the cost of a single unit is the case price divided by
+20:</p>
+<pre class="javascript-example"><code>let unitCost = 360 / 20        // $18 per clicker
+let weeklyDemand = 3600 / 52   // about 69 clickers a week</code></pre>
+<p>In Google Sheets, numbers are everywhere &#8212; totals, counts, costs,
+demand &#8212; so being comfortable with numeric operations is essential. Apps
+Script can read numbers directly from cells, use them in calculations,
+and write new results back.</p>
+<h3 data-number="4.2.3" id="booleans-true-or-false-values"><span
+class="header-section-number">4.2.3</span> Booleans: True or False
+Values</h3>
+<p>A <strong>boolean</strong> represents one of two possible values:</p>
+<pre class="javascript-example"><code>let isPreferredSupplier = true
+let isStockedOut = false</code></pre>
+<p>Booleans are the backbone of decision-making in your programs.
+They&#8217;re used in conditions, comparisons, and logic:</p>
+<pre class="javascript-example"><code>let onHand = 120
+let belowReorderPoint = onHand &lt; 150   // becomes true</code></pre>
+<p>Whenever your script needs to choose between two paths &#8212; place an
+order or not, flag an item or skip it &#8212; a boolean is involved. You&#8217;ll
+put these to work in the next chapter.</p>
+<h3 data-number="4.2.4" id="why-primitive-types-matter"><span
+class="header-section-number">4.2.4</span> Why Primitive Types
+Matter</h3>
+<p>These three types &#8212; strings, numbers, and booleans &#8212; form the
+foundation of almost everything you&#8217;ll do in Apps Script. They let your
+programs store and manipulate text, perform calculations, make
+decisions, interpret spreadsheet data, and build flexible scripts. As
+you begin working with Google Sheets, you&#8217;ll see these types constantly:
+a cell might hold a string, a number, or something that becomes a
+boolean when you compare it. Understanding how they behave makes your
+scripts more reliable and easier to reason about.</p>
+<h2 data-number="4.3" id="working-with-variables-in-apps-script"><span
+class="header-section-number">4.3</span> Working With Variables in Apps
+Script</h2>
+<p>Now that you&#8217;ve seen the basic data types, it&#8217;s time to look more
+closely at how variables actually behave inside your programs &#8212;
+especially once you start pulling information out of a spreadsheet and
+transforming it with code.</p>
+<h3 data-number="4.3.1" id="declaring-variables-with-let"><span
+class="header-section-number">4.3.1</span> Declaring Variables With
+<code>let</code></h3>
+<p>In modern JavaScript (and Apps Script), the most common way to create
+a variable is with the keyword <code>let</code>:</p>
+<pre class="javascript-example"><code>let totalCost = 0
+let item = &quot;clicker&quot;
+let isReady = true</code></pre>
+<p>When you declare a variable with <code>let</code>, you&#8217;re telling the
+computer: <em>create a container with this name, and store this value
+inside it.</em> You can change the value later:</p>
+<pre class="javascript-example"><code>totalCost = totalCost + 526
+item = &quot;classroom clicker&quot;
+isReady = false</code></pre>
+<p>This flexibility is what makes variables powerful &#8212; they let your
+program evolve as it runs.</p>
+<h3 data-number="4.3.2" id="choosing-good-variable-names"><span
+class="header-section-number">4.3.2</span> Choosing Good Variable
+Names</h3>
+<p>A variable name should describe what the value represents. Clear
+names make your code easier to read &#8212; especially when you come back to
+it later.</p>
+<p>Good examples: <code>annualDemand</code>, <code>orderingCost</code>,
+<code>unitCost</code>, <code>isPreferredSupplier</code>.</p>
+<p>Less helpful examples: <code>x</code>, <code>data1</code>,
+<code>thing</code>.</p>
+<p>Apps Script doesn&#8217;t care what you name your variables, but
+<em>you</em> will. Good names make your scripts feel organized and
+intentional.</p>
+<h3 data-number="4.3.3" id="variables-and-spreadsheet-data"><span
+class="header-section-number">4.3.3</span> Variables and Spreadsheet
+Data</h3>
+<p>In Apps Script, variables often hold values pulled directly from a
+Google Sheet. For example:</p>
+<pre class="javascript-example"><code>let sheet = SpreadsheetApp.getActiveSheet()
+let cell = sheet.getRange(&quot;A1&quot;)
+let value = cell.getValue()</code></pre>
+<p>Here <code>sheet</code> stores a reference to the active sheet,
+<code>cell</code> stores a reference to cell A1, and <code>value</code>
+stores whatever is in A1 &#8212; say, the annual demand figure for an
+item.</p>
+<p>The first time you run code that accesses spreadsheet data, Apps
+Script will ask you to confirm that you want to allow it. You can
+imagine that someone with bad intent could try to trick a person into
+running code that reads sensitive data or sends email. So every time you
+run code that uses a feature of the Apps Script environment for the
+first time, you&#8217;ll see a warning about the service being invoked. It can
+be a little annoying, but it&#8217;s there to protect people who paste in code
+they don&#8217;t fully understand. Apps Script asks for approval each time a
+new service is introduced.</p>
+<p>The first time you run the code above, you&#8217;ll see a prompt like
+this:</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhR8c6fPDH044_XrWrpK4wNhadf7g3a_6jL0SvBarMFDmauJCJK9nMXmidDn_QPVMfYATAiNRJZPjLxHY82IiPByc5L2GlOET3YFM3JNkrluHjTR-Tnr2i3dYdLjR0DAkdpCwjGo39YQIBc97Txre9joxgtHEwZvx2xj76c8FzjIPYO8v4NSKYCAK4aiX8/s1600/a67405fb.png" /></p>
+<p>When you choose &#8220;review permissions,&#8221; you advance to the next
+step:</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgnxOFlrt_7D-HUUfe371b6D-5lAUk2VGIXmqoTf7arbM83PKfu0f1dkRzBPOkIhzWKdrRIQwV_0vcVUK0hHgD8D99ds6NGHhqF4w3YvwNPe2i0AcZjiLRAt7gmfRYjbyAc5mbj3xxF7FnTcxVuAdMVC1Hxzc-BJsC61OEJvROQxLZjr0UvpkJnaIc-Xyw/s1600/75d1cb3b.png" /></p>
+<p>Click the gray &#8220;advanced&#8221; link on the left side of the window.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi58vQBbnMxMiEuu3Fbfq2KVOILoBL-5WgYlZF_x0NASyET16xoFQkQ2iDVYqVXes8bO8-nD0OOExPaiJqEio7jnpal__gF44BPM8gnbP-DWdH_UpMOMB8fYPsGGOSWcsp9tMVIRIhT53JgNZNcJAjLR9GPTvqVZTz0ephw6goSO-H7k3ZE-0Be_kKrpHw/s1600/6c44db2e.png" /></p>
+<p>Then click the gray &#8220;Go to Untitled project (unsafe)&#8221; link in the
+bottom left. This brings up the prompt telling you the code is going to
+access data from your sheet:</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgBrKg0BwVK7EM8Q8m6iHwrRpKM2nphUPb4Bg-lrQdHbKupzeJv7J0sjCVZr-EsSbjDTYRBykxamPYuOG0IMQv-Oi85qp9SjN2Qw-vdo10CxeQm_c_yuQDpx885SKC7A89OmetQDn0cIFtsz8RCl7xoWh0Ag_0P0Rrv9BX3iUXOi5wvhKbqwdUFgKl-I18/s1600/13fac37e.png" /></p>
+<p>When you click &#8220;Continue&#8221; you authorize this script to run with the
+permissions listed. Apps Script won&#8217;t prompt you again for those
+permissions in this project &#8212; though if you add code that needs
+different permissions, you&#8217;ll go through a similar approval. Also,
+sometimes the environment runs the script right after you approve access
+and sometimes it doesn&#8217;t; if you don&#8217;t see the expected output, just run
+it again.</p>
+<p>Once the data is in a variable, you can use it like any other
+value:</p>
+<pre class="javascript-example"><code>console.log(&quot;The value in A1 is: &quot;, value)</code></pre>
+<p>This is where variables start to feel practical &#8212; you&#8217;re no longer
+working with abstract examples, but with real information from your
+spreadsheet.</p>
+<h3 data-number="4.3.4" id="reassigning-vs.-redefining"><span
+class="header-section-number">4.3.4</span> Reassigning
+vs.&#160;Redefining</h3>
+<p>One important detail: you can <strong>change</strong> the value of a
+variable declared with <code>let</code>, but you cannot
+<strong>redeclare</strong> it in the same scope.</p>
+<p>This is allowed:</p>
+<pre class="javascript-example"><code>let onHand = 500
+onHand = 460   // OK</code></pre>
+<p>This is not:</p>
+<pre class="javascript-example"><code>let onHand = 500
+let onHand = 460   // not allowed</code></pre>
+<p>Understanding this distinction helps you avoid common errors as your
+scripts grow.</p>
+<h3 data-number="4.3.5" id="why-variables-matter"><span
+class="header-section-number">4.3.5</span> Why Variables Matter</h3>
+<p>Variables are the glue that holds your programs together. They let
+you capture data from a spreadsheet, store intermediate results, build
+dynamic messages, track progress through a script, and make decisions
+based on changing values. As you move forward, you&#8217;ll use them
+constantly &#8212; sometimes dozens in a single script. Getting comfortable
+with them now will make everything else feel more natural.</p>
+<h2 data-number="4.4" id="working-with-text-and-numbers"><span
+class="header-section-number">4.4</span> Working With Text and
+Numbers</h2>
+<p>As you begin writing scripts that interact with real spreadsheet
+data, you&#8217;ll spend a lot of time working with two fundamental kinds of
+information: <strong>text</strong> and <strong>numbers</strong>. These
+show up everywhere in Google Sheets &#8212; item names, supplier labels,
+costs, demand figures, IDs &#8212; and knowing how to manipulate them is
+essential for building useful tools.</p>
+<h3 data-number="4.4.1" id="working-with-text-strings"><span
+class="header-section-number">4.4.1</span> Working With Text
+(Strings)</h3>
+<p>Text values &#8212; strings &#8212; are written inside quotes:</p>
+<pre class="javascript-example"><code>let item = &quot;classroom clicker&quot;
+let message = &quot;Reorder review complete&quot;</code></pre>
+<p>Strings are flexible: you can combine them, break them apart, and
+insert values into them. Join them with the <code>+</code> operator
+(this is called string <strong>concatenation</strong>):</p>
+<pre class="javascript-example"><code>let label = &quot;Reorder report for: &quot; + item + &quot;!&quot;</code></pre>
+<p>Or build more readable text with template literals (string
+<strong>interpolation</strong>):</p>
+<pre class="javascript-example"><code>let label = `Reorder report for: ${item}`</code></pre>
+<p>When you pull text from a spreadsheet, it arrives as a string:</p>
+<pre class="javascript-example"><code>let sheet = SpreadsheetApp.getActiveSheet()
+let itemName = sheet.getRange(&quot;A2&quot;).getValue()   // likely a string</code></pre>
+<p>Once it&#8217;s in a variable, you can transform it however you like.</p>
+<h3 data-number="4.4.2" id="working-with-numbers"><span
+class="header-section-number">4.4.2</span> Working With Numbers</h3>
+<p>Numbers in JavaScript represent both whole numbers and decimals:</p>
+<pre class="javascript-example"><code>let unitCost = 18
+let caseSize = 20
+let casePrice = unitCost * caseSize   // 360</code></pre>
+<p>You can perform all the standard arithmetic operations: addition
+<code>+</code>, subtraction <code>-</code>, multiplication
+<code>*</code>, division <code>/</code>, and remainder <code>%</code>.
+JavaScript also gives you <code>Math.sqrt()</code> for square roots &#8212;
+which is exactly what we need to answer the question this chapter has
+been building toward: <strong>how many clickers should the University
+Store order at a time?</strong></p>
+<p>The economic order quantity (EOQ) balances the cost of placing orders
+against the cost of holding stock. With annual demand, ordering cost,
+and holding cost stored as variables, the calculation is a single
+line:</p>
+<pre class="javascript-example"><code>let annualDemand = 3600
+let orderingCost = 70
+let holdingCost = 2.20
+let eoq = Math.sqrt(2 * annualDemand * orderingCost / holdingCost)
+console.log(eoq)</code></pre>
+<p>This prints about <strong>479</strong>. That&#8217;s the order size that
+makes the total of ordering and holding costs as low as possible &#8212; at
+479 units, the store spends roughly $526 a year placing orders and
+roughly $526 a year holding stock, the two pulling into balance. Notice
+that the formula didn&#8217;t change; only the <em>names</em> made it
+readable. That&#8217;s the payoff of storing your inputs in well-named
+variables.</p>
+<p>Apps Script reads numeric spreadsheet values as JavaScript numbers,
+so you can pull a figure straight from a cell and compute with it:</p>
+<pre class="javascript-example"><code>let demand = sheet.getRange(&quot;B5&quot;).getValue()   // a number
+let weekly = demand / 52</code></pre>
+<h3 data-number="4.4.3" id="converting-between-text-and-numbers"><span
+class="header-section-number">4.4.3</span> Converting Between Text and
+Numbers</h3>
+<p>Sometimes you&#8217;ll get a value from a spreadsheet that <em>looks</em>
+like a number but is stored as text, or you&#8217;ll need to turn a number
+into text to build a message. JavaScript gives you simple tools for
+this.</p>
+<p>Convert text to a number:</p>
+<pre class="javascript-example"><code>let num = Number(&quot;3600&quot;)   // becomes 3600</code></pre>
+<p>Convert a number to text:</p>
+<pre class="javascript-example"><code>let text = String(479)   // becomes &quot;479&quot;</code></pre>
+<p>Apps Script often handles these conversions automatically, but it&#8217;s
+helpful to know how to do them yourself when needed.</p>
+<h3 data-number="4.4.4"
+id="example-reading-an-item-and-writing-a-reorder-label"><span
+class="header-section-number">4.4.4</span> Example: Reading an Item and
+Writing a Reorder Label</h3>
+<p>This small script reads an item name from cell <strong>A1</strong>
+and writes a label like <strong>&#8220;Reorder report for: classroom
+clicker&#8221;</strong> into cell <strong>B1</strong>. Put an item name into
+<strong>A1</strong> first.</p>
+<pre class="javascript-example"><code>function writeReorderLabel() {
+  // Get the active sheet
+  let sheet = SpreadsheetApp.getActiveSheet()
+
+  // Get a reference to cell A1
+  let cellA1 = sheet.getRange(&quot;A1&quot;)
+
+  // Read the item name from cell A1
+  let item = cellA1.getValue()
+
+  // Build the label
+  let label = &quot;Reorder report for: &quot; + item
+
+  // Get a reference to cell B1
+  let cellB1 = sheet.getRange(&quot;B1&quot;)
+
+  // Write the label into cell B1
+  cellB1.setValue(label)
+}</code></pre>
+<p>This shows how to read from and write to a single cell. Accessing
+many cells at once is a bit more advanced and is covered later.</p>
+<p>If this is the first time you&#8217;ve run a script that accesses worksheet
+data, you&#8217;ll have to allow it &#8212; see the permissions walkthrough earlier
+in this chapter.</p>
+<h4 data-number="4.4.4.1" id="how-it-works"><span
+class="header-section-number">4.4.4.1</span> How it works</h4>
+<ul>
+<li><code>getRange("A1").getValue()</code> pulls the item name from the
+sheet and stores it in <code>item</code>.</li>
+<li>The script builds a new string by combining
+<code>"Reorder report for: "</code> with the item.</li>
+<li><code>setValue()</code> writes the final label into cell B1.</li>
+</ul>
+<p>Try putting an item in <strong>A1</strong>, run the script, and watch
+the label appear. It&#8217;s simple, but it captures the essence of Apps
+Script: read real data, transform it with JavaScript, and write
+meaningful results back.</p>
+<h3 data-number="4.4.5" id="why-this-matters"><span
+class="header-section-number">4.4.5</span> Why This Matters</h3>
+<p>Working with text and numbers is the backbone of almost every
+spreadsheet automation &#8212; cleaning up item names, formatting labels,
+calculating totals, generating reports, processing rows of mixed data.
+Mastering how to read, combine, and transform them turns raw spreadsheet
+data into something meaningful, and sets the stage for the more advanced
+scripting ahead.</p>
+<h2 data-number="4.5" id="naming-conventions-and-best-practices"><span
+class="header-section-number">4.5</span> Naming Conventions and Best
+Practices</h2>
+<p>As your scripts grow beyond a few lines, the names you choose for
+your variables start to matter a lot. Good naming makes your code easier
+to read, easier to debug, and easier to return to weeks or months later.
+Clear, consistent naming is one of the simplest ways to write code that
+feels clean and professional.</p>
+<h3 data-number="4.5.1" id="use-clear-descriptive-names"><span
+class="header-section-number">4.5.1</span> Use Clear, Descriptive
+Names</h3>
+<p>A variable name should tell you <em>what the value represents</em>,
+not how it&#8217;s used or what type it is. When you read your code later, the
+meaning should be obvious at a glance.</p>
+<p>Good examples: <code>annualDemand</code>, <code>orderingCost</code>,
+<code>isApproved</code>, <code>reorderPoint</code>.</p>
+<p>Less helpful examples: <code>x</code>, <code>temp</code>,
+<code>data1</code>, <code>flag</code>.</p>
+<p>Descriptive names reduce mental overhead. You don&#8217;t have to remember
+what <code>x</code> means &#8212; you can just read the name and keep
+going.</p>
+<h3 data-number="4.5.2" id="follow-javascripts-camelcase-style"><span
+class="header-section-number">4.5.2</span> Follow JavaScript&#8217;s camelCase
+Style</h3>
+<p>Although other conventions exist, we&#8217;ll use
+<strong>camelCase</strong> for variable and function names. The first
+word is lowercase, and each following word starts with a capital
+letter:</p>
+<pre class="javascript-example"><code>let unitCost = 18
+let annualDemand = 3600
+let isPreferredSupplier = true</code></pre>
+<p>camelCase is the most common naming convention across the JavaScript
+ecosystem, so following it helps your code feel familiar and
+consistent.</p>
+<h3 data-number="4.5.3" id="start-names-with-letters-not-numbers"><span
+class="header-section-number">4.5.3</span> Start Names With Letters, Not
+Numbers</h3>
+<p>Variable names must begin with a letter, underscore, or dollar sign.
+They cannot start with a number:</p>
+<pre class="javascript-example"><code>let item1 = &quot;clicker&quot;   // valid
+let _count = 10         // valid
+let 1stItem = 5         // not valid</code></pre>
+<p>Sticking to letters for most names keeps things simple.</p>
+<h3 data-number="4.5.4"
+id="avoid-abbreviations-unless-theyre-obvious"><span
+class="header-section-number">4.5.4</span> Avoid Abbreviations Unless
+They&#8217;re Obvious</h3>
+<p>Shortened names save a few keystrokes but cost clarity. Unless the
+abbreviation is universally understood, spell it out.</p>
+<p>Prefer <code>orderingCost</code> over <code>ordCst</code>, and
+<code>holdingCost</code> over <code>hldCst</code>. Clear code is almost
+always better than compact code. (EOQ is fine &#8212; it&#8217;s universally
+understood in operations.)</p>
+<h3 data-number="4.5.5"
+id="use-boolean-names-that-read-like-truefalse-statements"><span
+class="header-section-number">4.5.5</span> Use Boolean Names That Read
+Like True/False Statements</h3>
+<p>Boolean variables should sound like conditions, which makes your code
+easier to read when you use them in logic. Examples:
+<code>supplierIsPreferred</code>, <code>hasOpenOrder</code>,
+<code>isStockedOut</code>, <code>shouldReorder</code>. When you read a
+line like:</p>
+<pre class="javascript-example"><code>if (shouldReorder) {</code></pre>
+<p>&#8230;it feels natural and self-explanatory.</p>
+<h3 data-number="4.5.6"
+id="keep-a-consistent-style-across-your-script"><span
+class="header-section-number">4.5.6</span> Keep a Consistent Style
+Across Your Script</h3>
+<p>Consistency matters more than perfection. If you choose a pattern,
+stick with it: if you write <code>annualDemand</code>, don&#8217;t switch to
+<code>ordering_cost</code> later; if you name one variable
+<code>unitCost</code>, don&#8217;t name another <code>cost_per_unit</code>. A
+consistent style makes your code feel intentional and easier to
+navigate.</p>
+<h3 data-number="4.5.7" id="why-naming-matters-in-apps-script"><span
+class="header-section-number">4.5.7</span> Why Naming Matters in Apps
+Script</h3>
+<p>When you start interacting with spreadsheet data, you&#8217;ll often have
+variables like:</p>
+<pre class="javascript-example"><code>let sheet = SpreadsheetApp.getActiveSheet()
+let demandColumn = sheet.getRange(&quot;B2:B20&quot;).getValues()
+let orderingCost = sheet.getRange(&quot;E1&quot;).getValue()</code></pre>
+<p>Clear names help you keep track of what each value represents &#8212;
+especially when you&#8217;re juggling multiple ranges, rows, and calculations.
+Good naming is one of the simplest habits that separates messy scripts
+from maintainable ones. As your projects grow, you&#8217;ll be glad you
+invested in clarity early. Next, we&#8217;ll start making decisions with this
+data &#8212; deciding, for instance, whether an item has dropped low enough to
+reorder.</p>
+<!--postEnd-->
+              </div>
+</div>
+</article>
+</div>
+</div>
+</div></div>
+</div><!-- #main -->
+</div><!-- #primary -->
+<!--end of error vs non error block-->
+</div><!-- #content -->
+<footer class='site-footernbt' id='colophonnbt' role='contentinfo'>
+<div id='supplementarynbt'>
+<div class='footer-widgetsnbt widget-areanbt clearnbt' id='footer-widgetsnbt' role='complementary'>
+<div class='sidebarwidgetsarea no-items section' id='sidebarwidgetsarea'></div>
+</div><!-- #footer-sidebar -->
+</div><!-- #supplementary -->
+</footer><!-- #colophon -->
+</div><!-- #page -->
+
+<script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
+<script type='text/javascript'>
+window['__wavt'] = 'AEUoTZpEmXDOyAVQ9Gl1OyuDrBR6:1784765283307';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d1676106165289640444','//book1011.blogspot.com/2000/02/4.html','1676106165289640444');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '1676106165289640444', 'title': 'book1011', 'url': 'https://book1011.blogspot.com/2000/02/4.html', 'canonicalUrl': 'https://book1011.blogspot.com/2000/02/4.html', 'homepageUrl': 'https://book1011.blogspot.com/', 'searchUrl': 'https://book1011.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1011.blogspot.com/', 'blogspotFaviconUrl': 'https://book1011.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://book1011.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1011 - RSS\x22 href\x3d\x22https://book1011.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/1676106165289640444/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://book1011.blogspot.com/feeds/6701322407338045706/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/37c4cc789ad2acf9', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '6701322407338045706', 'postImageThumbnailUrl': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi3j_ZQ5HXTAbC-DQiRbQOngEJNc3rQ-OHiKKCTnsovgeU16k4zbgiuLsrmReTfJSmFhBOMVNyUiVv4rMuF9kES2x3O7TkNbn7s1UqLZxURDNscVa79jioBfRWZrp_OCqShjwpMeK_0Ayr6yTFGs8OJJjcr1W6EUwWiYhtSRSOtbL1VpbxMEM-xkaFaLa0/s72-c/84cd1741.png', 'postImageUrl': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi3j_ZQ5HXTAbC-DQiRbQOngEJNc3rQ-OHiKKCTnsovgeU16k4zbgiuLsrmReTfJSmFhBOMVNyUiVv4rMuF9kES2x3O7TkNbn7s1UqLZxURDNscVa79jioBfRWZrp_OCqShjwpMeK_0Ayr6yTFGs8OJJjcr1W6EUwWiYhtSRSOtbL1VpbxMEM-xkaFaLa0/s1600/84cd1741.png', 'pageName': '4. Variables and Data', 'pageTitle': 'book1011: 4. Variables and Data'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '4. Variables and Data', 'description': 'monaco  4  Variables and Data \r 4.1  What Variables Are and Why They\r Matter \r As you begin writing programs that do more than print a messa...', 'featuredImage': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi3j_ZQ5HXTAbC-DQiRbQOngEJNc3rQ-OHiKKCTnsovgeU16k4zbgiuLsrmReTfJSmFhBOMVNyUiVv4rMuF9kES2x3O7TkNbn7s1UqLZxURDNscVa79jioBfRWZrp_OCqShjwpMeK_0Ayr6yTFGs8OJJjcr1W6EUwWiYhtSRSOtbL1VpbxMEM-xkaFaLa0/s1600/84cd1741.png', 'url': 'https://book1011.blogspot.com/2000/02/4.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 6701322407338045706}}]);
+_WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
+</script>
+</body>
+</html>

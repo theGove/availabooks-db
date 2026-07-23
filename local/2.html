@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html class='v2' dir='ltr' lang='en-US' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<head>
+<link href='https://www.blogger.com/static/v1/widgets/2872013778-css_bundle_v2.css' rel='stylesheet' type='text/css'/>
+<meta charset='UTF-8'/>
+<meta content='width=device-width, initial-scale=1' name='viewport'/>
+<title>book1011</title>
+<!-- external libraries -->
+<script src='https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js'></script>
+<script src='https://unpkg.com/turndown/dist/turndown.js'></script>
+<!-- font links -->
+<link href='https://fonts.googleapis.com' rel='preconnect'/>
+<link href='https://fonts.gstatic.com' rel='preconnect'/>
+<link href='https://fonts.googleapis.com/css2?family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900' rel='stylesheet'/>
+<link href='https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900' rel='stylesheet'/>
+<!-- button icon -->
+<link href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0' rel='stylesheet'/>
+<style id='page-skin-1' type='text/css'><!--
+:root {
+--font-zoom: 1;
+--page-bg: #f8fafc;
+--surface: #ffffff;
+--surface-soft: #f1f5f9;
+--surface-muted: #e2e8f0;
+--text: #172033;
+--text-muted: #64748b;
+--heading: #0f172a;
+--accent: #2563eb;
+--accent-strong: #1d4ed8;
+--accent-soft: #dbeafe;
+--danger: #dc2626;
+--warning: #fef3c7;
+--border: #dbe3ee;
+--shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+--shadow-md: 0 12px 30px rgba(15, 23, 42, 0.12);
+--shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.18);
+--radius-sm: 0.5rem;
+--radius-md: 0.85rem;
+--radius-lg: 1.35rem;
+}
+* {
+box-sizing: border-box;
+}
+html {
+scroll-behavior: smooth;
+}
+body {
+margin: 0;
+min-height: 100vh;
+font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+font-weight: 400;
+font-style: normal;
+font-size: calc(1rem  * var(--font-zoom));
+line-height: 1.72;
+color: var(--text);
+background: var(--page-bg);
+text-rendering: optimizeLegibility;
+-webkit-font-smoothing: antialiased;
+}
+.module{
+display:none
+}
+h1:has(span.header-section-number){
+display:none;
+}
+.material-symbols-outlined{
+font-size: calc(1rem  * var(--font-zoom));
+cursor:pointer;
+user-select:none;
+}
+summary::marker {
+color: var(--text-muted);
+}
+#msg-galley{
+position:fixed;
+top:0;
+right:0;
+height:100vh;
+min-width:calc(20rem  * var(--font-zoom));
+max-width:50%;
+z-index:12;
+background-color: transparent;
+pointer-events: none;
+padding: 1rem 1rem 0 0;
+font-family: "Roboto", sans-serif;
+font-optical-sizing: auto;
+font-weight: 400;
+font-style: normal;
+font-variation-settings: "wdth" 100;
+}
+.msg-close{
+position:absolute;
+top:calc(3px  * var(--font-zoom));
+right:calc(3px  * var(--font-zoom));
+display: inline-flex;
+align-items: center;
+justify-content: center;
+width: 1.25rem;
+height: 1.25rem;
+padding: 0;
+background-color:var(--danger);
+color: white;
+font-weight:700;
+font-size:calc(.7rem  * var(--font-zoom));
+border-radius: 999px;
+cursor:pointer;
+}
+.msg-dialog{
+position: relative;
+background-color:var(--surface);
+margin-bottom:.75rem;
+pointer-events: auto;
+border-radius:var(--radius-md);
+border: 1px solid var(--border);
+box-shadow: var(--shadow-md);
+overflow: hidden;
+}
+.msg-button-{
+margin: 0 .5rem .5rem 0;
+}
+.msg-button-bar{
+background-color:var(--surface-soft);
+text-align:center;
+padding:.75rem;
+border-top: 1px solid var(--border);
+}
+.msg-title{
+background:var(--accent);
+color:white;
+font-weight:700;
+padding:.55rem 2rem .55rem .85rem;
+}
+.msg-message{
+background-color:var(--surface);
+padding: .85rem;
+}
+#page-data{
+display:none
+}
+#menu{
+top:0;
+left:-100px;
+position:fixed;
+display:none;
+background:var(--surface);
+padding:0;
+z-index:11;
+transition: left .25s ease, box-shadow .25s ease;
+height:100vh;
+min-width:min(22rem, 88vw);
+max-width:75vw;
+overflow: auto;
+border-right: 1px solid var(--border);
+box-shadow: var(--shadow-lg);
+}
+#book-data{display:none}
+#menu-content{
+padding:1rem 1.25rem 2rem;
+}
+.menu-button{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+min-width:2.4rem;
+height:2.4rem;
+padding:0 .6rem;
+cursor:pointer;
+color:var(--text-muted);
+border-radius:999px;
+transition: background .18s ease, color .18s ease, transform .18s ease;
+vertical-align:middle;
+}
+.menu-button:hover{
+background:var(--accent-soft);
+color:var(--accent-strong);
+transform: translateY(-1px);
+}
+.menu-header{
+top:0;
+position:sticky;
+background:var(--surface);
+opacity:1;
+margin:0;
+padding:.45rem .6rem;
+border-bottom:1px solid var(--border);
+box-shadow: var(--shadow-sm);
+z-index:1;
+}
+#book-title{
+font-weight:700;
+letter-spacing:.02em;
+}
+#search-div{
+width:100%;
+white-space: nowrap;
+margin-top: 1.5rem;
+}
+#search-div h6{
+margin:0 0 .45rem 0;
+font-size:.78rem;
+font-weight:700;
+letter-spacing:.08em;
+text-transform:uppercase;
+color:var(--text-muted);
+}
+#search{
+width: calc(100% - 2.25rem);
+border:1px solid var(--border);
+border-radius:999px;
+padding:.55rem .85rem;
+font: inherit;
+font-size:.92rem;
+color:var(--text);
+background:var(--surface);
+box-shadow: var(--shadow-sm);
+outline:none;
+transition: border-color .18s ease, box-shadow .18s ease;
+}
+#search:focus{
+border-color:var(--accent);
+box-shadow:0 0 0 4px rgba(37, 99, 235, .13);
+}
+#search-button{
+padding-left:.45rem;
+color:var(--accent);
+vertical-align:middle;
+}
+#search-results{
+font-size:.86rem;
+margin-top: .85rem;
+}
+.search-result{
+margin-top:.65rem;
+padding:.75rem;
+cursor:pointer;
+border:1px solid var(--border);
+border-radius:var(--radius-sm);
+background:var(--surface);
+box-shadow: var(--shadow-sm);
+transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.search-result:hover{
+background-color:#f8fbff;
+border-color:#bfdbfe;
+box-shadow:0 10px 24px rgba(37, 99, 235, .1);
+transform: translateY(-1px);
+}
+.search-result-title{
+font-weight:bold;
+color:var(--heading);
+}
+.search-result-line{
+margin:.25rem 0 .35rem .75rem;
+color:var(--text-muted);
+}
+.search-term{
+background-color:var(--warning);
+border-radius:.2rem;
+padding:0 .15rem;
+}
+.chapter-result-link{
+color:var(--heading);
+}
+.toc-section-container{
+margin-left:.75rem;
+}
+.toc-text-container{
+margin-left:1.25rem;
+color:var(--text-muted);
+}
+.chapter-section{
+margin-top: calc(3rem  * var(--font-zoom));
+margin-bottom: calc(3rem  * var(--font-zoom));
+}
+.hide{
+display:none
+}
+img{
+max-width:100%;
+height:auto;
+border-radius:var(--radius-md);
+}
+.entry-header{
+position:fixed;
+top:0;
+left: 0;
+width: 100%;
+transition:opacity 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+padding: .35rem .75rem;
+-webkit-user-select: none; /* Safari */
+user-select: none; /* Standard syntax */
+background: var(--surface);
+border-bottom:1px solid var(--border);
+box-shadow:var(--shadow-sm);
+z-index:10;
+}
+button.nav{
+border-radius:999px;
+border:1px solid var(--border);
+background:var(--surface);
+color:var(--accent);
+box-shadow: var(--shadow-md);
+width:2.8rem;
+height:2.8rem;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+}
+.nav{
+position: fixed;
+bottom: 1rem;
+opacity:1.0;
+transition:opacity 0.35s ease, transform 0.18s ease, box-shadow 0.18s ease;
+pointer-events: all;
+}
+.nav:hover{
+transform: translateY(-2px);
+box-shadow: var(--shadow-lg);
+}
+.dim-button:hover{opacity: 1.0;}
+.dim-button{opacity: .35;}
+.dim-header:hover{opacity: 1.0;}
+.dim-header{opacity: 0;}
+#prior-button {
+left: 1rem;
+}
+#next-button {
+right: 1rem;
+}
+.span-link{
+cursor:pointer;
+color:var(--accent);
+font-weight:500;
+}
+.span-link:hover{
+text-decoration: underline;
+color:var(--accent-strong);
+}
+a:link {color: var(--accent); text-decoration:none}
+a:visited {color: #4f46e5;}
+a:hover {background-color: var(--accent-soft); color: var(--accent-strong); border-radius:.25rem;}
+a:active {color: var(--accent-strong);}
+.book-title{
+margin-top: 6rem;
+font-family:"Taviraj", Georgia, serif;
+font-size:clamp(2.4rem, 7vw, calc(4rem  * var(--font-zoom)));
+line-height:1.05;
+text-align: center;
+font-weight: 700;
+color:var(--heading);
+}
+.book-author{
+margin-top: 1rem;
+font-size:calc(1.45rem  * var(--font-zoom));
+text-align: center;
+color:var(--text-muted);
+}
+.book-toc{
+text-align: center;
+margin-top:2rem;
+}
+.book-chapters{
+display: inline-block;
+}
+.book-chapter{
+text-align:left;
+padding-left: 1rem;
+text-indent: -1rem;
+margin-bottom: 0.55rem;
+}
+.tool {
+cursor:pointer;
+font-size:calc(18px  * var(--font-zoom));
+font-weight:400;
+vertical-align: middle;
+padding-left:.6rem;
+color:var(--text-muted);
+transition: color .18s ease, transform .18s ease;
+}
+.tool:hover {
+color:var(--accent);
+transform: translateY(-1px);
+}
+.lead-in{
+margin-top:4rem;
+}
+.example, .indent, .category{
+margin:1rem 0 0 1.1rem;
+}
+.category div:first-child{
+color:var(--danger);
+font-weight:700;
+}
+.example div:first-child{
+color:var(--danger);
+font-style: italic;
+}
+h1{
+font-family:"Taviraj", Georgia, serif;
+font-size:clamp(1.35rem, 4vw, calc(2.1rem * var(--font-zoom)));
+line-height:1.18;
+color:var(--heading);
+font-weight:700;
+margin:0;
+}
+h2, h3{
+font-family:"Taviraj", Georgia, serif;
+color:var(--heading);
+line-height:1.24;
+letter-spacing:-.015em;
+}
+h2{
+font-size:clamp(1.55rem, 4vw, calc(2.15rem * var(--font-zoom)));
+margin:3rem 0 1rem;
+padding-top:.5rem;
+}
+h3{
+font-size:clamp(1.2rem, 3vw, calc(1.45rem * var(--font-zoom)));
+margin:2.25rem 0 .8rem;
+}
+.header-section-number{
+color:var(--accent);
+font-weight:700;
+}
+p{
+margin-top:0;
+margin-bottom:1.15rem;
+}
+p.vignette{
+color:var(--danger)
+}
+.no-dot{
+list-style-type: none;
+}
+ul.no-dot li{
+padding-left: 1rem;
+text-indent: -1rem;
+margin-bottom: 0.3rem;
+}
+audio{
+height:30px;
+width:100%;
+max-width:34rem;
+}
+div.post-body{
+max-width:940px;
+margin:0 auto;
+padding:clamp(5.2rem, 7vw, 6.25rem) clamp(1.15rem, 4vw, 3.5rem) 4rem;
+background:transparent;
+}
+div.index-boxnbt{
+background:var(--surface);
+padding-bottom:2rem;
+}
+.material-symbols-outlined {
+font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+font-size: 18px;
+line-height: 1;
+}
+blockquote{
+margin:1.75rem 0;
+padding:1rem 1.25rem 1rem 1.35rem;
+background:var(--surface-soft);
+border-left:.35rem solid var(--accent);
+border-radius:0 var(--radius-md) var(--radius-md) 0;
+color:#334155;
+}
+blockquote p:last-child{
+margin-bottom:0;
+}
+hr{
+height:1px;
+border:0;
+background:var(--border);
+margin:2.75rem 0;
+}
+ul, ol{
+padding-left:1.45rem;
+margin:0 0 1.25rem;
+}
+li{
+margin:.45rem 0;
+}
+code{
+font-family:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+font-size:.92em;
+color:#0f766e;
+background:#ecfdf5;
+border:1px solid #bbf7d0;
+border-radius:.35rem;
+padding:.08rem .32rem;
+}
+pre code,
+.sourceCode code{
+color:inherit;
+background:transparent;
+border:0;
+border-radius:0;
+padding:0;
+font-size:inherit;
+}
+pre,
+pre.javascript-code,
+pre.javascript-example,
+pre.spreadsheet,
+div.sourceCode pre{
+margin:1rem 0;
+padding:.75rem .85rem;
+overflow:auto;
+background:#0f172a;
+color:#dbeafe;
+border:1px solid rgba(148, 163, 184, .28);
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-md);
+font-family:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+font-size:.88rem;
+line-height:1.38;
+tab-size:2;
+white-space:pre;
+}
+div.sourceCode{
+margin:1rem 0;
+}
+div.sourceCode pre{
+margin:0;
+}
+.sourceCode .kw,
+.sourceCode .cf{
+color:#93c5fd;
+}
+.sourceCode .fu,
+.sourceCode .at{
+color:#67e8f9;
+}
+.sourceCode .st{
+color:#86efac;
+}
+.sourceCode .dv{
+color:#fbbf24;
+}
+.sourceCode .co{
+color:#94a3b8;
+font-style:italic;
+}
+table{
+display:block;
+width:max-content;
+max-width:100%;
+border-collapse:separate;
+border-spacing:0;
+margin:1.5rem 0 2rem;
+overflow-x:auto;
+-webkit-overflow-scrolling:touch;
+border:1px solid var(--border);
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-sm);
+background:var(--surface);
+}
+th,
+td{
+padding:.72rem .85rem;
+border-bottom:1px solid var(--border);
+text-align:left;
+vertical-align:top;
+white-space:nowrap;
+}
+th{
+font-size:.86rem;
+font-weight:700;
+color:var(--heading);
+background:var(--surface-soft);
+}
+tr:last-child td{
+border-bottom:0;
+}
+tr:nth-child(even) td{
+background:#f8fafc;
+}
+.monaco {
+width: 100%;
+margin: 1.5rem 0;
+border-radius: var(--radius-md);
+overflow: hidden;
+box-shadow: var(--shadow-lg);
+border: 1px solid rgba(148, 163, 184, 0.22);
+}
+.monaco-bar {
+display: flex;
+align-items: center;
+justify-content: flex-end;
+gap: 2px;
+padding: 8px 10px;
+background: linear-gradient(180deg, #1f2937, #111827);
+border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.monaco-bar-label {
+flex: 1;
+font-family: "Roboto", sans-serif;
+font-size: 11px;
+font-weight: 700;
+color: #94a3b8;
+letter-spacing: 0.5px;
+text-transform: uppercase;
+padding-left: 4px;
+}
+.monaco-tool {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 30px;
+height: 30px;
+border-radius: 6px;
+color: #8b949e;
+cursor: pointer;
+transition: background 0.15s ease, color 0.15s ease;
+}
+.monaco-tool:hover {
+background: rgba(255, 255, 255, 0.1);
+color: #e6edf3;
+}
+.monaco-tool:active {
+background: rgba(255, 255, 255, 0.06);
+transform: scale(0.92);
+}
+.monaco-tool[data-action="run"]:hover {
+background: rgba(63, 185, 80, 0.18);
+color: #3fb950;
+}
+.editor-holder {
+background-color: #1e1e1e;
+padding: 8px 0;
+}
+.editor {
+margin: 0;
+padding: 0;
+}
+.console {
+background: #161b22;
+border-top: 1px solid rgba(255, 255, 255, 0.07);
+padding: 8px 0 6px;
+position: relative;
+min-height: 36px;
+font-family: 'Consolas', 'Cascadia Code', 'Courier New', monospace;
+font-size: 13px;
+}
+.console-line {
+color: #c9d1d9;
+padding: 2px 40px 2px 14px;
+line-height: 1.6;
+white-space: pre-wrap;
+word-break: break-all;
+}
+.console-line:first-of-type {
+margin-top: 2px;
+}
+.console-line.error {
+color: #f85149;
+background: rgba(248, 81, 73, 0.06);
+}
+span.exitButton {
+position: absolute;
+top: 6px;
+right: 8px;
+display: flex;
+align-items: center;
+justify-content: center;
+width: 22px;
+height: 22px;
+border-radius: 4px;
+color: #6e7681;
+cursor: pointer;
+transition: background 0.15s ease, color 0.15s ease;
+}
+span.exitButton:hover {
+background: rgba(255, 255, 255, 0.1);
+color: #c9d1d9;
+}
+span.exitButton .material-symbols-outlined {
+font-size: 15px;
+}
+pre.code {
+color: #a8ff78;
+background: #0d1117;
+padding: 1rem 1.15rem;
+margin: 1.35rem 0;
+font-size: 14px;
+border-radius: var(--radius-md);
+border: 1px solid rgba(255, 255, 255, 0.07);
+overflow-x: auto;
+}
+@media (max-width: 700px) {
+body {
+font-size: calc(.98rem * var(--font-zoom));
+}
+#msg-galley {
+left: 0;
+right: 0;
+max-width: none;
+min-width: 0;
+padding: .75rem;
+}
+#menu {
+max-width: 92vw;
+}
+.entry-header {
+padding: .25rem .4rem;
+}
+div.post-body {
+padding-left: 1rem;
+padding-right: 1rem;
+}
+.nav {
+bottom: .75rem;
+}
+#prior-button {
+left: .75rem;
+}
+#next-button {
+right: .75rem;
+}
+}
+
+--></style>
+<script>
+    const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
+	async function initialize(){
+
+      const kind = document.getElementById(`kind`).innerHTML
+      console.log(`kind`, kind)
+      switch(kind){
+        case `redirect`:
+          location.href=document.getElementById(`post-json`).innerText
+          return
+        case `chapter`:
+          console.log(`processing Chapter`)
+          // load any modules used in the chapter
+          for(const module of document.querySelectorAll(`div.module`)){
+            console.log(`module:`, module.innerText)
+            loadModule(module.innerText)
+    
+    
+    
+          }
+      }
+    
+    // calls the page that has our code in it
+    //const response = await fetch(`/1970/01/system.html`)
+  	//const code = await response.text()
+    
+ 
+	//const s = document.createElement('script')
+	//s.replaceChildren(code.split(`<p`+`re>`)[1].split(`</pre>`)[0])
+	//document.head.appendChild(s)
+    //console.log("got system")
+    await loadModule("system")
+	init()
+    
+    }
+    
+    async function loadModule(label){// get the first post of a specified label and load the code
+      const code = await getPage(label)
+      const s = document.createElement(`script`)
+      s.replaceChildren(code)
+      document.head.appendChild(s)          
+    }
+    
+    async function getPage(label){//get the first post with the specified label.
+        
+        if(localhost){
+          const url=`/tools/api/${label}.js`
+          const response = await fetch(url)
+          const code = await response.text()  
+          return code
+        }else{
+          const url=`${location.origin}/feeds/posts/default/-/${label}?alt=json`
+          const response = await fetch(url)
+          console.log("feed url", url)
+          const page = await response.json()
+          return page.feed.entry[0].content.$t
+        }
+    }    
+
+  </script>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=1676106165289640444&amp;zx=6bdbd94f-4c00-46a7-9f85-9e3213cc543c' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=1676106165289640444&amp;zx=6bdbd94f-4c00-46a7-9f85-9e3213cc543c' rel='stylesheet'/></noscript>
+<meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
+<meta name='google-adsense-platform-domain' content='blogspot.com'/>
+
+</head>
+<body onload='initialize()'>
+<div class='sitenbt' id='pagenbt'>
+<div class='site-contentnbt' id='contentnbt'>
+<div class='testing' id='item'></div>
+<div class='content-areanbt' id='primarynbt'>
+<div class='site-mainnbt' id='mainnbt' role='main'>
+<div class='section' id='mainblogsec'><div class='widget Blog' data-version='1' id='Blog1'>
+<div class='blog-posts hfeed'>
+<div class='post-outer'>
+<article class='post'>
+<div id='msg-galley'></div>
+<div class='hide' id='kind'>chapter</div>
+<div class='index-boxnbt'>
+<header class='entry-header'>
+<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>2. Your First Lines of Code</span></h1>
+</header>
+<div id='menu'>
+<div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
+<div id='menu-content'>
+<div id='toc'></div>
+<div id='tools'>
+                  Text Size: 
+                  <span class='material-symbols-outlined tool' onclick='fontSize(.1)'>text_increase</span>
+<span class='material-symbols-outlined tool' onclick='fontSize(-.1)'>text_decrease</span>
+<span class='material-symbols-outlined tool' onclick='fontSize()'>rotate_auto</span>
+</div>
+<div id='search-div'>
+<h6>Search Book</h6>
+<input id='search' placeholder='search book'/><span class='material-symbols-outlined tool' id='search-button'>search</span></div>
+<div id='search-results'></div>
+</div>
+</div>
+<div class='post-body entry-content' data-blog-id='1676106165289640444' data-post-id='622232992790696188'>
+<button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
+<button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
+              
+              <!--postBegin--><div class="module">monaco</div>
+<h1 data-number="2" id="your-first-lines-of-code"><span
+class="header-section-number">2</span> Your First Lines of Code</h1>
+<h2 data-number="2.1" id="writing-and-running-simple-statements"><span
+class="header-section-number">2.1</span> Writing and Running Simple
+Statements</h2>
+<p>Before you can build programs that make decisions or process data,
+you need to get comfortable with the most basic building block of all:
+the <strong>expression</strong>. An expression is any piece of code the
+computer evaluates to produce a value &#8212; a number, a piece of text, or a
+calculation. Think of expressions as the meaningful phrases that supply
+the data your code works with.</p>
+<p>In operations, the values you care about are usually measurements,
+and <strong>productivity</strong> &#8212; outputs divided by inputs &#8212; is one
+of the most important. We&#8217;ll compute it again and again in this chapter
+using two small operations you&#8217;ll get to know well. The first is a
+university that one year taught 18,000 students with 720 faculty, then
+grew to 26,000 students with 800 faculty five years later. The second is
+<strong>Performance Apparel</strong>, a custom t-shirt shop that makes
+1,000 shirts a month on $2,000 of labor, $3,000 of materials, and $1,500
+of overhead. Nearly every calculation ahead comes back to one of these
+two, so once you know them, the numbers will speak for themselves.</p>
+<p>Expressions are how you turn those situations into values:</p>
+<ul>
+<li>A plain number like <code>18000</code> (the students taught) is an
+expression.</li>
+<li>A calculation like <code>18000 / 720</code> (students per faculty
+member) is an expression that evaluates to <code>25</code>.</li>
+<li>A piece of text in quotes, like <code>"Performance Apparel"</code>,
+is an expression.</li>
+</ul>
+<p>Expressions represent values, but to <em>do</em> something with them
+you wrap them in <strong>statements</strong> &#8212; the full instructions
+that tell the computer to act.</p>
+<h3 data-number="2.1.1" id="from-value-to-action"><span
+class="header-section-number">2.1.1</span> From Value to Action</h3>
+<p>An expression on its own is like a thought you haven&#8217;t spoken. The
+calculation <code>18000 / 720</code> represents a single-factor
+productivity figure &#8212; students taught per faculty member &#8212; but writing
+it alone doesn&#8217;t tell the computer to do anything with it. To turn it
+into an instruction, use a statement such as
+<code>console.log()</code>:</p>
+<pre class="javascript-example"><code>console.log(18000 / 720) // statement: display the result
+                         // 18000 / 720 is just the expression</code></pre>
+<p>This tells the computer to print the result &#8212; 25 students per faculty
+member, the university&#8217;s productivity for that year. (When it grew to
+32.5 five years later, that was a real gain &#8212; we&#8217;ll measure exactly how
+much shortly.) One instruction, one action. Tiny as it is, this captures
+the essence of programming: write a clear command, and the computer
+carries it out exactly.</p>
+<h3 data-number="2.1.2" id="what-makes-a-statement-simple"><span
+class="header-section-number">2.1.2</span> What Makes a Statement
+&#8220;Simple&#8221;</h3>
+<p>A simple statement usually does one thing &#8212; display a value, assign a
+variable, or call a function. For example:</p>
+<pre class="javascript-example"><code>console.log(1000 / (2000 + 3000 + 1500))
+// multi-factor productivity: shirts produced per dollar of input,
+// dividing output by labor + materials + overhead</code></pre>
+<p>This calculates how many shirts Performance Apparel produces for
+every dollar of input &#8212; about 0.154 &#8212; and displays it. Or:</p>
+<pre class="javascript-example"><code>let studentsPerFaculty = 18000 / 720</code></pre>
+<p>This stores a result for later use without displaying it. Each line
+is a complete thought expressed in code.</p>
+<h3 data-number="2.1.3" id="running-your-first-statements"><span
+class="header-section-number">2.1.3</span> Running Your First
+Statements</h3>
+<p>The easiest place to start is the browser console. Open developer
+tools, switch to the Console tab, and type. (The console echoes
+expressions back to you, so bare expressions often show a result there
+too.)</p>
+<p>These first two lines are just expressions &#8212; on their own they don&#8217;t
+instruct the computer to do anything lasting:</p>
+<pre class="javascript-example"><code>18000 / 720</code></pre>
+<pre class="javascript-example"><code>&quot;Performance Apparel&quot;</code></pre>
+<p>This is a true, simple statement:</p>
+<pre class="javascript-example"><code>console.log(32.5 / 25 - 1) // change in productivity: a 30% improvement</code></pre>
+<p>Now compare these two lines:</p>
+<pre class="javascript-example"><code>let studentsPerFaculty = 25
+studentsPerFaculty</code></pre>
+<p>Line one is a statement &#8212; it assigns 25 to
+<code>studentsPerFaculty</code>. Line two is just an expression: the
+computer can see that the value is 25, but you haven&#8217;t told it what to
+do with that fact. Make line two a statement and the value gets
+used:</p>
+<pre class="javascript-example"><code>let studentsPerFaculty = 25
+console.log(studentsPerFaculty)</code></pre>
+<p>Each statement runs immediately, giving instant feedback. That
+write-run-observe loop is one of the best ways to learn.</p>
+<h3 data-number="2.1.4" id="ending-statements"><span
+class="header-section-number">2.1.4</span> Ending Statements</h3>
+<p>You&#8217;ll often see a semicolon (<code>;</code>) at the end of every
+line in online JavaScript. Modern JavaScript usually figures out where a
+statement ends from the line break on its own &#8212; a feature called
+Automatic Semicolon Insertion &#8212; so in this book we leave them off. Two
+reasons: it&#8217;s one less rule to track while you&#8217;re learning the logic,
+and the code reads cleaner. You may later work on projects where
+semicolons are the norm; for now we keep things simple.</p>
+<h3 data-number="2.1.5" id="why-simple-statements-matter"><span
+class="header-section-number">2.1.5</span> Why Simple Statements
+Matter</h3>
+<p>It&#8217;s tempting to rush to bigger programs, but simple statements are
+the foundation for everything else. Even a full productivity dashboard
+or scheduling tool is built from thousands of small, clear instructions
+like these. As the book goes on, you&#8217;ll combine them into functions,
+loops, and conditionals &#8212; but it all starts here: one line, one action,
+one step toward thinking like a programmer.</p>
+<h2 data-number="2.2" id="console.log-and-basic-output"><span
+class="header-section-number">2.2</span> <code>console.log()</code> and
+Basic Output</h2>
+<p>Before you can build anything meaningful, you need a way to
+<em>see</em> what your code is doing. That&#8217;s <code>console.log()</code>.
+It&#8217;s one of the simplest tools in the language and one you&#8217;ll use
+constantly. It sends a message to the console &#8212; a built-in panel where
+JavaScript can display information. Think of it as your program&#8217;s voice:
+whenever you want to check a value or confirm a calculation, you log
+it.</p>
+<pre class="javascript-example"><code>console.log(&quot;Students per faculty:&quot;, 18000 / 720)</code></pre>
+<h3 data-number="2.2.1" id="why-console.log-matters"><span
+class="header-section-number">2.2.1</span> Why
+<code>console.log()</code> Matters</h3>
+<p>Logging looks trivial but does a lot of work: it lets you see results
+(numbers, text, calculations), trace problems when something isn&#8217;t
+working, follow the order your code runs in, and &#8212; as a beginner &#8212; watch
+how JavaScript behaves. It&#8217;s not an exaggeration to call it one of the
+most important tools you&#8217;ll use while learning.</p>
+<h3 data-number="2.2.2" id="logging-different-kinds-of-values"><span
+class="header-section-number">2.2.2</span> Logging Different Kinds of
+Values</h3>
+<p>You can log almost anything:</p>
+<pre class="javascript-example"><code>console.log(18000)                  // numbers (students taught)
+console.log(&quot;Performance Apparel&quot;)  // strings (a company name)
+console.log(32.5 &gt; 25)              // booleans (did productivity rise?)
+console.log(18000 / 720)            // expressions (a productivity ratio)</code></pre>
+<p>Anything after <code>//</code> is a comment &#8212; ignored by Apps Script.
+Use comments to note what a line does, record your reasoning, or
+temporarily disable code you don&#8217;t want to run but don&#8217;t want to
+delete.</p>
+<p>You can also log several values at once:</p>
+<pre class="javascript-example"><code>console.log(&quot;Productivity:&quot;, 18000 / 720, &quot;students per faculty&quot;)</code></pre>
+<p>The console prints the label and the result together, which makes the
+output easy to read.</p>
+<h3 data-number="2.2.3" id="using-the-console-in-your-browser"><span
+class="header-section-number">2.2.3</span> Using the Console in Your
+Browser</h3>
+<p>To try it: open your browser, right-click and choose
+<strong>Inspect</strong> or <strong>Developer Tools</strong>, click the
+<strong>Console</strong> tab, type a line such as
+<code>console.log("Testing output")</code>, and press Enter. The message
+appears immediately &#8212; that instant feedback is one of the best ways to
+build confidence.</p>
+<h3 data-number="2.2.4" id="output-isnt-just-for-beginners"><span
+class="header-section-number">2.2.4</span> Output Isn&#8217;t Just for
+Beginners</h3>
+<p>Even experienced developers rely on logging &#8212; it&#8217;s a quick, flexible
+way to understand what code is doing without elaborate tools. You&#8217;ll
+learn more advanced techniques later, but <code>console.log()</code>
+will always stay in your toolkit. For now, treat it as your first and
+most reliable way to ask your program, &#8220;What&#8217;s going on here?&#8221;</p>
+<h2 data-number="2.3"
+id="understanding-errors-and-debugging-early"><span
+class="header-section-number">2.3</span> Understanding Errors and
+Debugging Early</h2>
+<p>Every programmer hits errors. Hitting one isn&#8217;t a sign you&#8217;re doing
+it wrong &#8212; it&#8217;s a sign you&#8217;re <em>programming</em>. An error is just the
+computer saying, &#8220;I tried to follow your instructions, but something
+didn&#8217;t make sense.&#8221; Learning to read these messages early makes you far
+more confident.</p>
+<h3 data-number="2.3.1" id="errors-are-part-of-the-process"><span
+class="header-section-number">2.3.1</span> Errors Are Part of the
+Process</h3>
+<p>You expect to stumble over grammar when learning any new language,
+and a programming language is no different. You&#8217;ll misspell a name, drop
+a parenthesis, or use a feature wrong. Treat errors as feedback &#8212; they
+point straight at what needs attention. A typical message looks
+like:</p>
+<pre class="javascript-example"><code>Uncaught ReferenceError: faculty is not defined</code></pre>
+<p>Intimidating at first, but with practice you&#8217;ll read these like
+clues.</p>
+<h3 data-number="2.3.2" id="types-of-errors-youll-see"><span
+class="header-section-number">2.3.2</span> Types of Errors You&#8217;ll
+See</h3>
+<p>Most beginner errors fall into a few buckets:</p>
+<ul>
+<li><strong>Syntax errors</strong> &#8212; the computer can&#8217;t parse what you
+wrote (a missing bracket, a stray character).</li>
+<li><strong>Reference errors</strong> &#8212; you used a name that doesn&#8217;t
+exist or isn&#8217;t spelled the way you think (writing <code>faculty</code>
+when you defined <code>facultyCount</code>).</li>
+<li><strong>Type errors</strong> &#8212; you tried an operation that doesn&#8217;t
+make sense, like calling something that isn&#8217;t a function.</li>
+<li><strong>Logic errors</strong> &#8212; the code runs but gives the wrong
+answer. These are the trickiest, because nothing complains. If your
+multi-factor productivity formula leaves off the parentheses around the
+summed inputs, you&#8217;ll still get a number &#8212; just a wildly wrong one,
+because the computer divides by only the first input and then adds the
+rest.</li>
+</ul>
+<p>Knowing which bucket you&#8217;re in narrows the fix.</p>
+<h3 data-number="2.3.3" id="reading-error-messages"><span
+class="header-section-number">2.3.3</span> Reading Error Messages</h3>
+<p>Messages feel cryptic until you know they usually tell you three
+things: what went wrong, where it happened (a line number), and why the
+computer couldn&#8217;t continue. For example:</p>
+<pre class="javascript-example"><code>Uncaught SyntaxError: Unexpected token &#39;}&#39;</code></pre>
+<p>This says the computer found a closing brace it didn&#8217;t expect &#8212;
+usually a sign something earlier is missing.</p>
+<h3 data-number="2.3.4" id="debugging-your-first-toolkit"><span
+class="header-section-number">2.3.4</span> Debugging: Your First
+Toolkit</h3>
+<p>Debugging is finding and fixing problems. Early on you&#8217;ll lean on a
+few simple, powerful habits: use <code>console.log()</code> to check
+values and confirm your code runs where you expect; read error messages
+slowly, one piece at a time; check for typos, especially in names;
+comment out sections to isolate the problem; and test small pieces
+before combining them. A classic catch is the productivity formula below
+&#8212; both lines run, but only one is right:</p>
+<pre class="javascript-example"><code>console.log(1000 / 2000 + 3000 + 1500)   // 4500.5 &#8212; wrong: no parentheses
+console.log(1000 / (2000 + 3000 + 1500)) // 0.154 &#8212; correct</code></pre>
+<p>These habits save hours.</p>
+<h3 data-number="2.3.5" id="debugging-builds-understanding"><span
+class="header-section-number">2.3.5</span> Debugging Builds
+Understanding</h3>
+<p>Fixing errors isn&#8217;t only about making code work &#8212; it&#8217;s how you learn.
+Each bug you track down deepens your sense of how JavaScript behaves,
+until you start anticipating problems before they happen. Debugging
+isn&#8217;t a chore; it&#8217;s one of the most valuable skills you&#8217;ll build.</p>
+<h2 data-number="2.4" id="the-idea-of-syntax-and-structure"><span
+class="header-section-number">2.4</span> The Idea of Syntax and
+Structure</h2>
+<p>Every language has rules for how words fit into meaningful sentences,
+and programming languages are no different. <strong>Syntax</strong> is
+the set of rules for writing code the computer can understand.
+<strong>Structure</strong> is how those rules fit together into a
+coherent program. If syntax is the grammar, structure is the
+organization.</p>
+<h3 data-number="2.4.1" id="why-syntax-matters"><span
+class="header-section-number">2.4.1</span> Why Syntax Matters</h3>
+<p>Computers are completely literal &#8212; no tone, no guessing, no filling
+in gaps. Forget a parenthesis or misspell a keyword and the machine
+stops and reports an error, because the instruction no longer fits the
+expected pattern. This is valid:</p>
+<pre class="javascript-example"><code>console.log(&quot;Productivity improved&quot;)</code></pre>
+<p>Remove one character and the computer no longer knows where the
+statement ends:</p>
+<pre class="javascript-example"><code>console.log(&quot;Productivity improved&quot;</code></pre>
+<p>A person might overlook the missing parenthesis; the computer can&#8217;t.
+Syntax rules create a predictable structure both you and the machine can
+rely on.</p>
+<h3 data-number="2.4.2"
+id="the-building-blocks-of-javascript-syntax"><span
+class="header-section-number">2.4.2</span> The Building Blocks of
+JavaScript Syntax</h3>
+<p>As you go, you&#8217;ll meet a handful of recurring elements:
+<strong>keywords</strong> like <code>let</code>, <code>if</code>,
+<code>function</code>; <strong>symbols</strong> like <code>{}</code>,
+<code>()</code>, <code>[]</code>; <strong>operators</strong> like
+<code>+</code>, <code>-</code>, <code>===</code>;
+<strong>comments</strong> with <code>//</code>; <strong>values</strong>
+like numbers, strings, and booleans; and <strong>identifiers</strong> &#8212;
+the names you choose for variables and functions. Each has a role and
+must appear in the right place.</p>
+<h3 data-number="2.4.3" id="structure-how-code-fits-together"><span
+class="header-section-number">2.4.3</span> Structure: How Code Fits
+Together</h3>
+<p>Where syntax governs the details, structure governs the big picture &#8212;
+organizing code so it&#8217;s readable and logical. JavaScript uses
+<strong>curly braces</strong> to group related statements:</p>
+<pre class="javascript-example"><code>if (newProductivity &gt; oldProductivity) {
+  console.log(&quot;Productivity improved&quot;)
+  console.log(&quot;Keep the new process&quot;)
+}</code></pre>
+<p>The braces show that both <code>console.log</code> lines belong to
+the <code>if</code>. Without them, only the first would depend on the
+condition; the second would run every time, regardless of whether
+productivity actually rose. The braces tell the computer to treat the
+grouped statements as one unit &#8212; they all run, or none do. Structure
+also includes indentation to show hierarchy, grouping related code,
+meaningful names, and a logical order.</p>
+<h3 data-number="2.4.4" id="syntax-structure-clear-communication"><span
+class="header-section-number">2.4.4</span> Syntax + Structure = Clear
+Communication</h3>
+<p>Programming is communication &#8212; expressing ideas in a form the
+computer can execute. Syntax keeps your message valid; structure keeps
+it understandable. A simple way to communicate clearly is to comment
+your code, especially the complicated parts. Explain what each section
+does and it&#8217;ll be far easier to follow when you return to it months
+later:</p>
+<pre class="javascript-example"><code>// Flag the change as an improvement worth keeping only when
+// the new productivity beats the old productivity.
+if (newProductivity &gt; oldProductivity) {
+  console.log(&quot;Productivity improved&quot;)
+  console.log(&quot;Keep the new process&quot;)
+}</code></pre>
+<h2 data-number="2.5"
+id="transitioning-to-google-apps-script-in-google-sheets"><span
+class="header-section-number">2.5</span> Transitioning to Google Apps
+Script in Google Sheets</h2>
+<p>So far you&#8217;ve learned JavaScript in its simplest form &#8212; small
+statements in the console. Now it&#8217;s time to take those skills somewhere
+practical, where your code interacts with real operations data. For the
+next part of the book we&#8217;ll shift to <strong>Google Apps
+Script</strong>, a JavaScript-based environment that runs inside Google
+Workspace, anchored in <strong>Google Sheets</strong> &#8212; where most
+operations data already lives.</p>
+<h3 data-number="2.5.1" id="why-move-to-google-apps-script-now"><span
+class="header-section-number">2.5.1</span> Why Move to Google Apps
+Script Now</h3>
+<p>Apps Script is the natural next step because it lets you apply your
+new skills to tasks that matter: computing productivity and other
+operations metrics, cleaning data, generating reports, and building
+tools that live right inside your spreadsheets. It&#8217;s ideal for beginners
+&#8212; nothing to install, code runs in the browser, results show up
+immediately in the sheet, the language is the JavaScript you&#8217;ve already
+learned, and you can build genuinely useful tools in just a few
+lines.</p>
+<h3 data-number="2.5.2" id="what-youll-learn-in-google-sheets"><span
+class="header-section-number">2.5.2</span> What You&#8217;ll Learn in Google
+Sheets</h3>
+<p>As we move into Apps Script, you&#8217;ll learn to write functions that
+read and modify spreadsheet data, create custom menus and buttons,
+automate repetitive tasks, build small applications inside Sheets, and
+connect a spreadsheet to other Google services. This is where
+programming starts to feel powerful &#8212; instead of writing code in
+isolation, you&#8217;ll be shaping tools that act on real operations
+information.</p>
+<h3 data-number="2.5.3" id="how-this-transition-works"><span
+class="header-section-number">2.5.3</span> How This Transition
+Works</h3>
+<p>You&#8217;re not leaving JavaScript behind &#8212; Apps Script <em>is</em>
+JavaScript, running in a different environment with extra features.
+Everything so far still applies; you&#8217;re just adding new abilities, like
+reading spreadsheet cells. Think of it as going from practicing chords
+to playing your first song: the fundamentals stay the same, but now you
+build something meaningful. The next chapter takes you into Sheets,
+shows you how to open the Apps Script editor, and helps you write your
+first script that touches real data.</p>
+<!--postEnd-->
+              </div>
+</div>
+</article>
+</div>
+</div>
+</div></div>
+</div><!-- #main -->
+</div><!-- #primary -->
+<!--end of error vs non error block-->
+</div><!-- #content -->
+<footer class='site-footernbt' id='colophonnbt' role='contentinfo'>
+<div id='supplementarynbt'>
+<div class='footer-widgetsnbt widget-areanbt clearnbt' id='footer-widgetsnbt' role='complementary'>
+<div class='sidebarwidgetsarea no-items section' id='sidebarwidgetsarea'></div>
+</div><!-- #footer-sidebar -->
+</div><!-- #supplementary -->
+</footer><!-- #colophon -->
+</div><!-- #page -->
+
+<script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
+<script type='text/javascript'>
+window['__wavt'] = 'AEUoTZptYfp50Gt-OKb2SuyKfoX-:1784765282626';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d1676106165289640444','//book1011.blogspot.com/2000/02/2.html','1676106165289640444');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '1676106165289640444', 'title': 'book1011', 'url': 'https://book1011.blogspot.com/2000/02/2.html', 'canonicalUrl': 'https://book1011.blogspot.com/2000/02/2.html', 'homepageUrl': 'https://book1011.blogspot.com/', 'searchUrl': 'https://book1011.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1011.blogspot.com/', 'blogspotFaviconUrl': 'https://book1011.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://book1011.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1011 - RSS\x22 href\x3d\x22https://book1011.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/1676106165289640444/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://book1011.blogspot.com/feeds/622232992790696188/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/37c4cc789ad2acf9', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '622232992790696188', 'pageName': '2. Your First Lines of Code', 'pageTitle': 'book1011: 2. Your First Lines of Code'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '2. Your First Lines of Code', 'description': 'monaco  2  Your First Lines of Code \r 2.1  Writing and Running Simple\r Statements \r Before you can build programs that make decisions or pro...', 'url': 'https://book1011.blogspot.com/2000/02/2.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 622232992790696188}}]);
+_WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
+</script>
+</body>
+</html>
