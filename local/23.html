@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html class='v2' dir='ltr' lang='en-US' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<head>
+<link href='https://www.blogger.com/static/v1/widgets/2872013778-css_bundle_v2.css' rel='stylesheet' type='text/css'/>
+<meta charset='UTF-8'/>
+<meta content='width=device-width, initial-scale=1' name='viewport'/>
+<title>book1014 SQL</title>
+<!-- external libraries -->
+<script src='https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js'></script>
+<script src='https://unpkg.com/turndown/dist/turndown.js'></script>
+<!-- font links -->
+<link href='https://fonts.googleapis.com' rel='preconnect'/>
+<link href='https://fonts.gstatic.com' rel='preconnect'/>
+<link href='https://fonts.googleapis.com/css2?family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900' rel='stylesheet'/>
+<link href='https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900' rel='stylesheet'/>
+<!-- button icon -->
+<link href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0' rel='stylesheet'/>
+<style id='page-skin-1' type='text/css'><!--
+:root {
+--font-zoom: 1;
+--page-bg: #f8fafc;
+--surface: #ffffff;
+--surface-soft: #f1f5f9;
+--surface-muted: #e2e8f0;
+--text: #172033;
+--text-muted: #64748b;
+--heading: #0f172a;
+--accent: #2563eb;
+--accent-strong: #1d4ed8;
+--accent-soft: #dbeafe;
+--danger: #dc2626;
+--warning: #fef3c7;
+--border: #dbe3ee;
+--shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+--shadow-md: 0 12px 30px rgba(15, 23, 42, 0.12);
+--shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.18);
+--radius-sm: 0.5rem;
+--radius-md: 0.85rem;
+--radius-lg: 1.35rem;
+}
+* {
+box-sizing: border-box;
+}
+html {
+scroll-behavior: smooth;
+}
+body {
+margin: 0;
+min-height: 100vh;
+font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+font-weight: 400;
+font-style: normal;
+font-size: calc(1rem  * var(--font-zoom));
+line-height: 1.72;
+color: var(--text);
+background: var(--page-bg);
+text-rendering: optimizeLegibility;
+-webkit-font-smoothing: antialiased;
+}
+.module{
+display:none
+}
+h1:has(span.header-section-number){
+display:none;
+}
+.material-symbols-outlined{
+font-size: calc(1rem  * var(--font-zoom));
+cursor:pointer;
+user-select:none;
+}
+summary::marker {
+color: var(--text-muted);
+}
+#msg-galley{
+position:fixed;
+top:0;
+right:0;
+height:100vh;
+min-width:calc(20rem  * var(--font-zoom));
+max-width:50%;
+z-index:12;
+background-color: transparent;
+pointer-events: none;
+padding: 1rem 1rem 0 0;
+font-family: "Roboto", sans-serif;
+font-optical-sizing: auto;
+font-weight: 400;
+font-style: normal;
+font-variation-settings: "wdth" 100;
+}
+.msg-close{
+position:absolute;
+top:calc(3px  * var(--font-zoom));
+right:calc(3px  * var(--font-zoom));
+display: inline-flex;
+align-items: center;
+justify-content: center;
+width: 1.25rem;
+height: 1.25rem;
+padding: 0;
+background-color:var(--danger);
+color: white;
+font-weight:700;
+font-size:calc(.7rem  * var(--font-zoom));
+border-radius: 999px;
+cursor:pointer;
+}
+.msg-dialog{
+position: relative;
+background-color:var(--surface);
+margin-bottom:.75rem;
+pointer-events: auto;
+border-radius:var(--radius-md);
+border: 1px solid var(--border);
+box-shadow: var(--shadow-md);
+overflow: hidden;
+}
+.msg-button-{
+margin: 0 .5rem .5rem 0;
+}
+.msg-button-bar{
+background-color:var(--surface-soft);
+text-align:center;
+padding:.75rem;
+border-top: 1px solid var(--border);
+}
+.msg-title{
+background:var(--accent);
+color:white;
+font-weight:700;
+padding:.55rem 2rem .55rem .85rem;
+}
+.msg-message{
+background-color:var(--surface);
+padding: .85rem;
+}
+#page-data{
+display:none
+}
+#menu{
+top:0;
+left:-100px;
+position:fixed;
+display:none;
+background:var(--surface);
+padding:0;
+z-index:11;
+transition: left .25s ease, box-shadow .25s ease;
+height:100vh;
+min-width:min(22rem, 88vw);
+max-width:75vw;
+overflow: auto;
+border-right: 1px solid var(--border);
+box-shadow: var(--shadow-lg);
+}
+#book-data{display:none}
+#menu-content{
+padding:1rem 1.25rem 2rem;
+}
+.menu-button{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+min-width:2.4rem;
+height:2.4rem;
+padding:0 .6rem;
+cursor:pointer;
+color:var(--text-muted);
+border-radius:999px;
+transition: background .18s ease, color .18s ease, transform .18s ease;
+vertical-align:middle;
+}
+.menu-button:hover{
+background:var(--accent-soft);
+color:var(--accent-strong);
+transform: translateY(-1px);
+}
+.menu-header{
+top:0;
+position:sticky;
+background:var(--surface);
+opacity:1;
+margin:0;
+padding:.45rem .6rem;
+border-bottom:1px solid var(--border);
+box-shadow: var(--shadow-sm);
+z-index:1;
+}
+#book-title{
+font-weight:700;
+letter-spacing:.02em;
+}
+#search-div{
+width:100%;
+white-space: nowrap;
+margin-top: 1.5rem;
+}
+#search-div h6{
+margin:0 0 .45rem 0;
+font-size:.78rem;
+font-weight:700;
+letter-spacing:.08em;
+text-transform:uppercase;
+color:var(--text-muted);
+}
+#search{
+width: calc(100% - 2.25rem);
+border:1px solid var(--border);
+border-radius:999px;
+padding:.55rem .85rem;
+font: inherit;
+font-size:.92rem;
+color:var(--text);
+background:var(--surface);
+box-shadow: var(--shadow-sm);
+outline:none;
+transition: border-color .18s ease, box-shadow .18s ease;
+}
+#search:focus{
+border-color:var(--accent);
+box-shadow:0 0 0 4px rgba(37, 99, 235, .13);
+}
+#search-button{
+padding-left:.45rem;
+color:var(--accent);
+vertical-align:middle;
+}
+#search-results{
+font-size:.86rem;
+margin-top: .85rem;
+}
+.search-result{
+margin-top:.65rem;
+padding:.75rem;
+cursor:pointer;
+border:1px solid var(--border);
+border-radius:var(--radius-sm);
+background:var(--surface);
+box-shadow: var(--shadow-sm);
+transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.search-result:hover{
+background-color:#f8fbff;
+border-color:#bfdbfe;
+box-shadow:0 10px 24px rgba(37, 99, 235, .1);
+transform: translateY(-1px);
+}
+.search-result-title{
+font-weight:bold;
+color:var(--heading);
+}
+.search-result-line{
+margin:.25rem 0 .35rem .75rem;
+color:var(--text-muted);
+}
+.search-term{
+background-color:var(--warning);
+border-radius:.2rem;
+padding:0 .15rem;
+}
+.chapter-result-link{
+color:var(--heading);
+}
+.toc-section-container{
+margin-left:.75rem;
+}
+.toc-text-container{
+margin-left:1.25rem;
+color:var(--text-muted);
+}
+.chapter-section{
+margin-top: calc(3rem  * var(--font-zoom));
+margin-bottom: calc(3rem  * var(--font-zoom));
+}
+.hide{
+display:none
+}
+img{
+max-width:100%;
+height:auto;
+border-radius:var(--radius-md);
+}
+.entry-header{
+position:fixed;
+top:0;
+left: 0;
+width: 100%;
+transition:opacity 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+padding: .35rem .75rem;
+-webkit-user-select: none; /* Safari */
+user-select: none; /* Standard syntax */
+background: var(--surface);
+border-bottom:1px solid var(--border);
+box-shadow:var(--shadow-sm);
+z-index:10;
+}
+button.nav{
+border-radius:999px;
+border:1px solid var(--border);
+background:var(--surface);
+color:var(--accent);
+box-shadow: var(--shadow-md);
+width:2.8rem;
+height:2.8rem;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+}
+.nav{
+position: fixed;
+bottom: 1rem;
+opacity:1.0;
+transition:opacity 0.35s ease, transform 0.18s ease, box-shadow 0.18s ease;
+pointer-events: all;
+}
+.nav:hover{
+transform: translateY(-2px);
+box-shadow: var(--shadow-lg);
+}
+.dim-button:hover{opacity: 1.0;}
+.dim-button{opacity: .35;}
+.dim-header:hover{opacity: 1.0;}
+.dim-header{opacity: 0;}
+#prior-button {
+left: 1rem;
+}
+#next-button {
+right: 1rem;
+}
+.span-link{
+cursor:pointer;
+color:var(--accent);
+font-weight:500;
+}
+.span-link:hover{
+text-decoration: underline;
+color:var(--accent-strong);
+}
+a:link {color: var(--accent); text-decoration:none}
+a:visited {color: #4f46e5;}
+a:hover {background-color: var(--accent-soft); color: var(--accent-strong); border-radius:.25rem;}
+a:active {color: var(--accent-strong);}
+.book-title{
+margin-top: 6rem;
+font-family:"Taviraj", Georgia, serif;
+font-size:clamp(2.4rem, 7vw, calc(4rem  * var(--font-zoom)));
+line-height:1.05;
+text-align: center;
+font-weight: 700;
+color:var(--heading);
+}
+.book-author{
+margin-top: 1rem;
+font-size:calc(1.45rem  * var(--font-zoom));
+text-align: center;
+color:var(--text-muted);
+}
+.book-toc{
+text-align: center;
+margin-top:2rem;
+}
+.book-chapters{
+display: inline-block;
+}
+.book-chapter{
+text-align:left;
+padding-left: 1rem;
+text-indent: -1rem;
+margin-bottom: 0.55rem;
+}
+.tool {
+cursor:pointer;
+font-size:calc(18px  * var(--font-zoom));
+font-weight:400;
+vertical-align: middle;
+padding-left:.6rem;
+color:var(--text-muted);
+transition: color .18s ease, transform .18s ease;
+}
+.tool:hover {
+color:var(--accent);
+transform: translateY(-1px);
+}
+.lead-in{
+margin-top:4rem;
+}
+.example, .indent, .category{
+margin:1rem 0 0 1.1rem;
+}
+.category div:first-child{
+color:var(--danger);
+font-weight:700;
+}
+.example div:first-child{
+color:var(--danger);
+font-style: italic;
+}
+h1{
+font-family:"Taviraj", Georgia, serif;
+font-size:clamp(1.35rem, 4vw, calc(2.1rem * var(--font-zoom)));
+line-height:1.18;
+color:var(--heading);
+font-weight:700;
+margin:0;
+}
+h2, h3{
+font-family:"Taviraj", Georgia, serif;
+color:var(--heading);
+line-height:1.24;
+letter-spacing:-.015em;
+}
+h2{
+font-size:clamp(1.55rem, 4vw, calc(2.15rem * var(--font-zoom)));
+margin:3rem 0 1rem;
+padding-top:.5rem;
+}
+h3{
+font-size:clamp(1.2rem, 3vw, calc(1.45rem * var(--font-zoom)));
+margin:2.25rem 0 .8rem;
+}
+.header-section-number{
+color:var(--accent);
+font-weight:700;
+}
+p{
+margin-top:0;
+margin-bottom:1.15rem;
+}
+p.vignette{
+color:var(--danger)
+}
+.no-dot{
+list-style-type: none;
+}
+ul.no-dot li{
+padding-left: 1rem;
+text-indent: -1rem;
+margin-bottom: 0.3rem;
+}
+audio{
+height:30px;
+width:100%;
+max-width:34rem;
+}
+div.post-body{
+max-width:940px;
+margin:0 auto;
+padding:clamp(5.2rem, 7vw, 6.25rem) clamp(1.15rem, 4vw, 3.5rem) 4rem;
+background:transparent;
+}
+div.index-boxnbt{
+background:var(--surface);
+padding-bottom:2rem;
+}
+.material-symbols-outlined {
+font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+font-size: 18px;
+line-height: 1;
+}
+blockquote{
+margin:1.75rem 0;
+background:var(--surface-soft);
+border-left:.35rem solid var(--accent);
+padding:1rem 1.25rem 1rem 1.35rem;
+border-radius:0 var(--radius-md) var(--radius-md) 0;
+color:#334155;
+}
+.note blockquote{
+background:#E8F5E9;
+border-left:.35rem solid darkgreen;
+}
+.note blockquote p::before {
+content: "Note: ";
+font-weight: bold;
+}
+.tip blockquote{
+background:#F3E5F5;
+border-left:.35rem solid purple;
+}
+.tip blockquote p::before {
+content: "Tip: ";
+font-weight: bold;
+}
+.term blockquote{
+background:#E3EDF7;
+border-left:.35rem solid darkblue;
+}
+.term blockquote p::before {
+content: "Term: ";
+font-weight: bold;
+}
+.caution blockquote{
+background:#FFE2E2;
+border-left:.35rem solid red;
+}
+.caution blockquote p::before {
+content: "Caution: ";
+font-weight: bold;
+}
+.objectives blockquote{
+background:#FFF8E1;
+border-left:.35rem solid gold;
+}
+.review blockquote{
+background:#FFF0EC;
+border-left:.35rem solid salmon;
+}
+.review blockquote p::before {
+content: "Review: ";
+font-weight: bold;
+}
+blockquote p:last-child{
+margin-bottom:0;
+}
+hr{
+height:1px;
+border:0;
+background:var(--border);
+margin:2.75rem 0;
+}
+ul, ol{
+padding-left:1.45rem;
+margin:0 0 1.25rem;
+}
+li{
+margin:.45rem 0;
+}
+code{
+font-family:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+font-size:.92em;
+color:#0f766e;
+background:#ecfdf5;
+border:1px solid #bbf7d0;
+border-radius:.35rem;
+padding:.08rem .32rem;
+}
+pre code,
+.sourceCode code{
+color:inherit;
+background:transparent;
+border:0;
+border-radius:0;
+padding:0;
+font-size:inherit;
+}
+pre,
+pre.javascript-code,
+pre.javascript-example,
+pre.spreadsheet,
+div.sourceCode pre{
+margin:1rem 0;
+padding:.75rem .85rem;
+overflow:auto;
+background:#0f172a;
+color:#dbeafe;
+border:1px solid rgba(148, 163, 184, .28);
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-md);
+font-family:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+font-size:.88rem;
+line-height:1.38;
+tab-size:2;
+white-space:pre;
+}
+div.sourceCode{
+margin:1rem 0;
+}
+div.sourceCode pre{
+margin:0;
+}
+.sourceCode .kw,
+.sourceCode .cf{
+color:#93c5fd;
+}
+.sourceCode .fu,
+.sourceCode .at{
+color:#67e8f9;
+}
+.sourceCode .st{
+color:#86efac;
+}
+.sourceCode .dv{
+color:#fbbf24;
+}
+.sourceCode .co{
+color:#94a3b8;
+font-style:italic;
+}
+table.blog{
+display:block;
+width:max-content;
+max-width:100%;
+border-collapse:separate;
+border-spacing:0;
+margin:1.5rem 0 2rem;
+overflow-x:auto;
+-webkit-overflow-scrolling:touch;
+border:1px solid var(--border);
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-sm);
+background:var(--surface);
+}
+th.blog,
+td.blog{
+padding:.72rem .85rem;
+border-bottom:1px solid var(--border);
+text-align:left;
+vertical-align:top;
+white-space:nowrap;
+}
+th.blog{
+font-size:.86rem;
+font-weight:700;
+color:var(--heading);
+background:var(--surface-soft);
+}
+tr.blog:last-child td{
+border-bottom:0;
+}
+tr.blog:nth-child(even) td{
+background:#f8fafc;
+}
+.monaco {
+width: 100%;
+margin: 1.5rem 0;
+border-radius: var(--radius-md);
+overflow: hidden;
+box-shadow: var(--shadow-lg);
+border: 1px solid rgba(148, 163, 184, 0.22);
+}
+.monaco-bar {
+display: flex;
+align-items: center;
+justify-content: flex-end;
+gap: 2px;
+padding: 8px 10px;
+background: linear-gradient(180deg, #1f2937, #111827);
+border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.monaco-bar-label {
+flex: 1;
+font-family: "Roboto", sans-serif;
+font-size: 11px;
+font-weight: 700;
+color: #94a3b8;
+letter-spacing: 0.5px;
+text-transform: uppercase;
+padding-left: 4px;
+}
+.monaco-tool {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 30px;
+height: 30px;
+border-radius: 6px;
+color: #8b949e;
+cursor: pointer;
+transition: background 0.15s ease, color 0.15s ease;
+}
+.monaco-tool:hover {
+background: rgba(255, 255, 255, 0.1);
+color: #e6edf3;
+}
+.monaco-tool:active {
+background: rgba(255, 255, 255, 0.06);
+transform: scale(0.92);
+}
+.monaco-tool[data-action="run"]:hover {
+background: rgba(63, 185, 80, 0.18);
+color: #3fb950;
+}
+.editor-holder {
+background-color: #1e1e1e;
+padding: 8px 0;
+}
+.editor {
+margin: 0;
+padding: 0;
+}
+.console {
+background: #161b22;
+border-top: 1px solid rgba(255, 255, 255, 0.07);
+padding: 8px 0 6px;
+position: relative;
+min-height: 36px;
+font-family: 'Consolas', 'Cascadia Code', 'Courier New', monospace;
+font-size: 13px;
+}
+.console-line {
+color: #c9d1d9;
+padding: 2px 40px 2px 14px;
+line-height: 1.6;
+white-space: pre-wrap;
+word-break: break-all;
+}
+.console-line:first-of-type {
+margin-top: 2px;
+}
+.console-line.error {
+color: #f85149;
+background: rgba(248, 81, 73, 0.06);
+}
+span.exitButton {
+position: absolute;
+top: 6px;
+right: 8px;
+display: flex;
+align-items: center;
+justify-content: center;
+width: 22px;
+height: 22px;
+border-radius: 4px;
+color: #6e7681;
+cursor: pointer;
+transition: background 0.15s ease, color 0.15s ease;
+}
+span.exitButton:hover {
+background: rgba(255, 255, 255, 0.1);
+color: #c9d1d9;
+}
+span.exitButton .material-symbols-outlined {
+font-size: 15px;
+}
+pre.code {
+color: #a8ff78;
+background: #0d1117;
+padding: 1rem 1.15rem;
+margin: 1.35rem 0;
+font-size: 14px;
+border-radius: var(--radius-md);
+border: 1px solid rgba(255, 255, 255, 0.07);
+overflow-x: auto;
+}
+@media (max-width: 700px) {
+body {
+font-size: calc(.98rem * var(--font-zoom));
+}
+#msg-galley {
+left: 0;
+right: 0;
+max-width: none;
+min-width: 0;
+padding: .75rem;
+}
+#menu {
+max-width: 92vw;
+}
+.entry-header {
+padding: .25rem .4rem;
+}
+div.post-body {
+padding-left: 1rem;
+padding-right: 1rem;
+}
+.nav {
+bottom: .75rem;
+}
+#prior-button {
+left: .75rem;
+}
+#next-button {
+right: .75rem;
+}
+}
+
+--></style>
+<script>
+    const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
+	async function initialize(){
+
+      const kind = document.getElementById(`kind`).innerHTML
+      console.log(`kind`, kind)
+      switch(kind){
+        case `redirect`:
+          location.href=document.getElementById(`post-json`).innerText
+          return
+        case `chapter`:
+          console.log(`processing Chapter`)
+          // load any modules used in the chapter
+          for(const module of document.querySelectorAll(`div.module`)){
+            console.log(`module:`, module.innerText)
+            loadModule(module.innerText)
+    
+    
+    
+          }
+      }
+    
+    // calls the page that has our code in it
+    //const response = await fetch(`/1970/01/system.html`)
+  	//const code = await response.text()
+    
+ 
+	//const s = document.createElement('script')
+	//s.replaceChildren(code.split(`<p`+`re>`)[1].split(`</pre>`)[0])
+	//document.head.appendChild(s)
+    //console.log("got system")
+    await loadModule("system")
+	init()
+    
+    }
+    
+    async function loadModule(label){// get the first post of a specified label and load the code
+      const code = await getPage(label)
+      const s = document.createElement(`script`)
+      s.replaceChildren(code)
+      document.head.appendChild(s)          
+    }
+    
+    async function getPage(label){//get the first post with the specified label.
+        
+        if(localhost){
+          const url=`/tools/api/${label}.js`
+          const response = await fetch(url)
+          const code = await response.text()  
+          return code
+        }else{
+          const url=`${location.origin}/feeds/posts/default/-/${label}?alt=json`
+          const response = await fetch(url)
+          console.log("feed url", url)
+          const page = await response.json()
+          return page.feed.entry[0].content.$t
+        }
+    }    
+
+  </script>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' rel='stylesheet'/></noscript>
+<meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
+<meta name='google-adsense-platform-domain' content='blogspot.com'/>
+
+</head>
+<body onload='initialize()'>
+<div class='sitenbt' id='pagenbt'>
+<div class='site-contentnbt' id='contentnbt'>
+<div class='testing' id='item'></div>
+<div class='content-areanbt' id='primarynbt'>
+<div class='site-mainnbt' id='mainnbt' role='main'>
+<div class='section' id='mainblogsec'><div class='widget Blog' data-version='1' id='Blog1'>
+<div class='blog-posts hfeed'>
+<div class='post-outer'>
+<article class='post'>
+<div id='msg-galley'></div>
+<div class='hide' id='kind'>chapter</div>
+<div class='index-boxnbt'>
+<header class='entry-header'>
+<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>23. Working with Stored
+Procedures</span></h1>
+</header>
+<div id='menu'>
+<div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
+<div id='menu-content'>
+<div id='toc'></div>
+<div id='tools'>
+                  Text Size: 
+                  <span class='material-symbols-outlined tool' onclick='fontSize(.1)'>text_increase</span>
+<span class='material-symbols-outlined tool' onclick='fontSize(-.1)'>text_decrease</span>
+<span class='material-symbols-outlined tool' onclick='fontSize()'>rotate_auto</span>
+</div>
+<div id='search-div'>
+<h6>Search Book</h6>
+<input id='search' placeholder='search book'/><span class='material-symbols-outlined tool' id='search-button'>search</span></div>
+<div id='search-results'></div>
+</div>
+</div>
+<div class='post-body entry-content' data-blog-id='3986204447440040189' data-post-id='6572163358316332861'>
+<button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
+<button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
+              
+              <!--postBegin--><h1 data-number="23" id="working-with-stored-procedures"><span
+class="header-section-number">23</span> Working with Stored
+Procedures</h1>
+<p><strong>Objectives.</strong> After completing this lesson, the
+successful student will be able to:</p>
+<ol type="1">
+<li>Describe what stored procedures are and why they are used.</li>
+<li>Describe the tradeoffs of using stored procedures.</li>
+<li>Use the CALL statement to run a stored procedure in PostgreSQL.</li>
+<li>Describe the basic syntax for creating a stored procedure in
+PostgreSQL, including IN, OUT, and INOUT parameters.</li>
+<li>Use the RETURNING clause to capture an auto-generated primary key
+from within a procedure.</li>
+</ol>
+<h2 data-number="23.1" id="understanding-stored-procedures"><span
+class="header-section-number">23.1</span> Understanding Stored
+Procedures</h2>
+<p>Most of the SQL statements that we&#8217;ve used thus far are simple in
+that they use a single statement against one or more tables. Not all
+operations are that simple. Often, multiple statements will be needed to
+perform a complete operation. For example, consider the following
+scenario:</p>
+<ul>
+<li>To catalog a newly acquired work of art, checks must be made to
+determine whether the artist is already recorded in the artist
+table.</li>
+<li>If the artist is already recorded, the new work needs to be linked
+directly to that artist&#8217;s existing artist_id.</li>
+<li>If the artist is not yet recorded, a new row needs to be added to
+the artist table first, and the new work then needs to be linked to the
+artist_id that was just created.</li>
+<li>The registrar needs to be notified once the work has been fully
+catalogued and linked to both its artist and its museum.</li>
+</ul>
+<p>This is obviously not a complete example, and it is even beyond the
+scope of the example tables that we have been using in this book, but it
+will suffice to help make a point. Performing this process requires many
+SQL statements against many tables. In addition, the exact SQL
+statements that need to be performed and their order are not fixed; they
+can (and will) vary according to whether the artist is already on file
+or not.</p>
+<p>How would you write this code? You could write each of the SQL
+statements individually and execute other statements conditionally based
+on the result. You&#8217;d have to do this every time this processing was
+needed (and in every application that needed it).</p>
+<p>You could create a stored procedure. Stored procedures are simply
+collections of one or more SQL statements saved for future use. You can
+think of them as batch files, although in truth they are more than
+that.</p>
+<div class="note">
+<blockquote>
+<p><strong>Note: There&#8217;s a Lot More to It.</strong> Stored procedures
+are complex, and full coverage of the subject requires more space than
+can be allocated here. Truthfully, there are entire books on the
+subject. This lesson will not teach you all you need to know about
+stored procedures. Rather, it is intended simply to introduce the
+subject so that you are familiar with what they are and what they can
+do. The examples in this lesson use PostgreSQL, the DBMS used throughout
+this book.</p>
+</blockquote>
+</div>
+<h2 data-number="23.2"
+id="understanding-why-to-use-stored-procedures"><span
+class="header-section-number">23.2</span> Understanding Why to Use
+Stored Procedures</h2>
+<p>Now that you know what stored procedures are, why use them? There are
+lots of reasons, but here are the primary ones:</p>
+<ul>
+<li>To simplify complex operations (as seen in the previous example) by
+encapsulating processes into a single easy-to-use unit.</li>
+<li>To ensure data consistency by not requiring that a series of steps
+be created over and over. If all developers and applications use the
+same stored procedure, then the same code will be used by all.</li>
+<li>To prevent errors; this is an extension of the preceding reason. The
+more steps that need to be performed, the more likely it is that errors
+will be introduced. Preventing errors ensures data consistency.</li>
+<li>To simplify change management. If tables, column names, or business
+logic (or just about anything) changes, then only the stored procedure
+code needs to be updated, and no one else will even need to be aware
+that changes were made.</li>
+<li>To ensure security; this is an extension of the preceding reason.
+Restricting access to underlying data via stored procedures reduces the
+chance of data corruption (unintentional or otherwise).</li>
+<li>To do less work to process the command. Because stored procedures
+are usually stored in a compiled form, the DBMS has to do less work.
+This results in improved performance.</li>
+<li>To write code that is more powerful and flexible. There are SQL
+language elements and features that are available only within single
+requests. Stored procedures can use them for this reason.</li>
+</ul>
+<p>In other words, there are three primary benefits: simplicity,
+security, and performance. Obviously, all are extremely important.
+Before you run off to turn all your SQL code into stored procedures,
+here&#8217;s the downside:</p>
+<ul>
+<li>Stored procedure syntax varies dramatically from one DBMS to the
+next. In fact, it is close to impossible to write truly portable stored
+procedures. Having said that, the stored procedure calls themselves
+(their names and how data is passed to them) can be kept relatively
+portable so that if you need to change to another DBMS, at least your
+client application code may not need changing.</li>
+<li>Stored procedures tend to be more complex to write than basic SQL
+statements, and writing them requires a greater degree of skill and
+experience. As a result, many database administrators restrict stored
+procedure creation rights as a security measure (primarily due to the
+previous bullet item).</li>
+</ul>
+<p>Nonetheless, stored procedures are very useful and should be used. In
+fact, most DBMSs come with all sorts of stored procedures that are used
+for database and table management. Refer to your DBMS documentation for
+more information on these.</p>
+<div class="note">
+<blockquote>
+<p><strong>Note: Can&#8217;t Write Them? You Can Still Use Them.</strong> Most
+DBMSs distinguish the security and access needed to write stored
+procedures from the security and access needed to execute them. This is
+a good thing; even if you can&#8217;t (or don&#8217;t want to) write your own stored
+procedures, you can still execute them when appropriate.</p>
+</blockquote>
+</div>
+<h2 data-number="23.3" id="executing-stored-procedures"><span
+class="header-section-number">23.3</span> Executing Stored
+Procedures</h2>
+<p>Stored procedures are executed far more often than they are written,
+so we&#8217;ll start there. In PostgreSQL, the SQL statement used to execute a
+stored procedure is CALL. (This is different from many other DBMSs,
+which use EXECUTE or EXEC &#8212; in PostgreSQL, EXECUTE means something else
+entirely: running a previously prepared statement.) CALL takes the name
+of the stored procedure and any parameters that need to be passed to it.
+Take a look at this example (you cannot actually run it yet, because the
+stored procedure add_new_work does not exist):</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">CALL</span> add_new_work(<span class="dv">500</span>, <span class="dv">3</span>, <span class="st">&#39;Girl with a Fan&#39;</span>, <span class="st">&#39;Impressionist&#39;</span>);</span></code></pre></div>
+<p>Here a stored procedure named add_new_work is executed; it adds a new
+work to the work table. add_new_work takes four parameters: the artist
+ID (the primary key from the artist table), the museum ID (the primary
+key from the museum table), the work&#8217;s name, and its style. These four
+parameters match four expected parameters within the stored procedure
+(defined as part of the stored procedure itself). The stored procedure
+adds a new row to the work table and assigns these passed values to the
+appropriate columns.</p>
+<p>In the work table, you&#8217;ll notice that another column needs a value &#8212;
+the work_id column, which is the table&#8217;s primary key. Why was this value
+not passed as a parameter to the stored procedure? To ensure that IDs
+are generated properly, it is safer to have that process automated (and
+not rely on end users). That is why work_id is defined as an
+auto-incrementing column, and the stored procedure never has to be told
+what value to use. This is what this stored procedure does:</p>
+<ul>
+<li>It validates the passed data, ensuring that all four parameters have
+values.</li>
+<li>It inserts the new work into the work table, letting the database
+generate a unique work_id automatically and storing the passed data in
+the appropriate columns.</li>
+</ul>
+<p>This is the basic form of stored procedure execution. PostgreSQL also
+supports several other useful features:</p>
+<ul>
+<li>Parameters with default values, assumed if a parameter is not
+provided</li>
+<li>Named parameters, passed as <code>parameter := value</code> pairs
+rather than strictly by position</li>
+<li>OUT and INOUT parameters, allowing the stored procedure to pass a
+value back to the caller</li>
+<li>Return values captured directly from an INSERT, UPDATE, or DELETE
+using RETURNING</li>
+</ul>
+<h2 data-number="23.4" id="creating-stored-procedures"><span
+class="header-section-number">23.4</span> Creating Stored
+Procedures</h2>
+<p>As already explained, writing a stored procedure is not trivial. To
+give you a taste for what is involved, let&#8217;s look at a simple example &#8212;
+a stored procedure that counts the number of museums in the database
+that have a website on file.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">PROCEDURE</span> museum_website_count(INOUT list_count <span class="dt">INTEGER</span>)</span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a>LANGUAGE plpgsql</span>
+<span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a><span class="kw">AS</span> $$</span>
+<span id="cb2-4"><a aria-hidden="true" href="#cb2-4" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb2-5"><a aria-hidden="true" href="#cb2-5" tabindex="-1"></a>    <span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">INTO</span> list_count</span>
+<span id="cb2-6"><a aria-hidden="true" href="#cb2-6" tabindex="-1"></a>    <span class="kw">FROM</span> museum</span>
+<span id="cb2-7"><a aria-hidden="true" href="#cb2-7" tabindex="-1"></a>    <span class="kw">WHERE</span> url <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</span>
+<span id="cb2-8"><a aria-hidden="true" href="#cb2-8" tabindex="-1"></a><span class="cf">END</span>;</span>
+<span id="cb2-9"><a aria-hidden="true" href="#cb2-9" tabindex="-1"></a>$$;</span></code></pre></div>
+<p>This stored procedure takes a single parameter named list_count.
+Instead of only passing a value into the stored procedure, this
+parameter also passes a value back out of it. The keyword INOUT is used
+to specify this behavior. PostgreSQL supports parameters of types IN
+(the default &#8212; those passed into a stored procedure), OUT (those passed
+back out of a stored procedure), and INOUT (those used to pass values
+both in and out, as used here). The stored procedure code itself is
+enclosed within a BEGIN and END block, written in the plpgsql procedural
+language, and here a simple SELECT is performed to count the museums
+with a website on file. The result is stored directly into list_count
+using the INTO clause.</p>
+<p>To invoke this example, you pass a placeholder value (commonly NULL)
+for the INOUT parameter, since you don&#8217;t yet know what it should be:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">CALL</span> museum_website_count(<span class="kw">NULL</span>);</span></code></pre></div>
+<p>PostgreSQL runs the procedure and returns list_count as a one-row
+result, now containing the count.</p>
+<div class="tip">
+<blockquote>
+<p><strong>Tip: Functions vs.&#160;Procedures in PostgreSQL.</strong> In
+practice, when all you need to do is compute and return a single value
+like a count, most PostgreSQL developers would reach for a FUNCTION
+instead of a PROCEDURE. A procedure is generally best suited for a task
+that performs actions (like inserting rows) rather than one that simply
+computes and returns a value. Here is the same count written as a
+function instead:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">FUNCTION</span> museum_website_count() RETURNS <span class="dt">INTEGER</span></span>
+<span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a>LANGUAGE plpgsql</span>
+<span id="cb4-3"><a aria-hidden="true" href="#cb4-3" tabindex="-1"></a><span class="kw">AS</span> $$</span>
+<span id="cb4-4"><a aria-hidden="true" href="#cb4-4" tabindex="-1"></a><span class="kw">DECLARE</span></span>
+<span id="cb4-5"><a aria-hidden="true" href="#cb4-5" tabindex="-1"></a>    v_count <span class="dt">INTEGER</span>;</span>
+<span id="cb4-6"><a aria-hidden="true" href="#cb4-6" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb4-7"><a aria-hidden="true" href="#cb4-7" tabindex="-1"></a>    <span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">INTO</span> v_count</span>
+<span id="cb4-8"><a aria-hidden="true" href="#cb4-8" tabindex="-1"></a>    <span class="kw">FROM</span> museum</span>
+<span id="cb4-9"><a aria-hidden="true" href="#cb4-9" tabindex="-1"></a>    <span class="kw">WHERE</span> url <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</span>
+<span id="cb4-10"><a aria-hidden="true" href="#cb4-10" tabindex="-1"></a>    <span class="kw">RETURN</span> v_count;</span>
+<span id="cb4-11"><a aria-hidden="true" href="#cb4-11" tabindex="-1"></a><span class="cf">END</span>;</span>
+<span id="cb4-12"><a aria-hidden="true" href="#cb4-12" tabindex="-1"></a>$$;</span></code></pre></div>
+<p>You call a function with SELECT rather than CALL:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> museum_website_count();</span></code></pre></div>
+<p>Both approaches are valid PostgreSQL, but seeing them side by side
+helps clarify the difference between the two: procedures (called with
+CALL) versus functions (called with SELECT).</p>
+</blockquote>
+</div>
+<p>Here&#8217;s another example, this time to insert a new work into the work
+table. It demonstrates some useful stored procedure techniques that are
+especially idiomatic in PostgreSQL. For this example, assume the work
+table has also been given an additional date_catalogued column, used to
+record when each work was added to the database:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">PROCEDURE</span> new_work(</span>
+<span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a>    p_artist_id <span class="dt">INTEGER</span>,</span>
+<span id="cb6-3"><a aria-hidden="true" href="#cb6-3" tabindex="-1"></a>    INOUT p_work_id <span class="dt">INTEGER</span> <span class="kw">DEFAULT</span> <span class="kw">NULL</span>,</span>
+<span id="cb6-4"><a aria-hidden="true" href="#cb6-4" tabindex="-1"></a>    p_date_catalogued <span class="dt">DATE</span> <span class="kw">DEFAULT</span> <span class="fu">CURRENT_DATE</span></span>
+<span id="cb6-5"><a aria-hidden="true" href="#cb6-5" tabindex="-1"></a>)</span>
+<span id="cb6-6"><a aria-hidden="true" href="#cb6-6" tabindex="-1"></a>LANGUAGE plpgsql</span>
+<span id="cb6-7"><a aria-hidden="true" href="#cb6-7" tabindex="-1"></a><span class="kw">AS</span> $$</span>
+<span id="cb6-8"><a aria-hidden="true" href="#cb6-8" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb6-9"><a aria-hidden="true" href="#cb6-9" tabindex="-1"></a>    <span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="kw">work</span> (artist_id, date_catalogued)</span>
+<span id="cb6-10"><a aria-hidden="true" href="#cb6-10" tabindex="-1"></a>    <span class="kw">VALUES</span> (p_artist_id, p_date_catalogued)</span>
+<span id="cb6-11"><a aria-hidden="true" href="#cb6-11" tabindex="-1"></a>    <span class="kw">RETURNING</span> work_id <span class="kw">INTO</span> p_work_id;</span>
+<span id="cb6-12"><a aria-hidden="true" href="#cb6-12" tabindex="-1"></a><span class="cf">END</span>;</span>
+<span id="cb6-13"><a aria-hidden="true" href="#cb6-13" tabindex="-1"></a>$$;</span></code></pre></div>
+<p>This stored procedure creates a new work in the work table. It takes
+a single required parameter &#8212; the ID of the artist who created the work
+&#8212; plus an INOUT parameter, p_work_id, used to hand the generated work_id
+back to the caller. The work_id and date_catalogued columns are
+populated automatically: work_id because it is an auto-incrementing
+column, and date_catalogued because it defaults to CURRENT_DATE
+(PostgreSQL&#8217;s function for today&#8217;s date) if no other date is supplied.
+The INSERT statement uses the RETURNING &#8230; INTO clause to capture the
+automatically generated work_id directly into p_work_id, so the caller
+finds out the new work&#8217;s ID without having to run a separate query for
+it. Notice that the parameters are prefixed with p_ &#8212; this is a common
+PostgreSQL convention that keeps parameter names from colliding with
+column names of the same name inside the procedure body, which can
+otherwise cause &#8220;ambiguous&#8221; errors.</p>
+<p>To invoke this example:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">CALL</span> new_work(<span class="dv">500</span>, <span class="kw">NULL</span>);</span></code></pre></div>
+<p>Because p_work_id defaults to NULL and p_date_catalogued defaults to
+CURRENT_DATE, you only need to supply the artist_id and a placeholder
+for the INOUT parameter. PostgreSQL runs the procedure and returns the
+newly generated work_id as a one-row result.</p>
+<div class="note">
+<blockquote>
+<p><strong>Note: Comment Your Code.</strong> All code should be
+commented, and stored procedures are no different. Adding comments will
+not affect performance at all, so there is no downside here (other than
+the time it takes to write them). The benefits are numerous and include
+making it easier for others (and yourself) to understand the code and
+safer to make changes at a later date. In PostgreSQL, single-line
+comments are preceded by <code>--</code> (two hyphens), and multi-line
+comments are enclosed in <code>/* ... */</code>.</p>
+</blockquote>
+</div>
+<p>As you can see, with stored procedures there are often many different
+ways to accomplish the same task. Whether you reach for a procedure or a
+function, and how you capture generated values, will often be dictated
+by which feature of PostgreSQL best fits what you&#8217;re trying to do.</p>
+<h2 data-number="23.5" id="summary"><span
+class="header-section-number">23.5</span> Summary</h2>
+<p>In this lesson, you learned what stored procedures are and why they
+are used. You also learned the basics of stored procedure execution and
+creation syntax in PostgreSQL &#8212; including CALL, IN/OUT/INOUT parameters,
+and the RETURNING clause &#8212; and you saw some of the ways these can be
+used. Using stored procedures is a really important topic, and one that
+is far beyond the scope of one lesson. Refer to the PostgreSQL
+documentation for more details.</p>
+<!--postEnd-->
+              </div>
+</div>
+</article>
+</div>
+</div>
+</div></div>
+</div><!-- #main -->
+</div><!-- #primary -->
+<!--end of error vs non error block-->
+</div><!-- #content -->
+<footer class='site-footernbt' id='colophonnbt' role='contentinfo'>
+<div id='supplementarynbt'>
+<div class='footer-widgetsnbt widget-areanbt clearnbt' id='footer-widgetsnbt' role='complementary'>
+<div class='sidebarwidgetsarea no-items section' id='sidebarwidgetsarea'></div>
+</div><!-- #footer-sidebar -->
+</div><!-- #supplementary -->
+</footer><!-- #colophon -->
+</div><!-- #page -->
+
+<script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
+<script type='text/javascript'>
+window['__wavt'] = 'AEUoTZoMkHHXLcflpe0wPMfKaqMi:1784899990883';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/23.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/23.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/23.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/6572163358316332861/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '6572163358316332861', 'pageName': '23. Working with Stored\nProcedures', 'pageTitle': 'book1014 SQL: 23. Working with Stored\nProcedures'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '23. Working with Stored\nProcedures', 'description': '23  Working with Stored\r Procedures \r Objectives.  After completing this lesson, the\r successful student will be able to: \r \r Describe what ...', 'url': 'https://book1014.blogspot.com/2000/02/23.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 6572163358316332861}}]);
+_WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
+</script>
+</body>
+</html>

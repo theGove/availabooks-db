@@ -4,7 +4,7 @@
 <link href='https://www.blogger.com/static/v1/widgets/2872013778-css_bundle_v2.css' rel='stylesheet' type='text/css'/>
 <meta charset='UTF-8'/>
 <meta content='width=device-width, initial-scale=1' name='viewport'/>
-<title>book1011</title>
+<title>book1014 SQL</title>
 <!-- external libraries -->
 <script src='https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js'></script>
 <script src='https://unpkg.com/turndown/dist/turndown.js'></script>
@@ -460,11 +460,55 @@ line-height: 1;
 }
 blockquote{
 margin:1.75rem 0;
-padding:1rem 1.25rem 1rem 1.35rem;
 background:var(--surface-soft);
 border-left:.35rem solid var(--accent);
+padding:1rem 1.25rem 1rem 1.35rem;
 border-radius:0 var(--radius-md) var(--radius-md) 0;
 color:#334155;
+}
+.note blockquote{
+background:#E8F5E9;
+border-left:.35rem solid darkgreen;
+}
+.note blockquote p::before {
+content: "Note: ";
+font-weight: bold;
+}
+.tip blockquote{
+background:#F3E5F5;
+border-left:.35rem solid purple;
+}
+.tip blockquote p::before {
+content: "Tip: ";
+font-weight: bold;
+}
+.term blockquote{
+background:#E3EDF7;
+border-left:.35rem solid darkblue;
+}
+.term blockquote p::before {
+content: "Term: ";
+font-weight: bold;
+}
+.caution blockquote{
+background:#FFE2E2;
+border-left:.35rem solid red;
+}
+.caution blockquote p::before {
+content: "Caution: ";
+font-weight: bold;
+}
+.objectives blockquote{
+background:#FFF8E1;
+border-left:.35rem solid gold;
+}
+.review blockquote{
+background:#FFF0EC;
+border-left:.35rem solid salmon;
+}
+.review blockquote p::before {
+content: "Review: ";
+font-weight: bold;
 }
 blockquote p:last-child{
 margin-bottom:0;
@@ -543,7 +587,7 @@ color:#fbbf24;
 color:#94a3b8;
 font-style:italic;
 }
-table{
+table.blog{
 display:block;
 width:max-content;
 max-width:100%;
@@ -557,24 +601,24 @@ border-radius:var(--radius-md);
 box-shadow:var(--shadow-sm);
 background:var(--surface);
 }
-th,
-td{
+th.blog,
+td.blog{
 padding:.72rem .85rem;
 border-bottom:1px solid var(--border);
 text-align:left;
 vertical-align:top;
 white-space:nowrap;
 }
-th{
+th.blog{
 font-size:.86rem;
 font-weight:700;
 color:var(--heading);
 background:var(--surface-soft);
 }
-tr:last-child td{
+tr.blog:last-child td{
 border-bottom:0;
 }
-tr:nth-child(even) td{
+tr.blog:nth-child(even) td{
 background:#f8fafc;
 }
 .monaco {
@@ -782,7 +826,7 @@ right: .75rem;
     }    
 
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=1676106165289640444&amp;zx=6bdbd94f-4c00-46a7-9f85-9e3213cc543c' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=1676106165289640444&amp;zx=6bdbd94f-4c00-46a7-9f85-9e3213cc543c' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -801,7 +845,7 @@ right: .75rem;
 <div class='hide' id='kind'>chapter</div>
 <div class='index-boxnbt'>
 <header class='entry-header'>
-<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>6. Arrays</span></h1>
+<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>6. Filtering Data</span></h1>
 </header>
 <div id='menu'>
 <div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
@@ -819,375 +863,449 @@ right: .75rem;
 <div id='search-results'></div>
 </div>
 </div>
-<div class='post-body entry-content' data-blog-id='1676106165289640444' data-post-id='8265233259572144186'>
+<div class='post-body entry-content' data-blog-id='3986204447440040189' data-post-id='822707930032427748'>
 <button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
 <button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
               
-              <!--postBegin--><div class="module">monaco</div>
-<h1 data-number="6" id="arrays"><span
-class="header-section-number">6</span> Arrays</h1>
-<h2 data-number="6.1" id="why-arrays-matter-in-apps-script"><span
-class="header-section-number">6.1</span> Why Arrays Matter in Apps
-Script</h2>
-<p>When you start automating Google Sheets with Apps Script, you quickly
-discover that working with <strong>one value at a time</strong> isn&#8217;t
-enough. Spreadsheets are built around <strong>lists</strong>,
-<strong>columns</strong>, and <strong>tables</strong> &#8212; all collections
-of values. To handle that kind of data, you need a structure that can
-hold many items at once. That&#8217;s exactly what arrays are designed
-for.</p>
-<p>This is where the University Store&#8217;s data outgrows single variables.
-Two collections will run through the chapter. The first is the clicker&#8217;s
-demand history &#8212; how many sold each month over the past year:</p>
-<pre class="javascript-example"><code>let monthlyDemand = [480, 240, 180, 300, 360, 120, 90, 540, 420, 240, 180, 450]</code></pre>
-<p>Those twelve numbers add up to the 3,600-a-year figure from Chapter
-4, but notice how they swing: a quiet summer (90 in July), then sharp
-spikes when each semester starts (540 in August, 480 in January). That
-movement is exactly why last month&#8217;s sales are a poor guide to next
-month&#8217;s &#8212; and why, in the next chapter, we&#8217;ll forecast from the whole
-series instead of any single point. The second collection is a slice of
-the store&#8217;s catalog, where each item is a row of its own values:</p>
-<pre class="javascript-example"><code>let catalog = [
-  [&quot;classroom clicker&quot;, 120, 64800],
-  [&quot;whiteboard marker&quot;, 480, 9000],
-  [&quot;USB drive&quot;, 75, 42000]
-]</code></pre>
-<p>Arrays let your scripts read, process, and transform groups of values
-like these efficiently. They&#8217;re the backbone of almost every meaningful
-spreadsheet automation you&#8217;ll write.</p>
-<h3 data-number="6.1.1"
-id="arrays-hold-multiple-values-in-a-single-variable"><span
-class="header-section-number">6.1.1</span> Arrays Hold Multiple Values
-in a Single Variable</h3>
-<p>A normal variable stores one value:</p>
-<pre class="javascript-example"><code>let lastMonth = 450
-console.log(lastMonth)</code></pre>
-<p>An array stores many:</p>
-<pre class="javascript-example"><code>let monthlyDemand = [480, 240, 180, 300, 360, 120, 90, 540, 420, 240, 180, 450]
-console.log(monthlyDemand)</code></pre>
-<p>This ability to group related values is essential when you&#8217;re dealing
-with spreadsheet data, which naturally comes in lists.</p>
-<h3 data-number="6.1.2"
-id="arrays-are-how-google-sheets-returns-ranges"><span
-class="header-section-number">6.1.2</span> Arrays Are How Google Sheets
-Returns Ranges</h3>
-<p>When you read a single cell, you get a single value. But when you
-read <strong>multiple cells</strong>, Apps Script returns an
-<strong>array of arrays</strong>:</p>
-<ul>
-<li>Each <strong>inner array</strong> represents a row</li>
-<li>The <strong>outer array</strong> contains all the rows you
-requested</li>
-</ul>
-<p>This mirrors the shape of the spreadsheet, but in JavaScript form.
-Once you understand arrays of arrays, you can process an entire demand
-column or item catalog at once instead of working cell by cell.</p>
-<h3 data-number="6.1.3"
-id="arrays-make-your-scripts-faster-and-cleaner"><span
-class="header-section-number">6.1.3</span> Arrays Make Your Scripts
-Faster and Cleaner</h3>
-<p>Apps Script is at its best when you read a whole range into an array,
-process the data in memory, and write the results back in one step. This
-is dramatically faster than touching the spreadsheet repeatedly. Arrays
-make it possible.</p>
-<h3 data-number="6.1.4"
-id="arrays-help-you-think-in-terms-of-data-not-cells"><span
-class="header-section-number">6.1.4</span> Arrays Help You Think in
-Terms of Data, Not Cells</h3>
-<p>Once you start using arrays, your mental model shifts. Instead of
-&#8220;read A2,&#8221; you think &#8220;get the second item in the list.&#8221; Instead of &#8220;look
-at each cell in column B,&#8221; you think &#8220;consider each row and look at
-index 1.&#8221; Instead of &#8220;write to row 10,&#8221; you think &#8220;update the tenth
-array element.&#8221; This is how real applications handle data &#8212; by working
-with collections rather than isolated pieces.</p>
-<h3 data-number="6.1.5" id="what-youll-learn-in-this-chapter"><span
-class="header-section-number">6.1.5</span> What You&#8217;ll Learn in This
-Chapter</h3>
-<p>In the sections ahead, you&#8217;ll explore how to create and use arrays,
-how to work with the arrays of arrays that Google Sheets returns, how to
-reach individual values inside them, and how to write arrays back into
-the sheet. By the end, arrays will feel natural &#8212; and you&#8217;ll be ready to
-handle the store&#8217;s demand history and catalog with confidence and
-speed.</p>
-<h2 data-number="6.2" id="understanding-arrays"><span
-class="header-section-number">6.2</span> Understanding Arrays</h2>
-<p>Arrays are one of the most important data structures you&#8217;ll use in
-JavaScript and Apps Script. If variables let you store a single value,
-arrays let you store <strong>many values in a single place</strong> &#8212; a
-list, a sequence, a collection. This becomes essential with spreadsheet
-data, because Sheets almost always gives you information in groups:
-rows, columns, or whole tables.</p>
-<p>Think of an array as a row of labeled boxes, each holding a value.
-You can look inside any box, change what&#8217;s in it, or look at all of them
-one by one.</p>
-<h3 data-number="6.2.1" id="what-an-array-looks-like"><span
-class="header-section-number">6.2.1</span> What an Array Looks Like</h3>
-<p>Arrays are created using square brackets:</p>
-<pre class="javascript-example"><code>let items = [&quot;classroom clicker&quot;, &quot;whiteboard marker&quot;, &quot;USB drive&quot;]
-let monthlyDemand = [480, 240, 180, 300, 360, 120, 90, 540, 420, 240, 180, 450]</code></pre>
-<p>Each item has a position called an <strong>index</strong>. JavaScript
-starts counting at <strong>0</strong>, not 1:</p>
-<ul>
-<li><code>monthlyDemand[0]</code> &#8594; <code>480</code> (January)</li>
-<li><code>monthlyDemand[1]</code> &#8594; <code>240</code> (February)</li>
-<li><code>monthlyDemand[7]</code> &#8594; <code>540</code> (August, the
-semester-start spike)</li>
-</ul>
-<p>This &#8220;zero-based indexing&#8221; is standard in most programming
-languages.</p>
-<h3 data-number="6.2.2" id="accessing-and-changing-array-values"><span
-class="header-section-number">6.2.2</span> Accessing and Changing Array
-Values</h3>
-<p>You can read a value by referencing its index:</p>
-<pre class="javascript-example"><code>let january = monthlyDemand[0]</code></pre>
-<p>You can also change a value:</p>
-<pre class="javascript-example"><code>monthlyDemand[6] = 100   // revise July&#39;s demand to 100</code></pre>
-<p>Or add a new value &#8212; say, the first month of a new year:</p>
-<pre class="javascript-example"><code>monthlyDemand.push(500)</code></pre>
-<p>Arrays grow as needed &#8212; you don&#8217;t have to declare their size ahead of
-time.</p>
-<h3 data-number="6.2.3" id="arrays-can-hold-any-type-of-data"><span
-class="header-section-number">6.2.3</span> Arrays Can Hold Any Type of
-Data</h3>
-<p>Arrays aren&#8217;t limited to one type of value. You can mix strings,
-numbers, and booleans &#8212; which is exactly what a catalog row looks
-like:</p>
-<pre class="javascript-example"><code>let row = [&quot;classroom clicker&quot;, 120, 64800]</code></pre>
-<p>In practice, keep each kind of array consistent so your code stays
-predictable: a demand series is all numbers, a list of item names is all
-strings, and a catalog is a table of rows that each follow the same
-column pattern.</p>
-<h3 data-number="6.2.4" id="common-mistakes-to-watch-for"><span
-class="header-section-number">6.2.4</span> Common Mistakes to Watch
-For</h3>
-<p><strong>Off-by-one errors.</strong> Because arrays start at index 0,
-a twelve-month series has indexes 0 through 11. Reaching past the end
-returns <code>undefined</code>:</p>
-<pre class="javascript-example"><code>let demand = [480, 240, 180, 300, 360, 120, 90, 540, 420, 240, 180, 450]
-demand[12]   // undefined &#8212; there is no 13th month</code></pre>
-<p><strong>Empty arrays.</strong> An array with no items still exists,
-but accessing any index returns <code>undefined</code>:</p>
-<pre class="javascript-example"><code>let empty = []
-empty[0]   // undefined</code></pre>
-<p><strong>Forgetting that arrays are ordered.</strong> When order
-matters &#8212; and for a demand history it absolutely does, since January
-must stay January &#8212; be careful adding or removing items.</p>
-<h3 data-number="6.2.5" id="why-arrays-matter-in-apps-script-1"><span
-class="header-section-number">6.2.5</span> Why Arrays Matter in Apps
-Script</h3>
-<p>Arrays become essential the moment you work with Google Sheets. For
-example, reading the clicker&#8217;s twelve months of demand from a
-column:</p>
-<pre class="javascript-example"><code>let sheet = SpreadsheetApp.getActiveSheet()
-let range = sheet.getRange(&quot;B2:B13&quot;)
-let values = range.getValues()</code></pre>
-<p><code>getValues()</code> returns an array of arrays &#8212; an array of
-rows, where each row is itself an array. You&#8217;ll explore this in the next
-section, but the key idea is this: <strong>arrays are how Apps Script
-represents spreadsheet data.</strong> If you want to process a demand
-column or a catalog, you&#8217;ll be working with arrays.</p>
-<h3 data-number="6.2.6" id="what-you-can-do-with-arrays"><span
-class="header-section-number">6.2.6</span> What You Can Do With
-Arrays</h3>
-<p>By the end of this chapter, arrays will feel like second nature.
-You&#8217;ll use them to read a demand column or catalog into memory,
-transform values before writing them back, build new lists from existing
-ones, and represent an entire table at once. Arrays are the gateway to
-handling real data at scale &#8212; and they set up the arrays of arrays that
-Google Sheets hands you.</p>
-<h2 data-number="6.3" id="arrays-and-google-sheets"><span
-class="header-section-number">6.3</span> Arrays and Google Sheets</h2>
-<p>Arrays become truly useful once you start working with data from a
-sheet. Almost everything you read &#8212; a column of demand, a row of item
-details, or a whole catalog &#8212; comes back as an <strong>array</strong>.
-And when you read more than one cell at a time, Apps Script gives you an
-<strong>array of arrays</strong>, where each inner array is a single
-row.</p>
-<h3 data-number="6.3.1" id="getvalue-vs.-getvalues"><span
-class="header-section-number">6.3.1</span> <code>getValue()</code>
-vs.&#160;<code>getValues()</code></h3>
-<p>These two methods behave very differently.
-<strong><code>getValue()</code></strong> returns a <em>single
-value</em>; <strong><code>getValues()</code></strong> returns an
-<em>array of arrays</em>.</p>
-<pre class="javascript-example"><code>let sheet = SpreadsheetApp.getActiveSheet()
-
-let oneMonth = sheet.getRange(&quot;B2&quot;).getValue()        // one value
-
-let allMonths = sheet.getRange(&quot;B2:B13&quot;).getValues()  // array of arrays</code></pre>
-<p>If you log <code>allMonths</code>, you&#8217;ll see the demand column as
-rows:</p>
-<pre class="javascript-example"><code>[
-  [480],
-  [240],
-  [180],
-  [300]
-  // ...and so on, one row per month
-]</code></pre>
-<p>Each inner array represents one row from the range.</p>
-<h3 data-number="6.3.2" id="thinking-in-rows-and-columns"><span
-class="header-section-number">6.3.2</span> Thinking in Rows and
-Columns</h3>
-<p>When you read a range like <code>"A2:C2"</code>, you get <strong>one
-row</strong>, represented as an array:</p>
-<pre class="javascript-example"><code>[&quot;classroom clicker&quot;, 120, 64800]</code></pre>
-<p>When you read <code>"A2:C4"</code>, you get <strong>three
-rows</strong>, represented as an array of arrays:</p>
-<pre class="javascript-example"><code>[
-  [&quot;classroom clicker&quot;, 120, 64800],
-  [&quot;whiteboard marker&quot;, 480, 9000],
-  [&quot;USB drive&quot;, 75, 42000]
-]</code></pre>
-<p>This structure mirrors the spreadsheet: the outer array is all the
-rows, the inner arrays are each row, and the items inside each inner
-array are the cells in that row. Once you see the pattern, it becomes
-intuitive.</p>
-<h3 data-number="6.3.3" id="extracting-values"><span
-class="header-section-number">6.3.3</span> Extracting Values</h3>
-<p>In the next chapter we&#8217;ll use a &#8220;loop&#8221; to walk through an array
-elegantly, but for now let&#8217;s see how to reach individual values in an
-array of arrays. Suppose the store&#8217;s catalog sits in a sheet like
-this:</p>
+              <!--postBegin--><div class="module">websql</div>
+<h1 data-number="6" id="filtering-data"><span
+class="header-section-number">6</span> Filtering Data</h1>
+<p><strong>Objectives.</strong> After completing this lesson, the
+successful student will be able to:</p>
+<ol type="1">
+<li>Use the WHERE clause of a SELECT statement to filter the results of
+a query.</li>
+<li>Filter the rows of a query result to match against a single
+value.</li>
+<li>Filter the rows of a query result to look for non-matched
+values.</li>
+<li>Filter the rows of a query result to check against a range of
+values.</li>
+<li>Filter the rows of a query result to find rows without a value.</li>
+</ol>
+<h2 data-number="6.1" id="using-the-where-clause"><span
+class="header-section-number">6.1</span> Using the WHERE Clause</h2>
+<p>All the example queries you have encountered to this point in this
+resource have retrieved all of the rows from a database table. Usually,
+you will not need all of the rows from a table to meet your data needs.
+It is possible to create a SELECT statement that retrieves specific rows
+from a database table. These statements require the WHERE clause.</p>
+<div class="term">
+<blockquote>
+<p><strong>WHERE</strong> — The clause in a SELECT statement that is
+used to filter the rows retrieved by a query.</p>
+</blockquote>
+</div>
+<p>The WHERE clause is used to define a condition or set of conditions
+that must be met for a row to be returned in a query result. These
+criteria are generally designed as a logical test that compares values
+for a column on a table to target values. Those values that meet the
+conditions are returned in the query result. Suppose you want an
+alphabetized list of the artists, and their nationality, who were born
+in the year 1861. You can use a chat with an AI assistant to create the
+SELECT statement that will do this:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Write a SQL statement to display an
+alphabetized list of artists and their nationality. Show only those
+artists born in 1861.</p>
+<p><strong>AI:</strong> To display an alphabetized list of artists and
+their nationality, showing only those artists born in 1861, you can use
+the following SQL statement:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> birth <span class="op">=</span> <span class="dv">1861</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> full_name;</span></code></pre></div>
+<p>This query selects the full_name and nationality columns from the
+artist table. The WHERE clause filters the results to include only
+artists born in the year 1861. The ORDER BY clause sorts the results in
+alphabetical order based on the full_name column.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span>   full_name, nationality</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>     artist</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>    birth <span class="op">=</span> <span class="dv">1861</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> full_name;</span></code></pre></div>
+<div class="note">
+<blockquote>
+<p>This is one of the book’s interactive query boxes (tied to the
+<code>artist</code>/<code>work</code>/<code>museum</code> schema
+diagram, with a “Play” button and results panel) — shown here as a plain
+code block until that component is built on this platform.</p>
+</blockquote>
+</div>
+<p>The query returns an alphabetized list of the artists and their
+nationality. There are nine artists retrieved by this query, even though
+there are 421 artists on the artist table. The nine artists retrieved
+all meet the condition set by the WHERE clause that the artist was born
+in 1861.</p>
+<div class="note">
+<blockquote>
+<p><strong>Note: The Position of the WHERE Clause.</strong> The WHERE
+clause must appear third in the SELECT statement. Since the SELECT and
+FROM clauses are required in all SELECT statements, they appear first
+and second. All other clauses appear after the WHERE clause (notice the
+position of the ORDER BY clause in the example query above).</p>
+</blockquote>
+</div>
+<p>Consider the syntax of the WHERE clause. Generally a WHERE clause
+creates a logical test comparing values using a mathematical operator.
+In this example, the WHERE clause uses a logical test comparing the
+values in the birth column of the artist table with the value 1861.
+Those values on the table that are equal to 1861 meet the condition and
+will be retrieved by the query. Those that do not meet the condition are
+excluded from the query result. Only nine of the 421 artists in the
+table meet it.</p>
+<h2 data-number="6.2" id="the-where-clause-operators"><span
+class="header-section-number">6.2</span> The WHERE Clause Operators</h2>
+<p>You can use a number of different mathematical operators to compare
+values in the logical tests in the WHERE clause. Generally, these are
+constructed to compare the values in a column on the left side of an
+operator to a value on the right side (column = value). The example
+above uses the “=” operator, which requires that the values on the left
+side of the operator (in this case the values in the birth column)
+exactly match the value on the right side (the year 1861). The table
+below describes operators that can be used to compare values in the
+WHERE clause.</p>
+<h4 data-number="6.2.0.1" id="where-clause-operators"><span
+class="header-section-number">6.2.0.1</span> WHERE Clause Operators</h4>
 <table>
+<colgroup>
+<col style="width: 45%" />
+<col style="width: 27%" />
+<col style="width: 27%" />
+</colgroup>
 <thead>
 <tr>
-<th></th>
-<th>A</th>
-<th>B</th>
-<th>C</th>
+<th style="text-align: center;">Operator</th>
+<th>Description</th>
+<th>Example</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>2</td>
-<td>classroom clicker</td>
-<td>120</td>
-<td>64800</td>
+<td style="text-align: center;"><code>=</code></td>
+<td>The values in the specified column match a stated value</td>
+<td><code>birth = 1861</code></td>
 </tr>
 <tr>
-<td>3</td>
-<td>whiteboard marker</td>
-<td>480</td>
-<td>9000</td>
+<td style="text-align: center;"><code>&lt;&gt;</code></td>
+<td>The values in the specified column do not match a stated value</td>
+<td><code>birth &lt;&gt; 1861</code></td>
 </tr>
 <tr>
-<td>4</td>
-<td>USB drive</td>
-<td>75</td>
-<td>42000</td>
+<td style="text-align: center;"><code>!=</code></td>
+<td>The values in the specified column do not match a stated value</td>
+<td><code>birth != 1861</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>&lt;</code></td>
+<td>The values in the specified column are less than a stated value</td>
+<td><code>birth &lt; 1861</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>&lt;=</code></td>
+<td>The values in the specified column are less than or equal to a
+stated value</td>
+<td><code>birth &lt;= 1861</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>!&lt;</code></td>
+<td>The values in the specified column are not less than a stated
+value</td>
+<td><code>birth !&lt; 1861</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>&gt;</code></td>
+<td>The values in the specified column are greater than a stated
+value</td>
+<td><code>birth &gt; 1861</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>&gt;=</code></td>
+<td>The values in the specified column are greater than or equal to a
+stated value</td>
+<td><code>birth &gt;= 1861</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>!&gt;</code></td>
+<td>The values in the specified column are not greater than a stated
+value</td>
+<td><code>birth !&gt; 1861</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>BETWEEN</code></td>
+<td>The values in the specified column are within the range of two
+stated values</td>
+<td><code>birth BETWEEN 1860 AND 1861</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>IS NULL</code></td>
+<td>The values in the specified column are NULL (without data)</td>
+<td><code>birth IS NULL</code></td>
 </tr>
 </tbody>
 </table>
-<p>If you run this statement:</p>
-<pre class="javascript-example"><code>let catalog = sheet.getRange(&quot;A2:C4&quot;).getValues()</code></pre>
-<p>you&#8217;ll have a variable <code>catalog</code> holding an array of
-arrays:</p>
-<pre class="javascript-example"><code>[
-  [&quot;classroom clicker&quot;, 120, 64800],
-  [&quot;whiteboard marker&quot;, 480, 9000],
-  [&quot;USB drive&quot;, 75, 42000]
-]</code></pre>
-<p>Here&#8217;s one way to pull the first row into individual variables:</p>
-<pre class="javascript-example"><code>let catalog = sheet.getRange(&quot;A2:C4&quot;).getValues()
-
-let firstRow = catalog[0]              // [&quot;classroom clicker&quot;, 120, 64800]
-let item = firstRow[0]                 // &quot;classroom clicker&quot;
-let onHand = firstRow[1]               // 120
-let annualDollarVolume = firstRow[2]   // 64800</code></pre>
-<p>We assign <code>firstRow</code> to the first element of
-<code>catalog</code>. That element is itself an array, holding the item,
-its on-hand quantity, and its annual dollar volume. We can reach the
-same values without the intermediate variable:</p>
-<pre class="javascript-example"><code>let catalog = sheet.getRange(&quot;A2:C4&quot;).getValues()
-
-let item = catalog[0][0]                 // &quot;classroom clicker&quot;
-let onHand = catalog[0][1]               // 120
-let annualDollarVolume = catalog[0][2]   // 64800</code></pre>
-<p>Similarly, you can pull a single column &#8212; say, every item name &#8212; by
-reading the first element of each inner array:</p>
-<pre class="javascript-example"><code>let catalog = sheet.getRange(&quot;A2:C4&quot;).getValues()
-
-let first = catalog[0][0]    // classroom clicker
-let second = catalog[1][0]   // whiteboard marker
-let third = catalog[2][0]    // USB drive</code></pre>
-<p>You&#8217;re simply navigating the structure &#8212; outer array first, then
-inner array.</p>
-<h3 data-number="6.3.4" id="why-this-matters"><span
-class="header-section-number">6.3.4</span> Why This Matters</h3>
-<p>Arrays are the format Google Sheets uses to give you data. Once you
-can read and reach values inside arrays of arrays, you can work with an
-entire demand history or catalog at once, extract specific rows or
-columns, and prepare data for transformation. This sets the stage for
-everything that comes next &#8212; soon you&#8217;ll reshape these arrays and write
-them back into the sheet.</p>
-<h2 data-number="6.4" id="writing-arrays-back-to-the-worksheet"><span
-class="header-section-number">6.4</span> Writing Arrays Back to the
-Worksheet</h2>
-<p>Now that you&#8217;ve seen how Sheets gives you data as arrays, the next
-step is writing data back. This is where arrays become truly powerful:
-you can prepare everything in memory and write it to the spreadsheet in
-a single, efficient operation. Apps Script provides two methods:
-<strong><code>setValue()</code></strong> writes a <em>single</em> value,
-and <strong><code>setValues()</code></strong> writes an <em>array of
-arrays</em>. Since this chapter is about arrays, we&#8217;ll work with
-<code>setValues()</code>.</p>
-<h3 data-number="6.4.1" id="writing-a-single-row-one-inner-array"><span
-class="header-section-number">6.4.1</span> Writing a Single Row (One
-Inner Array)</h3>
-<p>To write one row, you pass a single inner array. Using a catalog
-row:</p>
-<pre class="javascript-example"><code>function writeOneRow() {
-  let sheet = SpreadsheetApp.getActiveSheet()
-  let row = [&quot;classroom clicker&quot;, 120, 64800]
-
-  sheet.getRange(&quot;A2:C2&quot;).setValues([row])
-}</code></pre>
-<p>Notice that <code>setValues()</code> expects an <strong>array of
-arrays</strong>, even for one row. That&#8217;s why we wrap <code>row</code>
-in another pair of brackets.</p>
-<h3 data-number="6.4.2"
-id="writing-multiple-rows-an-array-of-arrays"><span
-class="header-section-number">6.4.2</span> Writing Multiple Rows (An
-Array of Arrays)</h3>
-<p>This is also how you&#8217;d write the result of a calculation back to the
-sheet &#8212; for instance, a reorder status for each item:</p>
-<pre class="javascript-example"><code>function writeReorderStatus() {
-  let sheet = SpreadsheetApp.getActiveSheet()
-
-  let results = [
-    [&quot;classroom clicker&quot;, &quot;Reorder&quot;],
-    [&quot;whiteboard marker&quot;, &quot;Healthy&quot;],
-    [&quot;USB drive&quot;, &quot;Reorder&quot;]
-  ]
-
-  sheet.getRange(&quot;E2:F4&quot;).setValues(results)
-}</code></pre>
-<p>Each inner array is a row, and the outer array holds all the rows. As
-long as the range size matches the array size (3 rows &#215; 2 columns here),
-Apps Script writes everything in one step.</p>
-<h3 data-number="6.4.3" id="why-this-matters-1"><span
-class="header-section-number">6.4.3</span> Why This Matters</h3>
-<p>Writing data with <code>setValues()</code> is fast (one operation
-instead of many), clean (your script stays simple and readable), and
-reliable (the array&#8217;s structure matches the sheet&#8217;s). It&#8217;s the preferred
-way to write any non-trivial amount of data back into Google Sheets.</p>
-<h3 data-number="6.4.4" id="a-helpful-pattern-to-remember"><span
-class="header-section-number">6.4.4</span> A Helpful Pattern to
-Remember</h3>
-<p>Whenever you want to write data:</p>
-<ol type="1">
-<li>Build an <strong>array of arrays</strong> in memory</li>
-<li>Select a range with the same dimensions</li>
-<li>Call <code>setValues()</code></li>
-</ol>
-<p>This pattern is the foundation of efficient spreadsheet automation &#8212;
-and notice what&#8217;s still missing. We can now hold the whole demand
-history and the whole catalog in arrays, but we&#8217;ve only reached into
-them one element at a time, by hand. To actually compute a forecast from
-twelve months of demand, or to run the reorder check on every item in
-the catalog, you need a way to step through an array automatically, one
-element after another. That is what loops do, and it&#8217;s where the next
-chapter begins.</p>
+<h2 data-number="6.3" id="checking-against-a-single-value"><span
+class="header-section-number">6.3</span> Checking Against a Single
+Value</h2>
+<p>The most basic WHERE clauses compare the values in a column to a
+single value. This is demonstrated in the last example. In the example,
+the value in the birth column had to be 1861 for the row to be included
+in the query result. Consider two more examples using different
+operators.</p>
+<p>Assume you want to list artists, their nationality, and their birth
+for artists born before 1400. You can use a chat with an AI assistant to
+create the SELECT statement that will retrieve this data:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Write a SQL statement to display a list of
+artists, their nationality, and their birth. Show only those artists
+born before 1400.</p>
+<p><strong>AI:</strong> To display a list of artists, their nationality,
+and their birth, showing only those artists born before 1400, you can
+use the following SQL statement:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, birth</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> birth <span class="op">&lt;</span> <span class="dv">1400</span>;</span></code></pre></div>
+<p>This query selects the full_name, nationality, and birth columns from
+the artist table. The WHERE clause filters the results to include only
+artists born before the year 1400. The resulting rows will contain the
+artist’s full name, nationality, and birth year.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span>   full_name, nationality, birth</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>     artist</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>    birth <span class="op">&lt;</span> <span class="dv">1400</span>;</span></code></pre></div>
+<p>The query retrieves the name, nationality, and birth for artists born
+before 1400. There is only one artist born before 1400. Note that for an
+artist to be born before 1400, their birth year would be less than
+1400.</p>
+<p>You may want to also modify the last query to include any artists
+that were born in 1400 as well as those born before 1400. You can use a
+chat with an AI assistant to create the SELECT statement that will
+retrieve this data:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Adjust the query to include artists who were
+born in 1400.</p>
+<p><strong>AI:</strong> To adjust the query to include artists who were
+born in 1400, you can modify the comparison operator in the WHERE
+clause. Here’s the updated SQL statement:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, birth</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> birth <span class="op">&lt;=</span> <span class="dv">1400</span>;</span></code></pre></div>
+<p>In this modified query, the WHERE clause includes the less than or
+equal to (&lt;=) operator instead of just the less than (&lt;) operator.
+This ensures that artists born in the year 1400 are included in the
+result set. The query will display the full name, nationality, and birth
+year of artists born before or in 1400.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span>   full_name, nationality, birth</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>     artist</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>    birth <span class="op">&lt;=</span> <span class="dv">1400</span>;</span></code></pre></div>
+<p>In this query, the operator in the WHERE clause was modified to
+include those artists born in 1400. The <code>&lt;=</code> operator will
+select those artists born during or before 1400. Since there is an
+artist born in 1400 and an artist born before 1400, there are now two
+artists retrieved by the query.</p>
+<h2 data-number="6.4" id="checking-for-nonmatches"><span
+class="header-section-number">6.4</span> Checking for Nonmatches</h2>
+<p>In the previous examples, you have applied filters that select data
+that meet desired conditions. Sometimes it is easier to define the data
+you need by describing the values that should be excluded. For example,
+you may want to list all the artists who are not French. If you had to
+set up the filter only using matches, you would need to know all of the
+nationalities in the data and add conditions to include each nationality
+that isn’t French. If there are French, English, and Canadian artists,
+the WHERE clause would need conditions to include the English and
+Canadian artists and not the French. Imagine how difficult this would be
+if there are artists from 100 countries in the list. The WHERE clause
+would also need to be modified when an artist with a new nationality is
+added to the data.</p>
+<p>In this case, it is much easier to create a criterion that excludes
+the French artists. You can use a chat with an AI assistant to create
+the SELECT statement that will retrieve this data:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Write a SQL statement to display a list of
+artists, their nationality, and their birth. Show only those artists who
+are not French.</p>
+<p><strong>AI:</strong> To display a list of artists, their nationality,
+and their birth, showing only those artists who are not French, you can
+use the following SQL statement:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, birth</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="op">&lt;&gt;</span> <span class="st">&#39;French&#39;</span>;</span></code></pre></div>
+<p>This query selects the full_name, nationality, and birth columns from
+the artist table. The WHERE clause filters the results to include only
+artists whose nationality is not ‘French’. The comparison operator
+&lt;&gt; is used to check for inequality. The resulting rows will
+contain the artist’s full name, nationality, and birth year, excluding
+those with French nationality.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span>   full_name, nationality, birth</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>     artist</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>    nationality <span class="op">&lt;&gt;</span> <span class="st">&#39;French&#39;</span>;</span></code></pre></div>
+<p>The condition in the WHERE clause uses the <code>&lt;&gt;</code>
+operator. This means that when the value in the nationality column is
+not French, it will be retrieved by the query. There are 306 artists
+with 17 different nationalities who are not French. Notice the single
+quotes around the word French in the WHERE clause. Anytime the value you
+wish to compare is text, it must be enclosed within single quotes.
+Quotes are not used when the values are numbers.</p>
+<div class="note">
+<blockquote>
+<p><strong>Note: When to Use Single Quotes in a Condition.</strong> When
+a value used in a condition in the WHERE clause is not a number, it must
+be enclosed within single quotes.</p>
+</blockquote>
+</div>
+<h2 data-number="6.5" id="checking-for-a-range-of-values"><span
+class="header-section-number">6.5</span> Checking for a Range of
+Values</h2>
+<p>There are times that you want to retrieve data within a range of
+values. To do this, you use the BETWEEN and AND keywords in place of
+operators in the WHERE clause. For this condition to work, you need
+beginning and ending values for the range. When you use the BETWEEN and
+AND keywords, the DBMS will include data that matches the beginning and
+ending values. In other words, the condition BETWEEN 10 AND 20 is
+logically the same as the combined conditions &gt;= 10 <em>and</em>
+&lt;= 20.</p>
+<div class="note">
+<blockquote>
+<p><strong>Note: BETWEEN and AND.</strong> The logical keywords BETWEEN
+and AND include the beginning and ending values. The condition:</p>
+<p><code>age BETWEEN 45 AND 50</code></p>
+<p>is logically the same as the condition</p>
+<p><code>age &gt;= 45 AND age &lt;= 50</code></p>
+</blockquote>
+</div>
+<p>Suppose that you want to list the artists, their nationality, and
+their birth who were born between 1400 and 1500. You can use a chat with
+an AI assistant to create the SELECT statement that will retrieve this
+data:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Write a SQL statement to display a list of
+artists, their nationality, and their birth. Show only those artists
+born between 1400 and 1500. Use the keywords BETWEEN and AND.</p>
+<p><strong>AI:</strong> Certainly! Here’s the SQL statement using the
+keywords BETWEEN and AND to display a list of artists, their
+nationality, and their birth, showing only those artists born between
+1400 and 1500:</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, birth</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> birth <span class="kw">BETWEEN</span> <span class="dv">1400</span> <span class="kw">AND</span> <span class="dv">1500</span>;</span></code></pre></div>
+<p>In this query, the BETWEEN keyword is used to specify the range of
+values, and the AND keyword is used to define the upper and lower
+bounds. The WHERE clause filters the results to include only artists
+whose birth year is between 1400 and 1500, inclusive. The resulting rows
+will contain the artist’s full name, nationality, and birth year,
+limited to those born between 1400 and 1500.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span>   full_name, nationality, birth</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>     artist</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>    birth <span class="kw">BETWEEN</span> <span class="dv">1400</span> <span class="kw">AND</span> <span class="dv">1500</span>;</span></code></pre></div>
+<p>This example uses the keywords BETWEEN and AND to define a criterion
+that includes values for the birth column that fall in the range of 1400
+to 1500. The query returns 17 artists whose birth is in years within
+this range. The query will include the beginning and ending values for
+the birth column. In other words, it will retrieve artists whose birth
+falls in 1400 or 1500, if there are any.</p>
+<h2 data-number="6.6" id="checking-for-no-value"><span
+class="header-section-number">6.6</span> Checking for No Value</h2>
+<p>There are times when some of the entries in a column contain no
+values. There is a special term for this situation: that entry is said
+to contain a NULL value. A NULL value is not 0, a space, or even a blank
+block of text. It is just the absence of data.</p>
+<div class="term">
+<blockquote>
+<p><strong>NULL</strong> — When an entry for a column of data is empty,
+it is called a NULL value. NULL values are not 0, spaces, or even a
+blank collection of text. It is the absence of data for that column.</p>
+</blockquote>
+</div>
+<p>When creating a criterion to filter for NULL values, you need special
+syntax. The logical statement <code>column = NULL</code> will not work.
+To check if a value is NULL, use the keywords IS NULL.</p>
+<p>Suppose that you want to list the artist’s first and middle names for
+those entries on the artist table with a NULL value for the artist’s
+middle names. You can use a chat with an AI assistant to create the
+SELECT statement that will retrieve this data:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Write a SQL statement to display a list of
+first and middle names for all artists with a NULL value for
+middle_names.</p>
+<p><strong>AI:</strong> To display a list of first and middle names for
+all artists with a NULL value for middle_names, you can use the
+following SQL statement:</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> full_name, middle_names</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> middle_names <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code></pre></div>
+<p>This query selects the first_name and middle_names columns from the
+artist table. The WHERE clause filters the results to include only
+artists whose middle_names column is NULL. The resulting rows will
+contain the first name and middle name (NULL) of artists with a NULL
+value for middle_names.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span>   full_name, middle_names</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>     artist</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>    middle_names <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code></pre></div>
+<p>This query lists all of the artists without middle names. Notice that
+273 of the 421 artists on the artist table meet this criteria. NULL
+values do not always behave as you expect they might. For example, if
+you were to create a query to list all artists whose middle name is not
+“Van,” you would expect to see all of the artists with a middle name
+other than “Van” — including those artists without a middle name. NULL
+values don’t work that way, though. NULL values are not retrieved when
+you filter for non-matches. The syntax for this query is:</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span>   full_name, middle_names</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>     artist</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>    middle_names <span class="op">&lt;&gt;</span> <span class="st">&#39;Van&#39;</span>;</span></code></pre></div>
+<p>Notice that all of the artists retrieved by the query have middle
+names. None of the artists with a NULL value for the middle_names column
+are included in the query result, even though those artists’ middle
+names are also not “Van.”</p>
+<div class="caution">
+<blockquote>
+<p><strong>Caution: NULL Values and Non-Matches.</strong> NULL values
+are not retrieved when you filter for non-matches using the &lt;&gt; or
+!= operators.</p>
+</blockquote>
+</div>
+<h2 data-number="6.7" id="summary"><span
+class="header-section-number">6.7</span> Summary</h2>
+<p>In this lesson, you learned how to use the WHERE clause to filter the
+data retrieved by a SELECT statement. In particular, you learned how to
+filter the rows of a query result to match against a single value,
+filter the rows of a query result to look for non-matched values, filter
+the rows of a query result to check against a range of values, and
+filter the rows of a query result to find rows without a value.</p>
 <!--postEnd-->
               </div>
 </div>
@@ -1210,8 +1328,8 @@ chapter begins.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZrEJeYRFvLsByQl0giVopPW:1784765284033';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d1676106165289640444','//book1011.blogspot.com/2000/02/6.html','1676106165289640444');
-_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '1676106165289640444', 'title': 'book1011', 'url': 'https://book1011.blogspot.com/2000/02/6.html', 'canonicalUrl': 'https://book1011.blogspot.com/2000/02/6.html', 'homepageUrl': 'https://book1011.blogspot.com/', 'searchUrl': 'https://book1011.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1011.blogspot.com/', 'blogspotFaviconUrl': 'https://book1011.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://book1011.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1011 - RSS\x22 href\x3d\x22https://book1011.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/1676106165289640444/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://book1011.blogspot.com/feeds/8265233259572144186/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/37c4cc789ad2acf9', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '8265233259572144186', 'pageName': '6. Arrays', 'pageTitle': 'book1011: 6. Arrays'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '6. Arrays', 'description': 'monaco  6  Arrays \r 6.1  Why Arrays Matter in Apps\r Script \r When you start automating Google Sheets with Apps Script, you quickly\r discover...', 'url': 'https://book1011.blogspot.com/2000/02/6.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 8265233259572144186}}]);
+window['__wavt'] = 'AEUoTZpPKvtUGB65ssBHL-GuPpAa:1784899979472';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/6.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/6.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/6.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/822707930032427748/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '822707930032427748', 'pageName': '6. Filtering Data', 'pageTitle': 'book1014 SQL: 6. Filtering Data'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '6. Filtering Data', 'description': '6  Filtering Data \r Objectives.  After completing this lesson, the\r successful student will be able to: \r \r Use the WHERE clause of a SELECT...', 'url': 'https://book1014.blogspot.com/2000/02/6.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 822707930032427748}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>
 </body>

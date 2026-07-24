@@ -845,7 +845,7 @@ right: .75rem;
 <div class='hide' id='kind'>chapter</div>
 <div class='index-boxnbt'>
 <header class='entry-header'>
-<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>9. Creating Calculated Fields</span></h1>
+<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>25. Using Cursors</span></h1>
 </header>
 <div id='menu'>
 <div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
@@ -863,280 +863,195 @@ right: .75rem;
 <div id='search-results'></div>
 </div>
 </div>
-<div class='post-body entry-content' data-blog-id='3986204447440040189' data-post-id='8368931250453884008'>
+<div class='post-body entry-content' data-blog-id='3986204447440040189' data-post-id='962522291906036430'>
 <button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
 <button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
               
-              <!--postBegin--><h1 data-number="9" id="creating-calculated-fields"><span
-class="header-section-number">9</span> Creating Calculated Fields</h1>
+              <!--postBegin--><h1 data-number="25" id="using-cursors"><span
+class="header-section-number">25</span> Using Cursors</h1>
 <p><strong>Objectives.</strong> After completing this lesson, the
 successful student will be able to:</p>
 <ol type="1">
-<li>Create calculated fields to perform simple mathematical calculations
-in a query.</li>
-<li>Use aliases to name calculated fields.</li>
-<li>Use calculated fields to manipulate text.</li>
+<li>Describe what a cursor is and why it&#8217;s used.</li>
+<li>Describe the declare-open-fetch-close lifecycle of a cursor.</li>
+<li>Declare and open a cursor in PostgreSQL, using both plain SQL and
+PL/pgSQL.</li>
+<li>Use FETCH within a loop to step through a cursor&#8217;s result set,
+checking FOUND to detect the end of the data.</li>
+<li>Close a cursor when you are finished with it.</li>
 </ol>
-<h2 data-number="9.1" id="understanding-calculated-fields"><span
-class="header-section-number">9.1</span> Understanding Calculated
-Fields</h2>
-<p>Often the data that you need is not stored in the database in the
-precise way that you need it. When this is the case, you can choose to
-manipulate the data when you retrieve it with a query or you can choose
-to make the changes you need in a separate application. In this lesson
-you will learn how to use calculated fields to manipulate data using a
-query. Here are some reasons why you might choose to manipulate data
-when you retrieve it in a query.</p>
+<p>SQL retrieval operations work with sets of rows known as result sets.
+The rows returned are all the rows that match a SQL statement &#8212; zero or
+more of them. When you use simple SELECT statements, there is no way to
+get the first row, the next row, or the previous 10 rows. This is an
+integral part of how a relational DBMS works.</p>
+<div class="term">
+<blockquote>
+<p><strong>Result Set</strong> &#8212; The results retrieved by a SQL
+query.</p>
+</blockquote>
+</div>
+<p>Sometimes you need to step through rows forward or backward and one
+or more at a time. This is what cursors are used for. A cursor is a
+database query stored on the DBMS server &#8212; not a SELECT statement, but
+the result set retrieved by that statement. Once the cursor is stored,
+applications can scroll or browse up and down through the data as
+needed.</p>
+<p>Different DBMSs support different cursor options and features. Some
+of the more common ones are:</p>
 <ul>
-<li>You need to perform some arithmetic on the value in a database
-table. For example, the database might store when a customer starts and
-finishes using a service and you need to know how much time the customer
-used the service for billing purposes. To determine this, you would need
-to take the difference between the starting and ending times.</li>
-<li>You may need to combine data from multiple columns in a database
-table. For example, the customer&#8217;s first and last names may be stored in
-different columns, but you need their full name combined together.</li>
+<li>The capability to flag a cursor as read-only so that data can be
+read but not updated or deleted</li>
+<li>The capability to control the directional operations that can be
+performed (forward, backward, first, last, absolute position, relative
+position, and so on)</li>
+<li>The capability to flag some columns as editable and others as not
+editable</li>
+<li>Scope specification so as to be able to make the cursor accessible
+to the specific request that created it (a function or procedure, for
+example) or to all requests</li>
+<li>Instructing the DBMS to make a copy of the retrieved data (as
+opposed to pointing to the live data in the table) so that data does not
+change between the time the cursor is opened and the time it is
+accessed</li>
 </ul>
-<p>In both of these cases, you could use a calculated field to perform
-the needed manipulation. A calculated field is a column that is created
-by the query when it is executed. Because of this, it appears in the
-query result, but it is not stored in the database table. This has an
-important benefit. If any of the underlying data were to change, the
-calculated field would be refreshed when the query is executed
-again.</p>
-<div class="term">
+<p>PostgreSQL supports most of these: cursors can be marked SCROLL (to
+allow backward movement and jumping to arbitrary positions) or NO SCROLL
+(forward-only), and can be declared WITH HOLD so that they remain open
+beyond the transaction that created them.</p>
+<p>Cursors are used primarily by interactive applications in which users
+need to scroll up and down through screens of data, browsing or making
+changes.</p>
+<h2 data-number="25.1" id="working-with-cursors"><span
+class="header-section-number">25.1</span> Working with Cursors</h2>
+<p>Using cursors involves several distinct steps:</p>
+<ul>
+<li>Before a cursor can be used, it must be declared (defined). This
+process does not actually retrieve any data; it merely defines the
+SELECT statement to be used and any cursor options.</li>
+<li>Once it is declared, the cursor must be opened for use. This process
+actually retrieves the data using the previously defined SELECT
+statement.</li>
+<li>With the cursor populated with data, individual rows can be fetched
+(retrieved) as needed.</li>
+<li>When it is done, the cursor must be closed.</li>
+</ul>
+<p>Once a cursor is declared, it may be opened and closed as often as
+needed. Once it is open, fetch operations can be performed as often as
+needed.</p>
+<div class="caution">
 <blockquote>
-<p><strong>Calculated Field</strong> &#8212; A column in a query result that
-contains the results of an algorithm used to manipulate the data stored
-in the database.</p>
+<p><strong>Caution: Cursors Live Inside Transactions.</strong> In
+PostgreSQL, a cursor only exists within a transaction (unless it was
+declared WITH HOLD). This means the entire declare-open-fetch-close
+sequence for a plain SQL cursor must happen inside a BEGIN&#8230;COMMIT block,
+as described in the previous lesson on transaction processing.</p>
 </blockquote>
 </div>
-<p>A calculated field is used as part of the SELECT clause of the SQL
-statement. Any of the columns in the database table outlined in the FROM
-clause can be used as part of a calculated field, even if the column is
-not used elsewhere in the SELECT clause. You can have as many calculated
-fields in a query as you need.</p>
-<div class="note">
-<blockquote>
-<p><strong>Note: Fields and Columns.</strong> Often the terms &#8216;column&#8217;
-and &#8216;field&#8217; are used interchangeably. Technically, column refers to the
-values that are stored in the database and a field is calculated and
-appears only in the query result. You will likely find even the most
-experienced SQL programmers will refer to both as columns or fields.</p>
-</blockquote>
-</div>
-<p>There are a couple of important things to keep in mind about
-calculated fields. First, calculated fields are performed on every row
-of the query result. This means that you will have a separate value for
-each row of the calculated field based on the other values in that row.
-You will learn how to create calculations across the rows of a query
-result in a later lesson. Second, because the SELECT clause is executed
-before the ORDER BY clause, you can sort the query result by the values
-in the calculated field. Third, you can manipulate a query result in a
-separate application, but it is often easier to use a calculated field
-in the query to do so.</p>
-<h2 data-number="9.2" id="performing-mathematical-calculations"><span
-class="header-section-number">9.2</span> Performing Mathematical
-Calculations</h2>
-<p>Calculated fields can be used to perform arithmetic on the values in
-database tables. You can use the standard mathematical operations below
-in your calculations. When using multiple operators, the standard order
-of operations applies (multiplication and division will be completed
-before addition and subtraction). You can also use parentheses to ensure
-different ordering of calculations. Calculated fields can use the values
-from a single column or multiple columns at the same time.</p>
-<h4 data-number="9.2.0.1" id="mathematical-operators-used-in-sql"><span
-class="header-section-number">9.2.0.1</span> Mathematical Operators Used
-in SQL</h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: center;">Operator</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center;"><code>+</code></td>
-<td>Addition</td>
-</tr>
-<tr>
-<td style="text-align: center;"><code>-</code></td>
-<td>Subtraction</td>
-</tr>
-<tr>
-<td style="text-align: center;"><code>*</code></td>
-<td>Multiplication</td>
-</tr>
-<tr>
-<td style="text-align: center;"><code>/</code></td>
-<td>Division</td>
-</tr>
-</tbody>
-</table>
-<p>Suppose you want to list the artists and calculate the age of each at
-their death. This can be calculated as the difference between their
-birth year and their death year (of course this is not necessarily their
-exact age as an artist may die before their birthday in the year of
-their death). You can use a chat with an AI assistant to create the
-SELECT statement that will do this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write an SQL statement to list the artists and
-the difference between their death and birth.</p>
-<p><strong>AI:</strong> To list the artists and the difference between
-their death and birth, you can use the following SQL statement:</p>
+<h2 data-number="25.2" id="creating-cursors"><span
+class="header-section-number">25.2</span> Creating Cursors</h2>
+<p>To demonstrate cursors, we&#8217;ll create one that retrieves all museums
+without a website on file, as part of an application enabling an
+operator to fill in the missing websites one at a time.</p>
+<p>PostgreSQL actually supports two related but distinct forms of
+cursor. The first is a plain SQL cursor, declared and used directly in a
+transaction:</p>
 <div class="sourceCode" id="cb1"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, (death <span class="op">-</span> birth) <span class="kw">AS</span> age_difference</span>
-<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
-<p>This query selects the full_name column from the artist table and
-calculates the difference between the death and birth columns using
-(death - birth). The calculated difference is aliased as age_difference.
-The result will show the names of artists and the calculated age
-difference between their death and birth.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="cf">BEGIN</span>;</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="kw">DECLARE</span> museum_cursor <span class="kw">CURSOR</span> <span class="cf">FOR</span></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a>    <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> museum <span class="kw">WHERE</span> url <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code></pre></div>
+<p>Notice that, at this top level, DECLARE both defines and opens the
+cursor in a single step &#8212; there is no separate OPEN statement here. The
+cursor is now ready to be fetched from.</p>
+<p>The second form is used inside PL/pgSQL &#8212; the procedural language you
+used in the lesson on stored procedures &#8212; such as within a function, a
+procedure, or a one-off anonymous code block. There, DECLARE only
+defines the cursor; it must still be opened explicitly with OPEN,
+matching the full declare-open-fetch-close lifecycle described above.
+The rest of this lesson focuses on this PL/pgSQL form, since it
+demonstrates every step of that lifecycle.</p>
+<h2 data-number="25.3" id="using-cursors-1"><span
+class="header-section-number">25.3</span> Using Cursors</h2>
+<p>The following anonymous PL/pgSQL block declares the same cursor,
+opens it, fetches a single row from it, and closes it again:</p>
 <div class="sourceCode" id="cb2"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, (death <span class="op">-</span> birth) <span class="kw">AS</span> age_difference</span>
-<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
-<p>Notice that the arithmetic in this calculated field involves two
-columns from the artist table. The calculated field subtracts the birth
-year from the death year. You will also notice some additional syntax
-after the calculation. This is used to assign an alias, or name, to the
-calculated field. This will be discussed in the next section. The
-resulting calculation approximates the artists&#8217; age at their death.
-Notice that the calculation is completed separately for each artist.</p>
-<h2 data-number="9.3" id="using-aliases"><span
-class="header-section-number">9.3</span> Using Aliases</h2>
-<p>Since a calculated field manipulates the data in one or more columns
-of the database table, it is unclear what the name of the column should
-be. Often the DBMS will return the calculated values without a column
-name. If all you need is to see the calculated values, this is not a big
-deal. If you want to sort the query results by the calculated values or
-use them in a different application, you will need to create a name for
-the calculated column.</p>
-<p>SQL allows you to create an alias, or a column name, for the
-calculated field. The syntax for creating an alias to a column involves
-adding the keyword AS followed by the name you&#8217;d like to use for the
-column. In the above example, the calculated field could be named &#8220;age&#8221;
-using this syntax.</p>
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a>DO $$</span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">DECLARE</span></span>
+<span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a>    museum_cursor <span class="kw">CURSOR</span> <span class="cf">FOR</span></span>
+<span id="cb2-4"><a aria-hidden="true" href="#cb2-4" tabindex="-1"></a>        <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> museum <span class="kw">WHERE</span> url <span class="kw">IS</span> <span class="kw">NULL</span>;</span>
+<span id="cb2-5"><a aria-hidden="true" href="#cb2-5" tabindex="-1"></a>    museum_record museum<span class="dt">%ROWTYPE</span>;</span>
+<span id="cb2-6"><a aria-hidden="true" href="#cb2-6" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb2-7"><a aria-hidden="true" href="#cb2-7" tabindex="-1"></a>    <span class="kw">OPEN</span> museum_cursor;</span>
+<span id="cb2-8"><a aria-hidden="true" href="#cb2-8" tabindex="-1"></a>    FETCH museum_cursor <span class="kw">INTO</span> museum_record;</span>
+<span id="cb2-9"><a aria-hidden="true" href="#cb2-9" tabindex="-1"></a>    <span class="kw">CLOSE</span> museum_cursor;</span>
+<span id="cb2-10"><a aria-hidden="true" href="#cb2-10" tabindex="-1"></a><span class="cf">END</span> $$;</span></code></pre></div>
+<p>In this example, museum_cursor is declared in the DECLARE section
+along with a variable, museum_record, typed as
+<code>museum%ROWTYPE</code> (a row with the same shape as a row of the
+museum table). The BEGIN&#8230;END block then opens the cursor, uses FETCH to
+retrieve the current row (it starts at the first row automatically) into
+museum_record, and closes the cursor. Nothing is done with the retrieved
+data.</p>
+<p>In the next example, the retrieved data is looped through from the
+first row to the last:</p>
 <div class="sourceCode" id="cb3"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, death <span class="op">-</span> birth <span class="kw">AS</span> age</span>
-<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> age;</span></code></pre></div>
-<p>Notice the syntax of the SELECT clause. The calculated field is
-followed by the keyword AS and the alias, &#8220;age&#8221;. Notice that the alias
-age is also used to sort the query result. Because the ORDER BY clause
-processes after the SELECT clause, the name age can be used to define
-the sort column for the ORDER BY clause. The query results will be
-sorted by the age of the artists from the youngest to the oldest.</p>
-<div class="term">
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a>DO $$</span>
+<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">DECLARE</span></span>
+<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a>    museum_cursor <span class="kw">CURSOR</span> <span class="cf">FOR</span></span>
+<span id="cb3-4"><a aria-hidden="true" href="#cb3-4" tabindex="-1"></a>        <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> museum <span class="kw">WHERE</span> url <span class="kw">IS</span> <span class="kw">NULL</span>;</span>
+<span id="cb3-5"><a aria-hidden="true" href="#cb3-5" tabindex="-1"></a>    museum_record museum<span class="dt">%ROWTYPE</span>;</span>
+<span id="cb3-6"><a aria-hidden="true" href="#cb3-6" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb3-7"><a aria-hidden="true" href="#cb3-7" tabindex="-1"></a>    <span class="kw">OPEN</span> museum_cursor;</span>
+<span id="cb3-8"><a aria-hidden="true" href="#cb3-8" tabindex="-1"></a>    <span class="cf">LOOP</span></span>
+<span id="cb3-9"><a aria-hidden="true" href="#cb3-9" tabindex="-1"></a>        FETCH museum_cursor <span class="kw">INTO</span> museum_record;</span>
+<span id="cb3-10"><a aria-hidden="true" href="#cb3-10" tabindex="-1"></a>        EXIT <span class="cf">WHEN</span> <span class="kw">NOT</span> FOUND;</span>
+<span id="cb3-11"><a aria-hidden="true" href="#cb3-11" tabindex="-1"></a>        <span class="co">-- process museum_record here</span></span>
+<span id="cb3-12"><a aria-hidden="true" href="#cb3-12" tabindex="-1"></a>    <span class="cf">END</span> <span class="cf">LOOP</span>;</span>
+<span id="cb3-13"><a aria-hidden="true" href="#cb3-13" tabindex="-1"></a>    <span class="kw">CLOSE</span> museum_cursor;</span>
+<span id="cb3-14"><a aria-hidden="true" href="#cb3-14" tabindex="-1"></a><span class="cf">END</span> $$;</span></code></pre></div>
+<p>Like the previous example, this example uses FETCH to retrieve the
+current row into museum_record. Unlike the previous example, the FETCH
+here is within a LOOP so that it is repeated over and over. PostgreSQL
+automatically sets a special boolean, FOUND, after every FETCH &#8212; true if
+a row was retrieved, false if there were no more rows left. The line
+<code>EXIT WHEN NOT FOUND;</code> uses this to terminate the loop
+(exiting it) once the cursor is exhausted. This example also does no
+actual processing; in real-world code you&#8217;d replace the
+<code>-- process museum_record here</code> comment with your own logic &#8212;
+for example, code that prompts an operator for a website and issues an
+UPDATE for that row.</p>
+<div class="tip">
 <blockquote>
-<p><strong>Alias</strong> &#8212; An alias is used to specify the name of a
-database column.</p>
+<p><strong>Tip: FETCH Directions.</strong> The examples above always
+fetch the next row. PostgreSQL&#8217;s FETCH also supports FIRST, LAST,
+ABSOLUTE count, RELATIVE count, FORWARD count, and BACKWARD count,
+letting you move through a cursor&#8217;s result set in more than one
+direction &#8212; provided the cursor was declared SCROLL rather than the
+default NO SCROLL.</p>
 </blockquote>
 </div>
-<p>There are a few things to keep in mind about using aliases.</p>
-<ol type="1">
-<li>Using aliases is optional for calculated fields, but it is a best
-practice even if you don&#8217;t need the calculated field to have a column
-name.</li>
-<li>Aliases can be a single word or multiple words. If an alias contains
-spaces, the entire alias must be enclosed in single quotes. Although it
-is possible, it is best practice to not use spaces in an alias.</li>
-<li>You can use an alias to rename <em>any</em> column name, even a
-column that exists in the database table. If you create an alias for an
-existing column, the new name applies to the query. It won&#8217;t change the
-name of the column in the underlying database table.</li>
-</ol>
-<h2 data-number="9.4" id="concatenating-fields"><span
-class="header-section-number">9.4</span> Concatenating Fields</h2>
-<p>The term &#8220;calculated field&#8221; implies math. You&#8217;ve already seen how to
-use a calculated field to perform arithmetic on the numeric values in a
-query result. However, calculated fields can also be used to manipulate
-text. Perhaps the most common way to manipulate text involves joining
-text together into a single value. When you join text, you concatenate
-it.</p>
-<div class="term">
-<blockquote>
-<p><strong>Concatenate</strong> &#8212; Joining separate text values together
-into a single value.</p>
-</blockquote>
-</div>
-<p>To concatenate text into a single value, you use the double pipe &#8220;||&#8221;
-operator. To concatenate the text &#8220;Hello&#8221; and &#8220;World&#8221; together, the
-syntax would be: <code>'Hello' || ' ' || 'World'</code>. In this
-example, three text values are concatenated:</p>
-<ol type="1">
-<li>The word &#8220;Hello&#8221;</li>
-<li>a single space</li>
-<li>The word &#8220;World&#8221;</li>
-</ol>
-<p>The result of the concatenation is &#8220;Hello World&#8221;. You can also
-concatenate text values from columns in a database.</p>
-<p>Suppose you want to list the artists by concatenating the full name
-of the artist with their nationality in parentheses. You will use the
-alias artist_and_nationality for the calculated field. You can use a
-chat with an AI assistant to create the SELECT statement that will do
-this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write an SQL statement that will work in your
-database platform that lists the artists concatenated with their
-nationality in parentheses. Name the column artist_and_nationality.</p>
-<p><strong>AI:</strong> Sure. Here&#8217;s the SQL statement for your database
-platform that lists the artists concatenated with their nationality in
-parentheses, and names the column as artist_and_nationality:</p>
+<h2 data-number="25.4" id="closing-cursors"><span
+class="header-section-number">25.4</span> Closing Cursors</h2>
+<p>As already mentioned and seen in the previous examples, cursors need
+to be closed after they have been used:</p>
 <div class="sourceCode" id="cb4"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name <span class="op">||</span> <span class="st">&#39; (&#39;</span> <span class="op">||</span> nationality <span class="op">||</span> <span class="st">&#39;)&#39;</span> <span class="kw">as</span> artist_and_nationality</span>
-<span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
-<p>In your database platform, you can use the || operator for
-concatenation. The query will return a list of artists with their
-respective nationalities in the format &#8220;Full Name (Nationality)&#8221; under
-the column name artist_and_nationality.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name <span class="op">||</span> <span class="st">&#39; (&#39;</span> <span class="op">||</span> nationality <span class="op">||</span> <span class="st">&#39;)&#39;</span> <span class="kw">as</span> artist_and_nationality</span>
-<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
-<p>The syntax for the concatenation may seem a little complicated. In
-this case, there are four different text values that are concatenated
-into a single value for each row. These are:</p>
-<ol type="1">
-<li><strong>full_name:</strong> the value for the full name of the
-artist from the database table.</li>
-<li><strong>&#8217; (&#8217;:</strong> a literal (fixed) text value of a space and
-an open parenthesis.</li>
-<li><strong>nationality:</strong> the value for the artists&#8217; nationality
-from the database table.</li>
-<li><strong>&#8216;)&#8217;:</strong> a literal text value of a close
-parenthesis.</li>
-</ol>
-<p>Notice that each text element is concatenated using the double pipe
-&#8220;||&#8221; operator. The result of the calculated field is a single text value
-for each artist that contains the artists&#8217; full name followed by their
-nationality in parentheses. The calculated field is named
-artist_and_nationality using the keyword AS.</p>
-<div class="note">
-<blockquote>
-<p><strong>Note: Concatenation in PostgreSQL.</strong> PostgreSQL uses
-the double pipe &#8220;||&#8221; operator to concatenate text values. (If you ever
-work with a different DBMS, be aware that some &#8212; like SQL Server &#8212; use a
-&#8220;+&#8221; operator instead, and others use a function rather than an
-operator.) Using functions to manipulate data in a query will be
-discussed in the next lesson.</p>
-</blockquote>
-</div>
-<h2 data-number="9.5" id="summary"><span
-class="header-section-number">9.5</span> Summary</h2>
-<p>In this lesson, you learned how to manipulate data in a query using
-calculated fields. Calculated fields can perform arithmetic or
-manipulate text. They are helpful, because the data may not be stored in
-the database in a way that it can be directly used to meet your needs.
-Using a calculated field alters the data in the query results, but does
-not affect the underlying data in the database table.</p>
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">CLOSE</span> museum_cursor;</span></code></pre></div>
+<p>The CLOSE statement is used to close cursors; once a cursor is
+closed, it cannot be reused without being opened again (for a plain SQL
+cursor, that means running DECLARE again; for a PL/pgSQL cursor, an OPEN
+statement is sufficient). Unlike some other DBMSs, PostgreSQL does not
+require a separate step to deallocate the resources used by a cursor &#8212;
+closing it (or simply letting the enclosing transaction end) is
+enough.</p>
+<h2 data-number="25.5" id="summary"><span
+class="header-section-number">25.5</span> Summary</h2>
+<p>In this lesson, you were introduced to cursors, what they are, and
+why they are used. You saw that PostgreSQL supports both a simple,
+auto-opening form of cursor for use directly inside a transaction, and a
+more explicit declare-open-fetch-close form for use inside PL/pgSQL
+functions, procedures, and anonymous code blocks. Refer to the
+PostgreSQL documentation for more details.</p>
 <!--postEnd-->
               </div>
 </div>
@@ -1159,8 +1074,8 @@ not affect the underlying data in the database table.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZo1TcmxCn_2m6qwt-96CuKZ:1784899981429';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/9.html','3986204447440040189');
-_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/9.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/9.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/8368931250453884008/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '8368931250453884008', 'pageName': '9. Creating Calculated Fields', 'pageTitle': 'book1014 SQL: 9. Creating Calculated Fields'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '9. Creating Calculated Fields', 'description': '9  Creating Calculated Fields \r Objectives.  After completing this lesson, the\r successful student will be able to: \r \r Create calculated fi...', 'url': 'https://book1014.blogspot.com/2000/02/9.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 8368931250453884008}}]);
+window['__wavt'] = 'AEUoTZqD5lO9NKnkLCsU5VMGvRyI:1784899992225';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/25.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/25.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/25.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/962522291906036430/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '962522291906036430', 'pageName': '25. Using Cursors', 'pageTitle': 'book1014 SQL: 25. Using Cursors'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '25. Using Cursors', 'description': '25  Using Cursors \r Objectives.  After completing this lesson, the\r successful student will be able to: \r \r Describe what a cursor is and wh...', 'url': 'https://book1014.blogspot.com/2000/02/25.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 962522291906036430}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>
 </body>

@@ -4,7 +4,7 @@
 <link href='https://www.blogger.com/static/v1/widgets/2872013778-css_bundle_v2.css' rel='stylesheet' type='text/css'/>
 <meta charset='UTF-8'/>
 <meta content='width=device-width, initial-scale=1' name='viewport'/>
-<title>book1011</title>
+<title>book1014 SQL</title>
 <!-- external libraries -->
 <script src='https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js'></script>
 <script src='https://unpkg.com/turndown/dist/turndown.js'></script>
@@ -460,11 +460,55 @@ line-height: 1;
 }
 blockquote{
 margin:1.75rem 0;
-padding:1rem 1.25rem 1rem 1.35rem;
 background:var(--surface-soft);
 border-left:.35rem solid var(--accent);
+padding:1rem 1.25rem 1rem 1.35rem;
 border-radius:0 var(--radius-md) var(--radius-md) 0;
 color:#334155;
+}
+.note blockquote{
+background:#E8F5E9;
+border-left:.35rem solid darkgreen;
+}
+.note blockquote p::before {
+content: "Note: ";
+font-weight: bold;
+}
+.tip blockquote{
+background:#F3E5F5;
+border-left:.35rem solid purple;
+}
+.tip blockquote p::before {
+content: "Tip: ";
+font-weight: bold;
+}
+.term blockquote{
+background:#E3EDF7;
+border-left:.35rem solid darkblue;
+}
+.term blockquote p::before {
+content: "Term: ";
+font-weight: bold;
+}
+.caution blockquote{
+background:#FFE2E2;
+border-left:.35rem solid red;
+}
+.caution blockquote p::before {
+content: "Caution: ";
+font-weight: bold;
+}
+.objectives blockquote{
+background:#FFF8E1;
+border-left:.35rem solid gold;
+}
+.review blockquote{
+background:#FFF0EC;
+border-left:.35rem solid salmon;
+}
+.review blockquote p::before {
+content: "Review: ";
+font-weight: bold;
 }
 blockquote p:last-child{
 margin-bottom:0;
@@ -543,7 +587,7 @@ color:#fbbf24;
 color:#94a3b8;
 font-style:italic;
 }
-table{
+table.blog{
 display:block;
 width:max-content;
 max-width:100%;
@@ -557,24 +601,24 @@ border-radius:var(--radius-md);
 box-shadow:var(--shadow-sm);
 background:var(--surface);
 }
-th,
-td{
+th.blog,
+td.blog{
 padding:.72rem .85rem;
 border-bottom:1px solid var(--border);
 text-align:left;
 vertical-align:top;
 white-space:nowrap;
 }
-th{
+th.blog{
 font-size:.86rem;
 font-weight:700;
 color:var(--heading);
 background:var(--surface-soft);
 }
-tr:last-child td{
+tr.blog:last-child td{
 border-bottom:0;
 }
-tr:nth-child(even) td{
+tr.blog:nth-child(even) td{
 background:#f8fafc;
 }
 .monaco {
@@ -782,7 +826,7 @@ right: .75rem;
     }    
 
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=1676106165289640444&amp;zx=6bdbd94f-4c00-46a7-9f85-9e3213cc543c' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=1676106165289640444&amp;zx=6bdbd94f-4c00-46a7-9f85-9e3213cc543c' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -799,228 +843,831 @@ right: .75rem;
 <article class='post'>
 <div id='msg-galley'></div>
 <div class='hide' id='kind'>toc</div>
-<div class='post-body entry-content' data-blog-id='1676106165289640444' data-label='toc' data-post-id='2544343228599002395'>
+<div class='post-body entry-content' data-blog-id='3986204447440040189' data-label='toc' data-post-id='163680765308664222'>
 <div style="display:none" id="toc-json">
 {
   "chapters": [
     {
       "label": "Chapter 1",
       "id": "1",
-      "text": "Welcome to Programming",
+      "text": "Introducing SQL",
       "sections": [
         {
-          "text": "1.1 What Programming Actually Is",
-          "id": "what-programming-actually-is"
-        },
-        {
-          "text": "1.2 How Computers Think",
-          "id": "how-computers-think"
-        },
-        {
-          "text": "1.3 Why JavaScript Is a Great First Language",
-          "id": "why-javascript-is-a-great-first-language"
-        },
-        {
-          "text": "1.4 How to Run JavaScript",
-          "id": "how-to-run-javascript"
+          "text": "1.1 The DBMS Used in This Book",
+          "id": "the-dbms-used-in-this-book"
         }
       ]
     },
     {
       "label": "Chapter 2",
       "id": "2",
-      "text": "Your First Lines of Code",
+      "text": "Understanding SQL",
       "sections": [
         {
-          "text": "2.1 Writing and Running Simple Statements",
-          "id": "writing-and-running-simple-statements"
+          "text": "2.1 What is a database?",
+          "id": "what-is-a-database"
         },
         {
-          "text": "2.2 console.log() and Basic Output",
-          "id": "console.log-and-basic-output"
+          "text": "2.2 &#8220;Key&#8221; Columns",
+          "id": "key-columns"
         },
         {
-          "text": "2.3 Understanding Errors and Debugging Early",
-          "id": "understanding-errors-and-debugging-early"
+          "text": "2.3 What Is Structured Query Language (SQL)?",
+          "id": "what-is-structured-query-language-sql"
         },
         {
-          "text": "2.4 The Idea of Syntax and Structure",
-          "id": "the-idea-of-syntax-and-structure"
-        },
-        {
-          "text": "2.5 Transitioning to Google Apps Script in Google Sheets",
-          "id": "transitioning-to-google-apps-script-in-google-sheets"
+          "text": "2.4 Summary",
+          "id": "summary"
         }
       ]
     },
     {
       "label": "Chapter 3",
       "id": "3",
-      "text": "Getting Started with Google Apps Script in Google Sheets",
+      "text": "Designing Database Tables",
       "sections": [
         {
-          "text": "3.1 Welcome to Google Sheets as a Programming Environment",
-          "id": "welcome-to-google-sheets-as-a-programming-environment"
+          "text": "3.1 Designing Database Tables",
+          "id": "designing-database-tables-1"
         },
         {
-          "text": "3.2 Opening the Apps Script Editor",
-          "id": "opening-the-apps-script-editor"
+          "text": "3.2 The Business Model",
+          "id": "the-business-model"
+        },
+        {
+          "text": "3.3 The Database Model",
+          "id": "the-database-model"
+        },
+        {
+          "text": "3.4 Building Database Tables",
+          "id": "building-database-tables"
+        },
+        {
+          "text": "3.5 Summary",
+          "id": "summary"
         }
       ]
     },
     {
       "label": "Chapter 4",
       "id": "4",
-      "text": "Variables and Data",
+      "text": "Retrieving Data",
       "sections": [
         {
-          "text": "4.1 What Variables Are and Why They Matter",
-          "id": "what-variables-are-and-why-they-matter"
+          "text": "4.1 The SELECT Statement",
+          "id": "the-select-statement"
         },
         {
-          "text": "4.2 Primitive Types: Strings, Numbers, Booleans",
-          "id": "primitive-types-strings-numbers-booleans"
+          "text": "4.2 Creating Queries",
+          "id": "creating-queries"
         },
         {
-          "text": "4.3 Working With Variables in Apps Script",
-          "id": "working-with-variables-in-apps-script"
+          "text": "4.3 Retrieving a Single Column",
+          "id": "retrieving-a-single-column"
         },
         {
-          "text": "4.4 Working With Text and Numbers",
-          "id": "working-with-text-and-numbers"
+          "text": "4.4 Retrieving Multiple Columns",
+          "id": "retrieving-multiple-columns"
         },
         {
-          "text": "4.5 Naming Conventions and Best Practices",
-          "id": "naming-conventions-and-best-practices"
+          "text": "4.5 Retrieving All Columns",
+          "id": "retrieving-all-columns"
+        },
+        {
+          "text": "4.6 Removing Duplicate Rows",
+          "id": "removing-duplicate-rows"
+        },
+        {
+          "text": "4.7 Using Comments",
+          "id": "using-comments"
+        },
+        {
+          "text": "4.8 Summary",
+          "id": "summary"
         }
       ]
     },
     {
       "label": "Chapter 5",
       "id": "5",
-      "text": "Making Decisions",
+      "text": "Sorting Retrieved Data",
       "sections": [
         {
-          "text": "5.1 if, else if, else",
-          "id": "if-else-if-else"
+          "text": "5.1 Sorting Data",
+          "id": "sorting-data"
         },
         {
-          "text": "5.2 Comparison and Logical Operators",
-          "id": "comparison-and-logical-operators"
+          "text": "5.2 Setting the Sort Direction",
+          "id": "setting-the-sort-direction"
         },
         {
-          "text": "5.3 Real&#8209;World Examples of Decision&#8209;Making in Apps Script",
-          "id": "realworld-examples-of-decisionmaking-in-apps-script"
+          "text": "5.3 Sorting by Multiple Columns",
+          "id": "sorting-by-multiple-columns"
+        },
+        {
+          "text": "5.4 Sorting by Column Position",
+          "id": "sorting-by-column-position"
+        },
+        {
+          "text": "5.5 Limiting Results",
+          "id": "limiting-results"
+        },
+        {
+          "text": "5.6 Summary",
+          "id": "summary"
         }
       ]
     },
     {
       "label": "Chapter 6",
       "id": "6",
-      "text": "Arrays",
+      "text": "Filtering Data",
       "sections": [
         {
-          "text": "6.1 Why Arrays Matter in Apps Script",
-          "id": "why-arrays-matter-in-apps-script"
+          "text": "6.1 Using the WHERE Clause",
+          "id": "using-the-where-clause"
         },
         {
-          "text": "6.2 Understanding Arrays",
-          "id": "understanding-arrays"
+          "text": "6.2 The WHERE Clause Operators",
+          "id": "the-where-clause-operators"
         },
         {
-          "text": "6.3 Arrays and Google Sheets",
-          "id": "arrays-and-google-sheets"
+          "text": "6.3 Checking Against a Single Value",
+          "id": "checking-against-a-single-value"
         },
         {
-          "text": "6.4 Writing Arrays Back to the Worksheet",
-          "id": "writing-arrays-back-to-the-worksheet"
+          "text": "6.4 Checking for Nonmatches",
+          "id": "checking-for-nonmatches"
+        },
+        {
+          "text": "6.5 Checking for a Range of Values",
+          "id": "checking-for-a-range-of-values"
+        },
+        {
+          "text": "6.6 Checking for No Value",
+          "id": "checking-for-no-value"
+        },
+        {
+          "text": "6.7 Summary",
+          "id": "summary"
         }
       ]
     },
     {
       "label": "Chapter 7",
       "id": "7",
-      "text": "Loops and Repetition",
+      "text": "Advanced Data Filtering",
       "sections": [
         {
-          "text": "7.1 Why Loops Matter",
-          "id": "why-loops-matter"
+          "text": "7.1 Combining WHERE Clauses",
+          "id": "combining-where-clauses"
         },
         {
-          "text": "7.2 The while Loop",
-          "id": "the-while-loop"
+          "text": "7.2 Using the AND Operator",
+          "id": "using-the-and-operator"
         },
         {
-          "text": "7.3 Example: Using a while Loop to Process data in a Sheet",
-          "id": "example-using-a-while-loop-to-process-data-in-a-sheet"
+          "text": "7.3 Using the OR Operator",
+          "id": "using-the-or-operator"
         },
         {
-          "text": "7.4 The for Loop",
-          "id": "the-for-loop"
+          "text": "7.4 Understanding Order of Evaluation",
+          "id": "understanding-order-of-evaluation"
+        },
+        {
+          "text": "7.5 Using the IN Operator",
+          "id": "using-the-in-operator"
+        },
+        {
+          "text": "7.6 Using the NOT Operator",
+          "id": "using-the-not-operator"
+        },
+        {
+          "text": "7.7 Summary",
+          "id": "summary"
         }
       ]
     },
     {
       "label": "Chapter 8",
       "id": "8",
-      "text": "College Community Garden: Case setup",
+      "text": "Using Wildcard Filtering",
       "sections": [
         {
-          "text": "8.1 Introduction",
-          "id": "introduction"
+          "text": "8.1 Using the LIKE Operator",
+          "id": "using-the-like-operator"
         },
         {
-          "text": "8.2 The founder&#8217;s realization",
-          "id": "the-founders-realization"
+          "text": "8.2 The Percent Sign (%) Wildcard",
+          "id": "the-percent-sign-wildcard"
         },
         {
-          "text": "8.3 Pitching the idea",
-          "id": "pitching-the-idea"
+          "text": "8.3 The Underscore (_) Wildcard",
+          "id": "the-underscore-_-wildcard"
         },
         {
-          "text": "8.4 The Club&#8217;s Mission Takes Shape, and You Step Up",
-          "id": "the-clubs-mission-takes-shape-and-you-step-up"
+          "text": "8.4 Matching a Set of Characters with SIMILAR TO",
+          "id": "matching-a-set-of-characters-with-similar-to"
         },
         {
-          "text": "8.5 Your &#8220;Aha!&#8221; Moment: Apps Script to the Rescue",
-          "id": "your-aha-moment-apps-script-to-the-rescue"
-        },
-        {
-          "text": "8.6 Setting the Stage for Automation &#8211; With Your Help",
-          "id": "setting-the-stage-for-automation-with-your-help"
+          "text": "8.5 Summary",
+          "id": "summary"
         }
       ]
     },
     {
       "label": "Chapter 9",
       "id": "9",
-      "text": "Introduction to Google Forms",
-      "sections": []
+      "text": "Creating Calculated Fields",
+      "sections": [
+        {
+          "text": "9.1 Understanding Calculated Fields",
+          "id": "understanding-calculated-fields"
+        },
+        {
+          "text": "9.2 Performing Mathematical Calculations",
+          "id": "performing-mathematical-calculations"
+        },
+        {
+          "text": "9.3 Using Aliases",
+          "id": "using-aliases"
+        },
+        {
+          "text": "9.4 Concatenating Fields",
+          "id": "concatenating-fields"
+        },
+        {
+          "text": "9.5 Summary",
+          "id": "summary"
+        }
+      ]
+    },
+    {
+      "label": "Chapter 10",
+      "id": "10",
+      "text": "Using Data Manipulation Functions",
+      "sections": [
+        {
+          "text": "10.1 Understanding Functions",
+          "id": "understanding-functions"
+        },
+        {
+          "text": "10.2 Using Functions",
+          "id": "using-functions"
+        },
+        {
+          "text": "10.3 Text Manipulation Functions",
+          "id": "text-manipulation-functions"
+        },
+        {
+          "text": "10.4 Date and Time Manipulation Functions",
+          "id": "date-and-time-manipulation-functions"
+        },
+        {
+          "text": "10.5 Numeric Manipulation Functions",
+          "id": "numeric-manipulation-functions"
+        },
+        {
+          "text": "10.6 Summary",
+          "id": "summary"
+        }
+      ]
+    },
+    {
+      "label": "Chapter 11",
+      "id": "11",
+      "text": "Summarizing Data",
+      "sections": [
+        {
+          "text": "11.1 Using Aggregate Functions",
+          "id": "using-aggregate-functions"
+        },
+        {
+          "text": "11.2 The SUM Function",
+          "id": "the-sum-function"
+        },
+        {
+          "text": "11.3 The AVG Function",
+          "id": "the-avg-function"
+        },
+        {
+          "text": "11.4 The COUNT Function",
+          "id": "the-count-function"
+        },
+        {
+          "text": "11.5 The MAX Function",
+          "id": "the-max-function"
+        },
+        {
+          "text": "11.6 The MIN Function",
+          "id": "the-min-function"
+        },
+        {
+          "text": "11.7 Aggregates on Distinct Values",
+          "id": "aggregates-on-distinct-values"
+        },
+        {
+          "text": "11.8 Combining Aggregate Functions",
+          "id": "combining-aggregate-functions"
+        },
+        {
+          "text": "11.9 Summary",
+          "id": "summary"
+        }
+      ]
+    },
+    {
+      "label": "Chapter 12",
+      "id": "12",
+      "text": "Grouping Data",
+      "sections": [
+        {
+          "text": "12.1 Understanding Data Grouping",
+          "id": "understanding-data-grouping"
+        },
+        {
+          "text": "12.2 Creating Groups",
+          "id": "creating-groups"
+        },
+        {
+          "text": "12.3 Filtering Groups",
+          "id": "filtering-groups"
+        },
+        {
+          "text": "12.4 Select Statement Clause Listing Order and Execution Order",
+          "id": "select-statement-clause-listing-order-and-execution-order"
+        },
+        {
+          "text": "12.5 Summary",
+          "id": "summary"
+        }
+      ]
+    },
+    {
+      "label": "Chapter 13",
+      "id": "13",
+      "text": "Working with Subqueries",
+      "sections": [
+        {
+          "text": "13.1 Understanding Subqueries",
+          "id": "understanding-subqueries"
+        },
+        {
+          "text": "13.2 Filtering by Subquery",
+          "id": "filtering-by-subquery"
+        },
+        {
+          "text": "13.3 Using Subqueries as Calculated Fields",
+          "id": "using-subqueries-as-calculated-fields"
+        },
+        {
+          "text": "13.4 Summary",
+          "id": "summary"
+        }
+      ]
+    },
+    {
+      "label": "Chapter 14",
+      "id": "14",
+      "text": "Table Relationships and Cardinality",
+      "sections": [
+        {
+          "text": "14.1 Review: The Business Model of a Database",
+          "id": "review-the-business-model-of-a-database"
+        },
+        {
+          "text": "14.2 Relationships Between Tables",
+          "id": "relationships-between-tables"
+        },
+        {
+          "text": "14.3 Cardinality",
+          "id": "cardinality"
+        },
+        {
+          "text": "14.4 Maximum Cardinality Types",
+          "id": "maximum-cardinality-types"
+        },
+        {
+          "text": "14.5 Relationships in the Museum Business Model",
+          "id": "relationships-in-the-museum-business-model"
+        },
+        {
+          "text": "14.6 Summary",
+          "id": "summary"
+        }
+      ]
+    },
+    {
+      "label": "Chapter 15",
+      "id": "15",
+      "text": "Joining Tables",
+      "sections": [
+        {
+          "text": "15.1 Understanding Joins",
+          "id": "understanding-joins"
+        },
+        {
+          "text": "15.2 Understanding Relational Tables",
+          "id": "understanding-relational-tables"
+        },
+        {
+          "text": "15.3 Why Use Joins?",
+          "id": "why-use-joins"
+        },
+        {
+          "text": "15.4 Creating a Join",
+          "id": "creating-a-join"
+        },
+        {
+          "text": "15.5 The Importance of the WHERE Clause",
+          "id": "the-importance-of-the-where-clause"
+        },
+        {
+          "text": "15.6 Inner Joins",
+          "id": "inner-joins"
+        },
+        {
+          "text": "15.7 Joining Multiple Tables",
+          "id": "joining-multiple-tables"
+        },
+        {
+          "text": "15.8 Summary",
+          "id": "summary"
+        }
+      ]
+    },
+    {
+      "label": "Chapter 16",
+      "id": "16",
+      "text": "Advanced Joins",
+      "sections": [
+        {
+          "text": "16.1 Using Table Aliases",
+          "id": "using-table-aliases"
+        },
+        {
+          "text": "16.2 Using Different Join Types",
+          "id": "using-different-join-types"
+        },
+        {
+          "text": "16.3 Self Joins",
+          "id": "self-joins"
+        },
+        {
+          "text": "16.4 Natural Joins",
+          "id": "natural-joins"
+        },
+        {
+          "text": "16.5 Outer Joins",
+          "id": "outer-joins"
+        },
+        {
+          "text": "16.6 Using Joins with Aggregate Functions",
+          "id": "using-joins-with-aggregate-functions"
+        },
+        {
+          "text": "16.7 Using Joins and Join Conditions",
+          "id": "using-joins-and-join-conditions"
+        },
+        {
+          "text": "16.8 Summary",
+          "id": "summary"
+        }
+      ]
+    },
+    {
+      "label": "Chapter 17",
+      "id": "17",
+      "text": "Combining Queries",
+      "sections": [
+        {
+          "text": "17.1 Understanding Combined Queries",
+          "id": "understanding-combined-queries"
+        },
+        {
+          "text": "17.2 Creating Combined Queries",
+          "id": "creating-combined-queries"
+        },
+        {
+          "text": "17.3 Using UNION",
+          "id": "using-union"
+        },
+        {
+          "text": "17.4 UNION Rules",
+          "id": "union-rules"
+        },
+        {
+          "text": "17.5 Including or Eliminating Duplicate Rows",
+          "id": "including-or-eliminating-duplicate-rows"
+        },
+        {
+          "text": "17.6 Sorting Combined Query Results",
+          "id": "sorting-combined-query-results"
+        },
+        {
+          "text": "17.7 Summary",
+          "id": "summary"
+        }
+      ]
+    },
+    {
+      "label": "Chapter 18",
+      "id": "18",
+      "text": "Creating and Manipulating Tables",
+      "sections": [
+        {
+          "text": "18.1 Creating Tables",
+          "id": "creating-tables"
+        },
+        {
+          "text": "18.2 Deleting Tables",
+          "id": "deleting-tables"
+        },
+        {
+          "text": "18.3 Editing Tables",
+          "id": "editing-tables"
+        },
+        {
+          "text": "18.4 Summary",
+          "id": "summary"
+        }
+      ]
+    },
+    {
+      "label": "Chapter 19",
+      "id": "19",
+      "text": "Inserting Data",
+      "sections": [
+        {
+          "text": "19.1 Understanding Data Insertion",
+          "id": "understanding-data-insertion"
+        },
+        {
+          "text": "19.2 Inserting Complete Rows",
+          "id": "inserting-complete-rows"
+        },
+        {
+          "text": "19.3 Inserting Partial Rows",
+          "id": "inserting-partial-rows"
+        },
+        {
+          "text": "19.4 Inserting Retrieved Data",
+          "id": "inserting-retrieved-data"
+        },
+        {
+          "text": "19.5 Copying from One Table to Another",
+          "id": "copying-from-one-table-to-another"
+        },
+        {
+          "text": "19.6 Summary",
+          "id": "summary"
+        }
+      ]
+    },
+    {
+      "label": "Chapter 20",
+      "id": "20",
+      "text": "Updating and Deleting Data",
+      "sections": [
+        {
+          "text": "20.1 Updating Data",
+          "id": "updating-data"
+        },
+        {
+          "text": "20.2 Deleting Data",
+          "id": "deleting-data"
+        },
+        {
+          "text": "20.3 Guidelines for Updating and Deleting Data",
+          "id": "guidelines-for-updating-and-deleting-data"
+        },
+        {
+          "text": "20.4 Summary",
+          "id": "summary"
+        }
+      ]
+    },
+    {
+      "label": "Chapter 21",
+      "id": "21",
+      "text": "Database Modeling and Normalization",
+      "sections": [
+        {
+          "text": "21.1 Insertion, Update, and Deletion Anomalies",
+          "id": "insertion-update-and-deletion-anomalies"
+        },
+        {
+          "text": "21.2 Database Normalization",
+          "id": "database-normalization"
+        },
+        {
+          "text": "21.3 Summary",
+          "id": "summary"
+        }
+      ]
+    },
+    {
+      "label": "Chapter 22",
+      "id": "22",
+      "text": "Using Views",
+      "sections": [
+        {
+          "text": "22.1 Understanding Views",
+          "id": "understanding-views"
+        },
+        {
+          "text": "22.2 Why Use Views",
+          "id": "why-use-views"
+        },
+        {
+          "text": "22.3 View Rules and Restrictions",
+          "id": "view-rules-and-restrictions"
+        },
+        {
+          "text": "22.4 Creating Views",
+          "id": "creating-views"
+        },
+        {
+          "text": "22.5 Using Views to Simplify Complex Joins",
+          "id": "using-views-to-simplify-complex-joins"
+        },
+        {
+          "text": "22.6 Using Views to Reformat Retrieved Data",
+          "id": "using-views-to-reformat-retrieved-data"
+        },
+        {
+          "text": "22.7 Using Views to Filter Unwanted Data",
+          "id": "using-views-to-filter-unwanted-data"
+        },
+        {
+          "text": "22.8 Using Views with Calculated Fields",
+          "id": "using-views-with-calculated-fields"
+        },
+        {
+          "text": "22.9 Summary",
+          "id": "summary"
+        }
+      ]
+    },
+    {
+      "label": "Chapter 23",
+      "id": "23",
+      "text": "Working with Stored Procedures",
+      "sections": [
+        {
+          "text": "23.1 Understanding Stored Procedures",
+          "id": "understanding-stored-procedures"
+        },
+        {
+          "text": "23.2 Understanding Why to Use Stored Procedures",
+          "id": "understanding-why-to-use-stored-procedures"
+        },
+        {
+          "text": "23.3 Executing Stored Procedures",
+          "id": "executing-stored-procedures"
+        },
+        {
+          "text": "23.4 Creating Stored Procedures",
+          "id": "creating-stored-procedures"
+        },
+        {
+          "text": "23.5 Summary",
+          "id": "summary"
+        }
+      ]
+    },
+    {
+      "label": "Chapter 24",
+      "id": "24",
+      "text": "Managing Transaction Processing",
+      "sections": [
+        {
+          "text": "24.1 Understanding Transaction Processing",
+          "id": "understanding-transaction-processing"
+        },
+        {
+          "text": "24.2 Controlling Transactions",
+          "id": "controlling-transactions"
+        },
+        {
+          "text": "24.3 Using ROLLBACK",
+          "id": "using-rollback"
+        },
+        {
+          "text": "24.4 Using COMMIT",
+          "id": "using-commit"
+        },
+        {
+          "text": "24.5 Using Savepoints",
+          "id": "using-savepoints"
+        },
+        {
+          "text": "24.6 Summary",
+          "id": "summary"
+        }
+      ]
+    },
+    {
+      "label": "Chapter 25",
+      "id": "25",
+      "text": "Using Cursors",
+      "sections": [
+        {
+          "text": "25.1 Working with Cursors",
+          "id": "working-with-cursors"
+        },
+        {
+          "text": "25.2 Creating Cursors",
+          "id": "creating-cursors"
+        },
+        {
+          "text": "25.3 Using Cursors",
+          "id": "using-cursors-1"
+        },
+        {
+          "text": "25.4 Closing Cursors",
+          "id": "closing-cursors"
+        },
+        {
+          "text": "25.5 Summary",
+          "id": "summary"
+        }
+      ]
+    },
+    {
+      "label": "Chapter 26",
+      "id": "26",
+      "text": "Constraints, Indexes, and Triggers",
+      "sections": [
+        {
+          "text": "26.1 Beyond Primary and Foreign Keys",
+          "id": "beyond-primary-and-foreign-keys"
+        },
+        {
+          "text": "26.2 Enforcing Custom Rules with CHECK",
+          "id": "enforcing-custom-rules-with-check"
+        },
+        {
+          "text": "26.3 Composite Primary Keys",
+          "id": "composite-primary-keys"
+        },
+        {
+          "text": "26.4 Understanding Indexes",
+          "id": "understanding-indexes"
+        },
+        {
+          "text": "26.5 Understanding Triggers",
+          "id": "understanding-triggers"
+        },
+        {
+          "text": "26.6 Summary",
+          "id": "summary"
+        }
+      ]
     }
   ],
   "bookInfo": {
-    "title": "Personal Productivity with Javascript",
+    "blogUrl": "book1014.blogspot.com",
+    "title": "SQL and Database Management",
     "authors": [
-      "Gove Allen",
-      "Mattia Allen"
+      "Elijah Allen",
+      "Gove N. Allen",
+      "Nicholas Ball"
     ],
     "chapterLabel": "Chapter"
   }
 }
 </div     >
-<div class="book-title">Personal Productivity with Javascript</div>
-<div class="book-author">Gove Allen</div>
+<div class="book-title">SQL and Database Management</div>
+<div class="book-author">Elijah Allen and Gove N. Allen and Nicholas Ball</div>
 <div class="book-toc">
 <div class="book-chapters">
-<div class="book-chapter">Chapter 1:<a href="1.html">Welcome to Programming</a></div>
-<div class="book-chapter">Chapter 2:<a href="2.html">Your First Lines of Code</a></div>
-<div class="book-chapter">Chapter 3:<a href="3.html">Getting Started with Google Apps Script in Google Sheets</a></div>
-<div class="book-chapter">Chapter 4:<a href="4.html">Variables and Data</a></div>
-<div class="book-chapter">Chapter 5:<a href="5.html">Making Decisions</a></div>
-<div class="book-chapter">Chapter 6:<a href="6.html">Arrays</a></div>
-<div class="book-chapter">Chapter 7:<a href="7.html">Loops and Repetition</a></div>
-<div class="book-chapter">Chapter 8:<a href="8.html">College Community Garden: Case setup</a></div>
-<div class="book-chapter">Chapter 9:<a href="9.html">Introduction to Google Forms</a></div>
+<div class="book-chapter">Chapter 1:<a href="1.html">Introducing SQL</a></div>
+<div class="book-chapter">Chapter 2:<a href="2.html">Understanding SQL</a></div>
+<div class="book-chapter">Chapter 3:<a href="3.html">Designing Database Tables</a></div>
+<div class="book-chapter">Chapter 4:<a href="4.html">Retrieving Data</a></div>
+<div class="book-chapter">Chapter 5:<a href="5.html">Sorting Retrieved Data</a></div>
+<div class="book-chapter">Chapter 6:<a href="6.html">Filtering Data</a></div>
+<div class="book-chapter">Chapter 7:<a href="7.html">Advanced Data Filtering</a></div>
+<div class="book-chapter">Chapter 8:<a href="8.html">Using Wildcard Filtering</a></div>
+<div class="book-chapter">Chapter 9:<a href="9.html">Creating Calculated Fields</a></div>
+<div class="book-chapter">Chapter 10:<a href="10.html">Using Data Manipulation Functions</a></div>
+<div class="book-chapter">Chapter 11:<a href="11.html">Summarizing Data</a></div>
+<div class="book-chapter">Chapter 12:<a href="12.html">Grouping Data</a></div>
+<div class="book-chapter">Chapter 13:<a href="13.html">Working with Subqueries</a></div>
+<div class="book-chapter">Chapter 14:<a href="14.html">Table Relationships and Cardinality</a></div>
+<div class="book-chapter">Chapter 15:<a href="15.html">Joining Tables</a></div>
+<div class="book-chapter">Chapter 16:<a href="16.html">Advanced Joins</a></div>
+<div class="book-chapter">Chapter 17:<a href="17.html">Combining Queries</a></div>
+<div class="book-chapter">Chapter 18:<a href="18.html">Creating and Manipulating Tables</a></div>
+<div class="book-chapter">Chapter 19:<a href="19.html">Inserting Data</a></div>
+<div class="book-chapter">Chapter 20:<a href="20.html">Updating and Deleting Data</a></div>
+<div class="book-chapter">Chapter 21:<a href="21.html">Database Modeling and Normalization</a></div>
+<div class="book-chapter">Chapter 22:<a href="22.html">Using Views</a></div>
+<div class="book-chapter">Chapter 23:<a href="23.html">Working with Stored Procedures</a></div>
+<div class="book-chapter">Chapter 24:<a href="24.html">Managing Transaction Processing</a></div>
+<div class="book-chapter">Chapter 25:<a href="25.html">Using Cursors</a></div>
+<div class="book-chapter">Chapter 26:<a href="26.html">Constraints, Indexes, and Triggers</a></div>
 </div></div>
 </div>
 </article>
@@ -1042,8 +1689,8 @@ right: .75rem;
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZoTllj-KpYLeuos6XW3VVqD:1784765281848';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d1676106165289640444','//book1011.blogspot.com/2000/02/toc.html','1676106165289640444');
-_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '1676106165289640444', 'title': 'book1011', 'url': 'https://book1011.blogspot.com/2000/02/toc.html', 'canonicalUrl': 'https://book1011.blogspot.com/2000/02/toc.html', 'homepageUrl': 'https://book1011.blogspot.com/', 'searchUrl': 'https://book1011.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1011.blogspot.com/', 'blogspotFaviconUrl': 'https://book1011.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://book1011.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1011 - RSS\x22 href\x3d\x22https://book1011.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/1676106165289640444/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://book1011.blogspot.com/feeds/2544343228599002395/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/37c4cc789ad2acf9', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '2544343228599002395', 'pageName': 'toc', 'pageTitle': 'book1011: toc'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': 'toc', 'description': ' {   \x22chapters\x22: [     {       \x22label\x22: \x22Chapter 1\x22,       \x22id\x22: \x221\x22,       \x22text\x22: \x22Welcome to Programming\x22,       \x22sections\x22: [         { ...', 'url': 'https://book1011.blogspot.com/2000/02/toc.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 2544343228599002395}}]);
+window['__wavt'] = 'AEUoTZofRjdCyDyGoG5qmVOP0bHV:1784899975497';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/toc.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/toc.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/toc.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/163680765308664222/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '163680765308664222', 'pageName': 'toc', 'pageTitle': 'book1014 SQL: toc'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': 'toc', 'description': ' {   \x22chapters\x22: [     {       \x22label\x22: \x22Chapter 1\x22,       \x22id\x22: \x221\x22,       \x22text\x22: \x22Introducing SQL\x22,       \x22sections\x22: [         {        ...', 'url': 'https://book1014.blogspot.com/2000/02/toc.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 163680765308664222}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>
 </body>

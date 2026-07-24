@@ -4,7 +4,7 @@
 <link href='https://www.blogger.com/static/v1/widgets/2872013778-css_bundle_v2.css' rel='stylesheet' type='text/css'/>
 <meta charset='UTF-8'/>
 <meta content='width=device-width, initial-scale=1' name='viewport'/>
-<title>book1011</title>
+<title>book1014 SQL</title>
 <!-- external libraries -->
 <script src='https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js'></script>
 <script src='https://unpkg.com/turndown/dist/turndown.js'></script>
@@ -460,11 +460,55 @@ line-height: 1;
 }
 blockquote{
 margin:1.75rem 0;
-padding:1rem 1.25rem 1rem 1.35rem;
 background:var(--surface-soft);
 border-left:.35rem solid var(--accent);
+padding:1rem 1.25rem 1rem 1.35rem;
 border-radius:0 var(--radius-md) var(--radius-md) 0;
 color:#334155;
+}
+.note blockquote{
+background:#E8F5E9;
+border-left:.35rem solid darkgreen;
+}
+.note blockquote p::before {
+content: "Note: ";
+font-weight: bold;
+}
+.tip blockquote{
+background:#F3E5F5;
+border-left:.35rem solid purple;
+}
+.tip blockquote p::before {
+content: "Tip: ";
+font-weight: bold;
+}
+.term blockquote{
+background:#E3EDF7;
+border-left:.35rem solid darkblue;
+}
+.term blockquote p::before {
+content: "Term: ";
+font-weight: bold;
+}
+.caution blockquote{
+background:#FFE2E2;
+border-left:.35rem solid red;
+}
+.caution blockquote p::before {
+content: "Caution: ";
+font-weight: bold;
+}
+.objectives blockquote{
+background:#FFF8E1;
+border-left:.35rem solid gold;
+}
+.review blockquote{
+background:#FFF0EC;
+border-left:.35rem solid salmon;
+}
+.review blockquote p::before {
+content: "Review: ";
+font-weight: bold;
 }
 blockquote p:last-child{
 margin-bottom:0;
@@ -543,7 +587,7 @@ color:#fbbf24;
 color:#94a3b8;
 font-style:italic;
 }
-table{
+table.blog{
 display:block;
 width:max-content;
 max-width:100%;
@@ -557,24 +601,24 @@ border-radius:var(--radius-md);
 box-shadow:var(--shadow-sm);
 background:var(--surface);
 }
-th,
-td{
+th.blog,
+td.blog{
 padding:.72rem .85rem;
 border-bottom:1px solid var(--border);
 text-align:left;
 vertical-align:top;
 white-space:nowrap;
 }
-th{
+th.blog{
 font-size:.86rem;
 font-weight:700;
 color:var(--heading);
 background:var(--surface-soft);
 }
-tr:last-child td{
+tr.blog:last-child td{
 border-bottom:0;
 }
-tr:nth-child(even) td{
+tr.blog:nth-child(even) td{
 background:#f8fafc;
 }
 .monaco {
@@ -782,7 +826,7 @@ right: .75rem;
     }    
 
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=1676106165289640444&amp;zx=6bdbd94f-4c00-46a7-9f85-9e3213cc543c' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=1676106165289640444&amp;zx=6bdbd94f-4c00-46a7-9f85-9e3213cc543c' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -801,7 +845,7 @@ right: .75rem;
 <div class='hide' id='kind'>chapter</div>
 <div class='index-boxnbt'>
 <header class='entry-header'>
-<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>4. Variables and Data</span></h1>
+<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>4. Retrieving Data</span></h1>
 </header>
 <div id='menu'>
 <div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
@@ -819,485 +863,481 @@ right: .75rem;
 <div id='search-results'></div>
 </div>
 </div>
-<div class='post-body entry-content' data-blog-id='1676106165289640444' data-post-id='6701322407338045706'>
+<div class='post-body entry-content' data-blog-id='3986204447440040189' data-post-id='1198184498165602375'>
 <button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
 <button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
               
-              <!--postBegin--><div class="module">monaco</div>
-<h1 data-number="4" id="variables-and-data"><span
-class="header-section-number">4</span> Variables and Data</h1>
-<h2 data-number="4.1" id="what-variables-are-and-why-they-matter"><span
-class="header-section-number">4.1</span> What Variables Are and Why They
-Matter</h2>
-<p>As you begin writing programs that do more than print a message or
-perform a single calculation, you need a way to store information &#8212;
-something your code can remember, reuse, and change as it runs. That&#8217;s
-exactly what <strong>variables</strong> are for. A variable is a named
-container that holds a piece of data. Think of it as a labeled box: you
-put something inside, give the box a name, and later you can open it,
-change what&#8217;s inside, or use its contents in a calculation.</p>
-<p>We&#8217;ll spend this chapter on one small operations situation, so the
-values you store always mean something. The BYU-Idaho University Store
-buys classroom clickers from a supplier. Demand runs about 3,600 units a
-year; it costs $70 to place and receive an order; holding one clicker in
-stock costs $2.20 a year; and the clickers arrive in cases of 20 for
-$360. By the end of the chapter those figures will become the variables
-in a real inventory calculation &#8212; how many to order at a time. For now,
-just meet the numbers.</p>
-<p>In JavaScript and Google Apps Script, variables let you keep track of
-values such as numbers, text, dates, or even entire lists of data.
-Without variables, every program would be rigid and repetitive. With
-them, your code becomes flexible, dynamic, and able to respond to
-different situations.</p>
-<p>A simple example looks like this:</p>
-<pre class="javascript-example"><code>let annualDemand = 3600</code></pre>
-<p>Here, <code>annualDemand</code> is the variable&#8217;s name, and
-<code>3600</code> is the value stored inside it. Once you&#8217;ve created the
-variable, you can use it anywhere in your script:</p>
-<pre class="javascript-example"><code>console.log(annualDemand)</code></pre>
-<p>To see this execute in Google Apps Script, do the following:</p>
+              <!--postBegin--><div class="module">websql</div>
+<h1 data-number="4" id="retrieving-data"><span
+class="header-section-number">4</span> Retrieving Data</h1>
+<p><strong>Objectives.</strong> After completing this lesson, the
+successful student will be able to:</p>
 <ol type="1">
-<li>Open a new Google Sheet</li>
-<li>From the menu bar, choose &#8220;Extensions&#8221; then &#8220;Apps Script&#8221; <img alt="{width:334, alt=&#8220;Opening Apps Script Editor&#8221;}" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi3j_ZQ5HXTAbC-DQiRbQOngEJNc3rQ-OHiKKCTnsovgeU16k4zbgiuLsrmReTfJSmFhBOMVNyUiVv4rMuF9kES2x3O7TkNbn7s1UqLZxURDNscVa79jioBfRWZrp_OCqShjwpMeK_0Ayr6yTFGs8OJJjcr1W6EUwWiYhtSRSOtbL1VpbxMEM-xkaFaLa0/s1600/84cd1741.png" /></li>
+<li>Use the SELECT statement to retrieve one or more columns of data
+from a table.</li>
+<li>Use the keyword DISTINCT to show only unique rows in a database
+query.</li>
+<li>Add comments to a SQL statement.</li>
 </ol>
-<p>This opens the Google Apps Script editor with a new script file named
-&#8220;Code.gs&#8221;:</p>
-<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi8B09kVhscTTl6lJyGzklWN2kqMt7ZSY4Aa-vct7HmHR6GjRXVmIfFPC8G_DM0WaOMikBZMn784e6vapHIWLVVCf3jdXQsRuuzjKIO2zKTwFO8a6xq5130b4_q2-Q40qMQTPnDO4834vEnHiJMsqLMTnd-1gXK5yhiSH0ycr2Dw6XELt-zbi7OwtGjLl8/s1600/d467b986.png" /></p>
-<p>Notice that there&#8217;s already some code here in the Code.gs file. What
-you see is the basic structure of a function. We&#8217;ll talk more about
-functions later, but it&#8217;s the structure that lets us group multiple
-lines of code to execute together. To run code, write (or paste) the
-lines between the braces:</p>
-<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiQH1PqnDqi-QXT6DoByjraPWqGCbkdbNc8dJHFaY2fUd9befeIjBFcLDATgGGPTERA47c_XO5i9ALj9tRj2ESXQiyfH_BDugG0TvpDIt2YagNWtP-XD5nXRlddIS6WRwnnDFmMPCL5kEabRe7ohn_JG3t2JGzScvkwV5dSCb5APZKCqzKAlQID0kx5XZM/s1600/1637cacb.png" /></p>
-<p>Now your code is ready to execute. Click the &#8220;Run&#8221; button.</p>
-<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhmFx67OG_2-F0Or2T_2_nUhmnNcYMEpW-6mXcqTI8YP5BEyazIg8w56aMMiD8co-Gv_RLapr3CCQ9cw6Jh5OQ-rrPH73Uj1Xnp0kXvD0XDdH_wCb4Vtig4t7JQZ3gcT_axtXVrwRCQydhAH1yofuQ7yK1xCJI96CHLdPsEWWWlSx9_AovzmVfnHOnFTl4/s1600/8029f1d6.png" /></p>
-<p>This runs the function and opens the execution log:</p>
-<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjP3hh-YYHn0EgM_VPlCLHqfmQ-CtJbjkncf_Ylaf5caooCSraRp5jF2c-wxQArAEuzWiu0NbzIjnrrJHmrfGfy_wbcvOs8EEB926WDeOrZMNPdbE1J7P7vwk6whzUGGxCYR1a-MSpgTA6spM2uWhofYUpNdMT6Vucm__o9vaI3bCdmslDaatH4Mew0qTw/s1600/9109882d.png" /></p>
-<p>There are three entries in the execution log: the first and last just
-show the times the function began and finished. The remaining item
-displays the value of the variable on the line that logged it. You can
-modify the code in the <code>myFunction</code> function to run any of
-the examples in this section.</p>
-<p>Now let&#8217;s continue with variables. Modify the code as follows:</p>
-<pre class="javascript-example"><code>let onHand = 500
-onHand = 460
-onHand = onHand - 20
-console.log(onHand)</code></pre>
-<p>The first statement defines <code>onHand</code> and gives it a value
-of 500 &#8212; the clickers currently in stock. The second statement changes
-it to 460, perhaps after a shipment of orders went out. The third
-statement sets a new value, but to calculate it the computer must first
-read the current one: at this point <code>onHand</code> is 460, so
-<code>onHand - 20</code> evaluates to 440, and that becomes the new
-value. The final statement prints 440 into the execution log. Give it a
-try.</p>
-<p>This ability to store and update information is at the heart of
-programming. It&#8217;s how you track stock as it moves, remember inputs,
-process spreadsheet data, or build tools that adapt to whatever
-information they&#8217;re given.</p>
-<p>Variables matter because they let your programs:</p>
+<h2 data-number="4.1" id="the-select-statement"><span
+class="header-section-number">4.1</span> The SELECT Statement</h2>
+<p>Structured query language (SQL) is used to retrieve and manipulate
+data stored in database tables. SQL uses a set of reserved,
+plain-English words, called keywords, to form sentence-like commands.
+This lesson describes how to use SELECT statements to retrieve one or
+more columns of data from a table.</p>
+<div class="term">
+<blockquote>
+<p><strong>Keyword</strong> &#8212; A reserved word that is part of the SQL
+language.</p>
+</blockquote>
+</div>
+<p>Because SQL statements are sentence-like, they are meant to be easy
+to create and to understand. For example, the statement
+<code>SELECT name FROM museum</code> is a valid SQL statement, and it is
+fairly easy to understand: it retrieves all of the values from the
+<code>name</code> column stored on the <code>museum</code> table.</p>
+<p>The keywords in this statement are <code>SELECT</code> and
+<code>FROM</code>. Because keywords are part of the SQL language, they
+are reserved &#8212; meaning they cannot be used to name tables or columns in
+a database. You would not see a column named <code>select</code> or a
+table named <code>from</code> in a database.</p>
+<div class="note">
+<blockquote>
+<p><strong>Note: Capitalizing SQL Statements.</strong> SQL statements
+are not case sensitive. The words in a statement can be uppercase,
+lowercase, or mixed case. <code>SELECT</code>, <code>select</code>, and
+<code>SeLeCt</code> are all treated the same when they are executed.
+When we refer to a keyword in this set of lessons, we will always render
+it in upper case to differentiate it as a keyword, even though it does
+not need to be capitalized for the statement to execute correctly.</p>
+</blockquote>
+</div>
+<div class="caution">
+<blockquote>
+<p><strong>Caution: Table and Column Names and Case.</strong> Although
+SQL itself is not case sensitive, the names of tables, columns, and
+values may be. PostgreSQL folds unquoted identifiers to lowercase, so a
+table created as <code>Museum</code> is actually stored &#8212; and must be
+referenced &#8212; as <code>museum</code>. If you quote an identifier when you
+create it (<code>"Museum"</code>), PostgreSQL preserves its case, and
+you must then quote it exactly the same way, including case, every time
+you refer to it.</p>
+</blockquote>
+</div>
+<p>There are six main keywords in SQL used to retrieve data from a
+database. Working together, these keywords let you precisely define the
+data you want to retrieve.</p>
+<p>These keywords are:</p>
+<ol type="1">
+<li><code>SELECT</code> &#8212; used to list the columns you would like to
+retrieve</li>
+<li><code>FROM</code> &#8212; used to specify the table or tables you want to
+get the data from</li>
+<li><code>WHERE</code> &#8212; used to create conditions or filters on the
+data that will be retrieved</li>
+<li><code>GROUP BY</code> &#8212; used to categorize the data that is
+retrieved from the database</li>
+<li><code>HAVING</code> &#8212; used to create more complex conditions or
+filters on the data that will be retrieved</li>
+<li><code>ORDER BY</code> &#8212; used to sort the data that is retrieved</li>
+</ol>
+<p>There are two important rules for using these keywords to build a
+SELECT statement. First, you must provide at least two pieces of
+information: the columns you would like to retrieve and the table or
+tables from which you want to retrieve the data. In other words, every
+SELECT statement must have both a <code>SELECT</code> clause and a
+<code>FROM</code> clause.</p>
+<p>Second, the order of the keywords is important. Every SELECT
+statement follows the order listed above: <code>SELECT</code> is always
+first and <code>FROM</code> is always second. The remaining keywords, if
+used, appear in the same order every time. If a keyword is not used, it
+is simply omitted from the statement. This lesson uses only
+<code>SELECT</code> and <code>FROM</code>; the other keywords are
+covered in later lessons.</p>
+<div class="note">
+<blockquote>
+<p><strong>Note: The Order the Clauses Are Executed.</strong> You might
+be curious to know that the clauses of a SELECT statement are executed
+in a different order than they are written. The order of execution is
+<code>FROM</code>, <code>WHERE</code>, <code>GROUP BY</code>,
+<code>HAVING</code>, <code>SELECT</code>, then <code>ORDER BY</code>.
+Later lessons explain why this matters.</p>
+</blockquote>
+</div>
+<h2 data-number="4.2" id="creating-queries"><span
+class="header-section-number">4.2</span> Creating Queries</h2>
+<p>Writing a SELECT query to fill a data need involves at least two
+skills. First, you need to logically structure a solution that retrieves
+the needed data. With a plan in place, the second skill is implementing
+that solution using the syntax &#8212; the keywords and rules for using them &#8212;
+of SQL. Getting both the logic and the syntax right is essential to
+writing an effective query.</p>
+<p>Incorrect queries produce either a logic error or a syntax error. A
+logic error happens when the logic of the query isn&#8217;t right; a query
+with a logic error still runs, but it returns the wrong data. A syntax
+error happens when SQL isn&#8217;t used correctly; a query with a syntax error
+returns an error message instead of a result. In many cases a syntax
+error is easier to spot than a logic error, because a logic error
+doesn&#8217;t announce itself &#8212; it quietly returns some data, just not the
+right data.</p>
+<p>To help you learn both the logic and the syntax of SQL, the examples
+in this book follow a simple process for building a query:</p>
+<ol type="1">
+<li><strong>Plan</strong> what data you need to retrieve.</li>
+<li><strong>Write</strong> a SQL statement that implements the
+plan.</li>
+<li><strong>Examine</strong> the proposed statement, revising it if
+needed.</li>
+<li><strong>Try</strong> the statement by running it against the
+database.</li>
+</ol>
+<p>Planning a query means answering four questions:</p>
 <ul>
-<li><strong>Reuse values</strong> without rewriting them</li>
-<li><strong>Respond to changing data</strong></li>
-<li><strong>Store results</strong> from calculations</li>
-<li><strong>Organize information</strong> in a clear, meaningful
-way</li>
-<li><strong>Build more complex logic</strong> that depends on what&#8217;s
-happening in the program</li>
+<li><strong>Columns</strong> &#8212; which columns do you need to see in the
+result?</li>
+<li><strong>Tables</strong> &#8212; which table or tables hold that data?</li>
+<li><strong>Rows</strong> &#8212; do you need every row, or only rows that
+meet some condition?</li>
+<li><strong>Order</strong> &#8212; does the result need to be sorted in a
+particular way?</li>
 </ul>
-<p>In Google Apps Script, variables become especially powerful because
-they can hold values pulled directly from a spreadsheet &#8212; a column of
-demand figures, a list of items, or a single cell&#8217;s content. Once that
-data is in a variable, your script can analyze it, transform it, or
-write new results back into the sheet.</p>
-<p>As you move through this chapter, you&#8217;ll learn to create variables,
-choose good names for them, and work with different kinds of data. These
-skills are the foundation for everything you&#8217;ll build next.</p>
-<h2 data-number="4.2"
-id="primitive-types-strings-numbers-booleans"><span
-class="header-section-number">4.2</span> Primitive Types: Strings,
-Numbers, Booleans</h2>
-<p>Every programming language needs a way to represent basic kinds of
-information. In JavaScript &#8212; and therefore in Apps Script &#8212; these
-fundamental building blocks are called <strong>primitive types</strong>.
-They&#8217;re the simplest forms of data your program can work with, and they
-show up everywhere: in calculations, text, decisions, and interactions
-with spreadsheet values.</p>
-<p>Understanding these types will help you write clearer code and avoid
-common mistakes as you start working with real data from Google
-Sheets.</p>
-<h3 data-number="4.2.1" id="strings-working-with-text"><span
-class="header-section-number">4.2.1</span> Strings: Working With
-Text</h3>
-<p>A <strong>string</strong> is any piece of text &#8212; words, symbols, even
-empty space. Strings are written inside quotes:</p>
-<pre class="javascript-example"><code>let item = &quot;classroom clicker&quot;
-let supplier = &quot;campus electronics supplier&quot;
-let note = &quot;&quot;</code></pre>
-<p>Strings are useful for labels and descriptions, messages you log or
-display, data pulled from spreadsheet cells, and building dynamic text.
-You can combine them with the <code>+</code> operator:</p>
-<pre class="javascript-example"><code>let label = &quot;Reorder report for: &quot; + item</code></pre>
-<p>In Apps Script, strings are especially common because spreadsheet
-data often arrives as text &#8212; even when it looks like a number.</p>
-<h3 data-number="4.2.2" id="numbers-doing-math-and-calculations"><span
-class="header-section-number">4.2.2</span> Numbers: Doing Math and
-Calculations</h3>
-<p>Numbers in JavaScript represent both whole numbers and decimals:</p>
-<pre class="javascript-example"><code>let orderingCost = 70
-let holdingCost = 2.20
-let casePrice = 360</code></pre>
-<p>You can perform all the usual arithmetic. For instance, a case holds
-20 clickers, so the cost of a single unit is the case price divided by
-20:</p>
-<pre class="javascript-example"><code>let unitCost = 360 / 20        // $18 per clicker
-let weeklyDemand = 3600 / 52   // about 69 clickers a week</code></pre>
-<p>In Google Sheets, numbers are everywhere &#8212; totals, counts, costs,
-demand &#8212; so being comfortable with numeric operations is essential. Apps
-Script can read numbers directly from cells, use them in calculations,
-and write new results back.</p>
-<h3 data-number="4.2.3" id="booleans-true-or-false-values"><span
-class="header-section-number">4.2.3</span> Booleans: True or False
-Values</h3>
-<p>A <strong>boolean</strong> represents one of two possible values:</p>
-<pre class="javascript-example"><code>let isPreferredSupplier = true
-let isStockedOut = false</code></pre>
-<p>Booleans are the backbone of decision-making in your programs.
-They&#8217;re used in conditions, comparisons, and logic:</p>
-<pre class="javascript-example"><code>let onHand = 120
-let belowReorderPoint = onHand &lt; 150   // becomes true</code></pre>
-<p>Whenever your script needs to choose between two paths &#8212; place an
-order or not, flag an item or skip it &#8212; a boolean is involved. You&#8217;ll
-put these to work in the next chapter.</p>
-<h3 data-number="4.2.4" id="why-primitive-types-matter"><span
-class="header-section-number">4.2.4</span> Why Primitive Types
-Matter</h3>
-<p>These three types &#8212; strings, numbers, and booleans &#8212; form the
-foundation of almost everything you&#8217;ll do in Apps Script. They let your
-programs store and manipulate text, perform calculations, make
-decisions, interpret spreadsheet data, and build flexible scripts. As
-you begin working with Google Sheets, you&#8217;ll see these types constantly:
-a cell might hold a string, a number, or something that becomes a
-boolean when you compare it. Understanding how they behave makes your
-scripts more reliable and easier to reason about.</p>
-<h2 data-number="4.3" id="working-with-variables-in-apps-script"><span
-class="header-section-number">4.3</span> Working With Variables in Apps
-Script</h2>
-<p>Now that you&#8217;ve seen the basic data types, it&#8217;s time to look more
-closely at how variables actually behave inside your programs &#8212;
-especially once you start pulling information out of a spreadsheet and
-transforming it with code.</p>
-<h3 data-number="4.3.1" id="declaring-variables-with-let"><span
-class="header-section-number">4.3.1</span> Declaring Variables With
-<code>let</code></h3>
-<p>In modern JavaScript (and Apps Script), the most common way to create
-a variable is with the keyword <code>let</code>:</p>
-<pre class="javascript-example"><code>let totalCost = 0
-let item = &quot;clicker&quot;
-let isReady = true</code></pre>
-<p>When you declare a variable with <code>let</code>, you&#8217;re telling the
-computer: <em>create a container with this name, and store this value
-inside it.</em> You can change the value later:</p>
-<pre class="javascript-example"><code>totalCost = totalCost + 526
-item = &quot;classroom clicker&quot;
-isReady = false</code></pre>
-<p>This flexibility is what makes variables powerful &#8212; they let your
-program evolve as it runs.</p>
-<h3 data-number="4.3.2" id="choosing-good-variable-names"><span
-class="header-section-number">4.3.2</span> Choosing Good Variable
-Names</h3>
-<p>A variable name should describe what the value represents. Clear
-names make your code easier to read &#8212; especially when you come back to
-it later.</p>
-<p>Good examples: <code>annualDemand</code>, <code>orderingCost</code>,
-<code>unitCost</code>, <code>isPreferredSupplier</code>.</p>
-<p>Less helpful examples: <code>x</code>, <code>data1</code>,
-<code>thing</code>.</p>
-<p>Apps Script doesn&#8217;t care what you name your variables, but
-<em>you</em> will. Good names make your scripts feel organized and
-intentional.</p>
-<h3 data-number="4.3.3" id="variables-and-spreadsheet-data"><span
-class="header-section-number">4.3.3</span> Variables and Spreadsheet
-Data</h3>
-<p>In Apps Script, variables often hold values pulled directly from a
-Google Sheet. For example:</p>
-<pre class="javascript-example"><code>let sheet = SpreadsheetApp.getActiveSheet()
-let cell = sheet.getRange(&quot;A1&quot;)
-let value = cell.getValue()</code></pre>
-<p>Here <code>sheet</code> stores a reference to the active sheet,
-<code>cell</code> stores a reference to cell A1, and <code>value</code>
-stores whatever is in A1 &#8212; say, the annual demand figure for an
-item.</p>
-<p>The first time you run code that accesses spreadsheet data, Apps
-Script will ask you to confirm that you want to allow it. You can
-imagine that someone with bad intent could try to trick a person into
-running code that reads sensitive data or sends email. So every time you
-run code that uses a feature of the Apps Script environment for the
-first time, you&#8217;ll see a warning about the service being invoked. It can
-be a little annoying, but it&#8217;s there to protect people who paste in code
-they don&#8217;t fully understand. Apps Script asks for approval each time a
-new service is introduced.</p>
-<p>The first time you run the code above, you&#8217;ll see a prompt like
-this:</p>
-<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhR8c6fPDH044_XrWrpK4wNhadf7g3a_6jL0SvBarMFDmauJCJK9nMXmidDn_QPVMfYATAiNRJZPjLxHY82IiPByc5L2GlOET3YFM3JNkrluHjTR-Tnr2i3dYdLjR0DAkdpCwjGo39YQIBc97Txre9joxgtHEwZvx2xj76c8FzjIPYO8v4NSKYCAK4aiX8/s1600/a67405fb.png" /></p>
-<p>When you choose &#8220;review permissions,&#8221; you advance to the next
-step:</p>
-<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgnxOFlrt_7D-HUUfe371b6D-5lAUk2VGIXmqoTf7arbM83PKfu0f1dkRzBPOkIhzWKdrRIQwV_0vcVUK0hHgD8D99ds6NGHhqF4w3YvwNPe2i0AcZjiLRAt7gmfRYjbyAc5mbj3xxF7FnTcxVuAdMVC1Hxzc-BJsC61OEJvROQxLZjr0UvpkJnaIc-Xyw/s1600/75d1cb3b.png" /></p>
-<p>Click the gray &#8220;advanced&#8221; link on the left side of the window.</p>
-<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi58vQBbnMxMiEuu3Fbfq2KVOILoBL-5WgYlZF_x0NASyET16xoFQkQ2iDVYqVXes8bO8-nD0OOExPaiJqEio7jnpal__gF44BPM8gnbP-DWdH_UpMOMB8fYPsGGOSWcsp9tMVIRIhT53JgNZNcJAjLR9GPTvqVZTz0ephw6goSO-H7k3ZE-0Be_kKrpHw/s1600/6c44db2e.png" /></p>
-<p>Then click the gray &#8220;Go to Untitled project (unsafe)&#8221; link in the
-bottom left. This brings up the prompt telling you the code is going to
-access data from your sheet:</p>
-<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgBrKg0BwVK7EM8Q8m6iHwrRpKM2nphUPb4Bg-lrQdHbKupzeJv7J0sjCVZr-EsSbjDTYRBykxamPYuOG0IMQv-Oi85qp9SjN2Qw-vdo10CxeQm_c_yuQDpx885SKC7A89OmetQDn0cIFtsz8RCl7xoWh0Ag_0P0Rrv9BX3iUXOi5wvhKbqwdUFgKl-I18/s1600/13fac37e.png" /></p>
-<p>When you click &#8220;Continue&#8221; you authorize this script to run with the
-permissions listed. Apps Script won&#8217;t prompt you again for those
-permissions in this project &#8212; though if you add code that needs
-different permissions, you&#8217;ll go through a similar approval. Also,
-sometimes the environment runs the script right after you approve access
-and sometimes it doesn&#8217;t; if you don&#8217;t see the expected output, just run
-it again.</p>
-<p>Once the data is in a variable, you can use it like any other
-value:</p>
-<pre class="javascript-example"><code>console.log(&quot;The value in A1 is: &quot;, value)</code></pre>
-<p>This is where variables start to feel practical &#8212; you&#8217;re no longer
-working with abstract examples, but with real information from your
-spreadsheet.</p>
-<h3 data-number="4.3.4" id="reassigning-vs.-redefining"><span
-class="header-section-number">4.3.4</span> Reassigning
-vs.&#160;Redefining</h3>
-<p>One important detail: you can <strong>change</strong> the value of a
-variable declared with <code>let</code>, but you cannot
-<strong>redeclare</strong> it in the same scope.</p>
-<p>This is allowed:</p>
-<pre class="javascript-example"><code>let onHand = 500
-onHand = 460   // OK</code></pre>
-<p>This is not:</p>
-<pre class="javascript-example"><code>let onHand = 500
-let onHand = 460   // not allowed</code></pre>
-<p>Understanding this distinction helps you avoid common errors as your
-scripts grow.</p>
-<h3 data-number="4.3.5" id="why-variables-matter"><span
-class="header-section-number">4.3.5</span> Why Variables Matter</h3>
-<p>Variables are the glue that holds your programs together. They let
-you capture data from a spreadsheet, store intermediate results, build
-dynamic messages, track progress through a script, and make decisions
-based on changing values. As you move forward, you&#8217;ll use them
-constantly &#8212; sometimes dozens in a single script. Getting comfortable
-with them now will make everything else feel more natural.</p>
-<h2 data-number="4.4" id="working-with-text-and-numbers"><span
-class="header-section-number">4.4</span> Working With Text and
-Numbers</h2>
-<p>As you begin writing scripts that interact with real spreadsheet
-data, you&#8217;ll spend a lot of time working with two fundamental kinds of
-information: <strong>text</strong> and <strong>numbers</strong>. These
-show up everywhere in Google Sheets &#8212; item names, supplier labels,
-costs, demand figures, IDs &#8212; and knowing how to manipulate them is
-essential for building useful tools.</p>
-<h3 data-number="4.4.1" id="working-with-text-strings"><span
-class="header-section-number">4.4.1</span> Working With Text
-(Strings)</h3>
-<p>Text values &#8212; strings &#8212; are written inside quotes:</p>
-<pre class="javascript-example"><code>let item = &quot;classroom clicker&quot;
-let message = &quot;Reorder review complete&quot;</code></pre>
-<p>Strings are flexible: you can combine them, break them apart, and
-insert values into them. Join them with the <code>+</code> operator
-(this is called string <strong>concatenation</strong>):</p>
-<pre class="javascript-example"><code>let label = &quot;Reorder report for: &quot; + item + &quot;!&quot;</code></pre>
-<p>Or build more readable text with template literals (string
-<strong>interpolation</strong>):</p>
-<pre class="javascript-example"><code>let label = `Reorder report for: ${item}`</code></pre>
-<p>When you pull text from a spreadsheet, it arrives as a string:</p>
-<pre class="javascript-example"><code>let sheet = SpreadsheetApp.getActiveSheet()
-let itemName = sheet.getRange(&quot;A2&quot;).getValue()   // likely a string</code></pre>
-<p>Once it&#8217;s in a variable, you can transform it however you like.</p>
-<h3 data-number="4.4.2" id="working-with-numbers"><span
-class="header-section-number">4.4.2</span> Working With Numbers</h3>
-<p>Numbers in JavaScript represent both whole numbers and decimals:</p>
-<pre class="javascript-example"><code>let unitCost = 18
-let caseSize = 20
-let casePrice = unitCost * caseSize   // 360</code></pre>
-<p>You can perform all the standard arithmetic operations: addition
-<code>+</code>, subtraction <code>-</code>, multiplication
-<code>*</code>, division <code>/</code>, and remainder <code>%</code>.
-JavaScript also gives you <code>Math.sqrt()</code> for square roots &#8212;
-which is exactly what we need to answer the question this chapter has
-been building toward: <strong>how many clickers should the University
-Store order at a time?</strong></p>
-<p>The economic order quantity (EOQ) balances the cost of placing orders
-against the cost of holding stock. With annual demand, ordering cost,
-and holding cost stored as variables, the calculation is a single
-line:</p>
-<pre class="javascript-example"><code>let annualDemand = 3600
-let orderingCost = 70
-let holdingCost = 2.20
-let eoq = Math.sqrt(2 * annualDemand * orderingCost / holdingCost)
-console.log(eoq)</code></pre>
-<p>This prints about <strong>479</strong>. That&#8217;s the order size that
-makes the total of ordering and holding costs as low as possible &#8212; at
-479 units, the store spends roughly $526 a year placing orders and
-roughly $526 a year holding stock, the two pulling into balance. Notice
-that the formula didn&#8217;t change; only the <em>names</em> made it
-readable. That&#8217;s the payoff of storing your inputs in well-named
-variables.</p>
-<p>Apps Script reads numeric spreadsheet values as JavaScript numbers,
-so you can pull a figure straight from a cell and compute with it:</p>
-<pre class="javascript-example"><code>let demand = sheet.getRange(&quot;B5&quot;).getValue()   // a number
-let weekly = demand / 52</code></pre>
-<h3 data-number="4.4.3" id="converting-between-text-and-numbers"><span
-class="header-section-number">4.4.3</span> Converting Between Text and
-Numbers</h3>
-<p>Sometimes you&#8217;ll get a value from a spreadsheet that <em>looks</em>
-like a number but is stored as text, or you&#8217;ll need to turn a number
-into text to build a message. JavaScript gives you simple tools for
-this.</p>
-<p>Convert text to a number:</p>
-<pre class="javascript-example"><code>let num = Number(&quot;3600&quot;)   // becomes 3600</code></pre>
-<p>Convert a number to text:</p>
-<pre class="javascript-example"><code>let text = String(479)   // becomes &quot;479&quot;</code></pre>
-<p>Apps Script often handles these conversions automatically, but it&#8217;s
-helpful to know how to do them yourself when needed.</p>
-<h3 data-number="4.4.4"
-id="example-reading-an-item-and-writing-a-reorder-label"><span
-class="header-section-number">4.4.4</span> Example: Reading an Item and
-Writing a Reorder Label</h3>
-<p>This small script reads an item name from cell <strong>A1</strong>
-and writes a label like <strong>&#8220;Reorder report for: classroom
-clicker&#8221;</strong> into cell <strong>B1</strong>. Put an item name into
-<strong>A1</strong> first.</p>
-<pre class="javascript-example"><code>function writeReorderLabel() {
-  // Get the active sheet
-  let sheet = SpreadsheetApp.getActiveSheet()
-
-  // Get a reference to cell A1
-  let cellA1 = sheet.getRange(&quot;A1&quot;)
-
-  // Read the item name from cell A1
-  let item = cellA1.getValue()
-
-  // Build the label
-  let label = &quot;Reorder report for: &quot; + item
-
-  // Get a reference to cell B1
-  let cellB1 = sheet.getRange(&quot;B1&quot;)
-
-  // Write the label into cell B1
-  cellB1.setValue(label)
-}</code></pre>
-<p>This shows how to read from and write to a single cell. Accessing
-many cells at once is a bit more advanced and is covered later.</p>
-<p>If this is the first time you&#8217;ve run a script that accesses worksheet
-data, you&#8217;ll have to allow it &#8212; see the permissions walkthrough earlier
-in this chapter.</p>
-<h4 data-number="4.4.4.1" id="how-it-works"><span
-class="header-section-number">4.4.4.1</span> How it works</h4>
-<ul>
-<li><code>getRange("A1").getValue()</code> pulls the item name from the
-sheet and stores it in <code>item</code>.</li>
-<li>The script builds a new string by combining
-<code>"Reorder report for: "</code> with the item.</li>
-<li><code>setValue()</code> writes the final label into cell B1.</li>
-</ul>
-<p>Try putting an item in <strong>A1</strong>, run the script, and watch
-the label appear. It&#8217;s simple, but it captures the essence of Apps
-Script: read real data, transform it with JavaScript, and write
-meaningful results back.</p>
-<h3 data-number="4.4.5" id="why-this-matters"><span
-class="header-section-number">4.4.5</span> Why This Matters</h3>
-<p>Working with text and numbers is the backbone of almost every
-spreadsheet automation &#8212; cleaning up item names, formatting labels,
-calculating totals, generating reports, processing rows of mixed data.
-Mastering how to read, combine, and transform them turns raw spreadsheet
-data into something meaningful, and sets the stage for the more advanced
-scripting ahead.</p>
-<h2 data-number="4.5" id="naming-conventions-and-best-practices"><span
-class="header-section-number">4.5</span> Naming Conventions and Best
-Practices</h2>
-<p>As your scripts grow beyond a few lines, the names you choose for
-your variables start to matter a lot. Good naming makes your code easier
-to read, easier to debug, and easier to return to weeks or months later.
-Clear, consistent naming is one of the simplest ways to write code that
-feels clean and professional.</p>
-<h3 data-number="4.5.1" id="use-clear-descriptive-names"><span
-class="header-section-number">4.5.1</span> Use Clear, Descriptive
-Names</h3>
-<p>A variable name should tell you <em>what the value represents</em>,
-not how it&#8217;s used or what type it is. When you read your code later, the
-meaning should be obvious at a glance.</p>
-<p>Good examples: <code>annualDemand</code>, <code>orderingCost</code>,
-<code>isApproved</code>, <code>reorderPoint</code>.</p>
-<p>Less helpful examples: <code>x</code>, <code>temp</code>,
-<code>data1</code>, <code>flag</code>.</p>
-<p>Descriptive names reduce mental overhead. You don&#8217;t have to remember
-what <code>x</code> means &#8212; you can just read the name and keep
-going.</p>
-<h3 data-number="4.5.2" id="follow-javascripts-camelcase-style"><span
-class="header-section-number">4.5.2</span> Follow JavaScript&#8217;s camelCase
-Style</h3>
-<p>Although other conventions exist, we&#8217;ll use
-<strong>camelCase</strong> for variable and function names. The first
-word is lowercase, and each following word starts with a capital
-letter:</p>
-<pre class="javascript-example"><code>let unitCost = 18
-let annualDemand = 3600
-let isPreferredSupplier = true</code></pre>
-<p>camelCase is the most common naming convention across the JavaScript
-ecosystem, so following it helps your code feel familiar and
-consistent.</p>
-<h3 data-number="4.5.3" id="start-names-with-letters-not-numbers"><span
-class="header-section-number">4.5.3</span> Start Names With Letters, Not
-Numbers</h3>
-<p>Variable names must begin with a letter, underscore, or dollar sign.
-They cannot start with a number:</p>
-<pre class="javascript-example"><code>let item1 = &quot;clicker&quot;   // valid
-let _count = 10         // valid
-let 1stItem = 5         // not valid</code></pre>
-<p>Sticking to letters for most names keeps things simple.</p>
-<h3 data-number="4.5.4"
-id="avoid-abbreviations-unless-theyre-obvious"><span
-class="header-section-number">4.5.4</span> Avoid Abbreviations Unless
-They&#8217;re Obvious</h3>
-<p>Shortened names save a few keystrokes but cost clarity. Unless the
-abbreviation is universally understood, spell it out.</p>
-<p>Prefer <code>orderingCost</code> over <code>ordCst</code>, and
-<code>holdingCost</code> over <code>hldCst</code>. Clear code is almost
-always better than compact code. (EOQ is fine &#8212; it&#8217;s universally
-understood in operations.)</p>
-<h3 data-number="4.5.5"
-id="use-boolean-names-that-read-like-truefalse-statements"><span
-class="header-section-number">4.5.5</span> Use Boolean Names That Read
-Like True/False Statements</h3>
-<p>Boolean variables should sound like conditions, which makes your code
-easier to read when you use them in logic. Examples:
-<code>supplierIsPreferred</code>, <code>hasOpenOrder</code>,
-<code>isStockedOut</code>, <code>shouldReorder</code>. When you read a
-line like:</p>
-<pre class="javascript-example"><code>if (shouldReorder) {</code></pre>
-<p>&#8230;it feels natural and self-explanatory.</p>
-<h3 data-number="4.5.6"
-id="keep-a-consistent-style-across-your-script"><span
-class="header-section-number">4.5.6</span> Keep a Consistent Style
-Across Your Script</h3>
-<p>Consistency matters more than perfection. If you choose a pattern,
-stick with it: if you write <code>annualDemand</code>, don&#8217;t switch to
-<code>ordering_cost</code> later; if you name one variable
-<code>unitCost</code>, don&#8217;t name another <code>cost_per_unit</code>. A
-consistent style makes your code feel intentional and easier to
-navigate.</p>
-<h3 data-number="4.5.7" id="why-naming-matters-in-apps-script"><span
-class="header-section-number">4.5.7</span> Why Naming Matters in Apps
-Script</h3>
-<p>When you start interacting with spreadsheet data, you&#8217;ll often have
-variables like:</p>
-<pre class="javascript-example"><code>let sheet = SpreadsheetApp.getActiveSheet()
-let demandColumn = sheet.getRange(&quot;B2:B20&quot;).getValues()
-let orderingCost = sheet.getRange(&quot;E1&quot;).getValue()</code></pre>
-<p>Clear names help you keep track of what each value represents &#8212;
-especially when you&#8217;re juggling multiple ranges, rows, and calculations.
-Good naming is one of the simplest habits that separates messy scripts
-from maintainable ones. As your projects grow, you&#8217;ll be glad you
-invested in clarity early. Next, we&#8217;ll start making decisions with this
-data &#8212; deciding, for instance, whether an item has dropped low enough to
-reorder.</p>
+<p>This lesson only deals with the first two questions &#8212; columns and
+tables &#8212; since it covers only the <code>SELECT</code> and
+<code>FROM</code> clauses. Later lessons on filtering and sorting data
+put the rows and order questions to use.</p>
+<p>Throughout this book you&#8217;ll see examples that follow this process: a
+short description of a data need, a chat with an AI assistant used to
+help translate that need into SQL syntax, and a query box where you can
+run the resulting statement and check its results against the plan.</p>
+<p>This lesson uses example SQL statements that query the museum
+database (see Figure 1). The museum database has five tables:</p>
+<ol type="1">
+<li><code>artist</code> &#8212; information about the artists whose work is
+exhibited in the museums in the database</li>
+<li><code>work</code> &#8212; information about the individual works of art
+exhibited in the museums in the database</li>
+<li><code>subject</code> &#8212; information about the topic or focus of the
+works of art in the database</li>
+<li><code>museum</code> &#8212; information about the museums in the
+database</li>
+<li><code>museum_hours</code> &#8212; information about the days and times the
+museums are open</li>
+</ol>
+<figure>
+<img alt="A diagram of the museum database. The museum database has the following tables: artist, subject, work, museum, and museum_hours." src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh7hX_BsoPaH4zbcUkf25Qf4QBazzQDsi4XqDY6Y9Tef5ODWacEiCNh2gTyXnk5egU7xQljugE1OxqtSZi3tGO8QixxI9zh-GY00O1uwPshuEYqw-r7pFrAEvmBDQu4OxklYro62CgO_RiDA_KCabOk4E0s34yC-_o_mUYKe_V-XqMqi1Et7P_nLHguBEU/s16000/canvas-trans.png" />
+<figcaption aria-hidden="true">A diagram of the museum database. The
+museum database has the following tables: artist, subject, work, museum,
+and museum_hours.</figcaption>
+</figure>
+<p><em>Figure 1: The Museum Database Diagram</em></p>
+<p>The examples in this lesson show how to write SQL statements that
+retrieve one or more columns from a table in the museum database, along
+with a few basic ways to limit and de-duplicate the rows that come
+back.</p>
+<h2 data-number="4.3" id="retrieving-a-single-column"><span
+class="header-section-number">4.3</span> Retrieving a Single Column</h2>
+<p>Perhaps the most basic SELECT statement returns a single column from
+a database table. A statement like this needs both a <code>SELECT</code>
+clause, to define the column you wish to display, and a
+<code>FROM</code> clause, to specify the table the data comes from.</p>
+<p>For example, say you want to see the names of the museums in the
+database. The plan is straightforward: retrieve the <code>name</code>
+column from the <code>museum</code> table.</p>
+<p>You can use a chat with an AI assistant to create the SELECT
+statement that will do this:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Write a SQL statement to list the names of
+museums.</p>
+<p><strong>AI:</strong> To list the names of museums from a database,
+you would need to know the specific table and column where the museum
+names are stored. Assuming there is a table called &#8220;Museums&#8221; with a
+column named &#8220;Name,&#8221; you can use the following SQL statement:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> Name</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">FROM</span> Museums;</span></code></pre></div>
+<p>This query selects the &#8220;Name&#8221; column from the &#8220;Museums&#8221; table and
+retrieves all the museum names. Replace &#8220;Museums&#8221; with the actual table
+name in your database to execute the query successfully.</p>
+</blockquote>
+</div>
+<p>Because the AI assistant doesn&#8217;t know anything about this database,
+it has to guess at the table and column names. Notice that it guesses
+the column name correctly &#8212; the name of each museum is stored in the
+<code>name</code> column &#8212; but it doesn&#8217;t guess the table name
+correctly. The museum information is actually stored on the
+<code>museum</code> table, not <code>Museums</code>. You can send the
+assistant a follow-up message with the correct table name:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Try again. The table is named museum.</p>
+<p><strong>AI:</strong> Apologies for the mistake. Here&#8217;s the revised
+SQL statement to list the names of museums from a table named
+&#8220;museum&#8221;:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> Name</span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">FROM</span> museum;</span></code></pre></div>
+<p>This query selects the &#8220;Name&#8221; column from the &#8220;museum&#8221; table and
+retrieves all the museum names.</p>
+</blockquote>
+</div>
+<p>Now the table name matches what is actually in the database. The
+SELECT clause is set to retrieve a single column, <code>name</code>, and
+the FROM clause specifies that the rows come from the
+<code>museum</code> table. A SELECT statement without a filter &#8212;
+discussed in a later lesson &#8212; returns all of the rows in a table. This
+query also does not specify any sort order, which is also discussed in a
+later lesson.</p>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> name</span>
+<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">FROM</span>   museum;</span></code></pre></div>
+<div class="note">
+<blockquote>
+<p>This is one of the book&#8217;s interactive query boxes (tied to the
+<code>artist</code>/<code>work</code>/<code>museum</code> schema
+diagram, with a &#8220;Play&#8221; button and results panel) &#8212; shown here as a plain
+code block until that component is built on this platform.</p>
+</blockquote>
+</div>
+<div class="tip">
+<blockquote>
+<p><strong>Tip: Terminating Statements.</strong> You can execute more
+than one SQL statement at a time; multiple statements need to be
+separated by semicolons. PostgreSQL does not require a semicolon at the
+end of a single statement executed alone, but there&#8217;s no harm in adding
+one, and it&#8217;s a good habit for when you start running several statements
+together.</p>
+</blockquote>
+</div>
+<p>All extra white space within a SQL statement is ignored when the
+statement is processed. A statement can be written on one long line or
+broken up over many lines, so all three of these statements are treated
+exactly the same:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> name <span class="kw">FROM</span> museum;</span>
+<span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a></span>
+<span id="cb4-3"><a aria-hidden="true" href="#cb4-3" tabindex="-1"></a><span class="kw">SELECT</span> name</span>
+<span id="cb4-4"><a aria-hidden="true" href="#cb4-4" tabindex="-1"></a><span class="kw">FROM</span>   museum;</span>
+<span id="cb4-5"><a aria-hidden="true" href="#cb4-5" tabindex="-1"></a></span>
+<span id="cb4-6"><a aria-hidden="true" href="#cb4-6" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb4-7"><a aria-hidden="true" href="#cb4-7" tabindex="-1"></a>    name</span>
+<span id="cb4-8"><a aria-hidden="true" href="#cb4-8" tabindex="-1"></a><span class="kw">FROM</span></span>
+<span id="cb4-9"><a aria-hidden="true" href="#cb4-9" tabindex="-1"></a>    museum;</span></code></pre></div>
+<p>Most people who write a lot of SQL find that breaking statements up
+over multiple lines makes them easier to read and debug.</p>
+<h2 data-number="4.4" id="retrieving-multiple-columns"><span
+class="header-section-number">4.4</span> Retrieving Multiple
+Columns</h2>
+<p>A SELECT statement used to retrieve more than one column from a table
+is very similar to one that retrieves a single column. The only
+difference is that each column is listed after the <code>SELECT</code>
+keyword, separated by a comma.</p>
+<div class="tip">
+<blockquote>
+<p><strong>Tip: Be Careful with Commas.</strong> When selecting multiple
+columns, put a comma between each column name, but not after the last
+one. A trailing comma at the end of the column list will result in a
+syntax error.</p>
+</blockquote>
+</div>
+<p>Say you want to see the name, city, and country of each museum in the
+database. The plan: retrieve the <code>name</code>, <code>city</code>,
+and <code>country</code> columns from the <code>museum</code> table,
+with all rows and no particular order.</p>
+<p>You can use a chat with an AI assistant to generate a SQL statement
+to retrieve this data:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Write a SQL statement to list the names,
+cities, and countries of museums.</p>
+<p><strong>AI:</strong> Certainly! Here&#8217;s an example of a SQL statement
+to list the names, cities, and countries of museums:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> name, city, country</span>
+<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="kw">FROM</span> museums;</span></code></pre></div>
+<p>In this example, it is assumed that there is a table named &#8220;museums&#8221;
+in the database, which contains columns named &#8220;name&#8221;, &#8220;city&#8221;, and
+&#8220;country&#8221; to store the respective information for each museum. You may
+need to adjust the table and column names based on your specific
+database schema.</p>
+</blockquote>
+</div>
+<p>Once again, the assistant assumes the table is named
+<code>museums</code>. You can prompt it for the correct name:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Try again. The table is named museum.</p>
+<p><strong>AI:</strong> Apologies for the mistake. Here&#8217;s the corrected
+SQL statement to list the names, cities, and countries of museums from a
+table named &#8220;museum&#8221;:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> name, city, country</span>
+<span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a><span class="kw">FROM</span> museum;</span></code></pre></div>
+<p>This statement will retrieve the columns &#8220;name&#8221;, &#8220;city&#8221;, and
+&#8220;country&#8221; from the &#8220;museum&#8221; table and display the respective information
+for each museum.</p>
+</blockquote>
+</div>
+<p>The query is ready to try. The <code>name</code>, <code>city</code>,
+and <code>country</code> columns are included in the result because they
+are listed in the SELECT clause, separated by commas. The FROM clause
+ensures the data comes from the <code>museum</code> table, and all rows
+of the table are returned in no particular order.</p>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span> name, city, country</span>
+<span id="cb7-2"><a aria-hidden="true" href="#cb7-2" tabindex="-1"></a><span class="kw">FROM</span>   museum;</span></code></pre></div>
+<div class="note">
+<blockquote>
+<p><strong>Note: Ordering Columns.</strong> Columns are displayed in the
+query result in the order they are listed after the SELECT keyword. You
+can change the order columns appear in the result simply by changing
+their order in the SELECT statement.</p>
+</blockquote>
+</div>
+<h2 data-number="4.5" id="retrieving-all-columns"><span
+class="header-section-number">4.5</span> Retrieving All Columns</h2>
+<p>There are times you&#8217;ll want to retrieve every column from a database
+table. You could list every column name in the SELECT statement, but
+there&#8217;s a shortcut: the asterisk (<code>*</code>) is a wildcard
+character that stands in for all of the columns on a table.</p>
+<p>Say you want a quick look at everything stored on the
+<code>museum</code> table. The following SQL statement retrieves all of
+the columns from the <code>museum</code> table:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
+<span id="cb8-2"><a aria-hidden="true" href="#cb8-2" tabindex="-1"></a><span class="kw">FROM</span>   museum;</span></code></pre></div>
+<p>Using <code>*</code> in the SELECT clause returns every column on the
+table specified in the FROM clause &#8212; in this case, <code>museum</code>.
+All rows are returned, and the columns generally appear in the order
+they are defined on the table.</p>
+<div class="tip">
+<blockquote>
+<p><strong>Tip: Using Wildcards to Explore Data.</strong> It can be
+helpful to explore the data in a database before you write queries
+against it, especially if you don&#8217;t have a schema diagram handy. Using
+the wildcard character to retrieve every column on a table is a quick
+way to see what&#8217;s actually stored there.</p>
+</blockquote>
+</div>
+<p>It is usually best practice to specify the exact columns you want
+rather than use the wildcard. Retrieving columns you don&#8217;t need can slow
+down the retrieval of data from a database, especially on large
+tables.</p>
+<h2 data-number="4.6" id="removing-duplicate-rows"><span
+class="header-section-number">4.6</span> Removing Duplicate Rows</h2>
+<p>All of the queries in this lesson so far have returned every row from
+the source table. There are times you don&#8217;t want every row, because the
+rows retrieved by a query often repeat. For example, say you want to
+list all of the countries represented in the museum database.</p>
+<p>The SQL statement that retrieves the countries with museums is:</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="kw">SELECT</span> country</span>
+<span id="cb9-2"><a aria-hidden="true" href="#cb9-2" tabindex="-1"></a><span class="kw">FROM</span> museum;</span></code></pre></div>
+<p>Although this statement isn&#8217;t quite right yet, it&#8217;s instructive to
+see what it produces.</p>
+<p>Notice that this statement returns 57 rows, even though there are
+only 16 different countries on the <code>museum</code> table. Many of
+the countries appear in the results more than once. The result would be
+more useful if each country were listed only once.</p>
+<p>You can edit the query to show only the unique values for
+<code>country</code> by adding the keyword <code>DISTINCT</code>
+directly after <code>SELECT</code>:</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb10-1"><a aria-hidden="true" href="#cb10-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> country</span>
+<span id="cb10-2"><a aria-hidden="true" href="#cb10-2" tabindex="-1"></a><span class="kw">FROM</span> museum;</span></code></pre></div>
+<p>With <code>DISTINCT</code> in the SELECT clause, only the unique
+countries are displayed.</p>
+<p>Adding <code>DISTINCT</code> reduces the result set from 57 rows to
+16 &#8212; one for each unique country.</p>
+<p>AI assistants can generally figure out on their own when
+<code>DISTINCT</code> is needed. Consider a chat that asks an assistant
+to construct a query to retrieve the countries with a museum:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Write a SQL statement to list the countries on
+the museum table.</p>
+<p><strong>AI:</strong> To list the countries in the &#8220;museum&#8221; table,
+assuming there is a column named &#8220;country&#8221; in the table that stores the
+country names, you can use the following SQL statement:</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb11-1"><a aria-hidden="true" href="#cb11-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> country</span>
+<span id="cb11-2"><a aria-hidden="true" href="#cb11-2" tabindex="-1"></a><span class="kw">FROM</span> museum;</span></code></pre></div>
+<p>This query selects the distinct values from the &#8220;country&#8221; column of
+the &#8220;museum&#8221; table. The DISTINCT keyword ensures that each country name
+is returned only once, even if there are multiple museums in the same
+country.</p>
+</blockquote>
+</div>
+<p>Notice that the assistant not only includes <code>DISTINCT</code> in
+the SQL statement, but also explains why <code>DISTINCT</code> is
+appropriate here.</p>
+<p><code>DISTINCT</code> applies to every column in the SELECT clause,
+not just the first one. For example, retrieving both
+<code>country</code> and <code>state</code> returns more than 16 rows,
+because a country with more than one state appears once for every state
+on the table &#8212; it&#8217;s the <em>combination</em> of country and state that
+is unique, not the country alone.</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> country, state</span>
+<span id="cb12-2"><a aria-hidden="true" href="#cb12-2" tabindex="-1"></a><span class="kw">FROM</span>   museum;</span>
+<span id="cb12-3"><a aria-hidden="true" href="#cb12-3" tabindex="-1"></a></span>
+<span id="cb12-4"><a aria-hidden="true" href="#cb12-4" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> country</span>
+<span id="cb12-5"><a aria-hidden="true" href="#cb12-5" tabindex="-1"></a><span class="kw">FROM</span>   museum;</span></code></pre></div>
+<p>Both queries return a unique set of values, but the first returns the
+unique combinations of country and state, while the second returns only
+the unique list of countries.</p>
+<h2 data-number="4.7" id="using-comments"><span
+class="header-section-number">4.7</span> Using Comments</h2>
+<p>SQL statements are instructions processed by the database management
+system to interact with the database. There are times when you want to
+include notes in a SQL statement that shouldn&#8217;t be processed. These
+notes are called comments.</p>
+<div class="term">
+<blockquote>
+<p><strong>Comments</strong> &#8212; Notes placed inside a SQL statement that
+are not processed by the database management system.</p>
+</blockquote>
+</div>
+<p>Here are a few reasons you might want to leave comments in your SQL
+statements:</p>
+<ol type="1">
+<li>The SQL statements you write can become complex. It&#8217;s often helpful
+to leave descriptive comments explaining the logic of the
+statement.</li>
+<li>You may want to leave a comment at the beginning of a statement
+describing what it does.</li>
+<li>When troubleshooting a statement that isn&#8217;t working as expected, it
+can help to temporarily comment out part of the statement to see the
+effect of removing it.</li>
+</ol>
+<p>PostgreSQL supports two ways to write a comment. The first is an
+inline comment, created with two hyphens (<code>--</code>). Any text on
+the same line after the hyphens is not processed. For example, the
+statement below retrieves the list of museums, ignoring the text &#8220;This
+is a comment&#8221; when it&#8217;s processed:</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb13-1"><a aria-hidden="true" href="#cb13-1" tabindex="-1"></a><span class="kw">SELECT</span> name  <span class="co">-- This is a comment</span></span>
+<span id="cb13-2"><a aria-hidden="true" href="#cb13-2" tabindex="-1"></a><span class="kw">FROM</span>   museum;</span></code></pre></div>
+<p>You can also write comments that span multiple lines. A multiline
+comment begins with <code>/*</code> and ends with <code>*/</code>. For
+example, the text &#8220;This is a multiline comment&#8221; is not processed in this
+statement:</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb14-1"><a aria-hidden="true" href="#cb14-1" tabindex="-1"></a><span class="kw">SELECT</span> name</span>
+<span id="cb14-2"><a aria-hidden="true" href="#cb14-2" tabindex="-1"></a><span class="co">/* This is a</span></span>
+<span id="cb14-3"><a aria-hidden="true" href="#cb14-3" tabindex="-1"></a><span class="co">multiline comment */</span></span>
+<span id="cb14-4"><a aria-hidden="true" href="#cb14-4" tabindex="-1"></a><span class="kw">FROM</span>   museum;</span></code></pre></div>
+<h2 data-number="4.8" id="summary"><span
+class="header-section-number">4.8</span> Summary</h2>
+<p>This lesson covered simple SQL statements that retrieve data from a
+database. It described how to retrieve a single column and multiple
+columns from a table, and how to use the wildcard character to retrieve
+every column on a table. It also covered how to use
+<code>DISTINCT</code> to retrieve only unique rows, and how to embed
+comments in a SQL statement.</p>
 <!--postEnd-->
               </div>
 </div>
@@ -1320,8 +1360,8 @@ reorder.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZpEmXDOyAVQ9Gl1OyuDrBR6:1784765283307';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d1676106165289640444','//book1011.blogspot.com/2000/02/4.html','1676106165289640444');
-_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '1676106165289640444', 'title': 'book1011', 'url': 'https://book1011.blogspot.com/2000/02/4.html', 'canonicalUrl': 'https://book1011.blogspot.com/2000/02/4.html', 'homepageUrl': 'https://book1011.blogspot.com/', 'searchUrl': 'https://book1011.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1011.blogspot.com/', 'blogspotFaviconUrl': 'https://book1011.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://book1011.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1011 - RSS\x22 href\x3d\x22https://book1011.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/1676106165289640444/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://book1011.blogspot.com/feeds/6701322407338045706/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/37c4cc789ad2acf9', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '6701322407338045706', 'postImageThumbnailUrl': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi3j_ZQ5HXTAbC-DQiRbQOngEJNc3rQ-OHiKKCTnsovgeU16k4zbgiuLsrmReTfJSmFhBOMVNyUiVv4rMuF9kES2x3O7TkNbn7s1UqLZxURDNscVa79jioBfRWZrp_OCqShjwpMeK_0Ayr6yTFGs8OJJjcr1W6EUwWiYhtSRSOtbL1VpbxMEM-xkaFaLa0/s72-c/84cd1741.png', 'postImageUrl': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi3j_ZQ5HXTAbC-DQiRbQOngEJNc3rQ-OHiKKCTnsovgeU16k4zbgiuLsrmReTfJSmFhBOMVNyUiVv4rMuF9kES2x3O7TkNbn7s1UqLZxURDNscVa79jioBfRWZrp_OCqShjwpMeK_0Ayr6yTFGs8OJJjcr1W6EUwWiYhtSRSOtbL1VpbxMEM-xkaFaLa0/s1600/84cd1741.png', 'pageName': '4. Variables and Data', 'pageTitle': 'book1011: 4. Variables and Data'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '4. Variables and Data', 'description': 'monaco  4  Variables and Data \r 4.1  What Variables Are and Why They\r Matter \r As you begin writing programs that do more than print a messa...', 'featuredImage': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi3j_ZQ5HXTAbC-DQiRbQOngEJNc3rQ-OHiKKCTnsovgeU16k4zbgiuLsrmReTfJSmFhBOMVNyUiVv4rMuF9kES2x3O7TkNbn7s1UqLZxURDNscVa79jioBfRWZrp_OCqShjwpMeK_0Ayr6yTFGs8OJJjcr1W6EUwWiYhtSRSOtbL1VpbxMEM-xkaFaLa0/s1600/84cd1741.png', 'url': 'https://book1011.blogspot.com/2000/02/4.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 6701322407338045706}}]);
+window['__wavt'] = 'AEUoTZon4vhfQ7rulAAs9yc6Fj-2:1784899978169';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/4.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/4.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/4.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/1198184498165602375/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '1198184498165602375', 'postImageThumbnailUrl': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh7hX_BsoPaH4zbcUkf25Qf4QBazzQDsi4XqDY6Y9Tef5ODWacEiCNh2gTyXnk5egU7xQljugE1OxqtSZi3tGO8QixxI9zh-GY00O1uwPshuEYqw-r7pFrAEvmBDQu4OxklYro62CgO_RiDA_KCabOk4E0s34yC-_o_mUYKe_V-XqMqi1Et7P_nLHguBEU/s72-c/canvas-trans.png', 'postImageUrl': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh7hX_BsoPaH4zbcUkf25Qf4QBazzQDsi4XqDY6Y9Tef5ODWacEiCNh2gTyXnk5egU7xQljugE1OxqtSZi3tGO8QixxI9zh-GY00O1uwPshuEYqw-r7pFrAEvmBDQu4OxklYro62CgO_RiDA_KCabOk4E0s34yC-_o_mUYKe_V-XqMqi1Et7P_nLHguBEU/s16000/canvas-trans.png', 'pageName': '4. Retrieving Data', 'pageTitle': 'book1014 SQL: 4. Retrieving Data'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '4. Retrieving Data', 'description': 'websql  4  Retrieving Data \r Objectives.  After completing this lesson, the\r successful student will be able to: \r \r Use the SELECT statemen...', 'featuredImage': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh7hX_BsoPaH4zbcUkf25Qf4QBazzQDsi4XqDY6Y9Tef5ODWacEiCNh2gTyXnk5egU7xQljugE1OxqtSZi3tGO8QixxI9zh-GY00O1uwPshuEYqw-r7pFrAEvmBDQu4OxklYro62CgO_RiDA_KCabOk4E0s34yC-_o_mUYKe_V-XqMqi1Et7P_nLHguBEU/s16000/canvas-trans.png', 'url': 'https://book1014.blogspot.com/2000/02/4.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 1198184498165602375}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>
 </body>

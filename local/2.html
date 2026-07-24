@@ -4,7 +4,7 @@
 <link href='https://www.blogger.com/static/v1/widgets/2872013778-css_bundle_v2.css' rel='stylesheet' type='text/css'/>
 <meta charset='UTF-8'/>
 <meta content='width=device-width, initial-scale=1' name='viewport'/>
-<title>book1011</title>
+<title>book1014 SQL</title>
 <!-- external libraries -->
 <script src='https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js'></script>
 <script src='https://unpkg.com/turndown/dist/turndown.js'></script>
@@ -460,11 +460,64 @@ line-height: 1;
 }
 blockquote{
 margin:1.75rem 0;
-padding:1rem 1.25rem 1rem 1.35rem;
 background:var(--surface-soft);
 border-left:.35rem solid var(--accent);
+padding:1rem 1.25rem 1rem 1.35rem;
 border-radius:0 var(--radius-md) var(--radius-md) 0;
 color:#334155;
+}
+.note blockquote{
+background:#E8F5E9;
+border-left:.35rem solid darkgreen;
+}
+.note blockquote p::before {
+content: "Note: ";
+font-weight: bold;
+}
+.tip blockquote{
+background:#F3E5F5;
+border-left:.35rem solid purple;
+}
+.tip blockquote p::before {
+content: "Tip: ";
+font-weight: bold;
+}
+.term blockquote{
+background:#E3EDF7;
+border-left:.35rem solid darkblue;
+}
+.term blockquote p::before {
+content: "Term: ";
+font-weight: bold;
+color:#2B7FFF;
+}
+.caution blockquote{
+background:#FFE2E2;
+border-left:.35rem solid red;
+}
+.caution blockquote p::before {
+content: "Caution: ";
+font-weight: bold;
+}
+
+.objectives blockquote{
+background:#FFF8E1;
+border-left:.35rem solid gold;
+border-right:.35rem solid gold;
+border-radius:0;
+}
+.objectives blockquote p::before {
+content: "Objectives: ";
+font-weight: bold;
+}
+
+.review blockquote{
+background:#FFF0EC;
+border-left:.35rem solid salmon;
+}
+.review blockquote p::before {
+content: "Review: ";
+font-weight: bold;
 }
 blockquote p:last-child{
 margin-bottom:0;
@@ -543,7 +596,7 @@ color:#fbbf24;
 color:#94a3b8;
 font-style:italic;
 }
-table{
+table.blog{
 display:block;
 width:max-content;
 max-width:100%;
@@ -557,24 +610,24 @@ border-radius:var(--radius-md);
 box-shadow:var(--shadow-sm);
 background:var(--surface);
 }
-th,
-td{
+th.blog,
+td.blog{
 padding:.72rem .85rem;
 border-bottom:1px solid var(--border);
 text-align:left;
 vertical-align:top;
 white-space:nowrap;
 }
-th{
+th.blog{
 font-size:.86rem;
 font-weight:700;
 color:var(--heading);
 background:var(--surface-soft);
 }
-tr:last-child td{
+tr.blog:last-child td{
 border-bottom:0;
 }
-tr:nth-child(even) td{
+tr.blog:nth-child(even) td{
 background:#f8fafc;
 }
 .monaco {
@@ -782,7 +835,7 @@ right: .75rem;
     }    
 
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=1676106165289640444&amp;zx=6bdbd94f-4c00-46a7-9f85-9e3213cc543c' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=1676106165289640444&amp;zx=6bdbd94f-4c00-46a7-9f85-9e3213cc543c' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -801,7 +854,7 @@ right: .75rem;
 <div class='hide' id='kind'>chapter</div>
 <div class='index-boxnbt'>
 <header class='entry-header'>
-<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>2. Your First Lines of Code</span></h1>
+<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>2. Understanding SQL</span></h1>
 </header>
 <div id='menu'>
 <div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
@@ -819,346 +872,662 @@ right: .75rem;
 <div id='search-results'></div>
 </div>
 </div>
-<div class='post-body entry-content' data-blog-id='1676106165289640444' data-post-id='622232992790696188'>
+<div class='post-body entry-content' data-blog-id='3986204447440040189' data-post-id='3454509745030117539'>
 <button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
 <button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
               
-              <!--postBegin--><div class="module">monaco</div>
-<h1 data-number="2" id="your-first-lines-of-code"><span
-class="header-section-number">2</span> Your First Lines of Code</h1>
-<h2 data-number="2.1" id="writing-and-running-simple-statements"><span
-class="header-section-number">2.1</span> Writing and Running Simple
-Statements</h2>
-<p>Before you can build programs that make decisions or process data,
-you need to get comfortable with the most basic building block of all:
-the <strong>expression</strong>. An expression is any piece of code the
-computer evaluates to produce a value &#8212; a number, a piece of text, or a
-calculation. Think of expressions as the meaningful phrases that supply
-the data your code works with.</p>
-<p>In operations, the values you care about are usually measurements,
-and <strong>productivity</strong> &#8212; outputs divided by inputs &#8212; is one
-of the most important. We&#8217;ll compute it again and again in this chapter
-using two small operations you&#8217;ll get to know well. The first is a
-university that one year taught 18,000 students with 720 faculty, then
-grew to 26,000 students with 800 faculty five years later. The second is
-<strong>Performance Apparel</strong>, a custom t-shirt shop that makes
-1,000 shirts a month on $2,000 of labor, $3,000 of materials, and $1,500
-of overhead. Nearly every calculation ahead comes back to one of these
-two, so once you know them, the numbers will speak for themselves.</p>
-<p>Expressions are how you turn those situations into values:</p>
-<ul>
-<li>A plain number like <code>18000</code> (the students taught) is an
-expression.</li>
-<li>A calculation like <code>18000 / 720</code> (students per faculty
-member) is an expression that evaluates to <code>25</code>.</li>
-<li>A piece of text in quotes, like <code>"Performance Apparel"</code>,
-is an expression.</li>
-</ul>
-<p>Expressions represent values, but to <em>do</em> something with them
-you wrap them in <strong>statements</strong> &#8212; the full instructions
-that tell the computer to act.</p>
-<h3 data-number="2.1.1" id="from-value-to-action"><span
-class="header-section-number">2.1.1</span> From Value to Action</h3>
-<p>An expression on its own is like a thought you haven&#8217;t spoken. The
-calculation <code>18000 / 720</code> represents a single-factor
-productivity figure &#8212; students taught per faculty member &#8212; but writing
-it alone doesn&#8217;t tell the computer to do anything with it. To turn it
-into an instruction, use a statement such as
-<code>console.log()</code>:</p>
-<pre class="javascript-example"><code>console.log(18000 / 720) // statement: display the result
-                         // 18000 / 720 is just the expression</code></pre>
-<p>This tells the computer to print the result &#8212; 25 students per faculty
-member, the university&#8217;s productivity for that year. (When it grew to
-32.5 five years later, that was a real gain &#8212; we&#8217;ll measure exactly how
-much shortly.) One instruction, one action. Tiny as it is, this captures
-the essence of programming: write a clear command, and the computer
-carries it out exactly.</p>
-<h3 data-number="2.1.2" id="what-makes-a-statement-simple"><span
-class="header-section-number">2.1.2</span> What Makes a Statement
-&#8220;Simple&#8221;</h3>
-<p>A simple statement usually does one thing &#8212; display a value, assign a
-variable, or call a function. For example:</p>
-<pre class="javascript-example"><code>console.log(1000 / (2000 + 3000 + 1500))
-// multi-factor productivity: shirts produced per dollar of input,
-// dividing output by labor + materials + overhead</code></pre>
-<p>This calculates how many shirts Performance Apparel produces for
-every dollar of input &#8212; about 0.154 &#8212; and displays it. Or:</p>
-<pre class="javascript-example"><code>let studentsPerFaculty = 18000 / 720</code></pre>
-<p>This stores a result for later use without displaying it. Each line
-is a complete thought expressed in code.</p>
-<h3 data-number="2.1.3" id="running-your-first-statements"><span
-class="header-section-number">2.1.3</span> Running Your First
-Statements</h3>
-<p>The easiest place to start is the browser console. Open developer
-tools, switch to the Console tab, and type. (The console echoes
-expressions back to you, so bare expressions often show a result there
-too.)</p>
-<p>These first two lines are just expressions &#8212; on their own they don&#8217;t
-instruct the computer to do anything lasting:</p>
-<pre class="javascript-example"><code>18000 / 720</code></pre>
-<pre class="javascript-example"><code>&quot;Performance Apparel&quot;</code></pre>
-<p>This is a true, simple statement:</p>
-<pre class="javascript-example"><code>console.log(32.5 / 25 - 1) // change in productivity: a 30% improvement</code></pre>
-<p>Now compare these two lines:</p>
-<pre class="javascript-example"><code>let studentsPerFaculty = 25
-studentsPerFaculty</code></pre>
-<p>Line one is a statement &#8212; it assigns 25 to
-<code>studentsPerFaculty</code>. Line two is just an expression: the
-computer can see that the value is 25, but you haven&#8217;t told it what to
-do with that fact. Make line two a statement and the value gets
-used:</p>
-<pre class="javascript-example"><code>let studentsPerFaculty = 25
-console.log(studentsPerFaculty)</code></pre>
-<p>Each statement runs immediately, giving instant feedback. That
-write-run-observe loop is one of the best ways to learn.</p>
-<h3 data-number="2.1.4" id="ending-statements"><span
-class="header-section-number">2.1.4</span> Ending Statements</h3>
-<p>You&#8217;ll often see a semicolon (<code>;</code>) at the end of every
-line in online JavaScript. Modern JavaScript usually figures out where a
-statement ends from the line break on its own &#8212; a feature called
-Automatic Semicolon Insertion &#8212; so in this book we leave them off. Two
-reasons: it&#8217;s one less rule to track while you&#8217;re learning the logic,
-and the code reads cleaner. You may later work on projects where
-semicolons are the norm; for now we keep things simple.</p>
-<h3 data-number="2.1.5" id="why-simple-statements-matter"><span
-class="header-section-number">2.1.5</span> Why Simple Statements
-Matter</h3>
-<p>It&#8217;s tempting to rush to bigger programs, but simple statements are
-the foundation for everything else. Even a full productivity dashboard
-or scheduling tool is built from thousands of small, clear instructions
-like these. As the book goes on, you&#8217;ll combine them into functions,
-loops, and conditionals &#8212; but it all starts here: one line, one action,
-one step toward thinking like a programmer.</p>
-<h2 data-number="2.2" id="console.log-and-basic-output"><span
-class="header-section-number">2.2</span> <code>console.log()</code> and
-Basic Output</h2>
-<p>Before you can build anything meaningful, you need a way to
-<em>see</em> what your code is doing. That&#8217;s <code>console.log()</code>.
-It&#8217;s one of the simplest tools in the language and one you&#8217;ll use
-constantly. It sends a message to the console &#8212; a built-in panel where
-JavaScript can display information. Think of it as your program&#8217;s voice:
-whenever you want to check a value or confirm a calculation, you log
-it.</p>
-<pre class="javascript-example"><code>console.log(&quot;Students per faculty:&quot;, 18000 / 720)</code></pre>
-<h3 data-number="2.2.1" id="why-console.log-matters"><span
-class="header-section-number">2.2.1</span> Why
-<code>console.log()</code> Matters</h3>
-<p>Logging looks trivial but does a lot of work: it lets you see results
-(numbers, text, calculations), trace problems when something isn&#8217;t
-working, follow the order your code runs in, and &#8212; as a beginner &#8212; watch
-how JavaScript behaves. It&#8217;s not an exaggeration to call it one of the
-most important tools you&#8217;ll use while learning.</p>
-<h3 data-number="2.2.2" id="logging-different-kinds-of-values"><span
-class="header-section-number">2.2.2</span> Logging Different Kinds of
-Values</h3>
-<p>You can log almost anything:</p>
-<pre class="javascript-example"><code>console.log(18000)                  // numbers (students taught)
-console.log(&quot;Performance Apparel&quot;)  // strings (a company name)
-console.log(32.5 &gt; 25)              // booleans (did productivity rise?)
-console.log(18000 / 720)            // expressions (a productivity ratio)</code></pre>
-<p>Anything after <code>//</code> is a comment &#8212; ignored by Apps Script.
-Use comments to note what a line does, record your reasoning, or
-temporarily disable code you don&#8217;t want to run but don&#8217;t want to
-delete.</p>
-<p>You can also log several values at once:</p>
-<pre class="javascript-example"><code>console.log(&quot;Productivity:&quot;, 18000 / 720, &quot;students per faculty&quot;)</code></pre>
-<p>The console prints the label and the result together, which makes the
-output easy to read.</p>
-<h3 data-number="2.2.3" id="using-the-console-in-your-browser"><span
-class="header-section-number">2.2.3</span> Using the Console in Your
-Browser</h3>
-<p>To try it: open your browser, right-click and choose
-<strong>Inspect</strong> or <strong>Developer Tools</strong>, click the
-<strong>Console</strong> tab, type a line such as
-<code>console.log("Testing output")</code>, and press Enter. The message
-appears immediately &#8212; that instant feedback is one of the best ways to
-build confidence.</p>
-<h3 data-number="2.2.4" id="output-isnt-just-for-beginners"><span
-class="header-section-number">2.2.4</span> Output Isn&#8217;t Just for
-Beginners</h3>
-<p>Even experienced developers rely on logging &#8212; it&#8217;s a quick, flexible
-way to understand what code is doing without elaborate tools. You&#8217;ll
-learn more advanced techniques later, but <code>console.log()</code>
-will always stay in your toolkit. For now, treat it as your first and
-most reliable way to ask your program, &#8220;What&#8217;s going on here?&#8221;</p>
-<h2 data-number="2.3"
-id="understanding-errors-and-debugging-early"><span
-class="header-section-number">2.3</span> Understanding Errors and
-Debugging Early</h2>
-<p>Every programmer hits errors. Hitting one isn&#8217;t a sign you&#8217;re doing
-it wrong &#8212; it&#8217;s a sign you&#8217;re <em>programming</em>. An error is just the
-computer saying, &#8220;I tried to follow your instructions, but something
-didn&#8217;t make sense.&#8221; Learning to read these messages early makes you far
-more confident.</p>
-<h3 data-number="2.3.1" id="errors-are-part-of-the-process"><span
-class="header-section-number">2.3.1</span> Errors Are Part of the
-Process</h3>
-<p>You expect to stumble over grammar when learning any new language,
-and a programming language is no different. You&#8217;ll misspell a name, drop
-a parenthesis, or use a feature wrong. Treat errors as feedback &#8212; they
-point straight at what needs attention. A typical message looks
-like:</p>
-<pre class="javascript-example"><code>Uncaught ReferenceError: faculty is not defined</code></pre>
-<p>Intimidating at first, but with practice you&#8217;ll read these like
-clues.</p>
-<h3 data-number="2.3.2" id="types-of-errors-youll-see"><span
-class="header-section-number">2.3.2</span> Types of Errors You&#8217;ll
-See</h3>
-<p>Most beginner errors fall into a few buckets:</p>
-<ul>
-<li><strong>Syntax errors</strong> &#8212; the computer can&#8217;t parse what you
-wrote (a missing bracket, a stray character).</li>
-<li><strong>Reference errors</strong> &#8212; you used a name that doesn&#8217;t
-exist or isn&#8217;t spelled the way you think (writing <code>faculty</code>
-when you defined <code>facultyCount</code>).</li>
-<li><strong>Type errors</strong> &#8212; you tried an operation that doesn&#8217;t
-make sense, like calling something that isn&#8217;t a function.</li>
-<li><strong>Logic errors</strong> &#8212; the code runs but gives the wrong
-answer. These are the trickiest, because nothing complains. If your
-multi-factor productivity formula leaves off the parentheses around the
-summed inputs, you&#8217;ll still get a number &#8212; just a wildly wrong one,
-because the computer divides by only the first input and then adds the
-rest.</li>
-</ul>
-<p>Knowing which bucket you&#8217;re in narrows the fix.</p>
-<h3 data-number="2.3.3" id="reading-error-messages"><span
-class="header-section-number">2.3.3</span> Reading Error Messages</h3>
-<p>Messages feel cryptic until you know they usually tell you three
-things: what went wrong, where it happened (a line number), and why the
-computer couldn&#8217;t continue. For example:</p>
-<pre class="javascript-example"><code>Uncaught SyntaxError: Unexpected token &#39;}&#39;</code></pre>
-<p>This says the computer found a closing brace it didn&#8217;t expect &#8212;
-usually a sign something earlier is missing.</p>
-<h3 data-number="2.3.4" id="debugging-your-first-toolkit"><span
-class="header-section-number">2.3.4</span> Debugging: Your First
-Toolkit</h3>
-<p>Debugging is finding and fixing problems. Early on you&#8217;ll lean on a
-few simple, powerful habits: use <code>console.log()</code> to check
-values and confirm your code runs where you expect; read error messages
-slowly, one piece at a time; check for typos, especially in names;
-comment out sections to isolate the problem; and test small pieces
-before combining them. A classic catch is the productivity formula below
-&#8212; both lines run, but only one is right:</p>
-<pre class="javascript-example"><code>console.log(1000 / 2000 + 3000 + 1500)   // 4500.5 &#8212; wrong: no parentheses
-console.log(1000 / (2000 + 3000 + 1500)) // 0.154 &#8212; correct</code></pre>
-<p>These habits save hours.</p>
-<h3 data-number="2.3.5" id="debugging-builds-understanding"><span
-class="header-section-number">2.3.5</span> Debugging Builds
-Understanding</h3>
-<p>Fixing errors isn&#8217;t only about making code work &#8212; it&#8217;s how you learn.
-Each bug you track down deepens your sense of how JavaScript behaves,
-until you start anticipating problems before they happen. Debugging
-isn&#8217;t a chore; it&#8217;s one of the most valuable skills you&#8217;ll build.</p>
-<h2 data-number="2.4" id="the-idea-of-syntax-and-structure"><span
-class="header-section-number">2.4</span> The Idea of Syntax and
-Structure</h2>
-<p>Every language has rules for how words fit into meaningful sentences,
-and programming languages are no different. <strong>Syntax</strong> is
-the set of rules for writing code the computer can understand.
-<strong>Structure</strong> is how those rules fit together into a
-coherent program. If syntax is the grammar, structure is the
-organization.</p>
-<h3 data-number="2.4.1" id="why-syntax-matters"><span
-class="header-section-number">2.4.1</span> Why Syntax Matters</h3>
-<p>Computers are completely literal &#8212; no tone, no guessing, no filling
-in gaps. Forget a parenthesis or misspell a keyword and the machine
-stops and reports an error, because the instruction no longer fits the
-expected pattern. This is valid:</p>
-<pre class="javascript-example"><code>console.log(&quot;Productivity improved&quot;)</code></pre>
-<p>Remove one character and the computer no longer knows where the
-statement ends:</p>
-<pre class="javascript-example"><code>console.log(&quot;Productivity improved&quot;</code></pre>
-<p>A person might overlook the missing parenthesis; the computer can&#8217;t.
-Syntax rules create a predictable structure both you and the machine can
-rely on.</p>
-<h3 data-number="2.4.2"
-id="the-building-blocks-of-javascript-syntax"><span
-class="header-section-number">2.4.2</span> The Building Blocks of
-JavaScript Syntax</h3>
-<p>As you go, you&#8217;ll meet a handful of recurring elements:
-<strong>keywords</strong> like <code>let</code>, <code>if</code>,
-<code>function</code>; <strong>symbols</strong> like <code>{}</code>,
-<code>()</code>, <code>[]</code>; <strong>operators</strong> like
-<code>+</code>, <code>-</code>, <code>===</code>;
-<strong>comments</strong> with <code>//</code>; <strong>values</strong>
-like numbers, strings, and booleans; and <strong>identifiers</strong> &#8212;
-the names you choose for variables and functions. Each has a role and
-must appear in the right place.</p>
-<h3 data-number="2.4.3" id="structure-how-code-fits-together"><span
-class="header-section-number">2.4.3</span> Structure: How Code Fits
-Together</h3>
-<p>Where syntax governs the details, structure governs the big picture &#8212;
-organizing code so it&#8217;s readable and logical. JavaScript uses
-<strong>curly braces</strong> to group related statements:</p>
-<pre class="javascript-example"><code>if (newProductivity &gt; oldProductivity) {
-  console.log(&quot;Productivity improved&quot;)
-  console.log(&quot;Keep the new process&quot;)
-}</code></pre>
-<p>The braces show that both <code>console.log</code> lines belong to
-the <code>if</code>. Without them, only the first would depend on the
-condition; the second would run every time, regardless of whether
-productivity actually rose. The braces tell the computer to treat the
-grouped statements as one unit &#8212; they all run, or none do. Structure
-also includes indentation to show hierarchy, grouping related code,
-meaningful names, and a logical order.</p>
-<h3 data-number="2.4.4" id="syntax-structure-clear-communication"><span
-class="header-section-number">2.4.4</span> Syntax + Structure = Clear
-Communication</h3>
-<p>Programming is communication &#8212; expressing ideas in a form the
-computer can execute. Syntax keeps your message valid; structure keeps
-it understandable. A simple way to communicate clearly is to comment
-your code, especially the complicated parts. Explain what each section
-does and it&#8217;ll be far easier to follow when you return to it months
-later:</p>
-<pre class="javascript-example"><code>// Flag the change as an improvement worth keeping only when
-// the new productivity beats the old productivity.
-if (newProductivity &gt; oldProductivity) {
-  console.log(&quot;Productivity improved&quot;)
-  console.log(&quot;Keep the new process&quot;)
-}</code></pre>
-<h2 data-number="2.5"
-id="transitioning-to-google-apps-script-in-google-sheets"><span
-class="header-section-number">2.5</span> Transitioning to Google Apps
-Script in Google Sheets</h2>
-<p>So far you&#8217;ve learned JavaScript in its simplest form &#8212; small
-statements in the console. Now it&#8217;s time to take those skills somewhere
-practical, where your code interacts with real operations data. For the
-next part of the book we&#8217;ll shift to <strong>Google Apps
-Script</strong>, a JavaScript-based environment that runs inside Google
-Workspace, anchored in <strong>Google Sheets</strong> &#8212; where most
-operations data already lives.</p>
-<h3 data-number="2.5.1" id="why-move-to-google-apps-script-now"><span
-class="header-section-number">2.5.1</span> Why Move to Google Apps
-Script Now</h3>
-<p>Apps Script is the natural next step because it lets you apply your
-new skills to tasks that matter: computing productivity and other
-operations metrics, cleaning data, generating reports, and building
-tools that live right inside your spreadsheets. It&#8217;s ideal for beginners
-&#8212; nothing to install, code runs in the browser, results show up
-immediately in the sheet, the language is the JavaScript you&#8217;ve already
-learned, and you can build genuinely useful tools in just a few
-lines.</p>
-<h3 data-number="2.5.2" id="what-youll-learn-in-google-sheets"><span
-class="header-section-number">2.5.2</span> What You&#8217;ll Learn in Google
-Sheets</h3>
-<p>As we move into Apps Script, you&#8217;ll learn to write functions that
-read and modify spreadsheet data, create custom menus and buttons,
-automate repetitive tasks, build small applications inside Sheets, and
-connect a spreadsheet to other Google services. This is where
-programming starts to feel powerful &#8212; instead of writing code in
-isolation, you&#8217;ll be shaping tools that act on real operations
-information.</p>
-<h3 data-number="2.5.3" id="how-this-transition-works"><span
-class="header-section-number">2.5.3</span> How This Transition
-Works</h3>
-<p>You&#8217;re not leaving JavaScript behind &#8212; Apps Script <em>is</em>
-JavaScript, running in a different environment with extra features.
-Everything so far still applies; you&#8217;re just adding new abilities, like
-reading spreadsheet cells. Think of it as going from practicing chords
-to playing your first song: the fundamentals stay the same, but now you
-build something meaningful. The next chapter takes you into Sheets,
-shows you how to open the Apps Script editor, and helps you write your
-first script that touches real data.</p>
+              <!--postBegin--><h1 data-number="2" id="understanding-sql"><span
+
+class="header-section-number">2</span> Understanding SQL</h1>
+
+<div class="objectives">
+
+<blockquote>
+
+<p>After completing this lesson, the successful student will be able
+
+to:</p>
+
+<ol type="1">
+
+<li>Describe the building blocks of a database</li>
+
+<li>Explain what Structured Query Language (SQL) is and why it is
+
+used</li>
+
+</ol>
+
+</blockquote>
+
+</div>
+
+<p>Without knowing it, you probably use databases nearly every day.
+
+Databases are a key component of almost every computer-based system.
+
+When you check a bank account balance on your phone, you are using a
+
+database to display your account information. When you make a purchase
+
+online, your purchase information is recorded in a database. When you
+
+perform an internet search to find a new restaurant to visit for dinner,
+
+you are accessing data stored in a database. In truth, most websites and
+
+mobile apps rely on databases.</p>
+
+<p>Although you frequently interact with databases, you are not alone if
+
+you don’t really understand what a database is or how it works. Like
+
+most technologies, you don’t need to completely understand how a
+
+database works to benefit from using one. However, the fact that you are
+
+using this resource means that you want to understand more about how
+
+databases work so that you can interact with them in more advanced
+
+ways.</p>
+
+<p>In this lesson, you will learn what a database is and how to interact
+
+with one. In particular, the lesson will describe the building blocks of
+
+a database. It will also describe the SQL programming language used to
+
+retrieve data from and manipulate data in a database. The remaining
+
+lessons will dive deeply into various aspects of SQL to describe how to
+
+interact with databases in powerful ways.</p>
+
+<h2 data-number="2.1" id="what-is-a-database"><span
+
+class="header-section-number">2.1</span> What is a database?</h2>
+
+<p>There is a bit of confusion about just what a database is. Often a
+
+database is mistaken for the software used to create and manage it. The
+
+software used to create and manage a database is called a
+
+<strong>database management system (DBMS)</strong>. Examples of popular
+
+DBMS software include PostgreSQL, Oracle DB, Microsoft SQL Server,
+
+MySQL, and SQLite.</p>
+
+<p>The relationships among a database, the DBMS, and the applications
+
+that use the data are depicted in Figure 1. Data is stored in the
+
+database. The DBMS creates and manages the database. It also manages
+
+requests for data made by applications or users. Applications and users
+
+can access the data stored in the database, but not directly. Requests
+
+to access or manipulate the data stored in a database are made through
+
+the DBMS.</p>
+
+<p><img
+
+src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhzpb8P1qg72OHxej0PZ3ieLcYy9A7xAEF3NViP9AFjXVTk0YUMXu718a2aZZKdaz8rt4-aDmuGeCVjCQT4WqqyQbyGbwu7c6zvKunV9-bKPbuwEySdfRV9QMslgQwgSPb0E0IWFbWet9npRvihk69YdKobN2mXCU-uXe-UMWsoQfcr_VILUm9otdY9KLVu/s800/DataDBMSApps.png" /></p>
+
+<p><em>Figure 1: Database, DBMS, and Applications</em></p>
+
+<p>Separating the data stored in the database from the applications and
+
+users that consume the data has significant advantages over applications
+
+and users maintaining their own data.</p>
+
+<ol type="1">
+
+<li><strong>Sharing.</strong> The data can be shared across
+
+applications. If the data used by an application were stored within the
+
+application, it would only be available to that application.</li>
+
+<li><strong>Data Independence.</strong> Because the storage (database),
+
+management (DBMS), and use (applications/users) of data are separated,
+
+changes or maintenance can be made on applications, the DBMS, or the
+
+database without affecting the other elements. For example, you can
+
+upgrade or replace the disk drive that stores the database without
+
+interrupting applications and users.</li>
+
+</ol>
+
+<div class="term">
+
+<blockquote>
+
+<p><strong>Data Independence</strong> — Occurs when the storage,
+
+management, and use of data are separated.</p>
+
+</blockquote>
+
+</div>
+
+<p>A database is a collection of data stored in an organized way. Care
+
+is taken to properly organize data in a database. A well organized
+
+database is easier to use and is more effective than a poorly organized
+
+database. It is important to understand the basic building blocks of a
+
+database to be able to effectively interact with the data stored in the
+
+database.</p>
+
+<div class="term">
+
+<blockquote>
+
+<p><strong>Database</strong> — A collection of data stored in an
+
+organized way.</p>
+
+</blockquote>
+
+</div>
+
+<h3 data-number="2.1.1" id="the-building-blocks-of-a-database"><span
+
+class="header-section-number">2.1.1</span> The building blocks of a
+
+database</h3>
+
+<p>The most common way to organize data in a database is the relational
+
+model. In a relational database, data are separated and stored in
+
+tables. A database can include any number of tables, each storing data
+
+about different things. The data in one table may be associated with the
+
+data in another table. When this happens, a relationship is created
+
+between the tables. Table relationships will be discussed in a later
+
+lesson.</p>
+
+<div class="term">
+
+<blockquote>
+
+<p><strong>Relationship</strong> — Associations between database tables
+
+that contain connected data.</p>
+
+</blockquote>
+
+</div>
+
+<p>Not to be confused with the word “relationship,” the word
+
+“relational” refers to the mathematical term <em>relation</em>. A
+
+relation is a two-dimensional table. The two-dimensional tables in a
+
+relational database contain rows and columns. Each of these building
+
+blocks is described in the next few sections.</p>
+
+<div class="term">
+
+<blockquote>
+
+<p><strong>Relational</strong> — A database approach where data is
+
+stored in two-dimensional tables.</p>
+
+</blockquote>
+
+</div>
+
+<h4 data-number="2.1.1.1" id="tables"><span
+
+class="header-section-number">2.1.1.1</span> Tables</h4>
+
+<p>Tables are the largest building blocks of a database. A table
+
+contains data about persons, places, things, or ideas. Each table will
+
+store information about a single theme. For example, a database may
+
+contain information about the artists and the museums that showcase
+
+their art. An artist and a museum are two very different things, so the
+
+data stored about each would also be very different.</p>
+
+<div class="term">
+
+<blockquote>
+
+<p><strong>Table</strong> — A two-dimensional way to store data in a
+
+database.</p>
+
+</blockquote>
+
+</div>
+
+<p>Information about each different theme will be stored on separate
+
+tables. At a minimum this artist and museum database would have two
+
+tables, one for the artist information and one for the museum
+
+information (though there would likely be other tables to further
+
+organize the data in the database). All of the artist data would be
+
+stored on the artist table. Likewise, all of the museum data would be
+
+stored on the museum table. Generally, a database table contains little
+
+or no data about a different theme. This means that you would not expect
+
+to see artist information on the museum table or the other way around.
+
+Figure 2 shows an example of an artist table.</p>
+
+<p><img
+
+src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhEvUTYVTJVnMc2coAWFjAga2rAK82Gua1cVCONX9kxCVCueexmayShHHnu3q4X-U2lWiqpT05lj16Ftt8UjQt89I5lxXHgLEXftiYp0b9fZeZMBvHSMZGCdKadrmvYek5v7EHNgkJfcVAJekJLd277HAlTopbYZGvhx-9L_9gj5-L26M68K0nqt_FwjrSl/s1219/ArtistTableData.png" /></p>
+
+<p><em>Figure 2: Example Artist Table</em></p>
+
+<p>Database tables are given a name. A table name should describe the
+
+data stored in the table. The name will also be unique for each table to
+
+identify them from the other tables in the database. No two tables in a
+
+database can have the same name.</p>
+
+<p>A database table is two-dimensional, much like a worksheet in a
+
+spreadsheet. It contains both columns and rows. The columns and rows of
+
+a database table are structured in a standard way, making it easy to
+
+add, edit, and retrieve data in the table.</p>
+
+<h4 data-number="2.1.1.2" id="rows"><span
+
+class="header-section-number">2.1.1.2</span> Rows</h4>
+
+<p>The rows of a table contain information about the specific instances
+
+of the theme of the table. This means that the rows of the artist table
+
+would contain all of the data stored about each artist. Each row
+
+contains the data for only one instance. For example, the artist table
+
+might contain data on James Ensor (see Figure 3). All information about
+
+Ensor would be stored on a single row of the artist table. Additionally,
+
+this row would not contain information about any other artist. Because
+
+of this, every row on a database table will be unique.</p>
+
+<div class="term">
+
+<blockquote>
+
+<p><strong>Row</strong> — Contains information about each instance of
+
+the items stored in a table.</p>
+
+</blockquote>
+
+</div>
+
+<p><img
+
+src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgnZ7-XaKLzMCq3YovlDQpokk_PI91eNyqhbUZBxRktoC4xeGCEYtpmdmLvcZyZAGKgqsgx5A1EVfbS1xQwswh-dzYlVAJU7BkgdKVyWIXOULCwSvTaUPPdoYPoRi5ADmAhjMaEb8Fan8qDMX1qUPA-3k5y6Er-1k6mcoTMYMHRhOhu2xDmDgQL7VaegV9r/s1219/ArtistTableRow.png" /></p>
+
+<p><em>Figure 3: Artist Table Row for James Ensor</em></p>
+
+<h4 data-number="2.1.1.3" id="columns"><span
+
+class="header-section-number">2.1.1.3</span> Columns</h4>
+
+<p>The columns of the table store the characteristics of the items
+
+stored on the table. The columns of the artist table would store the
+
+characteristics of artists — such as their name, nationality, birth, and
+
+death information. Figure 4 highlights the column that stores the last
+
+name of each artist. Care is taken to identify all of the relevant
+
+characteristics of the items stored on the table, so that the data is as
+
+useful as possible.</p>
+
+<div class="term">
+
+<blockquote>
+
+<p><strong>Column</strong> — Contains the individual characteristics of
+
+the items stored in a table.</p>
+
+</blockquote>
+
+</div>
+
+<p><img
+
+src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhA-75ImP3mU2Kp46AYv9di_dtD7RsA_FfglgwAPlj_rEDbm7b4V2TxeImFNC2yvf0qo3OXtRCj3LHhug1SgJAWx4XB2aEoHvjePpciRI4P7Jg6MpFbhijkUh6SoicRVkIlgeSdya-dJiZajCGl5OC0eHKRI-gw5dylR1ecHHGAk3Ax7T1uQn3durpSWDoL/s1219/ArtistTableColumn.png" /></p>
+
+<p><em>Figure 4: Table Column for Artist’s Last Names</em></p>
+
+<p>Care is taken to divide the data on a table into multiple columns.
+
+When the data in a table is appropriately broken into columns, it is
+
+easier to sort and filter the data on the table. Database tables are
+
+also designed to reduce or eliminate errors. Errors can occur when data
+
+is added to a table, changed, or deleted from a table. The process of
+
+optimizing the design of database tables will be discussed in subsequent
+
+lessons.</p>
+
+<div class="term">
+
+<blockquote>
+
+<p><strong>Datatype</strong> — Constrains the values in a column to be a
+
+specific type of data like numbers, text, or dates/times.</p>
+
+</blockquote>
+
+</div>
+
+<p>To help reduce errors in data, each column of a table has a specific
+
+datatype. The datatype determines the data that can be stored in that
+
+column. Common datatypes include numbers, text, and dates/times. Since a
+
+column has a specific datatype, it can only store that type of data.
+
+When a column is set to store numbers, for example, it cannot store text
+
+characters or other symbols. Constraining the datatype in a column helps
+
+to prevent incorrect values from being stored in a table. It also helps
+
+the DBMS to optimally store values in the table. Because of this, care
+
+is taken to appropriately define the datatype for each column in a
+
+table.</p>
+
+<h2 data-number="2.2" id="key-columns"><span
+
+class="header-section-number">2.2</span> “Key” Columns</h2>
+
+<p>There are two special purpose columns that can be included on
+
+database tables. These are called primary and foreign keys. Each table
+
+should have a primary key. The role of the primary key is described
+
+below. Foreign keys are used to connect data from different tables
+
+together. Foreign keys will be discussed in a later lesson on joining
+
+tables.</p>
+
+<div class="term">
+
+<blockquote>
+
+<p><strong>Foreign Key</strong> — A special purpose column on a database
+
+table that connects the data in one table to another table.</p>
+
+</blockquote>
+
+</div>
+
+<p>As mentioned, each row of a database table must be unique. To make
+
+sure that this is the case, a column (or set of columns) is designated
+
+as a primary key. Technically, <em>any</em> column on a table could be
+
+made the primary key, but it must meet each of these conditions:</p>
+
+<ul>
+
+<li>The values for that column must be unique (no two rows of the table
+
+can have the same value).</li>
+
+<li>Every row of the table must have a value for that column (no missing
+
+values in the column).</li>
+
+<li>The values in that column should not be changed after they are added
+
+to the table.</li>
+
+<li>The values for that column must not be reused (even if you delete
+
+the row that was originally using that value).</li>
+
+</ul>
+
+<p>Usually, one column of a table will be set as the primary key. It is
+
+possible to use a combination of columns as the primary key. When this
+
+is the case, the combination of columns must still meet the conditions
+
+listed above.</p>
+
+<div class="term">
+
+<blockquote>
+
+<p><strong>Primary Key</strong> — A special purpose column on a database
+
+table that ensures that all rows of the table are unique.</p>
+
+</blockquote>
+
+</div>
+
+<p>Most columns in a typical table don’t meet all of these conditions.
+
+Consider the artist table. The attributes of an artist might be things
+
+like their first and last names, their preferred artistic style, their
+
+nationality, and their birth and death years. Each of these is helpful
+
+in describing characteristics of the artists, but none of them would be
+
+a good primary key. You could not guarantee that the values for any of
+
+them would be unique across all artists. More than one artist might have
+
+the same first or last name, come from the same country, work in the
+
+same style, or share a birth or death year.</p>
+
+<p>To make sure that the primary key values are unique, it is often
+
+easiest to create a column, such as <code>artist_id</code> (see Figure
+
+5). The values in this column would identify (numbers or a set of
+
+characters) each row of artists on the table. The simplest way to do
+
+this would be to just assign a number to each artist. Any additional
+
+artist would be given the next number in sequence.</p>
+
+<p><img
+
+src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhckAGqAjU8Xzcal1iz6OA7Os1blsn711pN8twQfSIfgXZCKPi0r5JX8SzafQQJZ_nJxT8dTIwalI_UWbz7_aH1SUQ5zUclI-1ZAGIqwmKepySCneWOcUukaSsYUNFJpCLrDkcuC-KDeI_ptJJLSpVwt0NrjHbeMQgJUn_mWqxpdfey--1eqrh2ImfclCTk/s1219/ArtistTablePrimaryKey.png" /></p>
+
+<p><em>Figure 5: The Primary Key of the Artist Table</em></p>
+
+<p>The main purpose of a primary key is to uniquely identify the rows on
+
+a table. Interestingly, the <code>artist_id</code> would not usefully
+
+describe a meaningful characteristic of an artist. The only purpose of
+
+the <code>artist_id</code> would be to uniquely identify the artists on
+
+the table. This is often the case with primary keys of most tables.</p>
+
+<div class="tip">
+
+<blockquote>
+
+<p>Although it is not required that a table has a primary key, it is a
+
+good idea to make sure that every table in your database has a defined
+
+primary key.</p>
+
+</blockquote>
+
+</div>
+
+<p>The primary key is useful because it allows you to identify a
+
+specific row. This is particularly helpful when you connect data from
+
+one table to another. It is absolutely necessary when you want to update
+
+or delete data in a table, since you don’t want to change or delete the
+
+wrong data.</p>
+
+<h2 data-number="2.3" id="what-is-structured-query-language-sql"><span
+
+class="header-section-number">2.3</span> What Is Structured Query
+
+Language (SQL)?</h2>
+
+<p>Structured Query Language (SQL) is a computer language used to
+
+interact with a database. Specifically, SQL is the way that applications
+
+and users interact with the DBMS to make requests of the database.
+
+Figure 6 depicts this relationship. For simplicity, it’s easiest to
+
+think of SQL as a method for interacting with a database.</p>
+
+<p><img
+
+src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgsVhy-Rt81WQ1s9ed2O0eaMYuttzRx5MQagiEbnS5x_I9ufHKo6xcskfT3iZPWHP1_EgbTqbMOQ_HC6vGRR8Dq1h_xdqK6ijc8RhkchzawWWzEZEQlH42Dou75TF8AP0OSueFTAzsuJuIYxDZ-lJbf1HTyuhLZMASZE3dF4peG_7QhC3kRHgGvXaWjV0bx/s795/DataDBMSAppsSQL.png" /></p>
+
+<p><em>Figure 6: Where SQL Fits</em></p>
+
+<p>SQL statements are written as English phrases that are translated to
+
+a form that can be processed by a computer. To facilitate this
+
+translation, SQL uses a limited set of keywords and follows a standard
+
+protocol for using them. You will learn more about these keywords and
+
+the rules for using them throughout this book.</p>
+
+<p>SQL is an excellent tool for working with databases. Some of the
+
+advantages of SQL are:</p>
+
+<ul>
+
+<li>SQL statements are English phrases, which means they are relatively
+
+easy to learn and understand.</li>
+
+<li>SQL is focused as a tool for interacting with databases. This means
+
+that it has a small set of keywords.</li>
+
+<li>SQL is powerful. You can use it to perform sophisticated database
+
+operations.</li>
+
+<li>SQL is not proprietary. This means that all of the major DBMS
+
+support SQL.</li>
+
+</ul>
+
+<p>As with any language, the best way to learn SQL is to try it for
+
+yourself. To help you do this, we’ve integrated the ability to execute
+
+SQL directly in this book. You’ll see it in the next chapter and
+
+throughout this set of lessons.</p>
+
+<div class="note">
+
+<blockquote>
+
+<p><strong>Note: SQL Extensions.</strong> The ANSI standards committee
+
+(ANSI SQL) governs standard SQL. It is the same across DBMS. Most of the
+
+major DBMS vendors have extended the functionality of standard SQL to
+
+add features to their products. These extensions are proprietary to
+
+their product and are not supported by other DBMS. The lessons in this
+
+book describe standard SQL as much as possible.</p>
+
+</blockquote>
+
+</div>
+
+<h2 data-number="2.4" id="summary"><span
+
+class="header-section-number">2.4</span> Summary</h2>
+
+<p>This lesson described the basics of databases. It covered the
+
+building blocks of database tables. It also defined Structured Query
+
+Language and why it is used.</p>
+
 <!--postEnd-->
               </div>
 </div>
@@ -1181,8 +1550,8 @@ first script that touches real data.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZptYfp50Gt-OKb2SuyKfoX-:1784765282626';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d1676106165289640444','//book1011.blogspot.com/2000/02/2.html','1676106165289640444');
-_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '1676106165289640444', 'title': 'book1011', 'url': 'https://book1011.blogspot.com/2000/02/2.html', 'canonicalUrl': 'https://book1011.blogspot.com/2000/02/2.html', 'homepageUrl': 'https://book1011.blogspot.com/', 'searchUrl': 'https://book1011.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1011.blogspot.com/', 'blogspotFaviconUrl': 'https://book1011.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://book1011.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1011 - RSS\x22 href\x3d\x22https://book1011.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/1676106165289640444/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://book1011.blogspot.com/feeds/622232992790696188/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/37c4cc789ad2acf9', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '622232992790696188', 'pageName': '2. Your First Lines of Code', 'pageTitle': 'book1011: 2. Your First Lines of Code'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '2. Your First Lines of Code', 'description': 'monaco  2  Your First Lines of Code \r 2.1  Writing and Running Simple\r Statements \r Before you can build programs that make decisions or pro...', 'url': 'https://book1011.blogspot.com/2000/02/2.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 622232992790696188}}]);
+window['__wavt'] = 'AEUoTZqK3Q_wFnr0Ahjm3eWovQIE:1784899976798';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/2.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/2.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/2.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/3454509745030117539/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '3454509745030117539', 'postImageThumbnailUrl': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhzpb8P1qg72OHxej0PZ3ieLcYy9A7xAEF3NViP9AFjXVTk0YUMXu718a2aZZKdaz8rt4-aDmuGeCVjCQT4WqqyQbyGbwu7c6zvKunV9-bKPbuwEySdfRV9QMslgQwgSPb0E0IWFbWet9npRvihk69YdKobN2mXCU-uXe-UMWsoQfcr_VILUm9otdY9KLVu/s72-c/DataDBMSApps.png', 'postImageUrl': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhzpb8P1qg72OHxej0PZ3ieLcYy9A7xAEF3NViP9AFjXVTk0YUMXu718a2aZZKdaz8rt4-aDmuGeCVjCQT4WqqyQbyGbwu7c6zvKunV9-bKPbuwEySdfRV9QMslgQwgSPb0E0IWFbWet9npRvihk69YdKobN2mXCU-uXe-UMWsoQfcr_VILUm9otdY9KLVu/s800/DataDBMSApps.png', 'pageName': '2. Understanding SQL', 'pageTitle': 'book1014 SQL: 2. Understanding SQL'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '2. Understanding SQL', 'description': '2  Understanding SQL \r \r \r After completing this lesson, the successful student will be able\r to: \r \r Describe the building blocks of a data...', 'featuredImage': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhzpb8P1qg72OHxej0PZ3ieLcYy9A7xAEF3NViP9AFjXVTk0YUMXu718a2aZZKdaz8rt4-aDmuGeCVjCQT4WqqyQbyGbwu7c6zvKunV9-bKPbuwEySdfRV9QMslgQwgSPb0E0IWFbWet9npRvihk69YdKobN2mXCU-uXe-UMWsoQfcr_VILUm9otdY9KLVu/s800/DataDBMSApps.png', 'url': 'https://book1014.blogspot.com/2000/02/2.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 3454509745030117539}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>
 </body>

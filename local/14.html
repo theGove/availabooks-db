@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html class='v2' dir='ltr' lang='en-US' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<head>
+<link href='https://www.blogger.com/static/v1/widgets/2872013778-css_bundle_v2.css' rel='stylesheet' type='text/css'/>
+<meta charset='UTF-8'/>
+<meta content='width=device-width, initial-scale=1' name='viewport'/>
+<title>book1014 SQL</title>
+<!-- external libraries -->
+<script src='https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js'></script>
+<script src='https://unpkg.com/turndown/dist/turndown.js'></script>
+<!-- font links -->
+<link href='https://fonts.googleapis.com' rel='preconnect'/>
+<link href='https://fonts.gstatic.com' rel='preconnect'/>
+<link href='https://fonts.googleapis.com/css2?family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900' rel='stylesheet'/>
+<link href='https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900' rel='stylesheet'/>
+<!-- button icon -->
+<link href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0' rel='stylesheet'/>
+<style id='page-skin-1' type='text/css'><!--
+:root {
+--font-zoom: 1;
+--page-bg: #f8fafc;
+--surface: #ffffff;
+--surface-soft: #f1f5f9;
+--surface-muted: #e2e8f0;
+--text: #172033;
+--text-muted: #64748b;
+--heading: #0f172a;
+--accent: #2563eb;
+--accent-strong: #1d4ed8;
+--accent-soft: #dbeafe;
+--danger: #dc2626;
+--warning: #fef3c7;
+--border: #dbe3ee;
+--shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+--shadow-md: 0 12px 30px rgba(15, 23, 42, 0.12);
+--shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.18);
+--radius-sm: 0.5rem;
+--radius-md: 0.85rem;
+--radius-lg: 1.35rem;
+}
+* {
+box-sizing: border-box;
+}
+html {
+scroll-behavior: smooth;
+}
+body {
+margin: 0;
+min-height: 100vh;
+font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+font-weight: 400;
+font-style: normal;
+font-size: calc(1rem  * var(--font-zoom));
+line-height: 1.72;
+color: var(--text);
+background: var(--page-bg);
+text-rendering: optimizeLegibility;
+-webkit-font-smoothing: antialiased;
+}
+.module{
+display:none
+}
+h1:has(span.header-section-number){
+display:none;
+}
+.material-symbols-outlined{
+font-size: calc(1rem  * var(--font-zoom));
+cursor:pointer;
+user-select:none;
+}
+summary::marker {
+color: var(--text-muted);
+}
+#msg-galley{
+position:fixed;
+top:0;
+right:0;
+height:100vh;
+min-width:calc(20rem  * var(--font-zoom));
+max-width:50%;
+z-index:12;
+background-color: transparent;
+pointer-events: none;
+padding: 1rem 1rem 0 0;
+font-family: "Roboto", sans-serif;
+font-optical-sizing: auto;
+font-weight: 400;
+font-style: normal;
+font-variation-settings: "wdth" 100;
+}
+.msg-close{
+position:absolute;
+top:calc(3px  * var(--font-zoom));
+right:calc(3px  * var(--font-zoom));
+display: inline-flex;
+align-items: center;
+justify-content: center;
+width: 1.25rem;
+height: 1.25rem;
+padding: 0;
+background-color:var(--danger);
+color: white;
+font-weight:700;
+font-size:calc(.7rem  * var(--font-zoom));
+border-radius: 999px;
+cursor:pointer;
+}
+.msg-dialog{
+position: relative;
+background-color:var(--surface);
+margin-bottom:.75rem;
+pointer-events: auto;
+border-radius:var(--radius-md);
+border: 1px solid var(--border);
+box-shadow: var(--shadow-md);
+overflow: hidden;
+}
+.msg-button-{
+margin: 0 .5rem .5rem 0;
+}
+.msg-button-bar{
+background-color:var(--surface-soft);
+text-align:center;
+padding:.75rem;
+border-top: 1px solid var(--border);
+}
+.msg-title{
+background:var(--accent);
+color:white;
+font-weight:700;
+padding:.55rem 2rem .55rem .85rem;
+}
+.msg-message{
+background-color:var(--surface);
+padding: .85rem;
+}
+#page-data{
+display:none
+}
+#menu{
+top:0;
+left:-100px;
+position:fixed;
+display:none;
+background:var(--surface);
+padding:0;
+z-index:11;
+transition: left .25s ease, box-shadow .25s ease;
+height:100vh;
+min-width:min(22rem, 88vw);
+max-width:75vw;
+overflow: auto;
+border-right: 1px solid var(--border);
+box-shadow: var(--shadow-lg);
+}
+#book-data{display:none}
+#menu-content{
+padding:1rem 1.25rem 2rem;
+}
+.menu-button{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+min-width:2.4rem;
+height:2.4rem;
+padding:0 .6rem;
+cursor:pointer;
+color:var(--text-muted);
+border-radius:999px;
+transition: background .18s ease, color .18s ease, transform .18s ease;
+vertical-align:middle;
+}
+.menu-button:hover{
+background:var(--accent-soft);
+color:var(--accent-strong);
+transform: translateY(-1px);
+}
+.menu-header{
+top:0;
+position:sticky;
+background:var(--surface);
+opacity:1;
+margin:0;
+padding:.45rem .6rem;
+border-bottom:1px solid var(--border);
+box-shadow: var(--shadow-sm);
+z-index:1;
+}
+#book-title{
+font-weight:700;
+letter-spacing:.02em;
+}
+#search-div{
+width:100%;
+white-space: nowrap;
+margin-top: 1.5rem;
+}
+#search-div h6{
+margin:0 0 .45rem 0;
+font-size:.78rem;
+font-weight:700;
+letter-spacing:.08em;
+text-transform:uppercase;
+color:var(--text-muted);
+}
+#search{
+width: calc(100% - 2.25rem);
+border:1px solid var(--border);
+border-radius:999px;
+padding:.55rem .85rem;
+font: inherit;
+font-size:.92rem;
+color:var(--text);
+background:var(--surface);
+box-shadow: var(--shadow-sm);
+outline:none;
+transition: border-color .18s ease, box-shadow .18s ease;
+}
+#search:focus{
+border-color:var(--accent);
+box-shadow:0 0 0 4px rgba(37, 99, 235, .13);
+}
+#search-button{
+padding-left:.45rem;
+color:var(--accent);
+vertical-align:middle;
+}
+#search-results{
+font-size:.86rem;
+margin-top: .85rem;
+}
+.search-result{
+margin-top:.65rem;
+padding:.75rem;
+cursor:pointer;
+border:1px solid var(--border);
+border-radius:var(--radius-sm);
+background:var(--surface);
+box-shadow: var(--shadow-sm);
+transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.search-result:hover{
+background-color:#f8fbff;
+border-color:#bfdbfe;
+box-shadow:0 10px 24px rgba(37, 99, 235, .1);
+transform: translateY(-1px);
+}
+.search-result-title{
+font-weight:bold;
+color:var(--heading);
+}
+.search-result-line{
+margin:.25rem 0 .35rem .75rem;
+color:var(--text-muted);
+}
+.search-term{
+background-color:var(--warning);
+border-radius:.2rem;
+padding:0 .15rem;
+}
+.chapter-result-link{
+color:var(--heading);
+}
+.toc-section-container{
+margin-left:.75rem;
+}
+.toc-text-container{
+margin-left:1.25rem;
+color:var(--text-muted);
+}
+.chapter-section{
+margin-top: calc(3rem  * var(--font-zoom));
+margin-bottom: calc(3rem  * var(--font-zoom));
+}
+.hide{
+display:none
+}
+img{
+max-width:100%;
+height:auto;
+border-radius:var(--radius-md);
+}
+.entry-header{
+position:fixed;
+top:0;
+left: 0;
+width: 100%;
+transition:opacity 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+padding: .35rem .75rem;
+-webkit-user-select: none; /* Safari */
+user-select: none; /* Standard syntax */
+background: var(--surface);
+border-bottom:1px solid var(--border);
+box-shadow:var(--shadow-sm);
+z-index:10;
+}
+button.nav{
+border-radius:999px;
+border:1px solid var(--border);
+background:var(--surface);
+color:var(--accent);
+box-shadow: var(--shadow-md);
+width:2.8rem;
+height:2.8rem;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+}
+.nav{
+position: fixed;
+bottom: 1rem;
+opacity:1.0;
+transition:opacity 0.35s ease, transform 0.18s ease, box-shadow 0.18s ease;
+pointer-events: all;
+}
+.nav:hover{
+transform: translateY(-2px);
+box-shadow: var(--shadow-lg);
+}
+.dim-button:hover{opacity: 1.0;}
+.dim-button{opacity: .35;}
+.dim-header:hover{opacity: 1.0;}
+.dim-header{opacity: 0;}
+#prior-button {
+left: 1rem;
+}
+#next-button {
+right: 1rem;
+}
+.span-link{
+cursor:pointer;
+color:var(--accent);
+font-weight:500;
+}
+.span-link:hover{
+text-decoration: underline;
+color:var(--accent-strong);
+}
+a:link {color: var(--accent); text-decoration:none}
+a:visited {color: #4f46e5;}
+a:hover {background-color: var(--accent-soft); color: var(--accent-strong); border-radius:.25rem;}
+a:active {color: var(--accent-strong);}
+.book-title{
+margin-top: 6rem;
+font-family:"Taviraj", Georgia, serif;
+font-size:clamp(2.4rem, 7vw, calc(4rem  * var(--font-zoom)));
+line-height:1.05;
+text-align: center;
+font-weight: 700;
+color:var(--heading);
+}
+.book-author{
+margin-top: 1rem;
+font-size:calc(1.45rem  * var(--font-zoom));
+text-align: center;
+color:var(--text-muted);
+}
+.book-toc{
+text-align: center;
+margin-top:2rem;
+}
+.book-chapters{
+display: inline-block;
+}
+.book-chapter{
+text-align:left;
+padding-left: 1rem;
+text-indent: -1rem;
+margin-bottom: 0.55rem;
+}
+.tool {
+cursor:pointer;
+font-size:calc(18px  * var(--font-zoom));
+font-weight:400;
+vertical-align: middle;
+padding-left:.6rem;
+color:var(--text-muted);
+transition: color .18s ease, transform .18s ease;
+}
+.tool:hover {
+color:var(--accent);
+transform: translateY(-1px);
+}
+.lead-in{
+margin-top:4rem;
+}
+.example, .indent, .category{
+margin:1rem 0 0 1.1rem;
+}
+.category div:first-child{
+color:var(--danger);
+font-weight:700;
+}
+.example div:first-child{
+color:var(--danger);
+font-style: italic;
+}
+h1{
+font-family:"Taviraj", Georgia, serif;
+font-size:clamp(1.35rem, 4vw, calc(2.1rem * var(--font-zoom)));
+line-height:1.18;
+color:var(--heading);
+font-weight:700;
+margin:0;
+}
+h2, h3{
+font-family:"Taviraj", Georgia, serif;
+color:var(--heading);
+line-height:1.24;
+letter-spacing:-.015em;
+}
+h2{
+font-size:clamp(1.55rem, 4vw, calc(2.15rem * var(--font-zoom)));
+margin:3rem 0 1rem;
+padding-top:.5rem;
+}
+h3{
+font-size:clamp(1.2rem, 3vw, calc(1.45rem * var(--font-zoom)));
+margin:2.25rem 0 .8rem;
+}
+.header-section-number{
+color:var(--accent);
+font-weight:700;
+}
+p{
+margin-top:0;
+margin-bottom:1.15rem;
+}
+p.vignette{
+color:var(--danger)
+}
+.no-dot{
+list-style-type: none;
+}
+ul.no-dot li{
+padding-left: 1rem;
+text-indent: -1rem;
+margin-bottom: 0.3rem;
+}
+audio{
+height:30px;
+width:100%;
+max-width:34rem;
+}
+div.post-body{
+max-width:940px;
+margin:0 auto;
+padding:clamp(5.2rem, 7vw, 6.25rem) clamp(1.15rem, 4vw, 3.5rem) 4rem;
+background:transparent;
+}
+div.index-boxnbt{
+background:var(--surface);
+padding-bottom:2rem;
+}
+.material-symbols-outlined {
+font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+font-size: 18px;
+line-height: 1;
+}
+blockquote{
+margin:1.75rem 0;
+background:var(--surface-soft);
+border-left:.35rem solid var(--accent);
+padding:1rem 1.25rem 1rem 1.35rem;
+border-radius:0 var(--radius-md) var(--radius-md) 0;
+color:#334155;
+}
+.note blockquote{
+background:#E8F5E9;
+border-left:.35rem solid darkgreen;
+}
+.note blockquote p::before {
+content: "Note: ";
+font-weight: bold;
+}
+.tip blockquote{
+background:#F3E5F5;
+border-left:.35rem solid purple;
+}
+.tip blockquote p::before {
+content: "Tip: ";
+font-weight: bold;
+}
+.term blockquote{
+background:#E3EDF7;
+border-left:.35rem solid darkblue;
+}
+.term blockquote p::before {
+content: "Term: ";
+font-weight: bold;
+}
+.caution blockquote{
+background:#FFE2E2;
+border-left:.35rem solid red;
+}
+.caution blockquote p::before {
+content: "Caution: ";
+font-weight: bold;
+}
+.objectives blockquote{
+background:#FFF8E1;
+border-left:.35rem solid gold;
+}
+.review blockquote{
+background:#FFF0EC;
+border-left:.35rem solid salmon;
+}
+.review blockquote p::before {
+content: "Review: ";
+font-weight: bold;
+}
+blockquote p:last-child{
+margin-bottom:0;
+}
+hr{
+height:1px;
+border:0;
+background:var(--border);
+margin:2.75rem 0;
+}
+ul, ol{
+padding-left:1.45rem;
+margin:0 0 1.25rem;
+}
+li{
+margin:.45rem 0;
+}
+code{
+font-family:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+font-size:.92em;
+color:#0f766e;
+background:#ecfdf5;
+border:1px solid #bbf7d0;
+border-radius:.35rem;
+padding:.08rem .32rem;
+}
+pre code,
+.sourceCode code{
+color:inherit;
+background:transparent;
+border:0;
+border-radius:0;
+padding:0;
+font-size:inherit;
+}
+pre,
+pre.javascript-code,
+pre.javascript-example,
+pre.spreadsheet,
+div.sourceCode pre{
+margin:1rem 0;
+padding:.75rem .85rem;
+overflow:auto;
+background:#0f172a;
+color:#dbeafe;
+border:1px solid rgba(148, 163, 184, .28);
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-md);
+font-family:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+font-size:.88rem;
+line-height:1.38;
+tab-size:2;
+white-space:pre;
+}
+div.sourceCode{
+margin:1rem 0;
+}
+div.sourceCode pre{
+margin:0;
+}
+.sourceCode .kw,
+.sourceCode .cf{
+color:#93c5fd;
+}
+.sourceCode .fu,
+.sourceCode .at{
+color:#67e8f9;
+}
+.sourceCode .st{
+color:#86efac;
+}
+.sourceCode .dv{
+color:#fbbf24;
+}
+.sourceCode .co{
+color:#94a3b8;
+font-style:italic;
+}
+table.blog{
+display:block;
+width:max-content;
+max-width:100%;
+border-collapse:separate;
+border-spacing:0;
+margin:1.5rem 0 2rem;
+overflow-x:auto;
+-webkit-overflow-scrolling:touch;
+border:1px solid var(--border);
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-sm);
+background:var(--surface);
+}
+th.blog,
+td.blog{
+padding:.72rem .85rem;
+border-bottom:1px solid var(--border);
+text-align:left;
+vertical-align:top;
+white-space:nowrap;
+}
+th.blog{
+font-size:.86rem;
+font-weight:700;
+color:var(--heading);
+background:var(--surface-soft);
+}
+tr.blog:last-child td{
+border-bottom:0;
+}
+tr.blog:nth-child(even) td{
+background:#f8fafc;
+}
+.monaco {
+width: 100%;
+margin: 1.5rem 0;
+border-radius: var(--radius-md);
+overflow: hidden;
+box-shadow: var(--shadow-lg);
+border: 1px solid rgba(148, 163, 184, 0.22);
+}
+.monaco-bar {
+display: flex;
+align-items: center;
+justify-content: flex-end;
+gap: 2px;
+padding: 8px 10px;
+background: linear-gradient(180deg, #1f2937, #111827);
+border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.monaco-bar-label {
+flex: 1;
+font-family: "Roboto", sans-serif;
+font-size: 11px;
+font-weight: 700;
+color: #94a3b8;
+letter-spacing: 0.5px;
+text-transform: uppercase;
+padding-left: 4px;
+}
+.monaco-tool {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 30px;
+height: 30px;
+border-radius: 6px;
+color: #8b949e;
+cursor: pointer;
+transition: background 0.15s ease, color 0.15s ease;
+}
+.monaco-tool:hover {
+background: rgba(255, 255, 255, 0.1);
+color: #e6edf3;
+}
+.monaco-tool:active {
+background: rgba(255, 255, 255, 0.06);
+transform: scale(0.92);
+}
+.monaco-tool[data-action="run"]:hover {
+background: rgba(63, 185, 80, 0.18);
+color: #3fb950;
+}
+.editor-holder {
+background-color: #1e1e1e;
+padding: 8px 0;
+}
+.editor {
+margin: 0;
+padding: 0;
+}
+.console {
+background: #161b22;
+border-top: 1px solid rgba(255, 255, 255, 0.07);
+padding: 8px 0 6px;
+position: relative;
+min-height: 36px;
+font-family: 'Consolas', 'Cascadia Code', 'Courier New', monospace;
+font-size: 13px;
+}
+.console-line {
+color: #c9d1d9;
+padding: 2px 40px 2px 14px;
+line-height: 1.6;
+white-space: pre-wrap;
+word-break: break-all;
+}
+.console-line:first-of-type {
+margin-top: 2px;
+}
+.console-line.error {
+color: #f85149;
+background: rgba(248, 81, 73, 0.06);
+}
+span.exitButton {
+position: absolute;
+top: 6px;
+right: 8px;
+display: flex;
+align-items: center;
+justify-content: center;
+width: 22px;
+height: 22px;
+border-radius: 4px;
+color: #6e7681;
+cursor: pointer;
+transition: background 0.15s ease, color 0.15s ease;
+}
+span.exitButton:hover {
+background: rgba(255, 255, 255, 0.1);
+color: #c9d1d9;
+}
+span.exitButton .material-symbols-outlined {
+font-size: 15px;
+}
+pre.code {
+color: #a8ff78;
+background: #0d1117;
+padding: 1rem 1.15rem;
+margin: 1.35rem 0;
+font-size: 14px;
+border-radius: var(--radius-md);
+border: 1px solid rgba(255, 255, 255, 0.07);
+overflow-x: auto;
+}
+@media (max-width: 700px) {
+body {
+font-size: calc(.98rem * var(--font-zoom));
+}
+#msg-galley {
+left: 0;
+right: 0;
+max-width: none;
+min-width: 0;
+padding: .75rem;
+}
+#menu {
+max-width: 92vw;
+}
+.entry-header {
+padding: .25rem .4rem;
+}
+div.post-body {
+padding-left: 1rem;
+padding-right: 1rem;
+}
+.nav {
+bottom: .75rem;
+}
+#prior-button {
+left: .75rem;
+}
+#next-button {
+right: .75rem;
+}
+}
+
+--></style>
+<script>
+    const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
+	async function initialize(){
+
+      const kind = document.getElementById(`kind`).innerHTML
+      console.log(`kind`, kind)
+      switch(kind){
+        case `redirect`:
+          location.href=document.getElementById(`post-json`).innerText
+          return
+        case `chapter`:
+          console.log(`processing Chapter`)
+          // load any modules used in the chapter
+          for(const module of document.querySelectorAll(`div.module`)){
+            console.log(`module:`, module.innerText)
+            loadModule(module.innerText)
+    
+    
+    
+          }
+      }
+    
+    // calls the page that has our code in it
+    //const response = await fetch(`/1970/01/system.html`)
+  	//const code = await response.text()
+    
+ 
+	//const s = document.createElement('script')
+	//s.replaceChildren(code.split(`<p`+`re>`)[1].split(`</pre>`)[0])
+	//document.head.appendChild(s)
+    //console.log("got system")
+    await loadModule("system")
+	init()
+    
+    }
+    
+    async function loadModule(label){// get the first post of a specified label and load the code
+      const code = await getPage(label)
+      const s = document.createElement(`script`)
+      s.replaceChildren(code)
+      document.head.appendChild(s)          
+    }
+    
+    async function getPage(label){//get the first post with the specified label.
+        
+        if(localhost){
+          const url=`/tools/api/${label}.js`
+          const response = await fetch(url)
+          const code = await response.text()  
+          return code
+        }else{
+          const url=`${location.origin}/feeds/posts/default/-/${label}?alt=json`
+          const response = await fetch(url)
+          console.log("feed url", url)
+          const page = await response.json()
+          return page.feed.entry[0].content.$t
+        }
+    }    
+
+  </script>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' rel='stylesheet'/></noscript>
+<meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
+<meta name='google-adsense-platform-domain' content='blogspot.com'/>
+
+</head>
+<body onload='initialize()'>
+<div class='sitenbt' id='pagenbt'>
+<div class='site-contentnbt' id='contentnbt'>
+<div class='testing' id='item'></div>
+<div class='content-areanbt' id='primarynbt'>
+<div class='site-mainnbt' id='mainnbt' role='main'>
+<div class='section' id='mainblogsec'><div class='widget Blog' data-version='1' id='Blog1'>
+<div class='blog-posts hfeed'>
+<div class='post-outer'>
+<article class='post'>
+<div id='msg-galley'></div>
+<div class='hide' id='kind'>chapter</div>
+<div class='index-boxnbt'>
+<header class='entry-header'>
+<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>14. Table Relationships and
+Cardinality</span></h1>
+</header>
+<div id='menu'>
+<div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
+<div id='menu-content'>
+<div id='toc'></div>
+<div id='tools'>
+                  Text Size: 
+                  <span class='material-symbols-outlined tool' onclick='fontSize(.1)'>text_increase</span>
+<span class='material-symbols-outlined tool' onclick='fontSize(-.1)'>text_decrease</span>
+<span class='material-symbols-outlined tool' onclick='fontSize()'>rotate_auto</span>
+</div>
+<div id='search-div'>
+<h6>Search Book</h6>
+<input id='search' placeholder='search book'/><span class='material-symbols-outlined tool' id='search-button'>search</span></div>
+<div id='search-results'></div>
+</div>
+</div>
+<div class='post-body entry-content' data-blog-id='3986204447440040189' data-post-id='7078407679928297234'>
+<button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
+<button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
+              
+              <!--postBegin--><h1 data-number="14" id="table-relationships-and-cardinality"><span
+class="header-section-number">14</span> Table Relationships and
+Cardinality</h1>
+<p><strong>Objectives.</strong> After completing this lesson, the
+successful student will be able to:</p>
+<ol type="1">
+<li>Discuss how database tables are related.</li>
+<li>Describe relationship cardinality.</li>
+<li>Explain how cardinality impacts the use of foreign keys.</li>
+<li>Complete a business model of a database with details about
+relationships.</li>
+</ol>
+<p>The lesson on designing database tables described how database tables
+are designed. In this lesson, you will learn how to design the
+relationships among database tables. Understanding relationships between
+tables is important for writing effective queries that combine data from
+multiple tables.</p>
+<h2 data-number="14.1"
+id="review-the-business-model-of-a-database"><span
+class="header-section-number">14.1</span> Review: The Business Model of
+a Database</h2>
+<p>Recall that tables are designed to store data about different themes
+&#8212; all of the data about a particular theme is stored on a single table.
+For example, the tables in Figure 1 reflect the simple business model of
+the museum data developed in the lesson on designing database tables.
+All of the information about artists is stored on the artist table;
+notice that the artist table does not contain information about works of
+art or museums. Likewise, the work and museum tables contain data
+exclusive to works of art and museums, respectively.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhLnXCAz5bh8hDTbNAD4wXO3JOXRb4VXXMTBDj7VmC4Hfj87NnRlcqQRy0XgEMLeZc4FEp2zxHyvs58eQZBSqLI_kjqdQb0lWGpgtgUBj3fjq8tkAtTex-wQ9sGR7LiHhffmb-bl4zuNQZY2DBzZhyphenhyphenLXtElKY26dp4xIiptWStQO9DZ1dVqfOQ5rP_APh85/s2394/MuseumBusinessModelKeys.png" /></p>
+<p><em>Figure 1: Business Model of Museum Database</em></p>
+<p>Organizing data into separate tables based on theme has some
+important advantages, described in detail in a later lesson on database
+normalization. However, important connections exist between data from
+different themes &#8212; for example, artists create works of art, and works
+of art are exhibited in museums.</p>
+<h2 data-number="14.2" id="relationships-between-tables"><span
+class="header-section-number">14.2</span> Relationships Between
+Tables</h2>
+<p>The next step in completing a business model for a database is to
+model relationships. Relationships are the naturally occurring
+associations among the data in different tables. Relationships are most
+easily conceptualized between two tables at a time.</p>
+<div class="term">
+<blockquote>
+<p><strong>Relationship</strong> &#8212; The naturally occurring associations
+among the data in different tables.</p>
+</blockquote>
+</div>
+<p>Consider the two relationships modeled in Figure 1. There is a
+relationship between the artist and work tables, and a relationship
+between the work and museum tables. The relationship between the artist
+and work tables implies that it is possible to identify the specific
+artist who created each work of art. The relationship between the work
+and museum tables likewise implies that it is possible to identify which
+works of art are exhibited in each museum. Using both relationships
+together, it is possible to identify which artists have works of art in
+each museum: first you would identify the works of art associated with a
+specific artist, then identify the museums that exhibit those works of
+art.</p>
+<p>It is possible to associate specific rows from one table with rows on
+a related table by using foreign keys. A foreign key is a column on one
+table (generally the primary key of that table) that is included on a
+related table to connect the rows of the two tables together. The
+primary key of the artist table is <code>artist_id</code>. That same
+<code>artist_id</code> can be added to the work table to identify the
+artist who created each work of art. Similarly, the primary key of the
+museum table, <code>museum_id</code>, could be added to the work table
+to identify the museum that exhibits each work of art.</p>
+<p>You might be tempted to instead use the primary key from the work
+table, <code>work_id</code>, on the artist table as a foreign key. This
+would not work well, though, because an artist can create more than one
+work of art, which would mean more than one <code>work_id</code> would
+need to be stored for a single artist. This would violate proper table
+design (see the lesson on designing database tables). To determine how
+best to designate foreign keys to link tables, you need to understand
+cardinality.</p>
+<h2 data-number="14.3" id="cardinality"><span
+class="header-section-number">14.3</span> Cardinality</h2>
+<p>Cardinality refers to the nature of the relationship between two
+tables. It is always defined in terms of how the individual rows on the
+tables relate to each other, and it can be described in terms of minimum
+cardinality and maximum cardinality. Minimum cardinality describes
+whether a relationship is optional or mandatory.</p>
+<div class="term">
+<blockquote>
+<p><strong>Cardinality</strong> &#8212; The nature of the relationship between
+two tables.</p>
+</blockquote>
+</div>
+<div class="term">
+<blockquote>
+<p><strong>Minimum Cardinality</strong> &#8212; Describes whether a
+relationship is optional or mandatory.</p>
+</blockquote>
+</div>
+<p>Consider the relationship between the artist and work tables. Minimum
+cardinality would establish two things:</p>
+<ol type="1">
+<li>Whether an artist can exist in the database without having created
+any works of art.</li>
+<li>Whether a work of art can exist in the database without an
+associated artist.</li>
+</ol>
+<p>Answering these questions informs how the artist and work tables will
+be built.</p>
+<p>Maximum cardinality identifies how many rows from one table can be
+associated with rows from the related table. This is best understood by
+looking at an example. Consider the relationship between the museum and
+work tables. Maximum cardinality determines: (1) how many museums can
+exhibit a given work of art, and (2) how many works of art can be
+exhibited in a given museum.</p>
+<div class="term">
+<blockquote>
+<p><strong>Maximum Cardinality</strong> &#8212; Identifies how many rows from
+one table can be associated with rows from the related table.</p>
+</blockquote>
+</div>
+<p>A given work of art can only be exhibited in one museum at a time, so
+the maximum cardinality moving from work to museum is 1. A given museum,
+on the other hand, can exhibit more than one work of art, so the maximum
+cardinality moving from museum to work is many. (Note that any number
+greater than 1 is classified as many.) Taken together, this
+relationship&#8217;s maximum cardinality is said to be one to many (1:M).</p>
+<p>Just as minimum cardinality informs the design of database tables,
+maximum cardinality determines how foreign keys are used to link the
+rows of different tables together. Although minimum cardinality provides
+helpful information, the rest of this lesson focuses on how maximum
+cardinality helps you understand the nature of relationships between
+tables.</p>
+<h3 data-number="14.3.1" id="business-rules"><span
+class="header-section-number">14.3.1</span> Business Rules</h3>
+<p>Often there are logical constraints placed on a relationship based on
+how an organization conducts business. These constraints are called
+business rules. For example, a database used to track books and patrons
+for a library would likely have a relationship between a patron table
+(storing data about library patrons) and a book table (storing data
+about the library&#8217;s books).</p>
+<div class="term">
+<blockquote>
+<p><strong>Business Rules</strong> &#8212; Constraints placed on a
+relationship based on how an organization conducts business.</p>
+</blockquote>
+</div>
+<p>A patron could check out any number of books at a time, but the
+library will probably have a policy limiting how many. This would be a
+business rule, and relationships can be designed to enforce business
+rules like this one. Likewise, a business rule might determine the
+cardinality of a table relationship.</p>
+<h2 data-number="14.4" id="maximum-cardinality-types"><span
+class="header-section-number">14.4</span> Maximum Cardinality Types</h2>
+<p>There are three ways to describe relationships between tables in
+terms of maximum cardinality: one to one (1:1), one to many (1:M), and
+many to many (M:M). Each type of relationship calls for a different way
+of using foreign keys, discussed below.</p>
+<h3 data-number="14.4.1" id="one-to-one"><span
+class="header-section-number">14.4.1</span> One to One</h3>
+<p>A one-to-one relationship occurs when, in both directions, an
+instance on one table is associated with only one instance on the other
+table. Suppose a database contains a table with information about
+countries and a table with information about capital cities (see Figure
+2). Each country has only one capital city, and each capital city is the
+capital of only one country &#8212; this relationship is one to one (1:1).</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg7JRbP-Ds5ln0YXmQyj-jzyjaojocsdNUlb8FpO04HwPWJdQrofWokxgPsE7fHb8SCZl3BpDBqvGkD7VSGddP1TF2-wGfT-Ce0jCTxp6XggWdceklR6IjYNLQw29-YSJElEwspNuMvdJqGt4acTRP7ffVUs3kSdPLLhFLLx5rePULhpe3BLUbe4jAlu-Zc/w640-h188/OneToOneRelationship.png" /></p>
+<p><em>Figure 2: Countries and Capitals</em></p>
+<p>Notice the &#8220;1&#8221; on both ends of the line connecting these tables,
+denoting that the relationship between them is one to one (1:1). Also
+notice that the primary key of the country table is included as a column
+that acts as the foreign key for the capital table. With a one-to-one
+relationship, it doesn&#8217;t matter which table&#8217;s primary key is included on
+the other table as a foreign key &#8212; only one foreign key (between the two
+tables) is needed to link them together. Figure 3 shows how primary and
+foreign key values are used to link the rows from the country table with
+the rows on the capital city table.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg5W2OZPk3KZsaLIkjRDPu3Pyjq_POj3-0nfX5koQBSY4AsyqHnHERpSbR65nrfb3c3OPWR8yEZH3_HM9YIPQXI5vxwE_POHdEJlqR86puZUmj4hPRLmz5Zk4ZTQUZwQ_G1ogfy0PhY45T6xdOrPQKD9quarBY16_GfocMeWBlbN9Wev0kvoqNIrW5Hwk91/w640-h108/OneToOneForeignKey.png" /></p>
+<p><em>Figure 3: Linking Countries and Capitals Using a Foreign
+Key</em></p>
+<div class="note">
+<blockquote>
+<p><strong>Note: One to One (1:1) Relationships.</strong> With a
+one-to-one relationship, select a primary key from either table and add
+it as a foreign key on the other table. Only one of the two tables needs
+a foreign key.</p>
+</blockquote>
+</div>
+<h3 data-number="14.4.2" id="one-to-many"><span
+class="header-section-number">14.4.2</span> One to Many</h3>
+<p>A one-to-many relationship occurs when, moving in one direction, a
+row on one table is associated with more than one row on the related
+table, but moving in the other direction, a row is associated with only
+one row of the related table. Suppose that instead of a country and
+capital table, a database includes a table for countries and a table for
+cities. Each city is located in only one country, but a country can have
+more than one city (see Figure 4).</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgJLvdj2wA5RSzHlQj5AiBZttmO2qFXsBZDH2oe4iLlQ_9Qn3esHe6z5907YsDl8Gm7Y-2-QXKtcCa7p8Xai22x2oiVh1pXjljFZVHaX3jHbgis1L0plHR5fpkiRMhwwikj7co0SqRjCGxb_voM9f6AF_qOhtg9YQYZ1wwXFnyEaM0VETA43X9cUdpOW0pr/w640-h186/OneToManyRelationship.png" /></p>
+<p><em>Figure 4: Countries and Cities</em></p>
+<p>Notice the &#8220;1&#8221; near the country end of the relationship line and the
+&#8220;M&#8221; near the city end, indicating that the relationship is one to many
+(1:M) &#8212; a city is associated with only one country, but a country can be
+associated with more than one city. Also notice that
+<code>country_id</code> is included as a foreign key on the city table.
+Recall that in a one-to-one relationship, it doesn&#8217;t matter which table
+includes the foreign key. In a one-to-many relationship, however, the
+primary key from the table on the &#8220;1&#8221; side of the relationship must be
+included as the foreign key on the &#8220;many&#8221; side of the relationship.</p>
+<p>Figure 5 shows how primary and foreign key values are used to link
+the rows from the country table with the rows on the city table. You may
+be surprised to see <code>country_id</code> repeated on the city table,
+but this makes sense, since a country can have more than one city.
+Unlike primary keys, which must always be unique, foreign key values can
+repeat. The <code>country_id</code> column acts as the primary key on
+the country table, but it is a foreign key on the city table.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiew9oAS6mpp1m2zF8RlsaaqUitcpDSsVQz5fHwSsE0XZy-riE1Ijlb1DprwO3W2y93QE6uTS-fso1qh1xpz_LVWK5FdfHW5Mg6CE85y1CPauVz8hkyRuOXsIIBIEKfmPCcRDeSMcBC1bkSyMyv67j6UMuW19DD0N2uXbcxDGYE0rKuP2K-JTnl7H_uO14Z/w640-h108/OneToManyForeignKey.png" /></p>
+<p><em>Figure 5: Countries and Cities Linked with a Foreign Key</em></p>
+<p>You might be curious why you can&#8217;t instead include
+<code>city_id</code> on the country table as a foreign key. The next few
+figures demonstrate why this doesn&#8217;t work. The first attempt (Figure 6)
+places the <code>city_id</code> values for each country&#8217;s cities into a
+single column on the country table. While this may look like an
+attractive solution, it violates an important principle of table design:
+atomicity. Atomicity means that the values in a column are decomposed to
+their simplest form, and in this case the <code>city_id</code> value for
+the USA row would contain two values, so it is not in its simplest
+form.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZhiI8ffxl6EADL4KIx7QpLzG1pQMfYdJv3S4ruJUen6WB_BAUvP7e9BHOk5YY-Dkc8BemBwC5ZYxAKqTyOwvUnufqmZawmoFtCPYNwAoIsolQscZX2vQW5LgJP9H1oUduGIIghbS8CBbHmbmvCid_X0Tq-uhRcEL46JTPA6uzAw0yMcCBi83kCAkgpDKm/s16000/OneToManyForeignKeyAttempt1.png" /></p>
+<p><em>Figure 6: City_id as Foreign Key &#8212; Attempt 1</em></p>
+<p>A second attempt (Figure 7) adds multiple <code>city_id</code>
+columns to accommodate multiple cities in the same country. This may
+also seem attractive, but it would make it very difficult to write a
+query that effectively connects countries to cities. It would also be
+difficult to know how many <code>city_id</code> columns to include on
+the country table to account for all of the current and future cities
+you want to store, and notice the null value for <code>city_id2</code>
+on the France row &#8212; as a database designer, you want to avoid null
+values when you can. All three of these issues make this approach much
+less desirable than placing <code>country_id</code> as a foreign key on
+the city table.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgvEAdJZFBhofek8NX9EHiIKqFEEbdtUh9Wj_Hw5FJkIapdbzqoOeGtYXkzOVTeLX6SYqT18ne0_Ni4zCctKKE8zpVgJQkk0ALub8zAtMuzdpN_wOPEeTAsfNl8j7qpoWNa4febNp2mxk34vMpHWIHl7krZrRVVxDgNA3X9HSqZzCfzOhpmrFe0tlyH4t9r/w640-h107/OneToManyForeignKeyAttempt2.png" /></p>
+<p><em>Figure 7: City_id as Foreign Key &#8212; Attempt 2</em></p>
+<p>A final attempt to use <code>city_id</code> on the country table as a
+foreign key is shown in Figure 8. Here, a new row for the USA is added,
+which raises the question of what to use as the primary key for that
+second USA row. You can&#8217;t reuse the original primary key value of 1,
+because every value in a primary key column must be unique. If you
+instead assign a primary key of 3 to the new USA row, you are
+technically adding a new country to the table &#8212; one that just happens to
+have the same name as the first USA entry. Either way, there is no way
+to appropriately assign a primary key value to the new row, so this
+approach doesn&#8217;t work either.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj6EmcdCwzEaqOpNogkwvv0afLnj0PDjgc2VPrDWgBZzgzJGTGHWBfYMlC4rvo8ROMAYoK7lP8hhKP40vgQwtVk3Ohd0tIK_4ZAjy3fLGny-bm-7Cn0HVQGEy0_L5MVKGoyImGhf1M5P1rZnZe75tRol00kEqHHYIzFzGJ6GsUgj1H28HfaLizzEuRLxIwA/w640-h118/OneToManyForeignKeyAttempt3.png" /></p>
+<p><em>Figure 8: City_id as Foreign Key &#8212; Attempt 3</em></p>
+<p>The only way to create a foreign key that links the country and city
+tables is to add <code>country_id</code> to the city table &#8212; placing the
+primary key from the table on the &#8220;one&#8221; side of the relationship as a
+foreign key on the table on the &#8220;many&#8221; side. This will always be the
+case for one-to-many (1:M) relationships.</p>
+<div class="note">
+<blockquote>
+<p><strong>Note: One to Many (1:M) Relationships.</strong> With a
+one-to-many relationship, take the primary key from the table on the
+&#8220;one&#8221; side of the relationship and add it as a foreign key column in the
+table on the &#8220;many&#8221; side of the relationship.</p>
+</blockquote>
+</div>
+<h3 data-number="14.4.3" id="many-to-many"><span
+class="header-section-number">14.4.3</span> Many to Many</h3>
+<p>A many-to-many (M:M) relationship happens when, moving in both
+directions, a single row on one table could correspond with more than
+one row on the other table. Suppose a database includes a country table
+and a table that stores data about citizens. An individual country can
+have more than one citizen, and an individual person can have dual
+citizenship &#8212; that is, be a citizen of more than one country. Figure 9
+shows this relationship.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjNouyS-81v3D4-XkH61UirShyphenhyphenqkmd_M5wUAJnQhDrlejyVnkGCaX4Bwa7FVq0H98-nLOz17eEK1YYXTP6pWc4K06cSqTjry6SXYNX7M1DPxjfqL6HYRvr9maur8DrgMJOKcDwxJKYdM9NejQd0sNl6qAgId_GFZSMBZ92CCDGv-vJTeJVQj31hFHKCwQ7u/w640-h186/ManyToManyRelationship.png" /></p>
+<p><em>Figure 9: Countries and Citizens</em></p>
+<p>The last section described why you cannot take the primary key from a
+table on the &#8220;many&#8221; side of a relationship and include it on the other
+table as a foreign key. Unfortunately, the same issue applies to a
+many-to-many (M:M) relationship &#8212; and here it presents an interesting
+quandary, since both tables are on the &#8220;many&#8221; side of the
+relationship.</p>
+<p>To solve this dilemma, you add a third table to the database, between
+the country and citizen tables. This new table is called a linking table
+or a relationship table, and its name is often a combination of the
+names of the original two tables &#8212; in this case, it might be named
+<code>country_citizen</code>.</p>
+<p>The purpose of this table is to create a link between two tables that
+have a many-to-many (M:M) relationship. The relationship between each of
+the original tables and the new linking table will always be one to many
+(1:M), so the primary keys from the original tables are included on the
+linking table as foreign keys. Figure 10 shows how this linking table
+would work.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjUSN9FnQ9TytIz8IBkHuIS5VjGTU2u_W_oTR3gFcpLiWWR0Q9FRl2VFZ7xci88HpMbAcoZR6cB_qsryqWqShJMYpx4BRbx6aTOZbUFbo516bbHL00czmFNvWNyDe9-vXhtjABnQl8-tXmcg5_pxquE6HYwwcKu_1rPqQm4d8e5abURpUP-6QZn0cq10_6d/w640-h128/ManyToManyRelationshipResolved.png" /></p>
+<p><em>Figure 10: Countries and Citizens Relationship Resolved</em></p>
+<p>Figure 11 shows how countries and citizens would be linked using the
+<code>country_citizen</code> table. The first row of the
+<code>country_citizen</code> table links citizen 2 (June Day) with
+country 1 (USA). Rows 2 and 3 designate Frank Bass (citizen 3) as a
+citizen of both the USA (country 1) and France (country 2). The last row
+links citizen 1 (Liv Jones) with country 2 (France).</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj48QwKKzHBo-FRU7S_aHaCcQa7JFC3CLRodrnraQD3MFpbcwN2wC76bqz9mMpCXUn1nKzxD5imbxk3zwB8CyF4KNmfl5t7jm73ZG7tpe5X4hJi0BescMwfBpHAKIW9fCWb3HAjPSRIlIpClh3z_R-jysgimz6rWmEov6GO1f60LwpVS8Ny_od4Y4JlFuRd/w640-h128/ManyToManyRelationshipResolvedFK.png" /></p>
+<p><em>Figure 11: Countries and Citizens Linked with Foreign
+Keys</em></p>
+<div class="note">
+<blockquote>
+<p><strong>Note: Many to Many (M:M) Relationships.</strong> With a
+many-to-many relationship, create a linking table. The original tables
+will each have a one-to-many (1:M) relationship with the linking
+table.</p>
+</blockquote>
+</div>
+<h2 data-number="14.5"
+id="relationships-in-the-museum-business-model"><span
+class="header-section-number">14.5</span> Relationships in the Museum
+Business Model</h2>
+<p>With an understanding of cardinality and its impact on foreign keys,
+you can complete the business model for the museum database. Figure 12
+shows the current business model.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi0PSKX0Lp0lRXwgEeAIfxUUTRKRra4kHf6w40RlYuOjZyJ5DJA0tmUa_fZHHH5WKcN94WT6byiNE5NlP9O3FU2YqQm6DTvlMIRDu2pk2SJLBQN6DBtKVUZqxqGvx-59BB9M4TXymMtqURM_6OBy9o6pi3Jit258wwOPIrW1MRwF4Bn0js33YaJak70HeFF/s2692/BusinessModelMuseumDB.png" /></p>
+<p><em>Figure 12: Business Model of Museum Database</em></p>
+<p>Consider the relationship between artist and work. The likely
+cardinality for this relationship is one to many (1:M): an artist can
+create more than one work of art, but a work of art likely has a single
+creating artist. This means the primary key from the artist table,
+<code>artist_id</code>, will be included as a foreign key column on the
+work table.</p>
+<p>The relationship between museum and work will also be one to many
+(1:M). A museum can exhibit more than one work of art, but a work of art
+can only be exhibited in one museum at a time, so <code>museum_id</code>
+will be included as a foreign key column on the work table.</p>
+<p>Figure 13 shows the completed business model for the museum database.
+Notice that the work table has more than one foreign key column &#8212; this
+is not only allowable, it is common. Also notice that both relationships
+have a cardinality of one to many (1:M), which is also common. Most
+table relationships turn out to be one to many (1:M).</p>
+<div class="tip">
+<blockquote>
+<p><strong>Tip: Tables Can Have Multiple Foreign Key Columns.</strong>
+Although it may seem counterintuitive, a table can have more than one
+foreign key column. In fact, this is not uncommon.</p>
+</blockquote>
+</div>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhR0v1TMLVUXIh5msEZoZIKgBvGLxfNTp6Hnyy1pt4xK5QDgyLxx4sYh83jG4b5Gy9qfz3NMerhaFUyOsmFmtR9efcCaKijpBBOALHIsRmmT1upjqTa1ZusdtuEXgo46E6BS40GJPMaRwTrh14dWE3GoQLmbdzTKwEa8IMLM0TUlbIfh6SXvmzYWCVdp2jd/w640-h262/BusinessModelMuseumDBComplete.png" /></p>
+<p><em>Figure 13: Complete Business Model of Museum Database</em></p>
+<h2 data-number="14.6" id="summary"><span
+class="header-section-number">14.6</span> Summary</h2>
+<p>This lesson described relationships between tables. It also discussed
+cardinality and the implications of cardinality on how foreign keys are
+used. Finally, it demonstrated how relationships are noted in a business
+model of a database and how foreign key values link rows from different
+database tables together.</p>
+<!--postEnd-->
+              </div>
+</div>
+</article>
+</div>
+</div>
+</div></div>
+</div><!-- #main -->
+</div><!-- #primary -->
+<!--end of error vs non error block-->
+</div><!-- #content -->
+<footer class='site-footernbt' id='colophonnbt' role='contentinfo'>
+<div id='supplementarynbt'>
+<div class='footer-widgetsnbt widget-areanbt clearnbt' id='footer-widgetsnbt' role='complementary'>
+<div class='sidebarwidgetsarea no-items section' id='sidebarwidgetsarea'></div>
+</div><!-- #footer-sidebar -->
+</div><!-- #supplementary -->
+</footer><!-- #colophon -->
+</div><!-- #page -->
+
+<script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
+<script type='text/javascript'>
+window['__wavt'] = 'AEUoTZo2WVxQITTm01_YI5-OVdZ5:1784899984707';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/14.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/14.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/14.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/7078407679928297234/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '7078407679928297234', 'postImageThumbnailUrl': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhLnXCAz5bh8hDTbNAD4wXO3JOXRb4VXXMTBDj7VmC4Hfj87NnRlcqQRy0XgEMLeZc4FEp2zxHyvs58eQZBSqLI_kjqdQb0lWGpgtgUBj3fjq8tkAtTex-wQ9sGR7LiHhffmb-bl4zuNQZY2DBzZhyphenhyphenLXtElKY26dp4xIiptWStQO9DZ1dVqfOQ5rP_APh85/s72-c/MuseumBusinessModelKeys.png', 'postImageUrl': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhLnXCAz5bh8hDTbNAD4wXO3JOXRb4VXXMTBDj7VmC4Hfj87NnRlcqQRy0XgEMLeZc4FEp2zxHyvs58eQZBSqLI_kjqdQb0lWGpgtgUBj3fjq8tkAtTex-wQ9sGR7LiHhffmb-bl4zuNQZY2DBzZhyphenhyphenLXtElKY26dp4xIiptWStQO9DZ1dVqfOQ5rP_APh85/s2394/MuseumBusinessModelKeys.png', 'pageName': '14. Table Relationships and\nCardinality', 'pageTitle': 'book1014 SQL: 14. Table Relationships and\nCardinality'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '14. Table Relationships and\nCardinality', 'description': '14  Table Relationships and\r Cardinality \r Objectives.  After completing this lesson, the\r successful student will be able to: \r \r Discuss h...', 'featuredImage': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhLnXCAz5bh8hDTbNAD4wXO3JOXRb4VXXMTBDj7VmC4Hfj87NnRlcqQRy0XgEMLeZc4FEp2zxHyvs58eQZBSqLI_kjqdQb0lWGpgtgUBj3fjq8tkAtTex-wQ9sGR7LiHhffmb-bl4zuNQZY2DBzZhyphenhyphenLXtElKY26dp4xIiptWStQO9DZ1dVqfOQ5rP_APh85/s2394/MuseumBusinessModelKeys.png', 'url': 'https://book1014.blogspot.com/2000/02/14.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 7078407679928297234}}]);
+_WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
+</script>
+</body>
+</html>

@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html class='v2' dir='ltr' lang='en-US' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<head>
+<link href='https://www.blogger.com/static/v1/widgets/2872013778-css_bundle_v2.css' rel='stylesheet' type='text/css'/>
+<meta charset='UTF-8'/>
+<meta content='width=device-width, initial-scale=1' name='viewport'/>
+<title>book1014 SQL</title>
+<!-- external libraries -->
+<script src='https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js'></script>
+<script src='https://unpkg.com/turndown/dist/turndown.js'></script>
+<!-- font links -->
+<link href='https://fonts.googleapis.com' rel='preconnect'/>
+<link href='https://fonts.gstatic.com' rel='preconnect'/>
+<link href='https://fonts.googleapis.com/css2?family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900' rel='stylesheet'/>
+<link href='https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900' rel='stylesheet'/>
+<!-- button icon -->
+<link href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0' rel='stylesheet'/>
+<style id='page-skin-1' type='text/css'><!--
+:root {
+--font-zoom: 1;
+--page-bg: #f8fafc;
+--surface: #ffffff;
+--surface-soft: #f1f5f9;
+--surface-muted: #e2e8f0;
+--text: #172033;
+--text-muted: #64748b;
+--heading: #0f172a;
+--accent: #2563eb;
+--accent-strong: #1d4ed8;
+--accent-soft: #dbeafe;
+--danger: #dc2626;
+--warning: #fef3c7;
+--border: #dbe3ee;
+--shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+--shadow-md: 0 12px 30px rgba(15, 23, 42, 0.12);
+--shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.18);
+--radius-sm: 0.5rem;
+--radius-md: 0.85rem;
+--radius-lg: 1.35rem;
+}
+* {
+box-sizing: border-box;
+}
+html {
+scroll-behavior: smooth;
+}
+body {
+margin: 0;
+min-height: 100vh;
+font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+font-weight: 400;
+font-style: normal;
+font-size: calc(1rem  * var(--font-zoom));
+line-height: 1.72;
+color: var(--text);
+background: var(--page-bg);
+text-rendering: optimizeLegibility;
+-webkit-font-smoothing: antialiased;
+}
+.module{
+display:none
+}
+h1:has(span.header-section-number){
+display:none;
+}
+.material-symbols-outlined{
+font-size: calc(1rem  * var(--font-zoom));
+cursor:pointer;
+user-select:none;
+}
+summary::marker {
+color: var(--text-muted);
+}
+#msg-galley{
+position:fixed;
+top:0;
+right:0;
+height:100vh;
+min-width:calc(20rem  * var(--font-zoom));
+max-width:50%;
+z-index:12;
+background-color: transparent;
+pointer-events: none;
+padding: 1rem 1rem 0 0;
+font-family: "Roboto", sans-serif;
+font-optical-sizing: auto;
+font-weight: 400;
+font-style: normal;
+font-variation-settings: "wdth" 100;
+}
+.msg-close{
+position:absolute;
+top:calc(3px  * var(--font-zoom));
+right:calc(3px  * var(--font-zoom));
+display: inline-flex;
+align-items: center;
+justify-content: center;
+width: 1.25rem;
+height: 1.25rem;
+padding: 0;
+background-color:var(--danger);
+color: white;
+font-weight:700;
+font-size:calc(.7rem  * var(--font-zoom));
+border-radius: 999px;
+cursor:pointer;
+}
+.msg-dialog{
+position: relative;
+background-color:var(--surface);
+margin-bottom:.75rem;
+pointer-events: auto;
+border-radius:var(--radius-md);
+border: 1px solid var(--border);
+box-shadow: var(--shadow-md);
+overflow: hidden;
+}
+.msg-button-{
+margin: 0 .5rem .5rem 0;
+}
+.msg-button-bar{
+background-color:var(--surface-soft);
+text-align:center;
+padding:.75rem;
+border-top: 1px solid var(--border);
+}
+.msg-title{
+background:var(--accent);
+color:white;
+font-weight:700;
+padding:.55rem 2rem .55rem .85rem;
+}
+.msg-message{
+background-color:var(--surface);
+padding: .85rem;
+}
+#page-data{
+display:none
+}
+#menu{
+top:0;
+left:-100px;
+position:fixed;
+display:none;
+background:var(--surface);
+padding:0;
+z-index:11;
+transition: left .25s ease, box-shadow .25s ease;
+height:100vh;
+min-width:min(22rem, 88vw);
+max-width:75vw;
+overflow: auto;
+border-right: 1px solid var(--border);
+box-shadow: var(--shadow-lg);
+}
+#book-data{display:none}
+#menu-content{
+padding:1rem 1.25rem 2rem;
+}
+.menu-button{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+min-width:2.4rem;
+height:2.4rem;
+padding:0 .6rem;
+cursor:pointer;
+color:var(--text-muted);
+border-radius:999px;
+transition: background .18s ease, color .18s ease, transform .18s ease;
+vertical-align:middle;
+}
+.menu-button:hover{
+background:var(--accent-soft);
+color:var(--accent-strong);
+transform: translateY(-1px);
+}
+.menu-header{
+top:0;
+position:sticky;
+background:var(--surface);
+opacity:1;
+margin:0;
+padding:.45rem .6rem;
+border-bottom:1px solid var(--border);
+box-shadow: var(--shadow-sm);
+z-index:1;
+}
+#book-title{
+font-weight:700;
+letter-spacing:.02em;
+}
+#search-div{
+width:100%;
+white-space: nowrap;
+margin-top: 1.5rem;
+}
+#search-div h6{
+margin:0 0 .45rem 0;
+font-size:.78rem;
+font-weight:700;
+letter-spacing:.08em;
+text-transform:uppercase;
+color:var(--text-muted);
+}
+#search{
+width: calc(100% - 2.25rem);
+border:1px solid var(--border);
+border-radius:999px;
+padding:.55rem .85rem;
+font: inherit;
+font-size:.92rem;
+color:var(--text);
+background:var(--surface);
+box-shadow: var(--shadow-sm);
+outline:none;
+transition: border-color .18s ease, box-shadow .18s ease;
+}
+#search:focus{
+border-color:var(--accent);
+box-shadow:0 0 0 4px rgba(37, 99, 235, .13);
+}
+#search-button{
+padding-left:.45rem;
+color:var(--accent);
+vertical-align:middle;
+}
+#search-results{
+font-size:.86rem;
+margin-top: .85rem;
+}
+.search-result{
+margin-top:.65rem;
+padding:.75rem;
+cursor:pointer;
+border:1px solid var(--border);
+border-radius:var(--radius-sm);
+background:var(--surface);
+box-shadow: var(--shadow-sm);
+transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.search-result:hover{
+background-color:#f8fbff;
+border-color:#bfdbfe;
+box-shadow:0 10px 24px rgba(37, 99, 235, .1);
+transform: translateY(-1px);
+}
+.search-result-title{
+font-weight:bold;
+color:var(--heading);
+}
+.search-result-line{
+margin:.25rem 0 .35rem .75rem;
+color:var(--text-muted);
+}
+.search-term{
+background-color:var(--warning);
+border-radius:.2rem;
+padding:0 .15rem;
+}
+.chapter-result-link{
+color:var(--heading);
+}
+.toc-section-container{
+margin-left:.75rem;
+}
+.toc-text-container{
+margin-left:1.25rem;
+color:var(--text-muted);
+}
+.chapter-section{
+margin-top: calc(3rem  * var(--font-zoom));
+margin-bottom: calc(3rem  * var(--font-zoom));
+}
+.hide{
+display:none
+}
+img{
+max-width:100%;
+height:auto;
+border-radius:var(--radius-md);
+}
+.entry-header{
+position:fixed;
+top:0;
+left: 0;
+width: 100%;
+transition:opacity 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+padding: .35rem .75rem;
+-webkit-user-select: none; /* Safari */
+user-select: none; /* Standard syntax */
+background: var(--surface);
+border-bottom:1px solid var(--border);
+box-shadow:var(--shadow-sm);
+z-index:10;
+}
+button.nav{
+border-radius:999px;
+border:1px solid var(--border);
+background:var(--surface);
+color:var(--accent);
+box-shadow: var(--shadow-md);
+width:2.8rem;
+height:2.8rem;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+}
+.nav{
+position: fixed;
+bottom: 1rem;
+opacity:1.0;
+transition:opacity 0.35s ease, transform 0.18s ease, box-shadow 0.18s ease;
+pointer-events: all;
+}
+.nav:hover{
+transform: translateY(-2px);
+box-shadow: var(--shadow-lg);
+}
+.dim-button:hover{opacity: 1.0;}
+.dim-button{opacity: .35;}
+.dim-header:hover{opacity: 1.0;}
+.dim-header{opacity: 0;}
+#prior-button {
+left: 1rem;
+}
+#next-button {
+right: 1rem;
+}
+.span-link{
+cursor:pointer;
+color:var(--accent);
+font-weight:500;
+}
+.span-link:hover{
+text-decoration: underline;
+color:var(--accent-strong);
+}
+a:link {color: var(--accent); text-decoration:none}
+a:visited {color: #4f46e5;}
+a:hover {background-color: var(--accent-soft); color: var(--accent-strong); border-radius:.25rem;}
+a:active {color: var(--accent-strong);}
+.book-title{
+margin-top: 6rem;
+font-family:"Taviraj", Georgia, serif;
+font-size:clamp(2.4rem, 7vw, calc(4rem  * var(--font-zoom)));
+line-height:1.05;
+text-align: center;
+font-weight: 700;
+color:var(--heading);
+}
+.book-author{
+margin-top: 1rem;
+font-size:calc(1.45rem  * var(--font-zoom));
+text-align: center;
+color:var(--text-muted);
+}
+.book-toc{
+text-align: center;
+margin-top:2rem;
+}
+.book-chapters{
+display: inline-block;
+}
+.book-chapter{
+text-align:left;
+padding-left: 1rem;
+text-indent: -1rem;
+margin-bottom: 0.55rem;
+}
+.tool {
+cursor:pointer;
+font-size:calc(18px  * var(--font-zoom));
+font-weight:400;
+vertical-align: middle;
+padding-left:.6rem;
+color:var(--text-muted);
+transition: color .18s ease, transform .18s ease;
+}
+.tool:hover {
+color:var(--accent);
+transform: translateY(-1px);
+}
+.lead-in{
+margin-top:4rem;
+}
+.example, .indent, .category{
+margin:1rem 0 0 1.1rem;
+}
+.category div:first-child{
+color:var(--danger);
+font-weight:700;
+}
+.example div:first-child{
+color:var(--danger);
+font-style: italic;
+}
+h1{
+font-family:"Taviraj", Georgia, serif;
+font-size:clamp(1.35rem, 4vw, calc(2.1rem * var(--font-zoom)));
+line-height:1.18;
+color:var(--heading);
+font-weight:700;
+margin:0;
+}
+h2, h3{
+font-family:"Taviraj", Georgia, serif;
+color:var(--heading);
+line-height:1.24;
+letter-spacing:-.015em;
+}
+h2{
+font-size:clamp(1.55rem, 4vw, calc(2.15rem * var(--font-zoom)));
+margin:3rem 0 1rem;
+padding-top:.5rem;
+}
+h3{
+font-size:clamp(1.2rem, 3vw, calc(1.45rem * var(--font-zoom)));
+margin:2.25rem 0 .8rem;
+}
+.header-section-number{
+color:var(--accent);
+font-weight:700;
+}
+p{
+margin-top:0;
+margin-bottom:1.15rem;
+}
+p.vignette{
+color:var(--danger)
+}
+.no-dot{
+list-style-type: none;
+}
+ul.no-dot li{
+padding-left: 1rem;
+text-indent: -1rem;
+margin-bottom: 0.3rem;
+}
+audio{
+height:30px;
+width:100%;
+max-width:34rem;
+}
+div.post-body{
+max-width:940px;
+margin:0 auto;
+padding:clamp(5.2rem, 7vw, 6.25rem) clamp(1.15rem, 4vw, 3.5rem) 4rem;
+background:transparent;
+}
+div.index-boxnbt{
+background:var(--surface);
+padding-bottom:2rem;
+}
+.material-symbols-outlined {
+font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+font-size: 18px;
+line-height: 1;
+}
+blockquote{
+margin:1.75rem 0;
+background:var(--surface-soft);
+border-left:.35rem solid var(--accent);
+padding:1rem 1.25rem 1rem 1.35rem;
+border-radius:0 var(--radius-md) var(--radius-md) 0;
+color:#334155;
+}
+.note blockquote{
+background:#E8F5E9;
+border-left:.35rem solid darkgreen;
+}
+.note blockquote p::before {
+content: "Note: ";
+font-weight: bold;
+}
+.tip blockquote{
+background:#F3E5F5;
+border-left:.35rem solid purple;
+}
+.tip blockquote p::before {
+content: "Tip: ";
+font-weight: bold;
+}
+.term blockquote{
+background:#E3EDF7;
+border-left:.35rem solid darkblue;
+}
+.term blockquote p::before {
+content: "Term: ";
+font-weight: bold;
+}
+.caution blockquote{
+background:#FFE2E2;
+border-left:.35rem solid red;
+}
+.caution blockquote p::before {
+content: "Caution: ";
+font-weight: bold;
+}
+.objectives blockquote{
+background:#FFF8E1;
+border-left:.35rem solid gold;
+}
+.review blockquote{
+background:#FFF0EC;
+border-left:.35rem solid salmon;
+}
+.review blockquote p::before {
+content: "Review: ";
+font-weight: bold;
+}
+blockquote p:last-child{
+margin-bottom:0;
+}
+hr{
+height:1px;
+border:0;
+background:var(--border);
+margin:2.75rem 0;
+}
+ul, ol{
+padding-left:1.45rem;
+margin:0 0 1.25rem;
+}
+li{
+margin:.45rem 0;
+}
+code{
+font-family:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+font-size:.92em;
+color:#0f766e;
+background:#ecfdf5;
+border:1px solid #bbf7d0;
+border-radius:.35rem;
+padding:.08rem .32rem;
+}
+pre code,
+.sourceCode code{
+color:inherit;
+background:transparent;
+border:0;
+border-radius:0;
+padding:0;
+font-size:inherit;
+}
+pre,
+pre.javascript-code,
+pre.javascript-example,
+pre.spreadsheet,
+div.sourceCode pre{
+margin:1rem 0;
+padding:.75rem .85rem;
+overflow:auto;
+background:#0f172a;
+color:#dbeafe;
+border:1px solid rgba(148, 163, 184, .28);
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-md);
+font-family:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+font-size:.88rem;
+line-height:1.38;
+tab-size:2;
+white-space:pre;
+}
+div.sourceCode{
+margin:1rem 0;
+}
+div.sourceCode pre{
+margin:0;
+}
+.sourceCode .kw,
+.sourceCode .cf{
+color:#93c5fd;
+}
+.sourceCode .fu,
+.sourceCode .at{
+color:#67e8f9;
+}
+.sourceCode .st{
+color:#86efac;
+}
+.sourceCode .dv{
+color:#fbbf24;
+}
+.sourceCode .co{
+color:#94a3b8;
+font-style:italic;
+}
+table.blog{
+display:block;
+width:max-content;
+max-width:100%;
+border-collapse:separate;
+border-spacing:0;
+margin:1.5rem 0 2rem;
+overflow-x:auto;
+-webkit-overflow-scrolling:touch;
+border:1px solid var(--border);
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-sm);
+background:var(--surface);
+}
+th.blog,
+td.blog{
+padding:.72rem .85rem;
+border-bottom:1px solid var(--border);
+text-align:left;
+vertical-align:top;
+white-space:nowrap;
+}
+th.blog{
+font-size:.86rem;
+font-weight:700;
+color:var(--heading);
+background:var(--surface-soft);
+}
+tr.blog:last-child td{
+border-bottom:0;
+}
+tr.blog:nth-child(even) td{
+background:#f8fafc;
+}
+.monaco {
+width: 100%;
+margin: 1.5rem 0;
+border-radius: var(--radius-md);
+overflow: hidden;
+box-shadow: var(--shadow-lg);
+border: 1px solid rgba(148, 163, 184, 0.22);
+}
+.monaco-bar {
+display: flex;
+align-items: center;
+justify-content: flex-end;
+gap: 2px;
+padding: 8px 10px;
+background: linear-gradient(180deg, #1f2937, #111827);
+border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.monaco-bar-label {
+flex: 1;
+font-family: "Roboto", sans-serif;
+font-size: 11px;
+font-weight: 700;
+color: #94a3b8;
+letter-spacing: 0.5px;
+text-transform: uppercase;
+padding-left: 4px;
+}
+.monaco-tool {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 30px;
+height: 30px;
+border-radius: 6px;
+color: #8b949e;
+cursor: pointer;
+transition: background 0.15s ease, color 0.15s ease;
+}
+.monaco-tool:hover {
+background: rgba(255, 255, 255, 0.1);
+color: #e6edf3;
+}
+.monaco-tool:active {
+background: rgba(255, 255, 255, 0.06);
+transform: scale(0.92);
+}
+.monaco-tool[data-action="run"]:hover {
+background: rgba(63, 185, 80, 0.18);
+color: #3fb950;
+}
+.editor-holder {
+background-color: #1e1e1e;
+padding: 8px 0;
+}
+.editor {
+margin: 0;
+padding: 0;
+}
+.console {
+background: #161b22;
+border-top: 1px solid rgba(255, 255, 255, 0.07);
+padding: 8px 0 6px;
+position: relative;
+min-height: 36px;
+font-family: 'Consolas', 'Cascadia Code', 'Courier New', monospace;
+font-size: 13px;
+}
+.console-line {
+color: #c9d1d9;
+padding: 2px 40px 2px 14px;
+line-height: 1.6;
+white-space: pre-wrap;
+word-break: break-all;
+}
+.console-line:first-of-type {
+margin-top: 2px;
+}
+.console-line.error {
+color: #f85149;
+background: rgba(248, 81, 73, 0.06);
+}
+span.exitButton {
+position: absolute;
+top: 6px;
+right: 8px;
+display: flex;
+align-items: center;
+justify-content: center;
+width: 22px;
+height: 22px;
+border-radius: 4px;
+color: #6e7681;
+cursor: pointer;
+transition: background 0.15s ease, color 0.15s ease;
+}
+span.exitButton:hover {
+background: rgba(255, 255, 255, 0.1);
+color: #c9d1d9;
+}
+span.exitButton .material-symbols-outlined {
+font-size: 15px;
+}
+pre.code {
+color: #a8ff78;
+background: #0d1117;
+padding: 1rem 1.15rem;
+margin: 1.35rem 0;
+font-size: 14px;
+border-radius: var(--radius-md);
+border: 1px solid rgba(255, 255, 255, 0.07);
+overflow-x: auto;
+}
+@media (max-width: 700px) {
+body {
+font-size: calc(.98rem * var(--font-zoom));
+}
+#msg-galley {
+left: 0;
+right: 0;
+max-width: none;
+min-width: 0;
+padding: .75rem;
+}
+#menu {
+max-width: 92vw;
+}
+.entry-header {
+padding: .25rem .4rem;
+}
+div.post-body {
+padding-left: 1rem;
+padding-right: 1rem;
+}
+.nav {
+bottom: .75rem;
+}
+#prior-button {
+left: .75rem;
+}
+#next-button {
+right: .75rem;
+}
+}
+
+--></style>
+<script>
+    const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
+	async function initialize(){
+
+      const kind = document.getElementById(`kind`).innerHTML
+      console.log(`kind`, kind)
+      switch(kind){
+        case `redirect`:
+          location.href=document.getElementById(`post-json`).innerText
+          return
+        case `chapter`:
+          console.log(`processing Chapter`)
+          // load any modules used in the chapter
+          for(const module of document.querySelectorAll(`div.module`)){
+            console.log(`module:`, module.innerText)
+            loadModule(module.innerText)
+    
+    
+    
+          }
+      }
+    
+    // calls the page that has our code in it
+    //const response = await fetch(`/1970/01/system.html`)
+  	//const code = await response.text()
+    
+ 
+	//const s = document.createElement('script')
+	//s.replaceChildren(code.split(`<p`+`re>`)[1].split(`</pre>`)[0])
+	//document.head.appendChild(s)
+    //console.log("got system")
+    await loadModule("system")
+	init()
+    
+    }
+    
+    async function loadModule(label){// get the first post of a specified label and load the code
+      const code = await getPage(label)
+      const s = document.createElement(`script`)
+      s.replaceChildren(code)
+      document.head.appendChild(s)          
+    }
+    
+    async function getPage(label){//get the first post with the specified label.
+        
+        if(localhost){
+          const url=`/tools/api/${label}.js`
+          const response = await fetch(url)
+          const code = await response.text()  
+          return code
+        }else{
+          const url=`${location.origin}/feeds/posts/default/-/${label}?alt=json`
+          const response = await fetch(url)
+          console.log("feed url", url)
+          const page = await response.json()
+          return page.feed.entry[0].content.$t
+        }
+    }    
+
+  </script>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' rel='stylesheet'/></noscript>
+<meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
+<meta name='google-adsense-platform-domain' content='blogspot.com'/>
+
+</head>
+<body onload='initialize()'>
+<div class='sitenbt' id='pagenbt'>
+<div class='site-contentnbt' id='contentnbt'>
+<div class='testing' id='item'></div>
+<div class='content-areanbt' id='primarynbt'>
+<div class='site-mainnbt' id='mainnbt' role='main'>
+<div class='section' id='mainblogsec'><div class='widget Blog' data-version='1' id='Blog1'>
+<div class='blog-posts hfeed'>
+<div class='post-outer'>
+<article class='post'>
+<div id='msg-galley'></div>
+<div class='hide' id='kind'>chapter</div>
+<div class='index-boxnbt'>
+<header class='entry-header'>
+<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>19. Inserting Data</span></h1>
+</header>
+<div id='menu'>
+<div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
+<div id='menu-content'>
+<div id='toc'></div>
+<div id='tools'>
+                  Text Size: 
+                  <span class='material-symbols-outlined tool' onclick='fontSize(.1)'>text_increase</span>
+<span class='material-symbols-outlined tool' onclick='fontSize(-.1)'>text_decrease</span>
+<span class='material-symbols-outlined tool' onclick='fontSize()'>rotate_auto</span>
+</div>
+<div id='search-div'>
+<h6>Search Book</h6>
+<input id='search' placeholder='search book'/><span class='material-symbols-outlined tool' id='search-button'>search</span></div>
+<div id='search-results'></div>
+</div>
+</div>
+<div class='post-body entry-content' data-blog-id='3986204447440040189' data-post-id='546428370552505659'>
+<button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
+<button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
+              
+              <!--postBegin--><h1 data-number="19" id="inserting-data"><span
+class="header-section-number">19</span> Inserting Data</h1>
+<p><strong>Objectives.</strong> After completing this lesson, the
+successful student will be able to:</p>
+<ol type="1">
+<li>Describe the different ways the INSERT statement can be used.</li>
+<li>Insert a complete row into a table, both with and without an
+explicit column list.</li>
+<li>Insert a partial row into a table.</li>
+<li>Use INSERT SELECT to insert the results of a query into a
+table.</li>
+<li>Use CREATE TABLE AS SELECT (or SELECT INTO) to copy data into a new
+table.</li>
+</ol>
+<h2 data-number="19.1" id="understanding-data-insertion"><span
+class="header-section-number">19.1</span> Understanding Data
+Insertion</h2>
+<p>SELECT is undoubtedly the most frequently used SQL statement (which
+is why the last several lessons were dedicated to it). But there are
+three other frequently used SQL statements that you should learn. The
+first one is INSERT. (You&#8217;ll get to the other two in the next
+lesson.)</p>
+<p>As its name suggests, INSERT is used to insert (add) rows to a
+database table. INSERT can be used in several ways:</p>
+<ul>
+<li>Inserting a single complete row</li>
+<li>Inserting a single partial row</li>
+<li>Inserting the results of a query</li>
+</ul>
+<p>Let&#8217;s now look at each of these.</p>
+<div class="tip">
+<blockquote>
+<p><strong>Tip: INSERT and System Security.</strong> Use of the INSERT
+statement might require special security privileges in client/server
+DBMSs. Before you attempt to use INSERT, make sure you have adequate
+security privileges to do so.</p>
+</blockquote>
+</div>
+<h2 data-number="19.2" id="inserting-complete-rows"><span
+class="header-section-number">19.2</span> Inserting Complete Rows</h2>
+<p>The simplest way to insert data into a table is to use the basic
+INSERT syntax, which requires that you specify the table name and the
+values to be inserted into the new row. Here is an example of this:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> artist</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">501</span>, <span class="st">&#39;Elena Voss&#39;</span>, <span class="st">&#39;Elena&#39;</span>, <span class="kw">NULL</span>, <span class="st">&#39;Voss&#39;</span>, <span class="st">&#39;German&#39;</span>, <span class="st">&#39;Abstract&#39;</span>, <span class="dv">1962</span>, <span class="kw">NULL</span>);</span></code></pre></div>
+<p>The above example inserts a new artist into the artist table. The
+data to be stored in each table column is specified in the VALUES
+clause, and a value must be provided for every column. If a column has
+no value (for example, the middle_names and death columns above, since
+this artist has no recorded middle name and is still living), the NULL
+value should be used (assuming the table allows no value to be specified
+for that column). The columns must be populated in the order in which
+they appear in the table definition &#8212; in this case, artist_id,
+full_name, first_name, middle_names, last_name, nationality, style,
+birth, death.</p>
+<div class="tip">
+<blockquote>
+<p><strong>Tip: The INTO Keyword.</strong> In some SQL implementations,
+the INTO keyword following INSERT is optional. However, it is good
+practice to provide this keyword even if it is not needed. Doing so will
+ensure that your SQL code is portable between DBMSs.</p>
+</blockquote>
+</div>
+<p>Although this syntax is indeed simple, it is not at all safe and
+should generally be avoided at all costs. The above SQL statement is
+highly dependent on the order in which the columns are defined in the
+table. It also depends on information about that order being readily
+available. Even if it is available, there is no guarantee that the
+columns will be in the exact same order the next time the table is
+reconstructed. Therefore, writing SQL statements that depend on specific
+column ordering is very unsafe. If you do so, something will inevitably
+break at some point.</p>
+<p>The safer (and unfortunately more cumbersome) way to write the INSERT
+statement is as follows:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> artist (artist_id, full_name, first_name, last_name, middle_names, style, nationality, birth, death)</span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">501</span>, <span class="st">&#39;Elena Voss&#39;</span>, <span class="st">&#39;Elena&#39;</span>, <span class="st">&#39;Voss&#39;</span>, <span class="kw">NULL</span>, <span class="st">&#39;Abstract&#39;</span>, <span class="st">&#39;German&#39;</span>, <span class="dv">1962</span>, <span class="kw">NULL</span>);</span></code></pre></div>
+<p>This example does the exact same thing as the previous INSERT
+statement, but this time the column names are explicitly stated in
+parentheses after the table name. When the row is inserted, the DBMS
+will match each item in the columns list with the appropriate value in
+the VALUES list. The first entry in VALUES corresponds to the first
+specified column name. The second value corresponds to the second column
+name, and so on.</p>
+<p>Because column names are provided, the VALUES must match the
+specified column names in the order in which they are specified, and not
+necessarily in the order that the columns appear in the actual table.
+The advantage of this is that, even if the table layout changes, the
+INSERT statement will still work correctly.</p>
+<div class="note">
+<blockquote>
+<p><strong>Note: Can&#8217;t INSERT Same Record Twice.</strong> If you tried
+both versions of this example, you&#8217;ll have discovered that the second
+generated an error because an artist with an artist_id of 501 already
+existed. As discussed in the lesson on understanding SQL, primary key
+values must be unique, and because artist_id is the primary key, the
+DBMS won&#8217;t allow you to insert two rows with the same artist_id value.
+The same is true for the next example. To try the other INSERT
+statements, you&#8217;d need to delete the first row added (as will be shown
+in a later lesson). Or don&#8217;t, because the row has been inserted and you
+can continue the lessons without deleting it.</p>
+</blockquote>
+</div>
+<p>The following INSERT statement populates all the row columns (just as
+before), but it does so in a different order. Because the column names
+are specified, the insertion will work correctly:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> artist (artist_id, middle_names, death, first_name, last_name, style, nationality, birth, full_name)</span>
+<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">501</span>, <span class="kw">NULL</span>, <span class="kw">NULL</span>, <span class="st">&#39;Elena&#39;</span>, <span class="st">&#39;Voss&#39;</span>, <span class="st">&#39;Abstract&#39;</span>, <span class="st">&#39;German&#39;</span>, <span class="dv">1962</span>, <span class="st">&#39;Elena Voss&#39;</span>);</span></code></pre></div>
+<div class="tip">
+<blockquote>
+<p><strong>Tip: Always Use a Columns List.</strong> As a rule, never use
+INSERT without explicitly specifying the column list. This will greatly
+increase the probability that your SQL will continue to function in the
+event that table changes occur.</p>
+</blockquote>
+</div>
+<div class="caution">
+<blockquote>
+<p><strong>Caution: Use VALUES Carefully.</strong> Regardless of the
+INSERT syntax being used, the correct number of VALUES must be
+specified. If no column names are provided, a value must be present for
+every table column. If column names are provided, a value must be
+present for each listed column. If none is present, an error message
+will be generated, and the row will not be inserted.</p>
+</blockquote>
+</div>
+<h2 data-number="19.3" id="inserting-partial-rows"><span
+class="header-section-number">19.3</span> Inserting Partial Rows</h2>
+<p>As just explained, the recommended way to use INSERT is to explicitly
+specify table column names. Using this syntax, you can also omit
+columns. This means you provide values for only some columns, but not
+for others.</p>
+<p>Look at the following example:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> artist (artist_id, first_name, last_name, style, nationality, birth)</span>
+<span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">501</span>, <span class="st">&#39;Elena&#39;</span>, <span class="st">&#39;Voss&#39;</span>, <span class="st">&#39;Abstract&#39;</span>, <span class="st">&#39;German&#39;</span>, <span class="dv">1962</span>);</span></code></pre></div>
+<p>In the examples given earlier in this lesson, values were not
+provided for three of the columns, full_name, middle_names, and death.
+This means there is no reason to include those columns in the INSERT
+statement. This INSERT statement, therefore, omits those three columns
+and their three corresponding values.</p>
+<div class="caution">
+<blockquote>
+<p><strong>Caution: Omitting Columns.</strong> You may omit columns from
+an INSERT operation if the table definition so allows. One of the
+following conditions must exist:</p>
+<ul>
+<li>The column is defined as allowing NULL values (no value at
+all).</li>
+<li>A default value is specified in the table definition. This means the
+default value will be used if no value is specified.</li>
+</ul>
+</blockquote>
+</div>
+<div class="caution">
+<blockquote>
+<p><strong>Caution: Omitting Required Values.</strong> If you omit a
+value from a table that does not allow NULL values and does not have a
+default, the DBMS will generate an error message, and the row will not
+be inserted.</p>
+</blockquote>
+</div>
+<h2 data-number="19.4" id="inserting-retrieved-data"><span
+class="header-section-number">19.4</span> Inserting Retrieved Data</h2>
+<p>INSERT is usually used to add a row to a table using specified
+values. There is another form of INSERT that can be used to insert the
+result of a SELECT statement into a table. This is known as INSERT
+SELECT, and, as its name suggests, it is made up of an INSERT statement
+and a SELECT statement.</p>
+<p>Suppose you want to merge a list of newly catalogued artists from a
+staging table into your artist table. Instead of reading one row at a
+time and inserting it with INSERT, you can do the following:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> artist (artist_id, full_name, first_name, last_name, middle_names, style, nationality, birth, death)</span>
+<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="kw">SELECT</span> artist_id, full_name, first_name, last_name, middle_names, style, nationality, birth, death</span>
+<span id="cb5-3"><a aria-hidden="true" href="#cb5-3" tabindex="-1"></a><span class="kw">FROM</span> new_artists;</span></code></pre></div>
+<div class="note">
+<blockquote>
+<p><strong>Note: Instructions Needed for the Next Example.</strong> The
+following example imports data from a table named new_artists into the
+artist table. To try this example, create and populate the new_artists
+table first. The format of the new_artists table should match the artist
+table described earlier in this book. When populating new_artists, be
+sure not to use artist_id values that were already used in artist. (The
+subsequent INSERT operation fails if primary key values are
+duplicated.)</p>
+</blockquote>
+</div>
+<p>This example uses INSERT SELECT to import all the data from
+new_artists into artist. Instead of listing the VALUES to be inserted,
+the SELECT statement retrieves them from new_artists. Each column in the
+SELECT corresponds to a column in the specified columns list. How many
+rows will this statement insert? That depends on how many rows are in
+the new_artists table. If the table is empty, no rows will be inserted
+(and no error will be generated because the operation is still valid).
+If the table does, in fact, contain data, all that data will be inserted
+into artist.</p>
+<div class="tip">
+<blockquote>
+<p><strong>Tip: Column Names in INSERT SELECT.</strong> This example
+uses the same column names in both the INSERT and SELECT statements for
+simplicity&#8217;s sake. But there is no requirement that the column names
+match. In fact, the DBMS does not even pay attention to the column names
+returned by the SELECT. Rather, the column position is used, so the
+first column in the SELECT statement (regardless of its name) will be
+used to populate the first specified table column, and so on.</p>
+</blockquote>
+</div>
+<p>The SELECT statement used in an INSERT SELECT can include a WHERE
+clause to filter the data to be inserted.</p>
+<div class="tip">
+<blockquote>
+<p><strong>Tip: Inserting Multiple Rows.</strong> INSERT usually inserts
+only a single row. To insert multiple rows, you must execute multiple
+INSERT statements. The exception to this rule is INSERT SELECT, which
+can be used to insert multiple rows with a single statement; whatever
+the SELECT statement returns will be inserted by the INSERT.</p>
+</blockquote>
+</div>
+<h2 data-number="19.5" id="copying-from-one-table-to-another"><span
+class="header-section-number">19.5</span> Copying from One Table to
+Another</h2>
+<p>There is another form of data insertion that does not use the INSERT
+statement at all. To copy the contents of a table into a brand new table
+(one that is created on the fly), you can use CREATE TABLE AS
+SELECT.</p>
+<p>Unlike INSERT SELECT, which appends data to an existing table, CREATE
+TABLE AS SELECT copies data into a new table (creating that table in the
+process &#8212; it will fail if a table by that name already exists).</p>
+<p>The following example demonstrates the use of CREATE TABLE AS
+SELECT:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> artist_copy <span class="kw">AS</span> <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> artist;</span></code></pre></div>
+<p>PostgreSQL also supports an alternate, older syntax that accomplishes
+the same thing:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">INTO</span> artist_copy <span class="kw">FROM</span> artist;</span></code></pre></div>
+<p>Either statement creates a new table named artist_copy and copies the
+entire contents of the artist table into it. Because SELECT * was used,
+every column in the artist table will be created (and populated) in the
+artist_copy table. To copy only a subset of the available columns, you
+can specify explicit column names instead of the * wildcard character.
+Between the two, CREATE TABLE AS SELECT is generally preferred, since
+its intent (creating a table) is obvious from the first keyword &#8212; SELECT
+INTO reads like an ordinary query until you notice the INTO clause.
+SELECT INTO also means something different when used inside a PL/pgSQL
+function or procedure (there, it assigns a query&#8217;s result into a
+variable, as you saw in the lesson on cursors), which is one more reason
+CREATE TABLE AS SELECT is the safer habit to default to.</p>
+<p>Here are some things to consider when using either form:</p>
+<ul>
+<li>Any SELECT options and clauses may be used, including WHERE and
+GROUP BY.</li>
+<li>Joins may be used to insert data from multiple tables.</li>
+<li>Data may only be inserted into a single table regardless of how many
+tables the data was retrieved from.</li>
+</ul>
+<div class="tip">
+<blockquote>
+<p><strong>Tip: Making Copies of Tables.</strong> The technique
+described here is a great way to make copies of tables before
+experimenting with new SQL statements. By making a copy first, you&#8217;ll be
+able to test your SQL on that copy instead of on live data.</p>
+</blockquote>
+</div>
+<div class="note">
+<blockquote>
+<p><strong>Note: More Examples.</strong> Looking for more examples of
+INSERT usage? Experiment with the artist, work, museum, subject, and
+museum_hours tables introduced throughout this book.</p>
+</blockquote>
+</div>
+<h2 data-number="19.6" id="summary"><span
+class="header-section-number">19.6</span> Summary</h2>
+<p>In this lesson, you learned how to insert rows into a database table
+using INSERT. You learned several ways to use INSERT and why explicit
+column specification is preferred. You also learned how to use INSERT
+SELECT to import rows from another table and how to use SELECT INTO to
+export rows to a new table. In the next lesson, you&#8217;ll learn how to use
+UPDATE and DELETE to further manipulate table data.</p>
+<!--postEnd-->
+              </div>
+</div>
+</article>
+</div>
+</div>
+</div></div>
+</div><!-- #main -->
+</div><!-- #primary -->
+<!--end of error vs non error block-->
+</div><!-- #content -->
+<footer class='site-footernbt' id='colophonnbt' role='contentinfo'>
+<div id='supplementarynbt'>
+<div class='footer-widgetsnbt widget-areanbt clearnbt' id='footer-widgetsnbt' role='complementary'>
+<div class='sidebarwidgetsarea no-items section' id='sidebarwidgetsarea'></div>
+</div><!-- #footer-sidebar -->
+</div><!-- #supplementary -->
+</footer><!-- #colophon -->
+</div><!-- #page -->
+
+<script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
+<script type='text/javascript'>
+window['__wavt'] = 'AEUoTZqnYKb9ee9tQlouj-_26jmd:1784899988129';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/19.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/19.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/19.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/546428370552505659/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '546428370552505659', 'pageName': '19. Inserting Data', 'pageTitle': 'book1014 SQL: 19. Inserting Data'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '19. Inserting Data', 'description': '19  Inserting Data \r Objectives.  After completing this lesson, the\r successful student will be able to: \r \r Describe the different ways the...', 'url': 'https://book1014.blogspot.com/2000/02/19.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 546428370552505659}}]);
+_WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
+</script>
+</body>
+</html>

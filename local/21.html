@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html class='v2' dir='ltr' lang='en-US' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<head>
+<link href='https://www.blogger.com/static/v1/widgets/2872013778-css_bundle_v2.css' rel='stylesheet' type='text/css'/>
+<meta charset='UTF-8'/>
+<meta content='width=device-width, initial-scale=1' name='viewport'/>
+<title>book1014 SQL</title>
+<!-- external libraries -->
+<script src='https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js'></script>
+<script src='https://unpkg.com/turndown/dist/turndown.js'></script>
+<!-- font links -->
+<link href='https://fonts.googleapis.com' rel='preconnect'/>
+<link href='https://fonts.gstatic.com' rel='preconnect'/>
+<link href='https://fonts.googleapis.com/css2?family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900' rel='stylesheet'/>
+<link href='https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900' rel='stylesheet'/>
+<!-- button icon -->
+<link href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0' rel='stylesheet'/>
+<style id='page-skin-1' type='text/css'><!--
+:root {
+--font-zoom: 1;
+--page-bg: #f8fafc;
+--surface: #ffffff;
+--surface-soft: #f1f5f9;
+--surface-muted: #e2e8f0;
+--text: #172033;
+--text-muted: #64748b;
+--heading: #0f172a;
+--accent: #2563eb;
+--accent-strong: #1d4ed8;
+--accent-soft: #dbeafe;
+--danger: #dc2626;
+--warning: #fef3c7;
+--border: #dbe3ee;
+--shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+--shadow-md: 0 12px 30px rgba(15, 23, 42, 0.12);
+--shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.18);
+--radius-sm: 0.5rem;
+--radius-md: 0.85rem;
+--radius-lg: 1.35rem;
+}
+* {
+box-sizing: border-box;
+}
+html {
+scroll-behavior: smooth;
+}
+body {
+margin: 0;
+min-height: 100vh;
+font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+font-weight: 400;
+font-style: normal;
+font-size: calc(1rem  * var(--font-zoom));
+line-height: 1.72;
+color: var(--text);
+background: var(--page-bg);
+text-rendering: optimizeLegibility;
+-webkit-font-smoothing: antialiased;
+}
+.module{
+display:none
+}
+h1:has(span.header-section-number){
+display:none;
+}
+.material-symbols-outlined{
+font-size: calc(1rem  * var(--font-zoom));
+cursor:pointer;
+user-select:none;
+}
+summary::marker {
+color: var(--text-muted);
+}
+#msg-galley{
+position:fixed;
+top:0;
+right:0;
+height:100vh;
+min-width:calc(20rem  * var(--font-zoom));
+max-width:50%;
+z-index:12;
+background-color: transparent;
+pointer-events: none;
+padding: 1rem 1rem 0 0;
+font-family: "Roboto", sans-serif;
+font-optical-sizing: auto;
+font-weight: 400;
+font-style: normal;
+font-variation-settings: "wdth" 100;
+}
+.msg-close{
+position:absolute;
+top:calc(3px  * var(--font-zoom));
+right:calc(3px  * var(--font-zoom));
+display: inline-flex;
+align-items: center;
+justify-content: center;
+width: 1.25rem;
+height: 1.25rem;
+padding: 0;
+background-color:var(--danger);
+color: white;
+font-weight:700;
+font-size:calc(.7rem  * var(--font-zoom));
+border-radius: 999px;
+cursor:pointer;
+}
+.msg-dialog{
+position: relative;
+background-color:var(--surface);
+margin-bottom:.75rem;
+pointer-events: auto;
+border-radius:var(--radius-md);
+border: 1px solid var(--border);
+box-shadow: var(--shadow-md);
+overflow: hidden;
+}
+.msg-button-{
+margin: 0 .5rem .5rem 0;
+}
+.msg-button-bar{
+background-color:var(--surface-soft);
+text-align:center;
+padding:.75rem;
+border-top: 1px solid var(--border);
+}
+.msg-title{
+background:var(--accent);
+color:white;
+font-weight:700;
+padding:.55rem 2rem .55rem .85rem;
+}
+.msg-message{
+background-color:var(--surface);
+padding: .85rem;
+}
+#page-data{
+display:none
+}
+#menu{
+top:0;
+left:-100px;
+position:fixed;
+display:none;
+background:var(--surface);
+padding:0;
+z-index:11;
+transition: left .25s ease, box-shadow .25s ease;
+height:100vh;
+min-width:min(22rem, 88vw);
+max-width:75vw;
+overflow: auto;
+border-right: 1px solid var(--border);
+box-shadow: var(--shadow-lg);
+}
+#book-data{display:none}
+#menu-content{
+padding:1rem 1.25rem 2rem;
+}
+.menu-button{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+min-width:2.4rem;
+height:2.4rem;
+padding:0 .6rem;
+cursor:pointer;
+color:var(--text-muted);
+border-radius:999px;
+transition: background .18s ease, color .18s ease, transform .18s ease;
+vertical-align:middle;
+}
+.menu-button:hover{
+background:var(--accent-soft);
+color:var(--accent-strong);
+transform: translateY(-1px);
+}
+.menu-header{
+top:0;
+position:sticky;
+background:var(--surface);
+opacity:1;
+margin:0;
+padding:.45rem .6rem;
+border-bottom:1px solid var(--border);
+box-shadow: var(--shadow-sm);
+z-index:1;
+}
+#book-title{
+font-weight:700;
+letter-spacing:.02em;
+}
+#search-div{
+width:100%;
+white-space: nowrap;
+margin-top: 1.5rem;
+}
+#search-div h6{
+margin:0 0 .45rem 0;
+font-size:.78rem;
+font-weight:700;
+letter-spacing:.08em;
+text-transform:uppercase;
+color:var(--text-muted);
+}
+#search{
+width: calc(100% - 2.25rem);
+border:1px solid var(--border);
+border-radius:999px;
+padding:.55rem .85rem;
+font: inherit;
+font-size:.92rem;
+color:var(--text);
+background:var(--surface);
+box-shadow: var(--shadow-sm);
+outline:none;
+transition: border-color .18s ease, box-shadow .18s ease;
+}
+#search:focus{
+border-color:var(--accent);
+box-shadow:0 0 0 4px rgba(37, 99, 235, .13);
+}
+#search-button{
+padding-left:.45rem;
+color:var(--accent);
+vertical-align:middle;
+}
+#search-results{
+font-size:.86rem;
+margin-top: .85rem;
+}
+.search-result{
+margin-top:.65rem;
+padding:.75rem;
+cursor:pointer;
+border:1px solid var(--border);
+border-radius:var(--radius-sm);
+background:var(--surface);
+box-shadow: var(--shadow-sm);
+transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.search-result:hover{
+background-color:#f8fbff;
+border-color:#bfdbfe;
+box-shadow:0 10px 24px rgba(37, 99, 235, .1);
+transform: translateY(-1px);
+}
+.search-result-title{
+font-weight:bold;
+color:var(--heading);
+}
+.search-result-line{
+margin:.25rem 0 .35rem .75rem;
+color:var(--text-muted);
+}
+.search-term{
+background-color:var(--warning);
+border-radius:.2rem;
+padding:0 .15rem;
+}
+.chapter-result-link{
+color:var(--heading);
+}
+.toc-section-container{
+margin-left:.75rem;
+}
+.toc-text-container{
+margin-left:1.25rem;
+color:var(--text-muted);
+}
+.chapter-section{
+margin-top: calc(3rem  * var(--font-zoom));
+margin-bottom: calc(3rem  * var(--font-zoom));
+}
+.hide{
+display:none
+}
+img{
+max-width:100%;
+height:auto;
+border-radius:var(--radius-md);
+}
+.entry-header{
+position:fixed;
+top:0;
+left: 0;
+width: 100%;
+transition:opacity 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+padding: .35rem .75rem;
+-webkit-user-select: none; /* Safari */
+user-select: none; /* Standard syntax */
+background: var(--surface);
+border-bottom:1px solid var(--border);
+box-shadow:var(--shadow-sm);
+z-index:10;
+}
+button.nav{
+border-radius:999px;
+border:1px solid var(--border);
+background:var(--surface);
+color:var(--accent);
+box-shadow: var(--shadow-md);
+width:2.8rem;
+height:2.8rem;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+}
+.nav{
+position: fixed;
+bottom: 1rem;
+opacity:1.0;
+transition:opacity 0.35s ease, transform 0.18s ease, box-shadow 0.18s ease;
+pointer-events: all;
+}
+.nav:hover{
+transform: translateY(-2px);
+box-shadow: var(--shadow-lg);
+}
+.dim-button:hover{opacity: 1.0;}
+.dim-button{opacity: .35;}
+.dim-header:hover{opacity: 1.0;}
+.dim-header{opacity: 0;}
+#prior-button {
+left: 1rem;
+}
+#next-button {
+right: 1rem;
+}
+.span-link{
+cursor:pointer;
+color:var(--accent);
+font-weight:500;
+}
+.span-link:hover{
+text-decoration: underline;
+color:var(--accent-strong);
+}
+a:link {color: var(--accent); text-decoration:none}
+a:visited {color: #4f46e5;}
+a:hover {background-color: var(--accent-soft); color: var(--accent-strong); border-radius:.25rem;}
+a:active {color: var(--accent-strong);}
+.book-title{
+margin-top: 6rem;
+font-family:"Taviraj", Georgia, serif;
+font-size:clamp(2.4rem, 7vw, calc(4rem  * var(--font-zoom)));
+line-height:1.05;
+text-align: center;
+font-weight: 700;
+color:var(--heading);
+}
+.book-author{
+margin-top: 1rem;
+font-size:calc(1.45rem  * var(--font-zoom));
+text-align: center;
+color:var(--text-muted);
+}
+.book-toc{
+text-align: center;
+margin-top:2rem;
+}
+.book-chapters{
+display: inline-block;
+}
+.book-chapter{
+text-align:left;
+padding-left: 1rem;
+text-indent: -1rem;
+margin-bottom: 0.55rem;
+}
+.tool {
+cursor:pointer;
+font-size:calc(18px  * var(--font-zoom));
+font-weight:400;
+vertical-align: middle;
+padding-left:.6rem;
+color:var(--text-muted);
+transition: color .18s ease, transform .18s ease;
+}
+.tool:hover {
+color:var(--accent);
+transform: translateY(-1px);
+}
+.lead-in{
+margin-top:4rem;
+}
+.example, .indent, .category{
+margin:1rem 0 0 1.1rem;
+}
+.category div:first-child{
+color:var(--danger);
+font-weight:700;
+}
+.example div:first-child{
+color:var(--danger);
+font-style: italic;
+}
+h1{
+font-family:"Taviraj", Georgia, serif;
+font-size:clamp(1.35rem, 4vw, calc(2.1rem * var(--font-zoom)));
+line-height:1.18;
+color:var(--heading);
+font-weight:700;
+margin:0;
+}
+h2, h3{
+font-family:"Taviraj", Georgia, serif;
+color:var(--heading);
+line-height:1.24;
+letter-spacing:-.015em;
+}
+h2{
+font-size:clamp(1.55rem, 4vw, calc(2.15rem * var(--font-zoom)));
+margin:3rem 0 1rem;
+padding-top:.5rem;
+}
+h3{
+font-size:clamp(1.2rem, 3vw, calc(1.45rem * var(--font-zoom)));
+margin:2.25rem 0 .8rem;
+}
+.header-section-number{
+color:var(--accent);
+font-weight:700;
+}
+p{
+margin-top:0;
+margin-bottom:1.15rem;
+}
+p.vignette{
+color:var(--danger)
+}
+.no-dot{
+list-style-type: none;
+}
+ul.no-dot li{
+padding-left: 1rem;
+text-indent: -1rem;
+margin-bottom: 0.3rem;
+}
+audio{
+height:30px;
+width:100%;
+max-width:34rem;
+}
+div.post-body{
+max-width:940px;
+margin:0 auto;
+padding:clamp(5.2rem, 7vw, 6.25rem) clamp(1.15rem, 4vw, 3.5rem) 4rem;
+background:transparent;
+}
+div.index-boxnbt{
+background:var(--surface);
+padding-bottom:2rem;
+}
+.material-symbols-outlined {
+font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+font-size: 18px;
+line-height: 1;
+}
+blockquote{
+margin:1.75rem 0;
+background:var(--surface-soft);
+border-left:.35rem solid var(--accent);
+padding:1rem 1.25rem 1rem 1.35rem;
+border-radius:0 var(--radius-md) var(--radius-md) 0;
+color:#334155;
+}
+.note blockquote{
+background:#E8F5E9;
+border-left:.35rem solid darkgreen;
+}
+.note blockquote p::before {
+content: "Note: ";
+font-weight: bold;
+}
+.tip blockquote{
+background:#F3E5F5;
+border-left:.35rem solid purple;
+}
+.tip blockquote p::before {
+content: "Tip: ";
+font-weight: bold;
+}
+.term blockquote{
+background:#E3EDF7;
+border-left:.35rem solid darkblue;
+}
+.term blockquote p::before {
+content: "Term: ";
+font-weight: bold;
+}
+.caution blockquote{
+background:#FFE2E2;
+border-left:.35rem solid red;
+}
+.caution blockquote p::before {
+content: "Caution: ";
+font-weight: bold;
+}
+.objectives blockquote{
+background:#FFF8E1;
+border-left:.35rem solid gold;
+}
+.review blockquote{
+background:#FFF0EC;
+border-left:.35rem solid salmon;
+}
+.review blockquote p::before {
+content: "Review: ";
+font-weight: bold;
+}
+blockquote p:last-child{
+margin-bottom:0;
+}
+hr{
+height:1px;
+border:0;
+background:var(--border);
+margin:2.75rem 0;
+}
+ul, ol{
+padding-left:1.45rem;
+margin:0 0 1.25rem;
+}
+li{
+margin:.45rem 0;
+}
+code{
+font-family:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+font-size:.92em;
+color:#0f766e;
+background:#ecfdf5;
+border:1px solid #bbf7d0;
+border-radius:.35rem;
+padding:.08rem .32rem;
+}
+pre code,
+.sourceCode code{
+color:inherit;
+background:transparent;
+border:0;
+border-radius:0;
+padding:0;
+font-size:inherit;
+}
+pre,
+pre.javascript-code,
+pre.javascript-example,
+pre.spreadsheet,
+div.sourceCode pre{
+margin:1rem 0;
+padding:.75rem .85rem;
+overflow:auto;
+background:#0f172a;
+color:#dbeafe;
+border:1px solid rgba(148, 163, 184, .28);
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-md);
+font-family:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+font-size:.88rem;
+line-height:1.38;
+tab-size:2;
+white-space:pre;
+}
+div.sourceCode{
+margin:1rem 0;
+}
+div.sourceCode pre{
+margin:0;
+}
+.sourceCode .kw,
+.sourceCode .cf{
+color:#93c5fd;
+}
+.sourceCode .fu,
+.sourceCode .at{
+color:#67e8f9;
+}
+.sourceCode .st{
+color:#86efac;
+}
+.sourceCode .dv{
+color:#fbbf24;
+}
+.sourceCode .co{
+color:#94a3b8;
+font-style:italic;
+}
+table.blog{
+display:block;
+width:max-content;
+max-width:100%;
+border-collapse:separate;
+border-spacing:0;
+margin:1.5rem 0 2rem;
+overflow-x:auto;
+-webkit-overflow-scrolling:touch;
+border:1px solid var(--border);
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-sm);
+background:var(--surface);
+}
+th.blog,
+td.blog{
+padding:.72rem .85rem;
+border-bottom:1px solid var(--border);
+text-align:left;
+vertical-align:top;
+white-space:nowrap;
+}
+th.blog{
+font-size:.86rem;
+font-weight:700;
+color:var(--heading);
+background:var(--surface-soft);
+}
+tr.blog:last-child td{
+border-bottom:0;
+}
+tr.blog:nth-child(even) td{
+background:#f8fafc;
+}
+.monaco {
+width: 100%;
+margin: 1.5rem 0;
+border-radius: var(--radius-md);
+overflow: hidden;
+box-shadow: var(--shadow-lg);
+border: 1px solid rgba(148, 163, 184, 0.22);
+}
+.monaco-bar {
+display: flex;
+align-items: center;
+justify-content: flex-end;
+gap: 2px;
+padding: 8px 10px;
+background: linear-gradient(180deg, #1f2937, #111827);
+border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.monaco-bar-label {
+flex: 1;
+font-family: "Roboto", sans-serif;
+font-size: 11px;
+font-weight: 700;
+color: #94a3b8;
+letter-spacing: 0.5px;
+text-transform: uppercase;
+padding-left: 4px;
+}
+.monaco-tool {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 30px;
+height: 30px;
+border-radius: 6px;
+color: #8b949e;
+cursor: pointer;
+transition: background 0.15s ease, color 0.15s ease;
+}
+.monaco-tool:hover {
+background: rgba(255, 255, 255, 0.1);
+color: #e6edf3;
+}
+.monaco-tool:active {
+background: rgba(255, 255, 255, 0.06);
+transform: scale(0.92);
+}
+.monaco-tool[data-action="run"]:hover {
+background: rgba(63, 185, 80, 0.18);
+color: #3fb950;
+}
+.editor-holder {
+background-color: #1e1e1e;
+padding: 8px 0;
+}
+.editor {
+margin: 0;
+padding: 0;
+}
+.console {
+background: #161b22;
+border-top: 1px solid rgba(255, 255, 255, 0.07);
+padding: 8px 0 6px;
+position: relative;
+min-height: 36px;
+font-family: 'Consolas', 'Cascadia Code', 'Courier New', monospace;
+font-size: 13px;
+}
+.console-line {
+color: #c9d1d9;
+padding: 2px 40px 2px 14px;
+line-height: 1.6;
+white-space: pre-wrap;
+word-break: break-all;
+}
+.console-line:first-of-type {
+margin-top: 2px;
+}
+.console-line.error {
+color: #f85149;
+background: rgba(248, 81, 73, 0.06);
+}
+span.exitButton {
+position: absolute;
+top: 6px;
+right: 8px;
+display: flex;
+align-items: center;
+justify-content: center;
+width: 22px;
+height: 22px;
+border-radius: 4px;
+color: #6e7681;
+cursor: pointer;
+transition: background 0.15s ease, color 0.15s ease;
+}
+span.exitButton:hover {
+background: rgba(255, 255, 255, 0.1);
+color: #c9d1d9;
+}
+span.exitButton .material-symbols-outlined {
+font-size: 15px;
+}
+pre.code {
+color: #a8ff78;
+background: #0d1117;
+padding: 1rem 1.15rem;
+margin: 1.35rem 0;
+font-size: 14px;
+border-radius: var(--radius-md);
+border: 1px solid rgba(255, 255, 255, 0.07);
+overflow-x: auto;
+}
+@media (max-width: 700px) {
+body {
+font-size: calc(.98rem * var(--font-zoom));
+}
+#msg-galley {
+left: 0;
+right: 0;
+max-width: none;
+min-width: 0;
+padding: .75rem;
+}
+#menu {
+max-width: 92vw;
+}
+.entry-header {
+padding: .25rem .4rem;
+}
+div.post-body {
+padding-left: 1rem;
+padding-right: 1rem;
+}
+.nav {
+bottom: .75rem;
+}
+#prior-button {
+left: .75rem;
+}
+#next-button {
+right: .75rem;
+}
+}
+
+--></style>
+<script>
+    const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
+	async function initialize(){
+
+      const kind = document.getElementById(`kind`).innerHTML
+      console.log(`kind`, kind)
+      switch(kind){
+        case `redirect`:
+          location.href=document.getElementById(`post-json`).innerText
+          return
+        case `chapter`:
+          console.log(`processing Chapter`)
+          // load any modules used in the chapter
+          for(const module of document.querySelectorAll(`div.module`)){
+            console.log(`module:`, module.innerText)
+            loadModule(module.innerText)
+    
+    
+    
+          }
+      }
+    
+    // calls the page that has our code in it
+    //const response = await fetch(`/1970/01/system.html`)
+  	//const code = await response.text()
+    
+ 
+	//const s = document.createElement('script')
+	//s.replaceChildren(code.split(`<p`+`re>`)[1].split(`</pre>`)[0])
+	//document.head.appendChild(s)
+    //console.log("got system")
+    await loadModule("system")
+	init()
+    
+    }
+    
+    async function loadModule(label){// get the first post of a specified label and load the code
+      const code = await getPage(label)
+      const s = document.createElement(`script`)
+      s.replaceChildren(code)
+      document.head.appendChild(s)          
+    }
+    
+    async function getPage(label){//get the first post with the specified label.
+        
+        if(localhost){
+          const url=`/tools/api/${label}.js`
+          const response = await fetch(url)
+          const code = await response.text()  
+          return code
+        }else{
+          const url=`${location.origin}/feeds/posts/default/-/${label}?alt=json`
+          const response = await fetch(url)
+          console.log("feed url", url)
+          const page = await response.json()
+          return page.feed.entry[0].content.$t
+        }
+    }    
+
+  </script>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' rel='stylesheet'/></noscript>
+<meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
+<meta name='google-adsense-platform-domain' content='blogspot.com'/>
+
+</head>
+<body onload='initialize()'>
+<div class='sitenbt' id='pagenbt'>
+<div class='site-contentnbt' id='contentnbt'>
+<div class='testing' id='item'></div>
+<div class='content-areanbt' id='primarynbt'>
+<div class='site-mainnbt' id='mainnbt' role='main'>
+<div class='section' id='mainblogsec'><div class='widget Blog' data-version='1' id='Blog1'>
+<div class='blog-posts hfeed'>
+<div class='post-outer'>
+<article class='post'>
+<div id='msg-galley'></div>
+<div class='hide' id='kind'>chapter</div>
+<div class='index-boxnbt'>
+<header class='entry-header'>
+<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>21. Database Modeling and
+Normalization</span></h1>
+</header>
+<div id='menu'>
+<div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
+<div id='menu-content'>
+<div id='toc'></div>
+<div id='tools'>
+                  Text Size: 
+                  <span class='material-symbols-outlined tool' onclick='fontSize(.1)'>text_increase</span>
+<span class='material-symbols-outlined tool' onclick='fontSize(-.1)'>text_decrease</span>
+<span class='material-symbols-outlined tool' onclick='fontSize()'>rotate_auto</span>
+</div>
+<div id='search-div'>
+<h6>Search Book</h6>
+<input id='search' placeholder='search book'/><span class='material-symbols-outlined tool' id='search-button'>search</span></div>
+<div id='search-results'></div>
+</div>
+</div>
+<div class='post-body entry-content' data-blog-id='3986204447440040189' data-post-id='6415319777885098698'>
+<button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
+<button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
+              
+              <!--postBegin--><h1 data-number="21" id="database-modeling-and-normalization"><span
+class="header-section-number">21</span> Database Modeling and
+Normalization</h1>
+<p><strong>Objectives.</strong> After completing this lesson, the
+successful student will be able to:</p>
+<ol type="1">
+<li>Describe the insertion, update, and deletion anomalies.</li>
+<li>Explain basic normalization including first, second, and third
+normal forms.</li>
+<li>Describe how normalizing a database reduces the likelihood of
+insertion, update, and deletion anomalies.</li>
+</ol>
+<p>The lesson on designing database tables discussed the process of
+designing database tables. This lesson extends that conversation to
+describe the process of normalization. Normalization means designing
+database tables in such a way as to reduce or eliminate errors in the
+data stored in the tables. First, the lesson describes three common
+types of errors. It then discusses normalization and how normalization
+can reduce errors in data.</p>
+<div class="term">
+<blockquote>
+<p><strong>Normalization</strong> &#8212; Organizing database tables using
+standard rules to reduce or eliminate errors in the data stored in the
+database.</p>
+</blockquote>
+</div>
+<h2 data-number="21.1"
+id="insertion-update-and-deletion-anomalies"><span
+class="header-section-number">21.1</span> Insertion, Update, and
+Deletion Anomalies</h2>
+<p>You learned in the lesson on designing database tables that data is
+stored in separate tables according to the theme of the data being
+stored. In the museum database used throughout this book, data about
+artists, works of art, and museums are all stored on separate tables
+(artist, work, and museum). This is actually the first step in
+organizing data to reduce errors.</p>
+<p>Suppose that all of the data known about artists, works of art, and
+museums were stored in a single table instead. The table below shows
+what this table might look like with a sample of the museum data
+currently stored in the database:</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr>
+<th>artist_id</th>
+<th>full_name</th>
+<th>nationality</th>
+<th>style</th>
+<th>birth</th>
+<th>death</th>
+<th>work_name</th>
+<th>museum_name</th>
+<th>city</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>500</td>
+<td>Pierre-Auguste Renoir</td>
+<td>French</td>
+<td>Impressionist</td>
+<td>1841</td>
+<td>1919</td>
+<td>Dance at Le Moulin de la Galette</td>
+<td>Musée d&#8217;Orsay</td>
+<td>Paris</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Pierre-Auguste Renoir</td>
+<td>French</td>
+<td>Impressionist</td>
+<td>1841</td>
+<td>1919</td>
+<td>Luncheon of the Boating Party</td>
+<td>The Phillips Collection</td>
+<td>Washington</td>
+</tr>
+<tr>
+<td>502</td>
+<td>Claude Monet</td>
+<td>French</td>
+<td>Impressionist</td>
+<td>1840</td>
+<td>1926</td>
+<td>Water Lilies</td>
+<td>The Museum of Modern Art</td>
+<td>New York</td>
+</tr>
+<tr>
+<td>502</td>
+<td>Claude Monet</td>
+<td>French</td>
+<td>Impressionist</td>
+<td>1840</td>
+<td>1926</td>
+<td>Impression, Sunrise</td>
+<td>Musée Marmottan Monet</td>
+<td>Paris</td>
+</tr>
+<tr>
+<td>503</td>
+<td>Mary Cassatt</td>
+<td>American</td>
+<td>Impressionist</td>
+<td>1844</td>
+<td>1926</td>
+<td>The Child&#8217;s Bath</td>
+<td>The Art Institute of Chicago</td>
+<td>Chicago</td>
+</tr>
+<tr>
+<td>504</td>
+<td>Henri Matisse</td>
+<td>French</td>
+<td>Fauvist</td>
+<td>1869</td>
+<td>1954</td>
+<td>The Dance</td>
+<td>The Museum of Modern Art</td>
+<td>New York</td>
+</tr>
+<tr>
+<td>506</td>
+<td>Jackson Pollock</td>
+<td>American</td>
+<td>Abstract Expressionist</td>
+<td>1912</td>
+<td>1956</td>
+<td>Number 1</td>
+<td>The Museum of Modern Art</td>
+<td>New York</td>
+</tr>
+</tbody>
+</table>
+<p>At first, this may seem like a reasonable and efficient way to store
+the data. At a minimum, it is easy to see how the artist, works of art,
+and museums are related. On a single row, you can easily identify the
+artist and the exhibiting museum for each work of art.</p>
+<p>One of the main problems with the single table approach is that it
+often leads to errors or inconsistencies in the data. Three common types
+of errors, or anomalies, that occur when a database is not designed
+correctly are insertion anomalies, update anomalies, and deletion
+anomalies. Each is described below.</p>
+<div class="term">
+<blockquote>
+<p><strong>Anomaly</strong> &#8212; An error or inconsistency that occurs in
+the data stored in a database.</p>
+</blockquote>
+</div>
+<h3 data-number="21.1.1" id="insertion-anomalies"><span
+class="header-section-number">21.1.1</span> Insertion Anomalies</h3>
+<p>An insertion anomaly refers to an error or inconsistency in data that
+happens when new data is added to a database. There are at least two
+ways that these anomalies happen:</p>
+<ol type="1">
+<li>The inserted data is incomplete.</li>
+<li>The inserted data is incorrect.</li>
+</ol>
+<div class="term">
+<blockquote>
+<p><strong>Insertion Anomaly</strong> &#8212; An error or inconsistency that
+occurs in data when it is added to a database.</p>
+</blockquote>
+</div>
+<p>Incomplete data can be problematic, particularly if the missing data
+is never added to the database. So problematic, in fact, that PostgreSQL
+will refuse to insert a row at all if values for columns marked
+<code>NOT NULL</code> are missing. This creates a dilemma if a needed
+row cannot be added because of that missing data.</p>
+<p>In either case, storing all data in a single table increases the
+likelihood of this type of insertion anomaly. Consider that you need to
+add the artist Leonardo Da Vinci to the data, but you don&#8217;t yet have
+details about his works of art or the museums that exhibit them. Adding
+just Da Vinci&#8217;s data to the single wide table creates a number of
+missing, or <code>NULL</code>, values:</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr>
+<th>artist_id</th>
+<th>full_name</th>
+<th>nationality</th>
+<th>style</th>
+<th>birth</th>
+<th>death</th>
+<th>work_name</th>
+<th>museum_name</th>
+<th>city</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>507</td>
+<td>Leonardo Da Vinci</td>
+<td>Italian</td>
+<td>High Renaissance</td>
+<td>1452</td>
+<td>1519</td>
+<td>NULL</td>
+<td>NULL</td>
+<td>NULL</td>
+</tr>
+</tbody>
+</table>
+<p>If the table allows these <code>NULL</code> values, there will be a
+lot of missing values on the table. If, on the other hand, important
+columns (such as work_name or museum_name) are defined as
+<code>NOT NULL</code>, the <code>INSERT</code> will fail and you won&#8217;t
+be able to add Da Vinci to the database at all. Neither outcome is
+desirable.</p>
+<p>Insertion anomalies also occur when data is inserted incorrectly. A
+common example of this is a misspelled word. There is always the
+possibility that a user can incorrectly add a value to a database.
+However, storing all data in a single table increases the likelihood of
+this type of insertion anomaly as well. Consider the number of times
+that the names of individual museums appear in the sample data above.
+The Museum of Modern Art appears in three of the seven rows in the
+table.</p>
+<p>Each time a value is added to the table, there is a small possibility
+that the value will be inserted incorrectly. The more times a value is
+added, the more likely it is that the value will be entered incorrectly
+at least once, particularly for a value that contains a lot of words or
+numbers. Inserting the same value repeatedly in a database unnecessarily
+increases the risk that it will be entered incorrectly at least once.
+Ideally, a value is entered only once in the database. This minimizes
+the possibility that it will ever be entered incorrectly.</p>
+<h3 data-number="21.1.2" id="update-anomalies"><span
+class="header-section-number">21.1.2</span> Update Anomalies</h3>
+<p>Update anomalies occur when errors in data result from changing the
+existing values of a table. This most likely happens when data is
+incorrectly changed. As with insertion anomalies, it is impossible to
+eliminate the risk that a value will be incorrectly changed, but storing
+all data in a single table does increase the likelihood of update
+anomalies.</p>
+<div class="term">
+<blockquote>
+<p><strong>Update Anomaly</strong> &#8212; An error or inconsistency that
+occurs in data when it is changed in a database.</p>
+</blockquote>
+</div>
+<p>Recall that The Museum of Modern Art appears in three of the seven
+rows in the sample data above. Suppose you would like to update the name
+of The Museum of Modern Art to the shorter and more commonly used name
+&#8220;MoMA&#8221;. If all of this data were stored in a single table, this would
+require an <code>UPDATE</code> statement like the following:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">UPDATE</span> single_wide_table</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">SET</span> museum_name <span class="op">=</span> <span class="st">&#39;MoMA&#39;</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="kw">WHERE</span> museum_name <span class="op">=</span> <span class="st">&#39;The Museum of Modern Art&#39;</span>;</span></code></pre></div>
+<p>Even though this particular <code>UPDATE</code> uses a
+<code>WHERE</code> clause that correctly matches every affected row at
+once, the underlying problem remains: the same museum name is duplicated
+across every row that mentions it. If even one of those rows had been
+misspelled (&#8220;The Musem of Modern Art,&#8221; for instance), that row would
+silently fail to match the <code>WHERE</code> clause, and the table
+would be left with two different names for the very same museum. As the
+number of places that a value is repeated increases, so does the
+likelihood that at least one of those copies will end up out of sync
+with the rest.</p>
+<h3 data-number="21.1.3" id="deletion-anomalies"><span
+class="header-section-number">21.1.3</span> Deletion Anomalies</h3>
+<p>The last error discussed in this lesson is a deletion anomaly. A
+deletion anomaly is an error in the data that occurs when a row is
+deleted from the database. This results in data being removed from the
+database that was not intended to be removed.</p>
+<div class="term">
+<blockquote>
+<p><strong>Deletion Anomaly</strong> &#8212; An error or inconsistency that
+occurs in data when data is removed from a database.</p>
+</blockquote>
+</div>
+<p>As with the other anomalies discussed in this lesson, deletion
+anomalies are much more likely to occur if the database is not organized
+correctly. If all of the data is stored on a single table, deletion
+anomalies are very likely to occur. Assume you want to remove the work
+named &#8220;The Child&#8217;s Bath&#8221;:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> single_wide_table</span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">WHERE</span> work_name <span class="op">=</span> <span class="st">&#39;The Child</span><span class="ch">&#39;&#39;</span><span class="st">s Bath&#39;</span>;</span></code></pre></div>
+<p>Notice that this particular work of art is the only work exhibited at
+The Art Institute of Chicago in this sample data. It is also the only
+work of art by Mary Cassatt. If you were to delete &#8220;The Child&#8217;s Bath,&#8221;
+all of the information about The Art Institute of Chicago and Mary
+Cassatt would also be deleted. If later you wanted to add a different
+work of art by Cassatt, or one exhibited at The Art Institute of
+Chicago, you would have lost the information about Cassatt and the
+Institute and would have to re-enter it from scratch.</p>
+<h3 data-number="21.1.4" id="organizing-data-to-reduce-anomalies"><span
+class="header-section-number">21.1.4</span> Organizing Data to Reduce
+Anomalies</h3>
+<p>Insertion, update, and deletion anomalies can be reduced or even
+eliminated if the data is properly organized. The first step of this
+process is to store data in separate tables according to theme. In this
+case, you store the data about artists, works of art, and museums on
+separate tables &#8212; exactly what the artist, work, and museum tables
+already do. These tables are connected using primary and foreign keys,
+as described in the lesson on table relationships and cardinality.</p>
+<p>With the data organized this way, the three example tasks work out
+very differently.</p>
+<p><strong>Add the artist Leonardo Da Vinci to the database.</strong>
+When the data was stored on a single table, inserting Da Vinci without
+work or museum data resulted in a number of <code>NULL</code> values.
+With the data split across tables, adding Da Vinci to the artist table
+creates no <code>NULL</code> values on the other two tables at all:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> artist (artist_id, full_name, nationality, style, birth, death)</span>
+<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">507</span>, <span class="st">&#39;Leonardo Da Vinci&#39;</span>, <span class="st">&#39;Italian&#39;</span>, <span class="st">&#39;High Renaissance&#39;</span>, <span class="dv">1452</span>, <span class="dv">1519</span>);</span></code></pre></div>
+<p>If one of Da Vinci&#8217;s works is later added to the database, it is
+added to the work table and linked to him by storing his artist_id as a
+foreign key &#8212; no other row needs to be touched.</p>
+<p><strong>Update the name of The Museum of Modern Art to
+&#8220;MoMA.&#8221;</strong> When the data was stored in a single table, the name
+had to be updated in every row that mentioned it. With museum data
+stored on its own table, the update only ever needs to touch one
+row:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">UPDATE</span> museum</span>
+<span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a><span class="kw">SET</span> name <span class="op">=</span> <span class="st">&#39;MoMA&#39;</span></span>
+<span id="cb4-3"><a aria-hidden="true" href="#cb4-3" tabindex="-1"></a><span class="kw">WHERE</span> museum_id <span class="op">=</span> <span class="dv">512</span>;</span></code></pre></div>
+<p><strong>Delete the artwork named &#8220;The Child&#8217;s Bath.&#8221;</strong> With
+the data organized on a single table, deleting this work of art resulted
+in the loss of all of the data about Mary Cassatt and The Art Institute
+of Chicago at the same time. With the data organized into separate
+tables, deleting &#8220;The Child&#8217;s Bath&#8221; from the work table leaves the
+artist and museum rows untouched:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> <span class="kw">work</span></span>
+<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="kw">WHERE</span> work_id <span class="op">=</span> <span class="dv">210</span>;</span></code></pre></div>
+<p>Mary Cassatt&#8217;s row in the artist table and The Art Institute of
+Chicago&#8217;s row in the museum table are unaffected, since neither of them
+is stored in the work table at all.</p>
+<h2 data-number="21.2" id="database-normalization"><span
+class="header-section-number">21.2</span> Database Normalization</h2>
+<p>Organizing data properly involves following specific rules. The
+process of organizing data according to these rules is called
+normalization. When a database follows these rules, it is said to be
+normalized.</p>
+<p>Normalization is a staged process. This means that data is organized
+to comply with the normalization rules one at a time. When a database
+complies with the first rule, it is said to be in first normal form.
+Once it also conforms to the second rule, it is in second normal
+form.</p>
+<p>Since this is a staged process, you would not apply the second
+normalization rule without first ensuring that the data is in first
+normal form. Because of this, when a database is in second normal form,
+it is also in first normal form (and so on for each higher normal
+form).</p>
+<p>There are quite a few normalization rules. The more rules a database
+complies with, the less likely it is that the data will contain
+anomalies. However, as a database becomes more normalized, it becomes
+harder to use, and each additional rule brings marginally less reduction
+in the possibility of anomalies. For both of these reasons, there is
+general consensus that third normal form (complying with the first three
+rules of normalization) is the most practical target for most databases.
+The remainder of this lesson describes the first three normal forms.</p>
+<h3 data-number="21.2.1" id="first-normal-form"><span
+class="header-section-number">21.2.1</span> First Normal Form</h3>
+<p>The first normalization rule prescribes that data stored in a
+database table should be in its simplest form. In practice, this means
+that there can&#8217;t be a table of data within a table. A table can violate
+first normal form in different ways. Here are two examples.</p>
+<div class="term">
+<blockquote>
+<p><strong>First Normal Form</strong> &#8212; Each piece of information in a
+table must be in its simplest form (a single value in a single column
+for each row).</p>
+</blockquote>
+</div>
+<p>Suppose you wanted to list the works of art created by each artist
+directly on the artist table. This would be easy if each artist had
+created only one work of art, but most artists in the database have
+created multiple works. One way to store these multiple values would be
+to place them all in the same column:</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>artist_id</th>
+<th>full_name</th>
+<th>works</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>500</td>
+<td>Pierre-Auguste Renoir</td>
+<td>Dance at Le Moulin de la Galette, Luncheon of the Boating Party,
+Girls at the Piano, The Umbrellas</td>
+</tr>
+</tbody>
+</table>
+<p>Notice the four works of art for Renoir. Organizing them into a
+single column is problematic. First, it would be difficult to sort the
+column based on the works of art &#8212; which of the many values should be
+used for sorting? Second, it would be similarly difficult to use the
+values in a <code>WHERE</code> clause &#8212; which of the values should be
+tested? Finally, it would be difficult to use the values to
+<code>JOIN</code> the artist table to the work table &#8212; which of the
+values would be used in the join? For these reasons, multiple values
+should not be stored in the same column of a table.</p>
+<p>The second example involves separating the values into multiple
+columns instead:</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr>
+<th>artist_id</th>
+<th>full_name</th>
+<th>work1</th>
+<th>work2</th>
+<th>work3</th>
+<th>work4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>500</td>
+<td>Pierre-Auguste Renoir</td>
+<td>Dance at Le Moulin de la Galette</td>
+<td>Luncheon of the Boating Party</td>
+<td>Girls at the Piano</td>
+<td>The Umbrellas</td>
+</tr>
+</tbody>
+</table>
+<p>Although this approach does store a single piece of information in
+each cell of the table, it is still difficult to work with. For example,
+which column should be used to sort the table, which column should be
+used in the criteria of a <code>WHERE</code> clause, and which column
+should be used to <code>JOIN</code> the artist and work tables?
+Additionally, it is difficult to know how many work columns to include
+on the table in the first place &#8212; what happens to the artist who has a
+fifth work? This approach is also unworkable.</p>
+<p>For the data in a table to follow the first rule of normalization, it
+must be atomic, or in its simplest form. This means that each element of
+the table must be stored as a single value for each row in a single
+column of the table.</p>
+<p>If the data cannot be fit into an atomic value, it must be stored in
+a separate table. Since many artists have created multiple works of art,
+it would be impossible to store the works of art as a single atomic
+value in a single column of the artist table. This is exactly why works
+of art are instead stored on the separate work table in the museum
+database, linked back to artist through the artist_id foreign key.</p>
+<h3 data-number="21.2.2" id="second-normal-form"><span
+class="header-section-number">21.2.2</span> Second Normal Form</h3>
+<p>To define what it means to be in second normal form, you must first
+understand the concept of functional dependency. Functional dependency
+involves how the columns in a database table are related to each other.
+A column is said to be functionally dependent on another column if the
+values of the first column determine the values of the second.</p>
+<p>For example, an artist&#8217;s full_name is functionally dependent on their
+artist_id. If a specific artist_id is known, you can unambiguously
+determine the full_name of that artist. However, birth is not
+functionally dependent on nationality. If you know a specific
+nationality, you cannot determine the value of birth &#8212; artists of the
+same nationality are born in different years.</p>
+<div class="term">
+<blockquote>
+<p><strong>Functional Dependency</strong> &#8212; Occurs when the values of a
+column determine the values of a second column.</p>
+</blockquote>
+</div>
+<p>The second rule of normalization specifies that all of the non-key
+attributes of a table must be functionally dependent on the primary key
+of the table. Consider a museum table that has been modified to also
+store an artist_name column:</p>
+<table>
+<thead>
+<tr>
+<th>museum_id</th>
+<th>name</th>
+<th>city</th>
+<th>artist_name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>512</td>
+<td>The Museum of Modern Art</td>
+<td>New York</td>
+<td>Claude Monet</td>
+</tr>
+</tbody>
+</table>
+<div class="term">
+<blockquote>
+<p><strong>Second Normal Form</strong> &#8212; Each column on a table must be
+functionally dependent on the primary key of the table.</p>
+</blockquote>
+</div>
+<p>All of the columns on this table are functionally dependent on the
+primary key, museum_id &#8212; except artist_name. If you know the museum_id,
+you can unambiguously determine the values of every other column (except
+artist_name). Multiple artists&#8217; works are exhibited in most museums, so
+knowing the museum_id does not tell you precisely which artist to list
+on the table. Therefore, artist_name does not belong on the museum
+table. Since an artist&#8217;s name is functionally determined by artist_id
+rather than museum_id, it makes the most sense to keep artist names on
+the artist table, exactly as the museum database already does.</p>
+<h3 data-number="21.2.3" id="third-normal-form"><span
+class="header-section-number">21.2.3</span> Third Normal Form</h3>
+<p>Once you have determined that a table is in second normal form (that
+it complies with the rules for both first and second normal form), it is
+time to check whether it is also in third normal form. To be in third
+normal form, all of the non-key columns of a table must be functionally
+dependent on only the primary key (or a column that could be the primary
+key) &#8212; not on some other, non-key column.</p>
+<div class="term">
+<blockquote>
+<p><strong>Third Normal Form</strong> &#8212; Each non-key column on a table
+must be functionally dependent only on the primary key or a column that
+could be the primary key.</p>
+</blockquote>
+</div>
+<p>Examine a work table that has been modified to also store a
+museum_name column:</p>
+<table>
+<thead>
+<tr>
+<th>work_id</th>
+<th>name</th>
+<th>museum_id</th>
+<th>museum_name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>210</td>
+<td>The Child&#8217;s Bath</td>
+<td>520</td>
+<td>The Art Institute of Chicago</td>
+</tr>
+<tr>
+<td>211</td>
+<td>Water Lilies</td>
+<td>512</td>
+<td>The Museum of Modern Art</td>
+</tr>
+<tr>
+<td>212</td>
+<td>The Dance</td>
+<td>512</td>
+<td>The Museum of Modern Art</td>
+</tr>
+</tbody>
+</table>
+<p>All of the non-key columns on this table are functionally dependent
+on the primary key, work_id. This includes museum_name &#8212; since a work of
+art can only be exhibited at a single museum, knowing the work_id tells
+you exactly which museum is exhibiting it. This table is in second
+normal form.</p>
+<p>Notice, though, that museum_name is also functionally dependent on
+museum_id. If you know the museum_id, you can determine exactly the name
+of the museum. Although museum_name is functionally dependent on the
+primary key (work_id), it is also functionally dependent on a different,
+non-key column of the table (museum_id). This does not automatically
+disqualify the table from third normal form &#8212; that depends on whether
+museum_id itself could be the primary key of the work table. For a
+column to be a primary key candidate, all of its values on the table
+must be unique. Notice that the value 512 for museum_id repeats on the
+table above (rows 211 and 212). Because of this, museum_id cannot be the
+primary key of the work table, which means museum_name is functionally
+dependent on a non-key column and therefore does not comply with the
+third normalization rule.</p>
+<p>To fix this, the column that breaks the rule should be moved to a
+different table &#8212; one where the column it depends on (museum_id)
+actually is the primary key. In this case, museum_name belongs on the
+museum table, exactly as it already sits in the museum database. The
+work table only needs to store museum_id as a foreign key;
+<code>JOIN</code>ing to museum whenever the museum&#8217;s name is needed
+keeps that name recorded in exactly one place.</p>
+<h2 data-number="21.3" id="summary"><span
+class="header-section-number">21.3</span> Summary</h2>
+<p>This lesson described how to organize a database to reduce or
+eliminate the likelihood of errors. Three types of errors &#8212; insertion
+anomalies, update anomalies, and deletion anomalies &#8212; were presented,
+along with ways to reduce the likelihood of each. The specific rules for
+organizing, or normalizing, data were also presented. Specifically, the
+lesson described the rules for organizing a database up through third
+normal form.</p>
+<!--postEnd-->
+              </div>
+</div>
+</article>
+</div>
+</div>
+</div></div>
+</div><!-- #main -->
+</div><!-- #primary -->
+<!--end of error vs non error block-->
+</div><!-- #content -->
+<footer class='site-footernbt' id='colophonnbt' role='contentinfo'>
+<div id='supplementarynbt'>
+<div class='footer-widgetsnbt widget-areanbt clearnbt' id='footer-widgetsnbt' role='complementary'>
+<div class='sidebarwidgetsarea no-items section' id='sidebarwidgetsarea'></div>
+</div><!-- #footer-sidebar -->
+</div><!-- #supplementary -->
+</footer><!-- #colophon -->
+</div><!-- #page -->
+
+<script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
+<script type='text/javascript'>
+window['__wavt'] = 'AEUoTZogeoNg8SoRSDyazGNzFh5-:1784899989465';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/21.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/21.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/21.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/6415319777885098698/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '6415319777885098698', 'pageName': '21. Database Modeling and\nNormalization', 'pageTitle': 'book1014 SQL: 21. Database Modeling and\nNormalization'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '21. Database Modeling and\nNormalization', 'description': '21  Database Modeling and\r Normalization \r Objectives.  After completing this lesson, the\r successful student will be able to: \r \r Describe ...', 'url': 'https://book1014.blogspot.com/2000/02/21.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 6415319777885098698}}]);
+_WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
+</script>
+</body>
+</html>

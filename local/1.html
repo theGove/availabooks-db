@@ -4,7 +4,7 @@
 <link href='https://www.blogger.com/static/v1/widgets/2872013778-css_bundle_v2.css' rel='stylesheet' type='text/css'/>
 <meta charset='UTF-8'/>
 <meta content='width=device-width, initial-scale=1' name='viewport'/>
-<title>book1011</title>
+<title>book1014 SQL</title>
 <!-- external libraries -->
 <script src='https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js'></script>
 <script src='https://unpkg.com/turndown/dist/turndown.js'></script>
@@ -460,11 +460,55 @@ line-height: 1;
 }
 blockquote{
 margin:1.75rem 0;
-padding:1rem 1.25rem 1rem 1.35rem;
 background:var(--surface-soft);
 border-left:.35rem solid var(--accent);
+padding:1rem 1.25rem 1rem 1.35rem;
 border-radius:0 var(--radius-md) var(--radius-md) 0;
 color:#334155;
+}
+.note blockquote{
+background:#E8F5E9;
+border-left:.35rem solid darkgreen;
+}
+.note blockquote p::before {
+content: "Note: ";
+font-weight: bold;
+}
+.tip blockquote{
+background:#F3E5F5;
+border-left:.35rem solid purple;
+}
+.tip blockquote p::before {
+content: "Tip: ";
+font-weight: bold;
+}
+.term blockquote{
+background:#E3EDF7;
+border-left:.35rem solid darkblue;
+}
+.term blockquote p::before {
+content: "Term: ";
+font-weight: bold;
+}
+.caution blockquote{
+background:#FFE2E2;
+border-left:.35rem solid red;
+}
+.caution blockquote p::before {
+content: "Caution: ";
+font-weight: bold;
+}
+.objectives blockquote{
+background:#FFF8E1;
+border-left:.35rem solid gold;
+}
+.review blockquote{
+background:#FFF0EC;
+border-left:.35rem solid salmon;
+}
+.review blockquote p::before {
+content: "Review: ";
+font-weight: bold;
 }
 blockquote p:last-child{
 margin-bottom:0;
@@ -543,7 +587,7 @@ color:#fbbf24;
 color:#94a3b8;
 font-style:italic;
 }
-table{
+table.blog{
 display:block;
 width:max-content;
 max-width:100%;
@@ -557,24 +601,24 @@ border-radius:var(--radius-md);
 box-shadow:var(--shadow-sm);
 background:var(--surface);
 }
-th,
-td{
+th.blog,
+td.blog{
 padding:.72rem .85rem;
 border-bottom:1px solid var(--border);
 text-align:left;
 vertical-align:top;
 white-space:nowrap;
 }
-th{
+th.blog{
 font-size:.86rem;
 font-weight:700;
 color:var(--heading);
 background:var(--surface-soft);
 }
-tr:last-child td{
+tr.blog:last-child td{
 border-bottom:0;
 }
-tr:nth-child(even) td{
+tr.blog:nth-child(even) td{
 background:#f8fafc;
 }
 .monaco {
@@ -782,7 +826,7 @@ right: .75rem;
     }    
 
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=1676106165289640444&amp;zx=6bdbd94f-4c00-46a7-9f85-9e3213cc543c' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=1676106165289640444&amp;zx=6bdbd94f-4c00-46a7-9f85-9e3213cc543c' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -801,7 +845,7 @@ right: .75rem;
 <div class='hide' id='kind'>chapter</div>
 <div class='index-boxnbt'>
 <header class='entry-header'>
-<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>1. Welcome to Programming</span></h1>
+<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>1. Introducing SQL</span></h1>
 </header>
 <div id='menu'>
 <div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
@@ -819,202 +863,148 @@ right: .75rem;
 <div id='search-results'></div>
 </div>
 </div>
-<div class='post-body entry-content' data-blog-id='1676106165289640444' data-post-id='5303113999438282463'>
+<div class='post-body entry-content' data-blog-id='3986204447440040189' data-post-id='3232129218201456559'>
 <button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
 <button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
               
-              <!--postBegin--><div class="module">monaco</div>
-<h1 data-number="1" id="welcome-to-programming"><span
-class="header-section-number">1</span> Welcome to Programming</h1>
-<p>Real wealth is created by operations &#8212; the work of turning inputs
-into something worth more than the parts you started with. Raw
-materials, labor, equipment, and information go in; finished goods and
-satisfied customers come out. Everything you will study in this course
-is, at bottom, about making that transformation faster, cheaper, and
-more reliable. This book adds one more tool to that work: the ability to
-direct it with code.</p>
-<h2 data-number="1.1" id="what-programming-actually-is"><span
-class="header-section-number">1.1</span> What Programming Actually
-Is</h2>
-<p>Programming is the craft of giving a computer clear, precise
-instructions so it can do work for you. It is a kind of conversation &#8212;
-you learn to express a task in a language the machine understands, and
-it does exactly what you describe. Not what you meant, not roughly what
-you asked, but precisely what your instructions say. That exactness is
-what makes programming both powerful and, now and then, humbling.</p>
-<p>If this sounds familiar, it should: an operation is also a sequence
-of precise steps. &#8220;Reorder parts when we&#8217;re running low&#8221; is how a person
-says it. A computer can&#8217;t act on that &#8212; it needs the exact rule:
-<em>when on-hand quantity falls to or below the reorder point, place an
-order.</em> Writing a program is the discipline of turning a fuzzy
-operational intention into steps explicit enough that a machine can
-carry them out the same way every time.</p>
-<p>A recipe is a program. A set of directions is a program. A standard
-operating procedure is very nearly a program already. The difference is
-that a person fills in gaps &#8212; &#8220;cook until done,&#8221; &#8220;restock as needed&#8221; &#8212;
-and a computer cannot. It needs every step, in order, with no
-ambiguity.</p>
-<p>So programming is more than syntax. It is learning to think in a way
-a computer can follow: breaking a problem into smaller steps, testing
-your assumptions, building something small and growing it piece by
-piece. Over time you develop a mental toolkit for exactly the kind of
-structured problem-solving operations work rewards.</p>
-<p>JavaScript, the language used throughout this book, is a friendly
-place to begin. It runs in every modern browser, so you already have
-what you need to experiment. Write a line, press Enter, see the result.
-That instant feedback is one reason it became one of the most widely
-used languages in the world.</p>
-<p>By the end of this book you won&#8217;t just know some JavaScript &#8212; you&#8217;ll
-know how to think like a programmer, and how to put that thinking to
-work on the operations problems you&#8217;ll meet in the rest of the
-course.</p>
-<h2 data-number="1.2" id="how-computers-think"><span
-class="header-section-number">1.2</span> How Computers Think</h2>
-<p>If programming is learning to communicate with a computer, it helps
-to understand what you&#8217;re talking to. A computer doesn&#8217;t think like a
-person. It doesn&#8217;t guess, infer, or read between the lines. Its version
-of &#8220;thinking&#8221; is closer to following a procedure with absolute,
-unwavering obedience.</p>
-<p>Underneath, a computer makes billions of tiny decisions a second,
-each one trivially simple: yes or no, true or false, on or off. From
-those microscopic choices everything else is built. Because the machine
-runs on such strict rules, it needs instructions that are equally
-strict. Leave out a detail and it won&#8217;t supply it. Phrase something
-vaguely and it won&#8217;t interpret your intent. It does exactly what you
-wrote &#8212; even when that&#8217;s not what you wanted.</p>
-<p>This is why so much of programming is breaking problems down.
-Consider a task that feels like one action to a person: &#8220;flag every item
-that&#8217;s below its reorder point.&#8221; To a computer that&#8217;s a series of tiny
-operations &#8212; look at the first item, compare its on-hand quantity to its
-reorder point, decide whether it&#8217;s short, record the result, move to the
-next item, and repeat until the list is done. What we experience as a
-single thought becomes dozens of precise micro-steps.</p>
-<p>The payoff is that once the machine knows those steps, it runs them
-with speed and consistency no person can match. It never tires, never
-gets distracted, never skips a line. You can encode an operational
-process once and have it executed perfectly every time &#8212; which is
-exactly the kind of reliability operations managers spend their careers
-trying to build.</p>
-<p>As you learn to program, you&#8217;ll pick up a little of this
-computational habit of mind: breaking work into pieces, stating it
-clearly, anticipating the edge cases. You&#8217;re not trying to think
-<em>like</em> a computer &#8212; you&#8217;re learning to think <em>for</em> one,
-giving it the structure it needs to do the work you want.</p>
-<h2 data-number="1.3"
-id="why-javascript-is-a-great-first-language"><span
-class="header-section-number">1.3</span> Why JavaScript Is a Great First
-Language</h2>
-<p>Choosing a first programming language is a bit like choosing a first
-instrument: you want something approachable, versatile, and rewarding
-enough to make real progress early. JavaScript fits that role well,
-which is why so many beginners start here.</p>
-<p>Its biggest strength is accessibility. You don&#8217;t need to install
-anything &#8212; if you have a browser, you can write and run JavaScript and
-see results instantly. That quick feedback makes learning feel like play
-rather than a chore. It&#8217;s also everywhere: it runs websites, servers,
-mobile apps, and the office tools you already use to manage operations
-data. And it&#8217;s forgiving &#8212; you can experiment, make mistakes, and learn
-by doing, while the language still has room to grow with you. If you get
-stuck, a huge community has almost certainly answered your question
-already.</p>
-<h3 data-number="1.3.1"
-id="beyond-the-browser-where-javascript-can-run"><span
-class="header-section-number">1.3.1</span> Beyond the Browser: Where
-JavaScript Can Run</h3>
-<p>Most people picture JavaScript running inside a web page. That&#8217;s
-where it began, but the language has grown well past its first home.
-Today it runs in browsers, on servers, inside office documents, in the
-cloud, and on your own machine. This book leans into that wider world,
-because the operations tools you&#8217;ll build live where your data already
-is &#8212; in spreadsheets.</p>
-<h3 data-number="1.3.2"
-id="javascript-variants-and-scripting-platforms"><span
-class="header-section-number">1.3.2</span> JavaScript Variants and
-Scripting Platforms</h3>
-<p>Several platforms build on JavaScript to make it more useful for
-real-world automation:</p>
-<ul>
-<li><strong>Google Apps Script</strong> &#8212; a cloud scripting environment
-that automates and extends Google Workspace (Sheets, Docs, Gmail, Drive)
-using a JavaScript-like syntax. If you&#8217;ve ever wished a spreadsheet
-could email you when stock runs low, this is how.</li>
-<li><strong>Microsoft Office Scripts</strong> &#8212; a close cousin for
-automating Excel on the web, written in TypeScript.</li>
-<li><strong>TypeScript</strong> &#8212; JavaScript plus optional
-type-checking, widely used on larger projects to catch errors
-early.</li>
-</ul>
-<p>The common theme: they let you use JavaScript to automate everyday
-workflows, usually without installing anything &#8212; which makes them ideal
-for getting practical results fast.</p>
-<h3 data-number="1.3.3" id="javascript-beyond-the-cloud-node.js"><span
-class="header-section-number">1.3.3</span> JavaScript Beyond the Cloud:
-Node.js</h3>
-<p>Browser JavaScript is deliberately limited &#8212; it can&#8217;t touch your file
-system or your operating system directly. <strong>Node.js</strong>
-removes that ceiling, letting JavaScript run on your own machine like
-any general-purpose language: reading and writing files, building
-command-line tools and web servers, working with databases, and
-automating local tasks. It turned JavaScript from a browser-only
-language into a universal platform.</p>
-<h3 data-number="1.3.4" id="why-these-environments-matter"><span
-class="header-section-number">1.3.4</span> Why These Environments
-Matter</h3>
-<p>Seeing these platforms side by side shows how far one language
-reaches &#8212; the same core JavaScript can automate spreadsheets, extend
-email, power websites, run servers, and talk to cloud services. Each has
-its own flavor, but they share a foundation, so once you have the
-fundamentals you can move between them with surprising ease. This book
-gives you hands-on time with several, starting where operations data
-lives.</p>
-<h2 data-number="1.4" id="how-to-run-javascript"><span
-class="header-section-number">1.4</span> How to Run JavaScript</h2>
-<p>One reason JavaScript makes a great first language is that you can
-run it almost anywhere, with no special setup. This section covers the
-main options, from the simplest to the ones you&#8217;ll meet later.</p>
-<h3 data-number="1.4.1"
-id="running-javascript-in-the-browser-console"><span
-class="header-section-number">1.4.1</span> Running JavaScript in the
-Browser Console</h3>
-<p>Every modern browser ships with a JavaScript console &#8212; the fastest
-way to experiment.</p>
+              <!--postBegin--><div class="module">websql</div>
+<h1 data-number="1" id="introducing-sql"><span
+class="header-section-number">1</span> Introducing SQL</h1>
+<p><strong>Objectives.</strong> After completing this lesson, the
+successful student will be able to:</p>
 <ol type="1">
-<li><p>Open any webpage.</p></li>
-<li><p>Right-click and choose <strong>Inspect</strong> or
-<strong>Developer Tools</strong>.</p></li>
-<li><p>Open the <strong>Console</strong> tab.</p></li>
-<li><p>Type a line such as:</p>
-<pre class="javascript-example"><code>console.log(&quot;Hello from JavaScript!&quot;)</code></pre></li>
-<li><p>Press Enter and see the result instantly.</p></li>
+<li>Describe why the ability to work with databases is valuable across
+professions.</li>
+<li>Describe the DBMS and features used throughout this book.</li>
+<li>Identify the different types of sidebars used in this book and what
+each one highlights.</li>
 </ol>
-<p>The console is perfect for trying small ideas without any setup.</p>
-<p><strong>A note on semicolons.</strong> JavaScript belongs to the
-&#8220;C-family&#8221; of languages, many of which require a semicolon to end every
-statement. JavaScript does not, as long as each statement is on its own
-line. You&#8217;ll see semicolons in lots of online examples out of habit; in
-this book we leave them off to keep the examples clean. Whether you use
-them in your own code is up to you.</p>
-<h3 data-number="1.4.2" id="running-javascript-in-other-platforms"><span
-class="header-section-number">1.4.2</span> Running JavaScript in Other
-Platforms</h3>
-<p>Throughout the book you&#8217;ll also use environments that run JavaScript
-or a close relative to automate real tasks: online editors like JSFiddle
-and CodePen, JavaScript embedded in a web page, <strong>Google Apps
-Script</strong> for Google Workspace, <strong>Microsoft Office
-Scripts</strong> for Excel on the web, cloud runtimes, and
-<strong>Node.js</strong> for running code locally. Each runs code a
-little differently, but the core language stays familiar.</p>
-<h3 data-number="1.4.3" id="choosing-the-right-environment"><span
-class="header-section-number">1.4.3</span> Choosing the Right
-Environment</h3>
-<p>There&#8217;s no single correct way to run JavaScript &#8212; it depends on the
-job: quick experiments in the <strong>browser console</strong>,
-interactive demos in <strong>online editors</strong>, web projects in
-<strong>HTML + JavaScript</strong>, local tools in
-<strong>Node.js</strong>, and automation in <strong>Apps Script or
-Office Scripts</strong>. Our detailed examples will begin in Google Apps
-Script, inside the spreadsheets where operations data already lives.</p>
-<hr />
+<p>Databases and applications that rely on databases are used in all
+industries. They are used in small, medium, and large companies.
+Business people use databases to help with all types of business tasks
+from marketing to operations and accounting to human resources
+management. Developers and engineers use databases in the development of
+new products and computer applications. Legal, medical, and educational
+professionals use database systems. Truthfully, it would be difficult to
+find a profession that <em>does not</em> use database systems. Those who
+learn how to effectively interact with databases will have a significant
+advantage over those who do not.</p>
+<p>Structured query language (SQL) is a popular and powerful tool for
+interacting with databases. It is relatively easy to learn.
+Additionally, it can be used with all of the major database systems.</p>
+<p>The lessons in this book are designed to teach SQL. They are targeted
+to beginners and assume no prior database knowledge. The set of lessons
+is also a comprehensive reference. It covers basic, intermediate and
+advanced SQL topics. They describe some principles of database design
+that will complement your understanding of SQL.</p>
+<h2 data-number="1.1" id="the-dbms-used-in-this-book"><span
+class="header-section-number">1.1</span> The DBMS Used in This Book</h2>
+<p>The lessons in this set are written specifically for PostgreSQL, one
+of the most popular open-source relational database systems. Standard
+SQL is largely the same across different Database Management Systems
+(DBMS), but many features — functions, data types, and some syntax —
+vary from one DBMS to the next. Rather than try to cover every possible
+DBMS, this book focuses on PostgreSQL exclusively, so that every example
+can be shown precisely as you’d actually type it, with no “your DBMS may
+vary” caveats.</p>
+<h3 data-number="1.1.1" id="features-of-this-book"><span
+class="header-section-number">1.1.1</span> Features of This Book</h3>
+<p>There are a number of examples, practice problem sets, and novel
+features in the lessons that will help you effectively learn SQL. These
+features include:</p>
+<p><strong>Execute Live Queries in the Book</strong></p>
+<p>You will find a number of example SQL statements presented in each
+lesson. Each example is presented in a special query box that will allow
+you to execute the query syntax against a live database. An example of a
+query window is below. The window contains a visual depiction of the
+database to be queried and the syntax to be executed. When you click on
+the “Play” button, the query results will be displayed. Give it a
+try.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> name</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>  museum;</span></code></pre></div>
+<div class="note">
+<blockquote>
+<p>This example queries a database with five related tables:
+<code>artist</code>, <code>work</code>, <code>subject</code>,
+<code>museum</code>, and <code>museum_hours</code>. In the live version
+of this book, the query box above renders as an interactive editor with
+a visual schema diagram of those tables and a “Play” button that runs
+the query and shows the results. That interactive component still needs
+to be built for this platform — for now the query is shown as a plain
+code block.</p>
+</blockquote>
+</div>
+<p><strong>Use Artificial Intelligence to Create SQL Syntax</strong></p>
+<p>You can configure the book to teach you how to effectively use
+artificial intelligence (AI) tools such as ChatGPT to help you to write
+SQL syntax. The examples in each lesson present an example chat session
+with an AI tool that ends with the tool generating SQL code. The lessons
+also describe how to evaluate SQL statements that are AI generated to
+determine if they will work for your needs. An example AI chat session
+used is below.</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Write a SQL statement to list the names of
+museums</p>
+<p><strong>AI:</strong> To list the names of museums from a database,
+you would need to know the specific table and column where the museum
+names are stored. Assuming there is a table called “Museums” with a
+column named “Name,” you can use the following SQL statement:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> Name</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Museums;</span></code></pre></div>
+<p>This query selects the “Name” column from the “Museums” table and
+retrieves all the museum names. Replace “Museums” with the actual table
+name in your database to execute the query successfully.</p>
+</blockquote>
+</div>
+<p><strong>Receive Feedback on your Query Writing</strong></p>
+<p>You may choose to purchase example problem sets that will give you
+extra practice. These problem sets are scored by an automated grading
+system which provides immediate feedback on your queries. If you are
+using these lessons for a formal class, your scores and feedback can be
+forwarded to your instructor.</p>
+<p><strong>Get Additional Help and Tips on Query Writing</strong></p>
+<p>Scattered throughout the lessons, you will find information
+spotlighted in sidebars. There are six different types of sidebars that
+highlight different types of information. An example of each type of
+sidebar is below with a description of the type of information that will
+be highlighted in each.</p>
+<div class="note">
+<blockquote>
+<p>Used to highlight interesting information that is related to the
+content presented in the lesson.</p>
+</blockquote>
+</div>
+<div class="tip">
+<blockquote>
+<p>Used to highlight a suggested best practice or easier way to do
+things.</p>
+</blockquote>
+</div>
+<div class="term">
+<blockquote>
+<p>Used to highlight a glossary term and its definition.</p>
+</blockquote>
+</div>
+<div class="caution">
+<blockquote>
+<p>Used to highlight common mistakes or issues encountered by SQL
+programmers.</p>
+</blockquote>
+</div>
+<div class="objectives">
+<blockquote>
+<p>Used to highlight the learning objectives of the lesson.</p>
+</blockquote>
+</div>
+<div class="review">
+<blockquote>
+<p>Used to highlight information that was presented in a prior lesson
+that is relevant to the current topic.</p>
+</blockquote>
+</div>
 <!--postEnd-->
               </div>
 </div>
@@ -1037,8 +1027,8 @@ Script, inside the spreadsheets where operations data already lives.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZoiNsoUoJWTA0JYLxJuyf4k:1784765282176';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d1676106165289640444','//book1011.blogspot.com/2000/02/1.html','1676106165289640444');
-_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '1676106165289640444', 'title': 'book1011', 'url': 'https://book1011.blogspot.com/2000/02/1.html', 'canonicalUrl': 'https://book1011.blogspot.com/2000/02/1.html', 'homepageUrl': 'https://book1011.blogspot.com/', 'searchUrl': 'https://book1011.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1011.blogspot.com/', 'blogspotFaviconUrl': 'https://book1011.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://book1011.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1011 - RSS\x22 href\x3d\x22https://book1011.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/1676106165289640444/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://book1011.blogspot.com/feeds/5303113999438282463/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/37c4cc789ad2acf9', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '5303113999438282463', 'pageName': '1. Welcome to Programming', 'pageTitle': 'book1011: 1. Welcome to Programming'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '1. Welcome to Programming', 'description': 'monaco  1  Welcome to Programming \r Real wealth is created by operations \u2014 the work of turning inputs\r into something worth more than the pa...', 'url': 'https://book1011.blogspot.com/2000/02/1.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 5303113999438282463}}]);
+window['__wavt'] = 'AEUoTZqhWC1aLnglv1mxYgo7bOzM:1784899976150';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/1.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/1.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/1.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/3232129218201456559/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '3232129218201456559', 'pageName': '1. Introducing SQL', 'pageTitle': 'book1014 SQL: 1. Introducing SQL'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '1. Introducing SQL', 'description': '1  Introducing SQL \r Objectives.  After completing this lesson, the\r successful student will be able to: \r \r Describe why the ability to wor...', 'url': 'https://book1014.blogspot.com/2000/02/1.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 3232129218201456559}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>
 </body>

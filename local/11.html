@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html class='v2' dir='ltr' lang='en-US' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<head>
+<link href='https://www.blogger.com/static/v1/widgets/2872013778-css_bundle_v2.css' rel='stylesheet' type='text/css'/>
+<meta charset='UTF-8'/>
+<meta content='width=device-width, initial-scale=1' name='viewport'/>
+<title>book1014 SQL</title>
+<!-- external libraries -->
+<script src='https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js'></script>
+<script src='https://unpkg.com/turndown/dist/turndown.js'></script>
+<!-- font links -->
+<link href='https://fonts.googleapis.com' rel='preconnect'/>
+<link href='https://fonts.gstatic.com' rel='preconnect'/>
+<link href='https://fonts.googleapis.com/css2?family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900' rel='stylesheet'/>
+<link href='https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900' rel='stylesheet'/>
+<!-- button icon -->
+<link href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0' rel='stylesheet'/>
+<style id='page-skin-1' type='text/css'><!--
+:root {
+--font-zoom: 1;
+--page-bg: #f8fafc;
+--surface: #ffffff;
+--surface-soft: #f1f5f9;
+--surface-muted: #e2e8f0;
+--text: #172033;
+--text-muted: #64748b;
+--heading: #0f172a;
+--accent: #2563eb;
+--accent-strong: #1d4ed8;
+--accent-soft: #dbeafe;
+--danger: #dc2626;
+--warning: #fef3c7;
+--border: #dbe3ee;
+--shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+--shadow-md: 0 12px 30px rgba(15, 23, 42, 0.12);
+--shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.18);
+--radius-sm: 0.5rem;
+--radius-md: 0.85rem;
+--radius-lg: 1.35rem;
+}
+* {
+box-sizing: border-box;
+}
+html {
+scroll-behavior: smooth;
+}
+body {
+margin: 0;
+min-height: 100vh;
+font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+font-weight: 400;
+font-style: normal;
+font-size: calc(1rem  * var(--font-zoom));
+line-height: 1.72;
+color: var(--text);
+background: var(--page-bg);
+text-rendering: optimizeLegibility;
+-webkit-font-smoothing: antialiased;
+}
+.module{
+display:none
+}
+h1:has(span.header-section-number){
+display:none;
+}
+.material-symbols-outlined{
+font-size: calc(1rem  * var(--font-zoom));
+cursor:pointer;
+user-select:none;
+}
+summary::marker {
+color: var(--text-muted);
+}
+#msg-galley{
+position:fixed;
+top:0;
+right:0;
+height:100vh;
+min-width:calc(20rem  * var(--font-zoom));
+max-width:50%;
+z-index:12;
+background-color: transparent;
+pointer-events: none;
+padding: 1rem 1rem 0 0;
+font-family: "Roboto", sans-serif;
+font-optical-sizing: auto;
+font-weight: 400;
+font-style: normal;
+font-variation-settings: "wdth" 100;
+}
+.msg-close{
+position:absolute;
+top:calc(3px  * var(--font-zoom));
+right:calc(3px  * var(--font-zoom));
+display: inline-flex;
+align-items: center;
+justify-content: center;
+width: 1.25rem;
+height: 1.25rem;
+padding: 0;
+background-color:var(--danger);
+color: white;
+font-weight:700;
+font-size:calc(.7rem  * var(--font-zoom));
+border-radius: 999px;
+cursor:pointer;
+}
+.msg-dialog{
+position: relative;
+background-color:var(--surface);
+margin-bottom:.75rem;
+pointer-events: auto;
+border-radius:var(--radius-md);
+border: 1px solid var(--border);
+box-shadow: var(--shadow-md);
+overflow: hidden;
+}
+.msg-button-{
+margin: 0 .5rem .5rem 0;
+}
+.msg-button-bar{
+background-color:var(--surface-soft);
+text-align:center;
+padding:.75rem;
+border-top: 1px solid var(--border);
+}
+.msg-title{
+background:var(--accent);
+color:white;
+font-weight:700;
+padding:.55rem 2rem .55rem .85rem;
+}
+.msg-message{
+background-color:var(--surface);
+padding: .85rem;
+}
+#page-data{
+display:none
+}
+#menu{
+top:0;
+left:-100px;
+position:fixed;
+display:none;
+background:var(--surface);
+padding:0;
+z-index:11;
+transition: left .25s ease, box-shadow .25s ease;
+height:100vh;
+min-width:min(22rem, 88vw);
+max-width:75vw;
+overflow: auto;
+border-right: 1px solid var(--border);
+box-shadow: var(--shadow-lg);
+}
+#book-data{display:none}
+#menu-content{
+padding:1rem 1.25rem 2rem;
+}
+.menu-button{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+min-width:2.4rem;
+height:2.4rem;
+padding:0 .6rem;
+cursor:pointer;
+color:var(--text-muted);
+border-radius:999px;
+transition: background .18s ease, color .18s ease, transform .18s ease;
+vertical-align:middle;
+}
+.menu-button:hover{
+background:var(--accent-soft);
+color:var(--accent-strong);
+transform: translateY(-1px);
+}
+.menu-header{
+top:0;
+position:sticky;
+background:var(--surface);
+opacity:1;
+margin:0;
+padding:.45rem .6rem;
+border-bottom:1px solid var(--border);
+box-shadow: var(--shadow-sm);
+z-index:1;
+}
+#book-title{
+font-weight:700;
+letter-spacing:.02em;
+}
+#search-div{
+width:100%;
+white-space: nowrap;
+margin-top: 1.5rem;
+}
+#search-div h6{
+margin:0 0 .45rem 0;
+font-size:.78rem;
+font-weight:700;
+letter-spacing:.08em;
+text-transform:uppercase;
+color:var(--text-muted);
+}
+#search{
+width: calc(100% - 2.25rem);
+border:1px solid var(--border);
+border-radius:999px;
+padding:.55rem .85rem;
+font: inherit;
+font-size:.92rem;
+color:var(--text);
+background:var(--surface);
+box-shadow: var(--shadow-sm);
+outline:none;
+transition: border-color .18s ease, box-shadow .18s ease;
+}
+#search:focus{
+border-color:var(--accent);
+box-shadow:0 0 0 4px rgba(37, 99, 235, .13);
+}
+#search-button{
+padding-left:.45rem;
+color:var(--accent);
+vertical-align:middle;
+}
+#search-results{
+font-size:.86rem;
+margin-top: .85rem;
+}
+.search-result{
+margin-top:.65rem;
+padding:.75rem;
+cursor:pointer;
+border:1px solid var(--border);
+border-radius:var(--radius-sm);
+background:var(--surface);
+box-shadow: var(--shadow-sm);
+transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.search-result:hover{
+background-color:#f8fbff;
+border-color:#bfdbfe;
+box-shadow:0 10px 24px rgba(37, 99, 235, .1);
+transform: translateY(-1px);
+}
+.search-result-title{
+font-weight:bold;
+color:var(--heading);
+}
+.search-result-line{
+margin:.25rem 0 .35rem .75rem;
+color:var(--text-muted);
+}
+.search-term{
+background-color:var(--warning);
+border-radius:.2rem;
+padding:0 .15rem;
+}
+.chapter-result-link{
+color:var(--heading);
+}
+.toc-section-container{
+margin-left:.75rem;
+}
+.toc-text-container{
+margin-left:1.25rem;
+color:var(--text-muted);
+}
+.chapter-section{
+margin-top: calc(3rem  * var(--font-zoom));
+margin-bottom: calc(3rem  * var(--font-zoom));
+}
+.hide{
+display:none
+}
+img{
+max-width:100%;
+height:auto;
+border-radius:var(--radius-md);
+}
+.entry-header{
+position:fixed;
+top:0;
+left: 0;
+width: 100%;
+transition:opacity 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+padding: .35rem .75rem;
+-webkit-user-select: none; /* Safari */
+user-select: none; /* Standard syntax */
+background: var(--surface);
+border-bottom:1px solid var(--border);
+box-shadow:var(--shadow-sm);
+z-index:10;
+}
+button.nav{
+border-radius:999px;
+border:1px solid var(--border);
+background:var(--surface);
+color:var(--accent);
+box-shadow: var(--shadow-md);
+width:2.8rem;
+height:2.8rem;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+}
+.nav{
+position: fixed;
+bottom: 1rem;
+opacity:1.0;
+transition:opacity 0.35s ease, transform 0.18s ease, box-shadow 0.18s ease;
+pointer-events: all;
+}
+.nav:hover{
+transform: translateY(-2px);
+box-shadow: var(--shadow-lg);
+}
+.dim-button:hover{opacity: 1.0;}
+.dim-button{opacity: .35;}
+.dim-header:hover{opacity: 1.0;}
+.dim-header{opacity: 0;}
+#prior-button {
+left: 1rem;
+}
+#next-button {
+right: 1rem;
+}
+.span-link{
+cursor:pointer;
+color:var(--accent);
+font-weight:500;
+}
+.span-link:hover{
+text-decoration: underline;
+color:var(--accent-strong);
+}
+a:link {color: var(--accent); text-decoration:none}
+a:visited {color: #4f46e5;}
+a:hover {background-color: var(--accent-soft); color: var(--accent-strong); border-radius:.25rem;}
+a:active {color: var(--accent-strong);}
+.book-title{
+margin-top: 6rem;
+font-family:"Taviraj", Georgia, serif;
+font-size:clamp(2.4rem, 7vw, calc(4rem  * var(--font-zoom)));
+line-height:1.05;
+text-align: center;
+font-weight: 700;
+color:var(--heading);
+}
+.book-author{
+margin-top: 1rem;
+font-size:calc(1.45rem  * var(--font-zoom));
+text-align: center;
+color:var(--text-muted);
+}
+.book-toc{
+text-align: center;
+margin-top:2rem;
+}
+.book-chapters{
+display: inline-block;
+}
+.book-chapter{
+text-align:left;
+padding-left: 1rem;
+text-indent: -1rem;
+margin-bottom: 0.55rem;
+}
+.tool {
+cursor:pointer;
+font-size:calc(18px  * var(--font-zoom));
+font-weight:400;
+vertical-align: middle;
+padding-left:.6rem;
+color:var(--text-muted);
+transition: color .18s ease, transform .18s ease;
+}
+.tool:hover {
+color:var(--accent);
+transform: translateY(-1px);
+}
+.lead-in{
+margin-top:4rem;
+}
+.example, .indent, .category{
+margin:1rem 0 0 1.1rem;
+}
+.category div:first-child{
+color:var(--danger);
+font-weight:700;
+}
+.example div:first-child{
+color:var(--danger);
+font-style: italic;
+}
+h1{
+font-family:"Taviraj", Georgia, serif;
+font-size:clamp(1.35rem, 4vw, calc(2.1rem * var(--font-zoom)));
+line-height:1.18;
+color:var(--heading);
+font-weight:700;
+margin:0;
+}
+h2, h3{
+font-family:"Taviraj", Georgia, serif;
+color:var(--heading);
+line-height:1.24;
+letter-spacing:-.015em;
+}
+h2{
+font-size:clamp(1.55rem, 4vw, calc(2.15rem * var(--font-zoom)));
+margin:3rem 0 1rem;
+padding-top:.5rem;
+}
+h3{
+font-size:clamp(1.2rem, 3vw, calc(1.45rem * var(--font-zoom)));
+margin:2.25rem 0 .8rem;
+}
+.header-section-number{
+color:var(--accent);
+font-weight:700;
+}
+p{
+margin-top:0;
+margin-bottom:1.15rem;
+}
+p.vignette{
+color:var(--danger)
+}
+.no-dot{
+list-style-type: none;
+}
+ul.no-dot li{
+padding-left: 1rem;
+text-indent: -1rem;
+margin-bottom: 0.3rem;
+}
+audio{
+height:30px;
+width:100%;
+max-width:34rem;
+}
+div.post-body{
+max-width:940px;
+margin:0 auto;
+padding:clamp(5.2rem, 7vw, 6.25rem) clamp(1.15rem, 4vw, 3.5rem) 4rem;
+background:transparent;
+}
+div.index-boxnbt{
+background:var(--surface);
+padding-bottom:2rem;
+}
+.material-symbols-outlined {
+font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+font-size: 18px;
+line-height: 1;
+}
+blockquote{
+margin:1.75rem 0;
+background:var(--surface-soft);
+border-left:.35rem solid var(--accent);
+padding:1rem 1.25rem 1rem 1.35rem;
+border-radius:0 var(--radius-md) var(--radius-md) 0;
+color:#334155;
+}
+.note blockquote{
+background:#E8F5E9;
+border-left:.35rem solid darkgreen;
+}
+.note blockquote p::before {
+content: "Note: ";
+font-weight: bold;
+}
+.tip blockquote{
+background:#F3E5F5;
+border-left:.35rem solid purple;
+}
+.tip blockquote p::before {
+content: "Tip: ";
+font-weight: bold;
+}
+.term blockquote{
+background:#E3EDF7;
+border-left:.35rem solid darkblue;
+}
+.term blockquote p::before {
+content: "Term: ";
+font-weight: bold;
+}
+.caution blockquote{
+background:#FFE2E2;
+border-left:.35rem solid red;
+}
+.caution blockquote p::before {
+content: "Caution: ";
+font-weight: bold;
+}
+.objectives blockquote{
+background:#FFF8E1;
+border-left:.35rem solid gold;
+}
+.review blockquote{
+background:#FFF0EC;
+border-left:.35rem solid salmon;
+}
+.review blockquote p::before {
+content: "Review: ";
+font-weight: bold;
+}
+blockquote p:last-child{
+margin-bottom:0;
+}
+hr{
+height:1px;
+border:0;
+background:var(--border);
+margin:2.75rem 0;
+}
+ul, ol{
+padding-left:1.45rem;
+margin:0 0 1.25rem;
+}
+li{
+margin:.45rem 0;
+}
+code{
+font-family:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+font-size:.92em;
+color:#0f766e;
+background:#ecfdf5;
+border:1px solid #bbf7d0;
+border-radius:.35rem;
+padding:.08rem .32rem;
+}
+pre code,
+.sourceCode code{
+color:inherit;
+background:transparent;
+border:0;
+border-radius:0;
+padding:0;
+font-size:inherit;
+}
+pre,
+pre.javascript-code,
+pre.javascript-example,
+pre.spreadsheet,
+div.sourceCode pre{
+margin:1rem 0;
+padding:.75rem .85rem;
+overflow:auto;
+background:#0f172a;
+color:#dbeafe;
+border:1px solid rgba(148, 163, 184, .28);
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-md);
+font-family:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+font-size:.88rem;
+line-height:1.38;
+tab-size:2;
+white-space:pre;
+}
+div.sourceCode{
+margin:1rem 0;
+}
+div.sourceCode pre{
+margin:0;
+}
+.sourceCode .kw,
+.sourceCode .cf{
+color:#93c5fd;
+}
+.sourceCode .fu,
+.sourceCode .at{
+color:#67e8f9;
+}
+.sourceCode .st{
+color:#86efac;
+}
+.sourceCode .dv{
+color:#fbbf24;
+}
+.sourceCode .co{
+color:#94a3b8;
+font-style:italic;
+}
+table.blog{
+display:block;
+width:max-content;
+max-width:100%;
+border-collapse:separate;
+border-spacing:0;
+margin:1.5rem 0 2rem;
+overflow-x:auto;
+-webkit-overflow-scrolling:touch;
+border:1px solid var(--border);
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-sm);
+background:var(--surface);
+}
+th.blog,
+td.blog{
+padding:.72rem .85rem;
+border-bottom:1px solid var(--border);
+text-align:left;
+vertical-align:top;
+white-space:nowrap;
+}
+th.blog{
+font-size:.86rem;
+font-weight:700;
+color:var(--heading);
+background:var(--surface-soft);
+}
+tr.blog:last-child td{
+border-bottom:0;
+}
+tr.blog:nth-child(even) td{
+background:#f8fafc;
+}
+.monaco {
+width: 100%;
+margin: 1.5rem 0;
+border-radius: var(--radius-md);
+overflow: hidden;
+box-shadow: var(--shadow-lg);
+border: 1px solid rgba(148, 163, 184, 0.22);
+}
+.monaco-bar {
+display: flex;
+align-items: center;
+justify-content: flex-end;
+gap: 2px;
+padding: 8px 10px;
+background: linear-gradient(180deg, #1f2937, #111827);
+border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.monaco-bar-label {
+flex: 1;
+font-family: "Roboto", sans-serif;
+font-size: 11px;
+font-weight: 700;
+color: #94a3b8;
+letter-spacing: 0.5px;
+text-transform: uppercase;
+padding-left: 4px;
+}
+.monaco-tool {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 30px;
+height: 30px;
+border-radius: 6px;
+color: #8b949e;
+cursor: pointer;
+transition: background 0.15s ease, color 0.15s ease;
+}
+.monaco-tool:hover {
+background: rgba(255, 255, 255, 0.1);
+color: #e6edf3;
+}
+.monaco-tool:active {
+background: rgba(255, 255, 255, 0.06);
+transform: scale(0.92);
+}
+.monaco-tool[data-action="run"]:hover {
+background: rgba(63, 185, 80, 0.18);
+color: #3fb950;
+}
+.editor-holder {
+background-color: #1e1e1e;
+padding: 8px 0;
+}
+.editor {
+margin: 0;
+padding: 0;
+}
+.console {
+background: #161b22;
+border-top: 1px solid rgba(255, 255, 255, 0.07);
+padding: 8px 0 6px;
+position: relative;
+min-height: 36px;
+font-family: 'Consolas', 'Cascadia Code', 'Courier New', monospace;
+font-size: 13px;
+}
+.console-line {
+color: #c9d1d9;
+padding: 2px 40px 2px 14px;
+line-height: 1.6;
+white-space: pre-wrap;
+word-break: break-all;
+}
+.console-line:first-of-type {
+margin-top: 2px;
+}
+.console-line.error {
+color: #f85149;
+background: rgba(248, 81, 73, 0.06);
+}
+span.exitButton {
+position: absolute;
+top: 6px;
+right: 8px;
+display: flex;
+align-items: center;
+justify-content: center;
+width: 22px;
+height: 22px;
+border-radius: 4px;
+color: #6e7681;
+cursor: pointer;
+transition: background 0.15s ease, color 0.15s ease;
+}
+span.exitButton:hover {
+background: rgba(255, 255, 255, 0.1);
+color: #c9d1d9;
+}
+span.exitButton .material-symbols-outlined {
+font-size: 15px;
+}
+pre.code {
+color: #a8ff78;
+background: #0d1117;
+padding: 1rem 1.15rem;
+margin: 1.35rem 0;
+font-size: 14px;
+border-radius: var(--radius-md);
+border: 1px solid rgba(255, 255, 255, 0.07);
+overflow-x: auto;
+}
+@media (max-width: 700px) {
+body {
+font-size: calc(.98rem * var(--font-zoom));
+}
+#msg-galley {
+left: 0;
+right: 0;
+max-width: none;
+min-width: 0;
+padding: .75rem;
+}
+#menu {
+max-width: 92vw;
+}
+.entry-header {
+padding: .25rem .4rem;
+}
+div.post-body {
+padding-left: 1rem;
+padding-right: 1rem;
+}
+.nav {
+bottom: .75rem;
+}
+#prior-button {
+left: .75rem;
+}
+#next-button {
+right: .75rem;
+}
+}
+
+--></style>
+<script>
+    const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
+	async function initialize(){
+
+      const kind = document.getElementById(`kind`).innerHTML
+      console.log(`kind`, kind)
+      switch(kind){
+        case `redirect`:
+          location.href=document.getElementById(`post-json`).innerText
+          return
+        case `chapter`:
+          console.log(`processing Chapter`)
+          // load any modules used in the chapter
+          for(const module of document.querySelectorAll(`div.module`)){
+            console.log(`module:`, module.innerText)
+            loadModule(module.innerText)
+    
+    
+    
+          }
+      }
+    
+    // calls the page that has our code in it
+    //const response = await fetch(`/1970/01/system.html`)
+  	//const code = await response.text()
+    
+ 
+	//const s = document.createElement('script')
+	//s.replaceChildren(code.split(`<p`+`re>`)[1].split(`</pre>`)[0])
+	//document.head.appendChild(s)
+    //console.log("got system")
+    await loadModule("system")
+	init()
+    
+    }
+    
+    async function loadModule(label){// get the first post of a specified label and load the code
+      const code = await getPage(label)
+      const s = document.createElement(`script`)
+      s.replaceChildren(code)
+      document.head.appendChild(s)          
+    }
+    
+    async function getPage(label){//get the first post with the specified label.
+        
+        if(localhost){
+          const url=`/tools/api/${label}.js`
+          const response = await fetch(url)
+          const code = await response.text()  
+          return code
+        }else{
+          const url=`${location.origin}/feeds/posts/default/-/${label}?alt=json`
+          const response = await fetch(url)
+          console.log("feed url", url)
+          const page = await response.json()
+          return page.feed.entry[0].content.$t
+        }
+    }    
+
+  </script>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' rel='stylesheet'/></noscript>
+<meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
+<meta name='google-adsense-platform-domain' content='blogspot.com'/>
+
+</head>
+<body onload='initialize()'>
+<div class='sitenbt' id='pagenbt'>
+<div class='site-contentnbt' id='contentnbt'>
+<div class='testing' id='item'></div>
+<div class='content-areanbt' id='primarynbt'>
+<div class='site-mainnbt' id='mainnbt' role='main'>
+<div class='section' id='mainblogsec'><div class='widget Blog' data-version='1' id='Blog1'>
+<div class='blog-posts hfeed'>
+<div class='post-outer'>
+<article class='post'>
+<div id='msg-galley'></div>
+<div class='hide' id='kind'>chapter</div>
+<div class='index-boxnbt'>
+<header class='entry-header'>
+<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>11. Summarizing Data</span></h1>
+</header>
+<div id='menu'>
+<div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
+<div id='menu-content'>
+<div id='toc'></div>
+<div id='tools'>
+                  Text Size: 
+                  <span class='material-symbols-outlined tool' onclick='fontSize(.1)'>text_increase</span>
+<span class='material-symbols-outlined tool' onclick='fontSize(-.1)'>text_decrease</span>
+<span class='material-symbols-outlined tool' onclick='fontSize()'>rotate_auto</span>
+</div>
+<div id='search-div'>
+<h6>Search Book</h6>
+<input id='search' placeholder='search book'/><span class='material-symbols-outlined tool' id='search-button'>search</span></div>
+<div id='search-results'></div>
+</div>
+</div>
+<div class='post-body entry-content' data-blog-id='3986204447440040189' data-post-id='5466737572812117031'>
+<button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
+<button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
+              
+              <!--postBegin--><h1 data-number="11" id="summarizing-data"><span
+class="header-section-number">11</span> Summarizing Data</h1>
+<p><strong>Objectives.</strong> After completing this lesson, the
+successful student will be able to:</p>
+<ol type="1">
+<li>Describe the uses of aggregate functions.</li>
+<li>Use aggregate functions to summarize the values in a table.</li>
+</ol>
+<h2 data-number="11.1" id="using-aggregate-functions"><span
+class="header-section-number">11.1</span> Using Aggregate Functions</h2>
+<p>The previous lesson described how to use scalar functions, or
+functions that perform calculations for each row of a query result. This
+lesson will describe how to use aggregate functions that perform summary
+calculations across the rows of a query result. Examples of aggregate
+calculations include:</p>
+<ul>
+<li>Counting the rows in a table or query result</li>
+<li>Calculating the total or average of the values in a table
+column</li>
+<li>Finding the largest or smallest value in a table column</li>
+</ul>
+<p>Queries that include aggregate functions are different than other
+queries. Each of the example queries presented in this resource have
+either returned all of the rows of the database table or a smaller set
+of rows that meet the filter conditions set in the WHERE clause.
+Aggregate queries display a summary of the data in a table. The table
+rows are not displayed.</p>
+<div class="term">
+<blockquote>
+<p><strong>Aggregate Function</strong> &#8212; A function that performs
+summary calculations across the rows of a database table or query
+result.</p>
+</blockquote>
+</div>
+<p>There are five aggregate functions supported in structured query
+language. Unlike the scalar functions discussed in the last lesson, each
+of these functions are supported by the different DBMS. Each of these
+functions are described in the table below.</p>
+<h4 data-number="11.1.0.1" id="sql-aggregate-functions"><span
+class="header-section-number">11.1.0.1</span> SQL Aggregate
+Functions</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Function</th>
+<th>Argument(s)</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">SUM</td>
+<td>A column</td>
+<td>Returns the total of the values in a column</td>
+</tr>
+<tr>
+<td style="text-align: center;">AVG</td>
+<td>A column</td>
+<td>Returns the average of the values in a column</td>
+</tr>
+<tr>
+<td style="text-align: center;">COUNT</td>
+<td>A column</td>
+<td>Returns the number of rows in a column</td>
+</tr>
+<tr>
+<td style="text-align: center;">MAX</td>
+<td>A column</td>
+<td>Returns the largest value in a column</td>
+</tr>
+<tr>
+<td style="text-align: center;">MIN</td>
+<td>A column</td>
+<td>Returns the smallest value in a column</td>
+</tr>
+</tbody>
+</table>
+<p>The remaining sections in this lesson describe how to use each of
+these functions, how the functions handle distinct values, and how to
+write queries that combine calculations.</p>
+<h2 data-number="11.2" id="the-sum-function"><span
+class="header-section-number">11.2</span> The SUM Function</h2>
+<p>The SUM function is used to calculate a total of the values in a
+column. The SUM function requires a column name as the only argument.
+Since the SUM function computes the total of the values in the column,
+the result is a single value. Also, since this value is calculated, you
+will want to create an alias for the result in your query.</p>
+<div class="caution">
+<blockquote>
+<p><strong>Caution: Aliases and Column Names.</strong> Some DBMS will
+not allow you to use a column name as an alias in a query. Given that
+aliases are often used with calculations, it is probably best to use a
+more descriptive alias anyway.</p>
+</blockquote>
+</div>
+<p>The work table in the museum database contains information about the
+individual pieces of art. Included in this data is the width and height
+(in inches) of the pieces of work. Suppose you need to calculate the
+total width of all of the art in the database. Name the calculated field
+&#8216;total_width&#8217; (without the quotes). You can use a chat with an AI
+assistant to create the SELECT statement that will do this:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Write an SQL statement to calculate the total
+width of the artwork. Name the calculated field total_width.</p>
+<p><strong>AI:</strong> Certainly! Here&#8217;s the SQL statement to calculate
+the total width of the artwork and name the calculated field as
+total_width:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(width) <span class="kw">AS</span> total_width</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
+<p>This query calculates the sum of the width column from the work table
+and renames the result as total_width.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(width) <span class="kw">AS</span> total_width</span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
+<p>This example demonstrates a couple of important things about using
+the SUM function. First, the syntax of the SUM function is
+straightforward. As with the scalar functions discussed in the previous
+lesson, you insert the name of the function &#8212; SUM &#8212; followed by
+parentheses with the column name to be used in the calculation &#8212; in this
+case the width column. Second, the result of this function is the total
+of the values in the width column. The total is a single value, so there
+is only one row returned in the query result. Since the calculated field
+is the only field in the SELECT clause, this query will produce exactly
+<em>one</em> row and <em>one</em> column.</p>
+<p>The SUM function returns the total of the values that are included in
+the query for the specified column. This is an important point. The
+exception to this is NULL values. A NULL value is not included in the
+SUM calculation. You can apply a filter to the query that will limit the
+values that will be included in the SUM. In the last example, the total
+width of <em>all</em> works is calculated.</p>
+<p>Assume you want to adjust the prior SQL statement to calculate the
+width of only the Renaissance style artwork. Name the calculated field
+&#8216;total_width_renaissance&#8217; (without the quotes). You can use a chat with
+an AI assistant to create the SELECT statement that will do this:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Adjust the prior SQL statement to calculate the
+total width of only the Renaissance style artwork. Name the calculated
+field total_width_renaissance.</p>
+<p><strong>AI:</strong> Certainly! Here&#8217;s the adjusted SQL statement to
+calculate the total width of artworks with the Renaissance style and
+name the calculated field as total_width_renaissance:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(width) <span class="kw">AS</span> total_width</span>
+<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
+<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">&#39;Renaissance&#39;</span>;</span></code></pre></div>
+<p>This query calculates the sum of the width column from the work table
+for artworks with the style &#8216;Renaissance&#8217; and renames the result as
+total_width_renaissance.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(width) <span class="kw">AS</span> total_width</span>
+<span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
+<span id="cb4-3"><a aria-hidden="true" href="#cb4-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">&#39;Renaissance&#39;</span>;</span></code></pre></div>
+<p>Notice that the syntax of the SUM function does not change, but the
+calculated total width does change. The reason for this is that the
+WHERE clause reduces the values included in the SUM calculation. It
+filters the artwork included in the calculation to be only those with a
+style of Renaissance.</p>
+<div class="note">
+<blockquote>
+<p><strong>Note: WHERE Clause and Aggregate Functions.</strong> Recall
+that the WHERE clause is executed before the SELECT clause even though
+the SELECT clause appears first in the SQL statement. Because of this,
+the rows filtered by the WHERE clause impact the value calculated by an
+aggregate function. Only those rows that satisfy the criteria set in the
+WHERE clause will be included in the calculation.</p>
+</blockquote>
+</div>
+<p>The SUM function can calculate the total of more than just the values
+in a column. It would probably be more helpful to know the total area
+(height * width) of the artwork to know how much wall space is needed to
+showcase the art. Create a SQL statement that calculates the total area
+(height * width) of the artwork. Name the calculated field &#8216;total_area&#8217;
+(without the quotes). You can use a chat with an AI assistant to create
+the SELECT statement that will do this:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Write a SQL statement to calculate the total
+area of the artwork. Name the calculated field total_area.</p>
+<p><strong>AI:</strong> To calculate the total area of the artwork,
+you&#8217;ll need to multiply the width and height columns for each artwork
+and then sum up the resulting areas. Here&#8217;s the SQL statement to achieve
+that and name the calculated field as total_area:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(width <span class="op">*</span> height) <span class="kw">AS</span> total_area</span>
+<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
+<p>This query calculates the sum of the product of width and height for
+each artwork in the work table and names the result as total_area,
+representing the total combined area of all artworks.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(width <span class="op">*</span> height) <span class="kw">AS</span> total_area</span>
+<span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
+<p>In this example, the area of the individual works is calculated by
+multiplying each work&#8217;s width by its height. The SUM function then
+totals the area of each artwork. The result is the total area of all
+artwork. Notice the argument of the SUM function. It is the formula to
+calculate the area. The query could also include a WHERE clause to
+create a filter to calculate the total area for specific works of
+art.</p>
+<h2 data-number="11.3" id="the-avg-function"><span
+class="header-section-number">11.3</span> The AVG Function</h2>
+<p>The AVG function works much like the SUM function. It takes the
+average, or mean, of the values in a column. Suppose you want to
+calculate the average area (height * width) of the Renaissance artwork.
+Name the calculated field &#8216;average_renaissance_area&#8217; (without the
+quotes). You can use a chat with an AI assistant to create the SELECT
+statement that will do this:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Write a SQL statement to calculate the average
+area of the Renaissance artwork. Name the calculated field
+average_renaissance_area.</p>
+<p><strong>AI:</strong> To calculate the average area of Renaissance
+artworks, you&#8217;ll need to first calculate the area (width * height) for
+each Renaissance artwork and then find the average of those areas.
+Here&#8217;s the SQL statement to achieve that and name the calculated field
+as average_renaissance_area:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(width <span class="op">*</span> height) <span class="kw">AS</span> average_renaissance_area</span>
+<span id="cb7-2"><a aria-hidden="true" href="#cb7-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
+<span id="cb7-3"><a aria-hidden="true" href="#cb7-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">&#39;Renaissance&#39;</span>;</span></code></pre></div>
+<p>This query calculates the average of the product of width and height
+for each Renaissance artwork in the work table and names the result as
+average_renaissance_area.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(width <span class="op">*</span> height) <span class="kw">AS</span> average_renaissance_area</span>
+<span id="cb8-2"><a aria-hidden="true" href="#cb8-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
+<span id="cb8-3"><a aria-hidden="true" href="#cb8-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">&#39;Renaissance&#39;</span>;</span></code></pre></div>
+<p>In this example, the WHERE clause filters the query to include only
+those works of art with the Renaissance style. The area for each of
+these works is calculated by multiplying the width of each times the
+height. The AVG function calculates the average of the areas. As with
+the SUM function, NULL values are not included in the AVG
+calculation.</p>
+<h2 data-number="11.4" id="the-count-function"><span
+class="header-section-number">11.4</span> The COUNT Function</h2>
+<p>The COUNT function returns the number of rows in a query result. The
+argument for the COUNT function is also generally a column name. Since
+the COUNT function returns the number of rows in a query result, the
+wildcard character &#8217;*&#8217; can be used for its argument.</p>
+<p>Consider this example. Suppose you want to count the number of
+artists in the database. Name the calculated field &#8216;number_of_artists&#8217;
+(without the quotes). You can use a chat with an AI assistant to create
+the SELECT statement that will do this:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Write a SQL statement to count the number of
+artists. Name the calculation number_of_artists.</p>
+<p><strong>AI:</strong> To count the number of artists in the artist
+table, you can use the SQL COUNT function. Here&#8217;s the SQL statement to
+achieve that and name the calculated field as number_of_artists:</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> number_of_artists</span>
+<span id="cb9-2"><a aria-hidden="true" href="#cb9-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
+<p>This query uses the COUNT function to count the number of rows
+(artists) in the artist table and names the result as
+number_of_artists.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb10-1"><a aria-hidden="true" href="#cb10-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> number_of_artists</span>
+<span id="cb10-2"><a aria-hidden="true" href="#cb10-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
+<p>In this example, the COUNT function is invoked using &#8217;*&#8217; as the
+argument. It will return the number of rows on the artist table. Since
+each row of the table contains data about a unique artist, this will
+also be the number of artists in the database. The query could also be
+rewritten with one of the columns of the artist table as the argument as
+follows:</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb11-1"><a aria-hidden="true" href="#cb11-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(artist_id) <span class="kw">AS</span> number_of_artists</span>
+<span id="cb11-2"><a aria-hidden="true" href="#cb11-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
+<p>In this example, the COUNT function will return the number of rows in
+the artist_id column of the artist table. This will also equal the
+number of artists in the database.</p>
+<p>If you filter the query using a WHERE clause, the result of the COUNT
+function will change. Also, like the other functions discussed in this
+lesson, NULL values will not be included in the COUNT calculation if you
+use a column name as the argument to the function. However, if you use
+the wildcard &#8217;<em>&#8217; character as the argument, all rows (even those that
+contain NULL values) </em>will be included* in the COUNT
+calculation.</p>
+<h2 data-number="11.5" id="the-max-function"><span
+class="header-section-number">11.5</span> The MAX Function</h2>
+<p>The MAX function returns the largest value in a specified column. The
+argument for the MAX function is a column name or calculation (like the
+SUM and AVG functions). The MAX function ignores NULL values. For
+example, suppose you want to calculate the largest area for a work of
+art. Name the calculation &#8216;largest_area&#8217; (without the quotes). You can
+use a chat with an AI assistant to create the SELECT statement that will
+do this:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Write a SQL statement to find the largest area
+for a work of art. Name the calculation largest_area.</p>
+<p><strong>AI:</strong> To find the largest area for a work of art, you
+can use the MAX function to find the maximum product of width and height
+from the work table. Here&#8217;s the SQL statement to achieve that and name
+the calculated field as largest_area:</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">MAX</span>(width <span class="op">*</span> height) <span class="kw">AS</span> largest_area</span>
+<span id="cb12-2"><a aria-hidden="true" href="#cb12-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
+<p>This query calculates the maximum area (width * height) among all
+artworks in the work table and names the result as largest_area.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb13-1"><a aria-hidden="true" href="#cb13-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">MAX</span>(width <span class="op">*</span> height) <span class="kw">AS</span> largest_area</span>
+<span id="cb13-2"><a aria-hidden="true" href="#cb13-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
+<p>In this example, the MAX function is used to find the artwork with
+the largest area. As before, the area of each work of art is first
+calculated as the product of the width and the height.</p>
+<h2 data-number="11.6" id="the-min-function"><span
+class="header-section-number">11.6</span> The MIN Function</h2>
+<p>The MIN function is used to return the smallest value in a specified
+column. The argument for the MIN function is a column name or
+calculation (like the SUM and AVG functions). The MIN function ignores
+NULL values. Assume you want to calculate the smallest area for a work
+of art. Name the calculation &#8216;smallest_area&#8217; (without the quotes). You
+can use a chat with an AI assistant to create the SELECT statement that
+will do this:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Write a SQL statement to find the smallest area
+for a work of art. Name the calculation smallest_area.</p>
+<p><strong>AI:</strong> To find the smallest area for a work of art, you
+can use the MIN function to find the minimum product of width and height
+from the work table. Here&#8217;s the SQL statement to achieve that and name
+the calculated field as smallest_area:</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb14-1"><a aria-hidden="true" href="#cb14-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">MIN</span>(width <span class="op">*</span> height) <span class="kw">AS</span> smallest_area</span>
+<span id="cb14-2"><a aria-hidden="true" href="#cb14-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
+<p>This query calculates the minimum area (width * height) among all
+artworks in the work table and names the result as smallest_area.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb15-1"><a aria-hidden="true" href="#cb15-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">MIN</span>(width <span class="op">*</span> height) <span class="kw">AS</span> smallest_area</span>
+<span id="cb15-2"><a aria-hidden="true" href="#cb15-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
+<p>In this example, the MIN function is used to find the artwork with
+the smallest area. As before, the area of each work of art is first
+calculated as the product of the width and the height.</p>
+<div class="tip">
+<blockquote>
+<p><strong>Tip: MAX and MIN with Non-Numeric Data.</strong> Although
+counter-intuitive, you can use the MAX and MIN functions with columns
+that don&#8217;t contain numbers. If you calculate the MAX of a column with
+text, the result would be the last value alphabetically. The opposite
+would be true for the MIN function. One way to think of a maximum or
+minimum value is that it is the first or last value in a sorted list.
+This could be a list of numbers, dates, or text values.</p>
+</blockquote>
+</div>
+<h2 data-number="11.7" id="aggregates-on-distinct-values"><span
+class="header-section-number">11.7</span> Aggregates on Distinct
+Values</h2>
+<p>Recall that the keyword DISTINCT is used to remove duplicates in a
+query result. The keyword DISTINCT is also relevant for aggregate
+functions. Each of the five aggregate functions will perform a
+calculation on all of the rows in a query. Each non-NULL value will be
+included in the calculations performed by these functions &#8212; including
+duplicate values.</p>
+<p>You can use DISTINCT to remove duplicates from an aggregate
+calculation. The syntax for this is below. Notice the difference in the
+results returned by the two queries in the example.</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb16-1"><a aria-hidden="true" href="#cb16-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(birth) <span class="kw">AS</span> number_of_artists</span>
+<span id="cb16-2"><a aria-hidden="true" href="#cb16-2" tabindex="-1"></a><span class="kw">from</span> artist;</span>
+<span id="cb16-3"><a aria-hidden="true" href="#cb16-3" tabindex="-1"></a></span>
+<span id="cb16-4"><a aria-hidden="true" href="#cb16-4" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> birth) <span class="kw">AS</span> number_of_years_with_artist_births</span>
+<span id="cb16-5"><a aria-hidden="true" href="#cb16-5" tabindex="-1"></a><span class="kw">from</span> artist;</span></code></pre></div>
+<p>The first query essentially counts the artists. The argument for the
+COUNT function is the birth column. The COUNT function will return the
+number of rows in the birth column of the artist table. Since each row
+of the artist table contains a unique artist, counting the rows of the
+birth column of the artist table will count the number of artists in the
+database.</p>
+<p>The result of the second query should be interpreted very
+differently. The keyword DISTINCT in the argument of the COUNT function
+means that duplicate values for birth will be ignored. Since there are
+multiple artists born in the same year, many rows will be excluded in
+the COUNT calculation. What will be counted is the unique set of birth
+years for the artists. Each year that an artist is born will be counted
+only once. Hence, the result of this query is the number of years with
+artist births.</p>
+<div class="tip">
+<blockquote>
+<p><strong>Tip: Limitations on DISTINCT and Aggregate
+Functions.</strong> There are a couple of important limitations on using
+the keyword DISTINCT with an aggregate function. First, DISTINCT cannot
+be used with the expression COUNT(*) &#8212; a column name must be used as the
+argument. Second, DISTINCT should also be used with a column name as the
+argument. It may not work with some DBMS when using a calculation as the
+argument to an aggregate function.</p>
+</blockquote>
+</div>
+<h2 data-number="11.8" id="combining-aggregate-functions"><span
+class="header-section-number">11.8</span> Combining Aggregate
+Functions</h2>
+<p>All of the examples in this lesson have used a single aggregate
+function in the SELECT clause. SQL statements can have as many aggregate
+functions in the SELECT clause as you want. For example, you may want to
+calculate the smallest and largest birth year in the artist table. Name
+the first column &#8216;earliest_birth_year&#8217; (without the quotes) and the
+second column &#8216;latest_birth_year&#8217; (without the quotes). You can use a
+chat with an AI assistant to create the SELECT statement that will do
+this:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Write a SQL statement to calculate the smallest
+and largest birth year for an artist. Name the first column
+&#8216;earliest_birth_year&#8217; (without the quotes) and the second column
+&#8216;latest_birth_year&#8217; (without the quotes).</p>
+<p><strong>AI:</strong> To calculate the smallest and largest birth
+years for artists, you can use the MIN and MAX functions on the birth
+column in the artist table. Here&#8217;s the SQL statement to achieve that and
+name the columns as specified:</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb17-1"><a aria-hidden="true" href="#cb17-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">MIN</span>(birth) <span class="kw">AS</span> earliest_birth_year, <span class="fu">MAX</span>(birth) <span class="kw">AS</span> latest_birth_year</span>
+<span id="cb17-2"><a aria-hidden="true" href="#cb17-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
+<p>This query calculates the smallest (earliest) and largest (latest)
+birth years among all artists in the artist table and assigns the
+calculated values to the columns named earliest_birth_year and
+latest_birth_year, respectively.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb18-1"><a aria-hidden="true" href="#cb18-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">MIN</span>(birth) <span class="kw">AS</span> earliest_birth_year, <span class="fu">MAX</span>(birth) <span class="kw">AS</span> latest_birth_year</span>
+<span id="cb18-2"><a aria-hidden="true" href="#cb18-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
+<p>In this example, the MIN function is used to find the earliest
+(smallest) birth year. The MAX function is used to find the latest
+(largest) birth year. Notice that the two aggregate calculations are
+separated with a comma in the SELECT clause. This is just like adding
+more than one column to the SELECT clause. Since there are two
+calculated fields in the query, the result will have two columns. Since
+each calculation will produce a single result, the query will produce
+only one row.</p>
+<h2 data-number="11.9" id="summary"><span
+class="header-section-number">11.9</span> Summary</h2>
+<p>Aggregate functions allow you to perform summary calculations in a
+query. This lesson discussed how to use each of the five aggregate
+functions: SUM, AVG, COUNT, MAX, and MIN. It also described how to use
+the keyword DISTINCT with an aggregate function and how to combine more
+than one aggregate calculation in the same query result.</p>
+<!--postEnd-->
+              </div>
+</div>
+</article>
+</div>
+</div>
+</div></div>
+</div><!-- #main -->
+</div><!-- #primary -->
+<!--end of error vs non error block-->
+</div><!-- #content -->
+<footer class='site-footernbt' id='colophonnbt' role='contentinfo'>
+<div id='supplementarynbt'>
+<div class='footer-widgetsnbt widget-areanbt clearnbt' id='footer-widgetsnbt' role='complementary'>
+<div class='sidebarwidgetsarea no-items section' id='sidebarwidgetsarea'></div>
+</div><!-- #footer-sidebar -->
+</div><!-- #supplementary -->
+</footer><!-- #colophon -->
+</div><!-- #page -->
+
+<script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
+<script type='text/javascript'>
+window['__wavt'] = 'AEUoTZrLOLql9z91vVcyA1TsF364:1784899982747';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/11.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/11.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/11.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/5466737572812117031/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '5466737572812117031', 'pageName': '11. Summarizing Data', 'pageTitle': 'book1014 SQL: 11. Summarizing Data'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '11. Summarizing Data', 'description': '11  Summarizing Data \r Objectives.  After completing this lesson, the\r successful student will be able to: \r \r Describe the uses of aggregat...', 'url': 'https://book1014.blogspot.com/2000/02/11.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 5466737572812117031}}]);
+_WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
+</script>
+</body>
+</html>

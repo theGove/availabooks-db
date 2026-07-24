@@ -845,7 +845,7 @@ right: .75rem;
 <div class='hide' id='kind'>chapter</div>
 <div class='index-boxnbt'>
 <header class='entry-header'>
-<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>9. Creating Calculated Fields</span></h1>
+<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>20. Updating and Deleting Data</span></h1>
 </header>
 <div id='menu'>
 <div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
@@ -863,280 +863,239 @@ right: .75rem;
 <div id='search-results'></div>
 </div>
 </div>
-<div class='post-body entry-content' data-blog-id='3986204447440040189' data-post-id='8368931250453884008'>
+<div class='post-body entry-content' data-blog-id='3986204447440040189' data-post-id='3206072925567572285'>
 <button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
 <button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
               
-              <!--postBegin--><h1 data-number="9" id="creating-calculated-fields"><span
-class="header-section-number">9</span> Creating Calculated Fields</h1>
+              <!--postBegin--><h1 data-number="20" id="updating-and-deleting-data"><span
+class="header-section-number">20</span> Updating and Deleting Data</h1>
 <p><strong>Objectives.</strong> After completing this lesson, the
 successful student will be able to:</p>
 <ol type="1">
-<li>Create calculated fields to perform simple mathematical calculations
-in a query.</li>
-<li>Use aliases to name calculated fields.</li>
-<li>Use calculated fields to manipulate text.</li>
+<li>Use the UPDATE statement to modify specific rows or all rows in a
+table.</li>
+<li>Set a column&#8217;s value to NULL to remove existing data.</li>
+<li>Use the DELETE statement to remove specific rows or all rows from a
+table.</li>
+<li>Describe best practices for using UPDATE and DELETE safely.</li>
 </ol>
-<h2 data-number="9.1" id="understanding-calculated-fields"><span
-class="header-section-number">9.1</span> Understanding Calculated
-Fields</h2>
-<p>Often the data that you need is not stored in the database in the
-precise way that you need it. When this is the case, you can choose to
-manipulate the data when you retrieve it with a query or you can choose
-to make the changes you need in a separate application. In this lesson
-you will learn how to use calculated fields to manipulate data using a
-query. Here are some reasons why you might choose to manipulate data
-when you retrieve it in a query.</p>
+<h2 data-number="20.1" id="updating-data"><span
+class="header-section-number">20.1</span> Updating Data</h2>
+<p>To update (modify) data in a table, you use the UPDATE statement.
+UPDATE can be used in two ways:</p>
 <ul>
-<li>You need to perform some arithmetic on the value in a database
-table. For example, the database might store when a customer starts and
-finishes using a service and you need to know how much time the customer
-used the service for billing purposes. To determine this, you would need
-to take the difference between the starting and ending times.</li>
-<li>You may need to combine data from multiple columns in a database
-table. For example, the customer&#8217;s first and last names may be stored in
-different columns, but you need their full name combined together.</li>
+<li>To update specific rows in a table</li>
+<li>To update all rows in a table</li>
 </ul>
-<p>In both of these cases, you could use a calculated field to perform
-the needed manipulation. A calculated field is a column that is created
-by the query when it is executed. Because of this, it appears in the
-query result, but it is not stored in the database table. This has an
-important benefit. If any of the underlying data were to change, the
-calculated field would be refreshed when the query is executed
-again.</p>
-<div class="term">
+<p>You&#8217;ll now take a look at each of these uses.</p>
+<div class="caution">
 <blockquote>
-<p><strong>Calculated Field</strong> &#8212; A column in a query result that
-contains the results of an algorithm used to manipulate the data stored
-in the database.</p>
+<p><strong>Caution: Don&#8217;t Omit the WHERE Clause.</strong> Special care
+must be exercised when using UPDATE because it is all too easy to
+mistakenly update every row in your table. Please read this entire
+section on UPDATE before using this statement.</p>
 </blockquote>
 </div>
-<p>A calculated field is used as part of the SELECT clause of the SQL
-statement. Any of the columns in the database table outlined in the FROM
-clause can be used as part of a calculated field, even if the column is
-not used elsewhere in the SELECT clause. You can have as many calculated
-fields in a query as you need.</p>
-<div class="note">
+<div class="tip">
 <blockquote>
-<p><strong>Note: Fields and Columns.</strong> Often the terms &#8216;column&#8217;
-and &#8216;field&#8217; are used interchangeably. Technically, column refers to the
-values that are stored in the database and a field is calculated and
-appears only in the query result. You will likely find even the most
-experienced SQL programmers will refer to both as columns or fields.</p>
+<p><strong>Tip: UPDATE and Security.</strong> Use of the UPDATE
+statement might require special security privileges in client/server
+DBMSs. Before you attempt to use UPDATE, make sure you have adequate
+security privileges to do so.</p>
 </blockquote>
 </div>
-<p>There are a couple of important things to keep in mind about
-calculated fields. First, calculated fields are performed on every row
-of the query result. This means that you will have a separate value for
-each row of the calculated field based on the other values in that row.
-You will learn how to create calculations across the rows of a query
-result in a later lesson. Second, because the SELECT clause is executed
-before the ORDER BY clause, you can sort the query result by the values
-in the calculated field. Third, you can manipulate a query result in a
-separate application, but it is often easier to use a calculated field
-in the query to do so.</p>
-<h2 data-number="9.2" id="performing-mathematical-calculations"><span
-class="header-section-number">9.2</span> Performing Mathematical
-Calculations</h2>
-<p>Calculated fields can be used to perform arithmetic on the values in
-database tables. You can use the standard mathematical operations below
-in your calculations. When using multiple operators, the standard order
-of operations applies (multiplication and division will be completed
-before addition and subtraction). You can also use parentheses to ensure
-different ordering of calculations. Calculated fields can use the values
-from a single column or multiple columns at the same time.</p>
-<h4 data-number="9.2.0.1" id="mathematical-operators-used-in-sql"><span
-class="header-section-number">9.2.0.1</span> Mathematical Operators Used
-in SQL</h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: center;">Operator</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center;"><code>+</code></td>
-<td>Addition</td>
-</tr>
-<tr>
-<td style="text-align: center;"><code>-</code></td>
-<td>Subtraction</td>
-</tr>
-<tr>
-<td style="text-align: center;"><code>*</code></td>
-<td>Multiplication</td>
-</tr>
-<tr>
-<td style="text-align: center;"><code>/</code></td>
-<td>Division</td>
-</tr>
-</tbody>
-</table>
-<p>Suppose you want to list the artists and calculate the age of each at
-their death. This can be calculated as the difference between their
-birth year and their death year (of course this is not necessarily their
-exact age as an artist may die before their birthday in the year of
-their death). You can use a chat with an AI assistant to create the
-SELECT statement that will do this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write an SQL statement to list the artists and
-the difference between their death and birth.</p>
-<p><strong>AI:</strong> To list the artists and the difference between
-their death and birth, you can use the following SQL statement:</p>
+<p>The UPDATE statement is very easy to use &#8212; some would say too easy.
+The basic format of an UPDATE statement is made up of three parts:</p>
+<ul>
+<li>The table to be updated</li>
+<li>The column names and their new values</li>
+<li>The filter condition that determines which rows should be
+updated</li>
+</ul>
+<p>Let&#8217;s take a look at a simple example. Recall the artist Elena Voss
+(artist_id 501) that you inserted in the previous lesson &#8212; her middle
+name was left as NULL because it wasn&#8217;t on file at the time. It has
+since been discovered to be &#8220;Marie,&#8221; so that record needs updating. The
+following statement performs this update:</p>
 <div class="sourceCode" id="cb1"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, (death <span class="op">-</span> birth) <span class="kw">AS</span> age_difference</span>
-<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
-<p>This query selects the full_name column from the artist table and
-calculates the difference between the death and birth columns using
-(death - birth). The calculated difference is aliased as age_difference.
-The result will show the names of artists and the calculated age
-difference between their death and birth.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, (death <span class="op">-</span> birth) <span class="kw">AS</span> age_difference</span>
-<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
-<p>Notice that the arithmetic in this calculated field involves two
-columns from the artist table. The calculated field subtracts the birth
-year from the death year. You will also notice some additional syntax
-after the calculation. This is used to assign an alias, or name, to the
-calculated field. This will be discussed in the next section. The
-resulting calculation approximates the artists&#8217; age at their death.
-Notice that the calculation is completed separately for each artist.</p>
-<h2 data-number="9.3" id="using-aliases"><span
-class="header-section-number">9.3</span> Using Aliases</h2>
-<p>Since a calculated field manipulates the data in one or more columns
-of the database table, it is unclear what the name of the column should
-be. Often the DBMS will return the calculated values without a column
-name. If all you need is to see the calculated values, this is not a big
-deal. If you want to sort the query results by the calculated values or
-use them in a different application, you will need to create a name for
-the calculated column.</p>
-<p>SQL allows you to create an alias, or a column name, for the
-calculated field. The syntax for creating an alias to a column involves
-adding the keyword AS followed by the name you&#8217;d like to use for the
-column. In the above example, the calculated field could be named &#8220;age&#8221;
-using this syntax.</p>
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">UPDATE</span> artist</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">SET</span> middle_names <span class="op">=</span> <span class="st">&#39;Marie&#39;</span></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="kw">WHERE</span> artist_id <span class="op">=</span> <span class="dv">501</span>;</span></code></pre></div>
+<p>The UPDATE statement always begins with the name of the table being
+updated. In this example, it is the artist table. The SET command is
+then used to assign the new value to a column. As used here, the SET
+clause sets the middle_names column to the specified value:</p>
+<pre><code>SET middle_names = &#39;Marie&#39;</code></pre>
+<p>The UPDATE statement finishes with a WHERE clause that tells the DBMS
+which row to update. Without a WHERE clause, the DBMS would update all
+the rows in the artist table with this new middle name &#8212; definitely not
+the desired outcome.</p>
+<p>Updating multiple columns requires a slightly different syntax:</p>
 <div class="sourceCode" id="cb3"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, death <span class="op">-</span> birth <span class="kw">AS</span> age</span>
-<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> age;</span></code></pre></div>
-<p>Notice the syntax of the SELECT clause. The calculated field is
-followed by the keyword AS and the alias, &#8220;age&#8221;. Notice that the alias
-age is also used to sort the query result. Because the ORDER BY clause
-processes after the SELECT clause, the name age can be used to define
-the sort column for the ORDER BY clause. The query results will be
-sorted by the age of the artists from the youngest to the oldest.</p>
-<div class="term">
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">UPDATE</span> artist</span>
+<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">SET</span> style <span class="op">=</span> <span class="st">&#39;Abstract Expressionist&#39;</span>, birth <span class="op">=</span> <span class="dv">1961</span></span>
+<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a><span class="kw">WHERE</span> artist_id <span class="op">=</span> <span class="dv">501</span>;</span></code></pre></div>
+<p>When you are updating multiple columns, you use only a single SET
+command, and each column = value pair is separated by a comma. (No comma
+is specified after the last column.) In this example, further research
+into Elena Voss&#8217;s career refined her style classification and corrected
+her birth year, so columns style and birth will both be updated for
+artist 501.</p>
+<div class="tip">
 <blockquote>
-<p><strong>Alias</strong> &#8212; An alias is used to specify the name of a
-database column.</p>
+<p><strong>Tip: Using Subqueries in an UPDATE Statement.</strong>
+Subqueries may be used in UPDATE statements, enabling you to update
+columns with data retrieved with a SELECT statement. Refer to the lesson
+on working with subqueries for more information on subqueries and their
+uses.</p>
 </blockquote>
 </div>
-<p>There are a few things to keep in mind about using aliases.</p>
-<ol type="1">
-<li>Using aliases is optional for calculated fields, but it is a best
-practice even if you don&#8217;t need the calculated field to have a column
-name.</li>
-<li>Aliases can be a single word or multiple words. If an alias contains
-spaces, the entire alias must be enclosed in single quotes. Although it
-is possible, it is best practice to not use spaces in an alias.</li>
-<li>You can use an alias to rename <em>any</em> column name, even a
-column that exists in the database table. If you create an alias for an
-existing column, the new name applies to the query. It won&#8217;t change the
-name of the column in the underlying database table.</li>
-</ol>
-<h2 data-number="9.4" id="concatenating-fields"><span
-class="header-section-number">9.4</span> Concatenating Fields</h2>
-<p>The term &#8220;calculated field&#8221; implies math. You&#8217;ve already seen how to
-use a calculated field to perform arithmetic on the numeric values in a
-query result. However, calculated fields can also be used to manipulate
-text. Perhaps the most common way to manipulate text involves joining
-text together into a single value. When you join text, you concatenate
-it.</p>
-<div class="term">
+<div class="tip">
 <blockquote>
-<p><strong>Concatenate</strong> &#8212; Joining separate text values together
-into a single value.</p>
+<p><strong>Tip: The FROM Keyword.</strong> Some SQL implementations
+support a FROM clause in the UPDATE statement that can be used to update
+the rows in one table with data from another table. Refer to your DBMS
+documentation to see if it supports this feature.</p>
 </blockquote>
 </div>
-<p>To concatenate text into a single value, you use the double pipe &#8220;||&#8221;
-operator. To concatenate the text &#8220;Hello&#8221; and &#8220;World&#8221; together, the
-syntax would be: <code>'Hello' || ' ' || 'World'</code>. In this
-example, three text values are concatenated:</p>
-<ol type="1">
-<li>The word &#8220;Hello&#8221;</li>
-<li>a single space</li>
-<li>The word &#8220;World&#8221;</li>
-</ol>
-<p>The result of the concatenation is &#8220;Hello World&#8221;. You can also
-concatenate text values from columns in a database.</p>
-<p>Suppose you want to list the artists by concatenating the full name
-of the artist with their nationality in parentheses. You will use the
-alias artist_and_nationality for the calculated field. You can use a
-chat with an AI assistant to create the SELECT statement that will do
-this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write an SQL statement that will work in your
-database platform that lists the artists concatenated with their
-nationality in parentheses. Name the column artist_and_nationality.</p>
-<p><strong>AI:</strong> Sure. Here&#8217;s the SQL statement for your database
-platform that lists the artists concatenated with their nationality in
-parentheses, and names the column as artist_and_nationality:</p>
+<p>To delete a column&#8217;s value, you can set it to NULL (assuming the
+table is defined to allow NULL values). Suppose the style
+reclassification for Elena Voss turns out to be inconclusive, and you&#8217;d
+rather leave the style unrecorded than guess. You can do this as
+follows:</p>
 <div class="sourceCode" id="cb4"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name <span class="op">||</span> <span class="st">&#39; (&#39;</span> <span class="op">||</span> nationality <span class="op">||</span> <span class="st">&#39;)&#39;</span> <span class="kw">as</span> artist_and_nationality</span>
-<span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
-<p>In your database platform, you can use the || operator for
-concatenation. The query will return a list of artists with their
-respective nationalities in the format &#8220;Full Name (Nationality)&#8221; under
-the column name artist_and_nationality.</p>
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">UPDATE</span> artist</span>
+<span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a><span class="kw">SET</span> style <span class="op">=</span> <span class="kw">NULL</span></span>
+<span id="cb4-3"><a aria-hidden="true" href="#cb4-3" tabindex="-1"></a><span class="kw">WHERE</span> artist_id <span class="op">=</span> <span class="dv">501</span>;</span></code></pre></div>
+<p>Here the NULL keyword is used to save no value to the style column.
+That is very different from saving an empty string. An empty string
+(specified as <code>''</code>) is a value, whereas NULL means that there
+is no value at all.</p>
+<h2 data-number="20.2" id="deleting-data"><span
+class="header-section-number">20.2</span> Deleting Data</h2>
+<p>To delete (remove) data from a table, you use the DELETE statement.
+DELETE can be used in two ways:</p>
+<ul>
+<li>To delete specific rows from a table</li>
+<li>To delete all rows from a table</li>
+</ul>
+<p>Now let&#8217;s take a look at each of these.</p>
+<div class="caution">
+<blockquote>
+<p><strong>Caution: Don&#8217;t Omit the WHERE Clause.</strong> Special care
+must be exercised when using DELETE because it is all too easy to
+mistakenly delete every row from your table. Please read this entire
+section on DELETE before using this statement.</p>
 </blockquote>
 </div>
-<p><strong>Try the SQL statement.</strong></p>
+<div class="tip">
+<blockquote>
+<p><strong>Tip: DELETE and Security.</strong> Use of the DELETE
+statement might require special security privileges in client/server
+DBMSs. Before you attempt to use DELETE, make sure you have adequate
+security privileges to do so.</p>
+</blockquote>
+</div>
+<p>UPDATE is very easy to use, as you just saw. The good (and bad) news
+is that DELETE is even easier to use.</p>
+<p>The following statement deletes a single row from the artist table
+(the row for Elena Voss, which you added in the previous lesson):</p>
 <div class="sourceCode" id="cb5"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name <span class="op">||</span> <span class="st">&#39; (&#39;</span> <span class="op">||</span> nationality <span class="op">||</span> <span class="st">&#39;)&#39;</span> <span class="kw">as</span> artist_and_nationality</span>
-<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
-<p>The syntax for the concatenation may seem a little complicated. In
-this case, there are four different text values that are concatenated
-into a single value for each row. These are:</p>
-<ol type="1">
-<li><strong>full_name:</strong> the value for the full name of the
-artist from the database table.</li>
-<li><strong>&#8217; (&#8217;:</strong> a literal (fixed) text value of a space and
-an open parenthesis.</li>
-<li><strong>nationality:</strong> the value for the artists&#8217; nationality
-from the database table.</li>
-<li><strong>&#8216;)&#8217;:</strong> a literal text value of a close
-parenthesis.</li>
-</ol>
-<p>Notice that each text element is concatenated using the double pipe
-&#8220;||&#8221; operator. The result of the calculated field is a single text value
-for each artist that contains the artists&#8217; full name followed by their
-nationality in parentheses. The calculated field is named
-artist_and_nationality using the keyword AS.</p>
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> artist</span>
+<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="kw">WHERE</span> artist_id <span class="op">=</span> <span class="dv">501</span>;</span></code></pre></div>
+<p>This statement should be self-explanatory. DELETE FROM requires that
+you specify the name of the table from which the data is to be deleted.
+The WHERE clause filters which rows are to be deleted. In this example,
+only artist 501 will be deleted. If the WHERE clause were omitted, this
+statement would have deleted every artist in the table!</p>
+<div class="tip">
+<blockquote>
+<p><strong>Tip: Foreign Keys Are Your Friend.</strong> Joins were
+introduced in the lesson on joining tables, and as you learned then, to
+join two tables, you simply need common fields in both of those tables.
+But you can also have the DBMS enforce the relationship by using foreign
+keys. (These can be defined when you create your tables, as described in
+the lesson on designing database tables.) When foreign keys are present,
+the DBMS uses them to enforce referential integrity. For example, if you
+tried to insert a new work into the work table, the DBMS would not allow
+you to insert it with an unknown artist ID because the artist_id column
+is connected to the artist table as a foreign key. So what does this
+have to do with DELETE? Well, a nice side effect of using foreign keys
+to ensure referential integrity is that the DBMS usually prevents the
+deletion of rows that are needed for a relationship. For example, if you
+tried to delete an artist from artist who still had works recorded in
+work, that DELETE statement would throw an error and would be aborted.
+That&#8217;s another reason to always define your foreign keys.</p>
+</blockquote>
+</div>
+<div class="tip">
+<blockquote>
+<p><strong>Tip: The FROM Keyword.</strong> In some SQL implementations,
+the FROM keyword following DELETE is optional. However, it is good
+practice to always provide this keyword, even if it is not needed. Doing
+this will ensure that your SQL code is portable between DBMSs.</p>
+</blockquote>
+</div>
+<p>DELETE takes no column names or wildcard characters. DELETE deletes
+entire rows, not columns. To delete specific columns, you use an UPDATE
+statement.</p>
 <div class="note">
 <blockquote>
-<p><strong>Note: Concatenation in PostgreSQL.</strong> PostgreSQL uses
-the double pipe &#8220;||&#8221; operator to concatenate text values. (If you ever
-work with a different DBMS, be aware that some &#8212; like SQL Server &#8212; use a
-&#8220;+&#8221; operator instead, and others use a function rather than an
-operator.) Using functions to manipulate data in a query will be
-discussed in the next lesson.</p>
+<p><strong>Note: Table Contents, Not Tables.</strong> The DELETE
+statement deletes rows from tables, even all rows from tables. But
+DELETE never deletes the table itself.</p>
 </blockquote>
 </div>
-<h2 data-number="9.5" id="summary"><span
-class="header-section-number">9.5</span> Summary</h2>
-<p>In this lesson, you learned how to manipulate data in a query using
-calculated fields. Calculated fields can perform arithmetic or
-manipulate text. They are helpful, because the data may not be stored in
-the database in a way that it can be directly used to meet your needs.
-Using a calculated field alters the data in the query results, but does
-not affect the underlying data in the database table.</p>
+<div class="tip">
+<blockquote>
+<p><strong>Tip: Faster Deletes.</strong> If you really do want to delete
+all rows from a table, don&#8217;t use DELETE. Instead, use the TRUNCATE TABLE
+statement, which accomplishes the same thing but does it much quicker
+(because data changes are not logged).</p>
+</blockquote>
+</div>
+<h2 data-number="20.3"
+id="guidelines-for-updating-and-deleting-data"><span
+class="header-section-number">20.3</span> Guidelines for Updating and
+Deleting Data</h2>
+<p>The UPDATE and DELETE statements used in the previous section all
+have WHERE clauses, and there is a very good reason for this. If you
+omit the WHERE clause, the UPDATE or DELETE will be applied to every row
+in the table. In other words, if you execute an UPDATE without a WHERE
+clause, every row in the table will be updated with the new values.
+Similarly, if you execute DELETE without a WHERE clause, all the
+contents of the table will be deleted.</p>
+<p>Here are some important guidelines that many SQL programmers
+follow:</p>
+<ul>
+<li>Never execute an UPDATE or a DELETE without a WHERE clause unless
+you really do intend to update and delete every row.</li>
+<li>Make sure every table has a primary key (refer to the lesson on
+designing database tables if you have forgotten what this is), and use
+it as the WHERE clause whenever possible. (You may specify individual
+primary keys, multiple values, or value ranges.)</li>
+<li>Before you use a WHERE clause with an UPDATE or a DELETE, first test
+it with a SELECT to make sure it is filtering the right records; it is
+far too easy to write incorrect WHERE clauses.</li>
+<li>Use database-enforced referential integrity (refer to the lesson on
+joining tables for this one too) so that the DBMS will not allow the
+deletion of rows that have data in other tables related to them.</li>
+<li>Some DBMSs allow database administrators to impose restrictions that
+prevent the execution of UPDATE or DELETE without a WHERE clause. If
+your DBMS supports this feature, consider using it.</li>
+</ul>
+<p>The bottom line is that SQL has no Undo button. Be very careful using
+UPDATE and DELETE, or you&#8217;ll find yourself updating and deleting the
+wrong data.</p>
+<h2 data-number="20.4" id="summary"><span
+class="header-section-number">20.4</span> Summary</h2>
+<p>In this lesson, you learned how to use the UPDATE and DELETE
+statements to manipulate the data in your tables. You learned the syntax
+for each of these statements, as well as the inherent dangers they
+expose. You also learned why WHERE clauses are so important in UPDATE
+and DELETE statements, and you were given guidelines that should be
+followed to help ensure that data does not get damaged
+inadvertently.</p>
 <!--postEnd-->
               </div>
 </div>
@@ -1159,8 +1118,8 @@ not affect the underlying data in the database table.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZo1TcmxCn_2m6qwt-96CuKZ:1784899981429';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/9.html','3986204447440040189');
-_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/9.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/9.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/8368931250453884008/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '8368931250453884008', 'pageName': '9. Creating Calculated Fields', 'pageTitle': 'book1014 SQL: 9. Creating Calculated Fields'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '9. Creating Calculated Fields', 'description': '9  Creating Calculated Fields \r Objectives.  After completing this lesson, the\r successful student will be able to: \r \r Create calculated fi...', 'url': 'https://book1014.blogspot.com/2000/02/9.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 8368931250453884008}}]);
+window['__wavt'] = 'AEUoTZqnrZ5aD0fy5SWKNz6zhNvp:1784899988815';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/20.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/20.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/20.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/3206072925567572285/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '3206072925567572285', 'pageName': '20. Updating and Deleting Data', 'pageTitle': 'book1014 SQL: 20. Updating and Deleting Data'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '20. Updating and Deleting Data', 'description': '20  Updating and Deleting Data \r Objectives.  After completing this lesson, the\r successful student will be able to: \r \r Use the UPDATE stat...', 'url': 'https://book1014.blogspot.com/2000/02/20.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 3206072925567572285}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>
 </body>

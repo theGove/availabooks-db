@@ -4,7 +4,7 @@
 <link href='https://www.blogger.com/static/v1/widgets/2872013778-css_bundle_v2.css' rel='stylesheet' type='text/css'/>
 <meta charset='UTF-8'/>
 <meta content='width=device-width, initial-scale=1' name='viewport'/>
-<title>book1011</title>
+<title>book1014 SQL</title>
 <!-- external libraries -->
 <script src='https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js'></script>
 <script src='https://unpkg.com/turndown/dist/turndown.js'></script>
@@ -460,11 +460,55 @@ line-height: 1;
 }
 blockquote{
 margin:1.75rem 0;
-padding:1rem 1.25rem 1rem 1.35rem;
 background:var(--surface-soft);
 border-left:.35rem solid var(--accent);
+padding:1rem 1.25rem 1rem 1.35rem;
 border-radius:0 var(--radius-md) var(--radius-md) 0;
 color:#334155;
+}
+.note blockquote{
+background:#E8F5E9;
+border-left:.35rem solid darkgreen;
+}
+.note blockquote p::before {
+content: "Note: ";
+font-weight: bold;
+}
+.tip blockquote{
+background:#F3E5F5;
+border-left:.35rem solid purple;
+}
+.tip blockquote p::before {
+content: "Tip: ";
+font-weight: bold;
+}
+.term blockquote{
+background:#E3EDF7;
+border-left:.35rem solid darkblue;
+}
+.term blockquote p::before {
+content: "Term: ";
+font-weight: bold;
+}
+.caution blockquote{
+background:#FFE2E2;
+border-left:.35rem solid red;
+}
+.caution blockquote p::before {
+content: "Caution: ";
+font-weight: bold;
+}
+.objectives blockquote{
+background:#FFF8E1;
+border-left:.35rem solid gold;
+}
+.review blockquote{
+background:#FFF0EC;
+border-left:.35rem solid salmon;
+}
+.review blockquote p::before {
+content: "Review: ";
+font-weight: bold;
 }
 blockquote p:last-child{
 margin-bottom:0;
@@ -543,7 +587,7 @@ color:#fbbf24;
 color:#94a3b8;
 font-style:italic;
 }
-table{
+table.blog{
 display:block;
 width:max-content;
 max-width:100%;
@@ -557,24 +601,24 @@ border-radius:var(--radius-md);
 box-shadow:var(--shadow-sm);
 background:var(--surface);
 }
-th,
-td{
+th.blog,
+td.blog{
 padding:.72rem .85rem;
 border-bottom:1px solid var(--border);
 text-align:left;
 vertical-align:top;
 white-space:nowrap;
 }
-th{
+th.blog{
 font-size:.86rem;
 font-weight:700;
 color:var(--heading);
 background:var(--surface-soft);
 }
-tr:last-child td{
+tr.blog:last-child td{
 border-bottom:0;
 }
-tr:nth-child(even) td{
+tr.blog:nth-child(even) td{
 background:#f8fafc;
 }
 .monaco {
@@ -782,7 +826,7 @@ right: .75rem;
     }    
 
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=1676106165289640444&amp;zx=6bdbd94f-4c00-46a7-9f85-9e3213cc543c' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=1676106165289640444&amp;zx=6bdbd94f-4c00-46a7-9f85-9e3213cc543c' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -801,7 +845,7 @@ right: .75rem;
 <div class='hide' id='kind'>chapter</div>
 <div class='index-boxnbt'>
 <header class='entry-header'>
-<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>7. Loops and Repetition</span></h1>
+<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>7. Advanced Data Filtering</span></h1>
 </header>
 <div id='menu'>
 <div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
@@ -819,716 +863,458 @@ right: .75rem;
 <div id='search-results'></div>
 </div>
 </div>
-<div class='post-body entry-content' data-blog-id='1676106165289640444' data-post-id='1867706787166155116'>
+<div class='post-body entry-content' data-blog-id='3986204447440040189' data-post-id='5946282447877525176'>
 <button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
 <button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
               
-              <!--postBegin--><div class="module">monaco</div>
-<div class="module">appsscript</div>
-<h1 data-number="7" id="loops-and-repetition"><span
-class="header-section-number">7</span> Loops and Repetition</h1>
-<blockquote>
-<p><strong>Before you start.</strong> This chapter assumes you are
-comfortable with Chapters 4 through 6: declaring variables, the
-primitive types (numbers, strings, booleans), <code>if</code> /
-<code>else if</code> / <code>else</code> decisions with comparison
-operators, and arrays &#8212; including reading a range from a sheet with
-<code>getValues()</code> and writing one back with
-<code>setValues()</code>.</p>
-</blockquote>
-<p>Every program you have written so far has done each task exactly
-once. You declared a variable once, evaluated a condition once, read a
-cell once. That was the right pace for learning the vocabulary of the
-language. But real supply chain work is almost never about doing
-something once. It is about doing the <em>same</em> thing to hundreds of
-products, or repeating a calculation period after period until some
-target is reached.</p>
-<p>This chapter introduces the language feature that makes that possible
-&#8212; the <strong>loop</strong> &#8212; and shows how a handful of lines can carry
-as much work as you ask of them.</p>
-<hr />
-<h2 data-number="7.1" id="why-loops-matter"><span
-class="header-section-number">7.1</span> Why Loops Matter</h2>
-<p>Supply chains are repetitive by their very nature. A catalog has
-thousands of SKUs. A production line has a series of workstations. A
-planning horizon has fifty-two weeks. A manifest has hundreds of
-shipments. Almost any analysis you would want to run &#8212; flag the items
-that need reordering, find the slowest station, project demand forward &#8212;
-is the same small piece of logic applied over and over.</p>
-<p>You have already met that &#8220;small piece of logic.&#8221; In Chapter 5 you
-wrote a decision that compares an inventory level to a reorder point.
-That decision is correct. The problem is scale. Imagine a workbook with
-500 products. You could copy your <code>if</code> statement 500 times,
-once per row. Three things go wrong immediately:</p>
+              <!--postBegin--><h1 data-number="7" id="advanced-data-filtering"><span
+class="header-section-number">7</span> Advanced Data Filtering</h1>
+<p><strong>Objectives.</strong> After completing this lesson, the
+successful student will be able to:</p>
 <ol type="1">
-<li><strong>It is tedious.</strong> Five hundred near-identical blocks
-is a lot of typing.</li>
-<li><strong>It is error-prone.</strong> Somewhere around row 217 you
-will paste a cell reference wrong, and you will never find it.</li>
-<li><strong>It cannot be maintained.</strong> When the logic changes &#8212;
-say, the company adds a &#8220;critical stockout&#8221; category &#8212; you now have 500
-edits to make.</li>
+<li>Use the WHERE clause of a SELECT statement to combine filtering
+conditions.</li>
+<li>Understand the order of operations for combined filtering
+conditions.</li>
+<li>Use the keyword IN to filter based on a list of values.</li>
+<li>Use the keyword NOT to negate a filter condition.</li>
 </ol>
-<p>And often you do not even know the count in advance. How many rows of
-data are in this week&#8217;s import? How many weeks until this product runs
-out? You cannot copy-paste a block of code a number of times you do not
-know yet.</p>
-<p>A <strong>loop</strong> solves all of this. A loop pairs a block of
-code with a <em>rule</em> for how many times that block runs. You write
-the logic once; the loop applies it as many times as the situation
-demands.</p>
-<p>Every loop answers two questions:</p>
-<ul>
-<li><strong>What do I repeat?</strong> &#8212; the block of code called the
-<em>body</em>.</li>
-<li><strong>When do I stop?</strong> &#8212; the <em>condition</em> that is
-checked over and over.</li>
-</ul>
-<p>Repetition in supply chain work tends to come in two natural shapes,
-and JavaScript gives you a loop built for each:</p>
-<ul>
-<li><strong>&#8220;Do this for every item in a known list.&#8221;</strong> Process
-every SKU in the catalog; check every workstation; total every line of
-an order. The number of repetitions is known up front. This is the job
-of the <strong><code>for</code> loop</strong> (Section 7.4).</li>
-<li><strong>&#8220;Keep going until something changes.&#8221;</strong> Keep
-depleting inventory until it hits zero; keep reading rows until you
-reach a blank one. The number of repetitions is <em>not</em> known in
-advance &#8212; it is often the very thing you are trying to discover. This is
-the job of the <strong><code>while</code> loop</strong> (Section
-7.2).</li>
-</ul>
-<p>One more idea ties this chapter to the last one. Arrays (Chapter 6)
-gave you a way to <em>hold</em> many values; loops give you a way to
-<em>act on</em> many values. They are partners. A column in a
-spreadsheet is, in effect, an array. A loop is how you touch every cell
-in it.</p>
-<hr />
-<h2 data-number="7.2" id="the-while-loop"><span
-class="header-section-number">7.2</span> The <code>while</code>
-Loop</h2>
-<p>A <code>while</code> loop is the simpler of the two loops to read. In
-plain English it says: <em>&#8220;as long as this condition is true, keep
-running this block.&#8221;</em></p>
-<pre class="javascript-example"><code>while (condition) {
-  // body: the code to repeat
-  
-}</code></pre>
-<p>When the program reaches the loop, it checks the condition. If the
-condition is <code>true</code>, it runs the body once, then returns to
-check the condition again. If the condition is still <code>true</code>,
-it runs the body again. This continues until a check finds the condition
-<code>false</code>, at which point the program skips past the loop and
-continues with whatever comes next.</p>
-<h3 data-number="7.2.1" id="the-four-parts-of-a-working-loop"><span
-class="header-section-number">7.2.1</span> The four parts of a working
-loop</h3>
-<p>Every correct <code>while</code> loop has four moving parts. Three of
-them are inside the loop&#8217;s structure; one comes just before it.</p>
-<ol type="1">
-<li><strong>Initialization</strong> &#8212; <em>before</em> the loop, you set
-up the variable(s) the condition depends on.</li>
-<li><strong>Condition</strong> &#8212; checked at the top of every pass;
-decides whether the body runs again.</li>
-<li><strong>Body</strong> &#8212; the work you want repeated.</li>
-<li><strong>Update</strong> &#8212; somewhere inside the body, you change
-something the condition depends on, so the loop can eventually
-stop.</li>
-</ol>
-<p>If any of the four is missing or wrong, the loop misbehaves. The
-fourth &#8212; the update &#8212; is the one beginners forget, and forgetting it is
-serious. We will return to that.</p>
-<h3 data-number="7.2.2" id="a-worked-example-weeks-of-supply"><span
-class="header-section-number">7.2.2</span> A worked example: weeks of
-supply</h3>
-<p>Here is a supply chain question with a number for an answer: <em>a
-product has 100 units on hand and sells 25 units per week &#8212; how many
-weeks until it stocks out?</em> Notice that the answer (4) is also the
-number of times we will repeat a calculation. That is the signature of a
-<code>while</code> loop.</p>
-<pre class="javascript-code"><code>function weeksOfSupply() {
-  let inventory = 100;      // initialization
-  let weeklyDemand = 25;
-  let weeks = 0;
-
-  while (inventory &gt; 0) {   // condition
-    inventory = inventory - weeklyDemand;   // body
-    weeks = weeks + 1;                      // update
-    console.log(&quot;After week &quot; + weeks + &quot;, inventory = &quot; + inventory);
-  }
-
-  console.log(&quot;The product stocks out in week &quot; + weeks);
-}
-
-weeksOfSupply()</code></pre>
-<p>In the Apps Script editor, select <code>weeksOfSupply</code> from the
-function dropdown and click <strong>Run</strong>. The
-<code>console.log</code> output appears in the execution log at the
-bottom of the editor &#8212; the same kind of output you met in Chapter 2.</p>
-<h3 data-number="7.2.3" id="tracing-the-loop-by-hand"><span
-class="header-section-number">7.2.3</span> Tracing the loop by hand</h3>
-<p>The single most valuable habit you can build in this chapter is the
-<strong>hand-trace</strong>: stepping through a loop on paper, one pass
-at a time, writing down every variable as it changes. Here is the trace
-for <code>weeksOfSupply</code>.</p>
-<table>
-<colgroup>
-<col style="width: 8%" />
-<col style="width: 27%" />
-<col style="width: 25%" />
-<col style="width: 26%" />
-<col style="width: 12%" />
-</colgroup>
-<thead>
-<tr>
-<th>Pass</th>
-<th><code>inventory</code> before</th>
-<th><code>inventory &gt; 0</code>?</th>
-<th><code>inventory</code> after</th>
-<th><code>weeks</code></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>100</td>
-<td>true</td>
-<td>75</td>
-<td>1</td>
-</tr>
-<tr>
-<td>2</td>
-<td>75</td>
-<td>true</td>
-<td>50</td>
-<td>2</td>
-</tr>
-<tr>
-<td>3</td>
-<td>50</td>
-<td>true</td>
-<td>25</td>
-<td>3</td>
-</tr>
-<tr>
-<td>4</td>
-<td>25</td>
-<td>true</td>
-<td>0</td>
-<td>4</td>
-</tr>
-<tr>
-<td>&#8212;</td>
-<td>0</td>
-<td><strong>false</strong> &#8594; stop</td>
-<td>&#8212;</td>
-<td>4</td>
-</tr>
-</tbody>
-</table>
-<p>The loop ran four times, and <code>weeks</code> ended at 4. Look
-closely at one thing: <strong>nowhere in the code did you write the
-number 4.</strong> The loop <em>discovered</em> it. That is the whole
-reason a <code>while</code> loop exists. When the number of repetitions
-is itself the answer &#8212; or simply unknown until the work is done &#8212;
-<code>while</code> is the right tool.</p>
+<h2 data-number="7.1" id="combining-where-clauses"><span
+class="header-section-number">7.1</span> Combining WHERE Clauses</h2>
+<p>All of the filtering conditions presented in the previous lesson used
+a single criterion. SQL allows you to create more sophisticated filters
+to precisely retrieve the data you need. One powerful way to do this is
+to combine logical tests in the WHERE clause using the keywords AND and
+OR.</p>
+<div class="term">
 <blockquote>
-<p><strong>Working With Your AI Tutor</strong> A hand-trace is how a
-loop stops feeling like magic. If the table above is still fuzzy, paste
-the <code>weeksOfSupply</code> function into your AI tutor and ask:
-<em>&#8220;Trace this loop one pass at a time and show me every variable in a
-table after each pass.&#8221;</em> Then change the starting inventory to 130,
-predict the new answer yourself, and ask the tutor to check your
-prediction.</p>
+<p><strong>AND</strong> &#8212; Combines logical tests in the WHERE clause in
+such a way that both conditions must be met in a row of data for it to
+be included in the query result.</p>
 </blockquote>
-<h3 data-number="7.2.4" id="the-cardinal-danger-the-infinite-loop"><span
-class="header-section-number">7.2.4</span> The cardinal danger: the
-infinite loop</h3>
-<p>A loop that never stops is called an <strong>infinite loop</strong>,
-and it is the defining bug of this chapter. It happens when the update
-never moves the condition toward <code>false</code>.</p>
-<p>Look again at <code>weeksOfSupply</code>. What if
-<code>weeklyDemand</code> were <code>0</code>? Then
-<code>inventory = inventory - 0</code> never changes
-<code>inventory</code>, the condition <code>inventory &gt; 0</code> is
-true forever, and the loop runs without end. (Apps Script will
-eventually halt the script on its own after several minutes and report
-nothing useful &#8212; not a result, just a stopped script.)</p>
-<p>There are three classic ways to write an infinite loop:</p>
-<ul>
-<li><strong>Forget the update entirely.</strong> No
-<code>weeks = weeks + 1</code>, no change to anything the condition
-tests.</li>
-<li><strong>Update the wrong thing.</strong> You change a variable, but
-not one the condition depends on.</li>
-<li><strong>Update in the wrong direction.</strong> The condition wants
-the variable to shrink, and your body grows it.</li>
-</ul>
-<p>The discipline that prevents all three: every time you write a
-<code>while</code> loop, stop and ask one question &#8212; <em>&#8220;What does my
-body change that my condition checks, and does that change move toward
-<code>false</code>?&#8221;</em> If you cannot answer that clearly, you have a
-bug.</p>
-<hr />
-<h2 data-number="7.3"
-id="example-using-a-while-loop-to-process-data-in-a-sheet"><span
-class="header-section-number">7.3</span> 7.3 Example: Using a
-<code>while</code> Loop to Process Data in a Sheet</h2>
-<p>In Section 7.2 the numbers were hard-coded into the program. That is
-fine for learning the mechanics, but it is not how real tools work. In
-practice the data lives in the sheet, and the program reads it,
-processes it, and writes a result back.</p>
-<h3 data-number="7.3.1" id="setting-up-the-sheet"><span
-class="header-section-number">7.3.1</span> Setting up the sheet</h3>
-<p>Create a sheet named <strong><code>Stockout</code></strong> and lay
-it out as a small label-and-value form:</p>
-<pre class="spreadsheet">{"label":"sample"}</pre>
-<p>Column A holds labels for a human reader; column B holds the values
-the program will use. Cell <strong>B5</strong> is empty &#8212; that is where
-the answer goes.</p>
-<h3 data-number="7.3.2" id="the-program"><span
-class="header-section-number">7.3.2</span> The program</h3>
-<pre class="javascript-code"><code>function weeksUntilStockout() {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(&quot;Stockout&quot;);
-
-  let inventory = sheet.getRange(&quot;B2&quot;).getValue();          // read input
-  const weeklyDemand = sheet.getRange(&quot;B3&quot;).getValue();     // read input
-  let weeks = 0;
-
-  while (inventory &gt; 0) {
-    inventory = inventory - weeklyDemand;
-    weeks = weeks + 1;
-  }
-
-  sheet.getRange(&quot;B5&quot;).setValue(weeks);                     // write the result
-  console.log(&quot;Code Finished.  Check sheet for results&quot;)
-}
-
-</code></pre>
-<p>The structure is exactly the loop from Section 7.2, with two changes
-at the edges. The <em>inputs</em> are read from the sheet with
-<code>getValue()</code> instead of being typed into the code, and the
-<em>result</em> is written back with <code>setValue()</code> instead of
-printed to the log. The loop in the middle is untouched.</p>
-<p>With 480 units and demand of 60 per week, the loop runs eight times
-and cell <strong>B5</strong> fills with <code>8</code>.</p>
-<p>This is where the value of a <code>while</code> loop becomes
-concrete. You did not know &#8220;8&#8221; when you wrote the program &#8212; and you did
-not need to. Change <strong>B2</strong> to 540 and run it again: the
-loop simply runs nine times instead of eight. <strong>The loop adapts to
-the data.</strong> That is something a <code>for</code> loop, which
-commits to a count up front, cannot do as naturally.</p>
-<h3 data-number="7.3.3" id="guarding-against-the-infinite-loop"><span
-class="header-section-number">7.3.3</span> Guarding against the infinite
-loop</h3>
-<p>Section 7.2 warned that a weekly demand of <code>0</code> produces an
-infinite loop. With the demand now coming from a cell, a user could
-easily type <code>0</code>. A robust tool defends against that, and you
-already have the tool to do it &#8212; the <code>if</code>/<code>else</code>
-decision from Chapter 5:</p>
-<pre class="javascript-code"><code>function weeksUntilStockout() {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(&quot;Stockout&quot;);
-
-  let inventory = sheet.getRange(&quot;B2&quot;).getValue();
-  const weeklyDemand = sheet.getRange(&quot;B3&quot;).getValue();
-
-  if (weeklyDemand &lt;= 0) {
-    sheet.getRange(&quot;B5&quot;).setValue(&quot;No demand &#8212; will not stock out&quot;);
-  } else {
-    let weeks = 0;
-    while (inventory &gt; 0) {
-      inventory = inventory - weeklyDemand;
-      weeks = weeks + 1;
-    }
-    sheet.getRange(&quot;B5&quot;).setValue(weeks);
-  }
-}</code></pre>
-<p>The <code>if</code> runs <em>before</em> the loop and decides whether
-the loop should run at all. This pattern &#8212; a decision that protects a
-loop from bad input &#8212; is everywhere in production code.</p>
-<h3 data-number="7.3.4"
-id="a-second-while-pattern-walking-down-rows"><span
-class="header-section-number">7.3.4</span> A second <code>while</code>
-pattern: walking down rows</h3>
-<p>There is another, very common reason to use <code>while</code> with a
-sheet: you want to process every row of data, but you do not know how
-many rows there are. This week&#8217;s import might have 40 rows; next week&#8217;s
-might have 312.</p>
-<p>Suppose a sheet named <strong><code>Receipts</code></strong> lists
-received products down column A, starting in row 2, with the data ending
-wherever it ends. You can walk down the rows until you reach a blank
-cell:</p>
+</div>
+<p>The keyword AND is used to combine logical tests in such a way that
+both conditions must be met before that row of data is included in the
+query result. The keyword OR is used to combine logical tests in such a
+way that if either of the conditions is satisfied by a row of data, it
+will be included in the query result.</p>
+<div class="term">
+<blockquote>
+<p><strong>OR</strong> &#8212; Combines logical tests in the WHERE clause in
+such a way that if either condition is met in a row of data it will be
+included in the query result.</p>
+</blockquote>
+</div>
+<h2 data-number="7.2" id="using-the-and-operator"><span
+class="header-section-number">7.2</span> Using the AND Operator</h2>
+<p>Generally, you will use the AND operator to filter a query result on
+more than one column at the same time. You can use as many AND operators
+in a WHERE clause as you need to precisely define the data you need. The
+AND operator requires that <em>all</em> of the combined conditions are
+met within a single row of data for that row to be included in the query
+result.</p>
+<p>Suppose you want to list the name, nationality, and birth for French
+artists born after 1800. You can use a chat with an AI assistant to
+create the SELECT statement that will do this:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Write a SQL statement to list French artists
+born after 1800. Display their name, nationality, and birth.</p>
+<p><strong>AI:</strong> Certainly! Here&#8217;s the SQL statement to list
+French artists born after 1800 and display their name, nationality, and
+birth:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, birth</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality<span class="op">=</span><span class="st">&#39;French&#39;</span> <span class="kw">AND</span> birth<span class="op">&gt;</span><span class="dv">1800</span>;</span></code></pre></div>
+<p>This query selects the full_name, nationality, and birth columns from
+the artist table. The WHERE clause filters the results to include only
+artists with the nationality &#8216;French&#8217; and a birth year greater than
+1800. The resulting rows will contain the artist&#8217;s full name,
+nationality, and birth year for French artists born after 1800.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, birth</span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality<span class="op">=</span><span class="st">&#39;French&#39;</span> <span class="kw">AND</span> birth<span class="op">&gt;</span><span class="dv">1800</span>;</span></code></pre></div>
+<p>Take a minute to review the data retrieved by the last example query.
+Notice that all 82 artists returned meet both conditions in the WHERE
+clause. All of the artists are French. Additionally, all of the artists
+were born after 1800. This demonstrates how the AND operator works.
+Certainly there are artists in the database with a different nationality
+and those born before 1800. None of these artists will be included in
+the query result, because they would not meet one or both of the
+conditions of the WHERE clause.</p>
+<div class="review">
+<blockquote>
+<p><strong>Review: WHERE Clause Syntax.</strong> The basics of the WHERE
+clause were discussed in the previous lesson. Notice in the last example
+that both conditions are expressed as a logical test using a
+mathematical operator between two values. In this case, two different
+operators are used. The <code>=</code> sign means that the nationality
+must be exactly &#8216;French,&#8217; and the greater-than sign means that the birth
+year has to be larger than (after) 1800. Also notice the single quotes
+around the word &#8216;French.&#8217; Anytime non-numeric values are used in a
+condition, they must be enclosed in single quotes.</p>
+</blockquote>
+</div>
+<p>Consider a different example. Suppose you want to modify the last
+example to show French artists born after 1800 who do not have a middle
+name. You can use a chat with an AI assistant to create the SELECT
+statement that will do this:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Modify the previous SQL statement to show only
+those artists with a NULL value for middle_names.</p>
+<p><strong>AI:</strong> To modify the last SQL statement to show only
+those French artists born after 1800 with a NULL value for middle_names,
+you can use the following SQL statement:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, birth</span>
+<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality<span class="op">=</span><span class="st">&#39;French&#39;</span> <span class="kw">AND</span> birth<span class="op">&gt;</span><span class="dv">1800</span> <span class="kw">AND</span> middle_names <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code></pre></div>
+<p>This query selects the full_name, nationality, and birth columns from
+the artist table. The WHERE clause filters the results to include only
+artists with the nationality &#8216;French&#8217; and a birth year greater than
+1800. The resulting rows will contain the artist&#8217;s name, nationality,
+and birth year for French artists born after 1800.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, birth</span>
+<span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb4-3"><a aria-hidden="true" href="#cb4-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality<span class="op">=</span><span class="st">&#39;French&#39;</span> <span class="kw">AND</span> birth<span class="op">&gt;</span><span class="dv">1800</span> <span class="kw">AND</span> middle_names <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code></pre></div>
+<p>The example query adds an additional condition to the WHERE clause.
+In this case all three of the conditions must be met before an artist
+will be included in the query result. The artist must have &#8216;French&#8217;
+nationality, be born after 1800, and have a NULL value for their middle
+name. If any of these conditions are not met, the artist will not be
+included in the query result.</p>
+<p>Although you will generally use the keyword AND to apply conditions
+to different columns, you can use AND to apply multiple conditions to
+the same column. Recall that you can use the BETWEEN and AND keywords to
+filter for values in a range. This can also be done by adding two
+conditions to the same column.</p>
+<p>Suppose you want to list all of the artists born between 1800 and
+1900. You can use a chat with an AI assistant to create the SELECT
+statement that will do this:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Write a SQL statement to list the artists and
+their birth for those artists born in or after 1800 and in or before
+1900.</p>
+<p><strong>AI:</strong> To list the artists and their birth for those
+artists born in or after 1800 and in or before 1900, you can use the
+following SQL statement:</p>
 <div class="sourceCode" id="cb5"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">countReceipts</span>() {</span>
-<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a>  <span class="kw">const</span> sheet <span class="op">=</span> SpreadsheetApp<span class="op">.</span><span class="fu">getActiveSpreadsheet</span>()<span class="op">.</span><span class="fu">getSheetByName</span>(<span class="st">&quot;Receipts&quot;</span>)<span class="op">;</span></span>
-<span id="cb5-3"><a aria-hidden="true" href="#cb5-3" tabindex="-1"></a>  <span class="kw">let</span> row <span class="op">=</span> <span class="dv">2</span><span class="op">;</span></span>
-<span id="cb5-4"><a aria-hidden="true" href="#cb5-4" tabindex="-1"></a>  <span class="kw">let</span> count <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb5-5"><a aria-hidden="true" href="#cb5-5" tabindex="-1"></a></span>
-<span id="cb5-6"><a aria-hidden="true" href="#cb5-6" tabindex="-1"></a>  <span class="cf">while</span> (sheet<span class="op">.</span><span class="fu">getRange</span>(row<span class="op">,</span> <span class="dv">1</span>)<span class="op">.</span><span class="fu">getValue</span>() <span class="op">!==</span> <span class="st">&quot;&quot;</span>) {</span>
-<span id="cb5-7"><a aria-hidden="true" href="#cb5-7" tabindex="-1"></a>    count <span class="op">=</span> count <span class="op">+</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb5-8"><a aria-hidden="true" href="#cb5-8" tabindex="-1"></a>    row <span class="op">=</span> row <span class="op">+</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb5-9"><a aria-hidden="true" href="#cb5-9" tabindex="-1"></a>  }</span>
-<span id="cb5-10"><a aria-hidden="true" href="#cb5-10" tabindex="-1"></a></span>
-<span id="cb5-11"><a aria-hidden="true" href="#cb5-11" tabindex="-1"></a>  <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">&quot;Found &quot;</span> <span class="op">+</span> count <span class="op">+</span> <span class="st">&quot; receipts.&quot;</span>)<span class="op">;</span></span>
-<span id="cb5-12"><a aria-hidden="true" href="#cb5-12" tabindex="-1"></a>}</span></code></pre></div>
-<p>Trace the four parts: <code>row</code> starts at 2
-(<strong>initialization</strong>); each pass reads cell
-<code>(row, 1)</code> and checks that it is not the empty string
-<code>""</code> (<strong>condition</strong>); the body counts the row
-(<strong>body</strong>); and <code>row = row + 1</code> moves the cursor
-down (<strong>update</strong>). When the read finally lands on a blank
-cell, the value is <code>""</code>, the condition becomes
-<code>false</code>, and the loop stops. The &#8220;unknown count&#8221; is the
-number of data rows &#8212; discovered, not declared.</p>
-<blockquote>
-<p><strong>An honest note on performance.</strong> Reading one cell per
-pass, as <code>countReceipts</code> does, is perfectly fine while you
-are learning and for small sheets. For large sheets it is slow, because
-each <code>getRange().getValue()</code> is a separate trip to the
-spreadsheet. The professional approach is to read the whole column at
-once with <code>getValues()</code> (Chapter 6) and then loop over the
-resulting array &#8212; which is exactly the job the <code>for</code> loop in
-Section 7.4 was built for. (Note also that walking until a blank cell
-assumes the data has no blank rows in the middle; a gap would stop the
-loop early.)</p>
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, birth</span>
+<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb5-3"><a aria-hidden="true" href="#cb5-3" tabindex="-1"></a><span class="kw">WHERE</span> birth<span class="op">&gt;=</span><span class="dv">1800</span> <span class="kw">AND</span> birth<span class="op">&lt;=</span><span class="dv">1900</span>;</span></code></pre></div>
+<p>This query selects the full_name and birth columns from the artist
+table. The WHERE clause filters the results to include only artists
+whose birth year is greater than or equal to 1800 and less than or equal
+to 1900. The resulting rows will contain the artist&#8217;s full name and
+birth year for artists born in or after 1800 and in or before 1900.</p>
 </blockquote>
-<hr />
-<h2 data-number="7.4" id="the-for-loop"><span
-class="header-section-number">7.4</span> 7.4 The <code>for</code>
-Loop</h2>
-<p>Look back at the loops you have written. Many of them follow an
-identical shape: set up a counter, check the counter against a limit, do
-some work, bump the counter. That shape is so common that JavaScript
-gives it its own dedicated syntax &#8212; the <code>for</code> loop.</p>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
 <div class="sourceCode" id="cb6"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="cf">for</span> (initialization<span class="op">;</span> condition<span class="op">;</span> update) {</span>
-<span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a>  <span class="co">// body</span></span>
-<span id="cb6-3"><a aria-hidden="true" href="#cb6-3" tabindex="-1"></a>}</span></code></pre></div>
-<p>A <code>for</code> loop is not a new <em>idea</em>. It is the same
-<code>while</code> loop you already understand, with three of its four
-parts gathered onto a single line. Compare them directly. Here is a loop
-that prints &#8220;Step 0&#8221; through &#8220;Step 4,&#8221; written both ways:</p>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="co">// As a while loop</span></span>
-<span id="cb7-2"><a aria-hidden="true" href="#cb7-2" tabindex="-1"></a><span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span>                       <span class="co">// initialization</span></span>
-<span id="cb7-3"><a aria-hidden="true" href="#cb7-3" tabindex="-1"></a><span class="cf">while</span> (i <span class="op">&lt;</span> <span class="dv">5</span>) {                  <span class="co">// condition</span></span>
-<span id="cb7-4"><a aria-hidden="true" href="#cb7-4" tabindex="-1"></a>  <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">&quot;Step &quot;</span> <span class="op">+</span> i)<span class="op">;</span>      <span class="co">// body</span></span>
-<span id="cb7-5"><a aria-hidden="true" href="#cb7-5" tabindex="-1"></a>  i <span class="op">=</span> i <span class="op">+</span> <span class="dv">1</span><span class="op">;</span>                     <span class="co">// update</span></span>
-<span id="cb7-6"><a aria-hidden="true" href="#cb7-6" tabindex="-1"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="co">// As a for loop &#8212; same behavior</span></span>
-<span id="cb8-2"><a aria-hidden="true" href="#cb8-2" tabindex="-1"></a><span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">5</span><span class="op">;</span> i<span class="op">++</span>) {    <span class="co">// initialization; condition; update</span></span>
-<span id="cb8-3"><a aria-hidden="true" href="#cb8-3" tabindex="-1"></a>  <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">&quot;Step &quot;</span> <span class="op">+</span> i)<span class="op">;</span>      <span class="co">// body</span></span>
-<span id="cb8-4"><a aria-hidden="true" href="#cb8-4" tabindex="-1"></a>}</span></code></pre></div>
-<p>The three parts in the parentheses, separated by semicolons, are
-<em>initialization</em>, <em>condition</em>, and <em>update</em> &#8212; in
-that order. The body is what remains in the braces. Everything you
-learned about the four parts of a <code>while</code> loop still applies;
-the <code>for</code> loop just keeps them in one tidy place, where they
-are hard to forget.</p>
-<p>Two small pieces of new notation appear above:</p>
-<ul>
-<li><strong><code>i++</code></strong> is shorthand for
-<code>i = i + 1</code>. The two are identical; <code>i++</code> is
-simply the form you will see most often in real code, especially in
-<code>for</code> loops.</li>
-<li><strong><code>i</code></strong> is the conventional name for a loop
-counter. It is short for &#8220;index,&#8221; and you will see it constantly.</li>
-</ul>
-<h3 data-number="7.4.1" id="looping-over-an-array"><span
-class="header-section-number">7.4.1</span> Looping over an array</h3>
-<p>The single most important use of the <code>for</code> loop is walking
-through an array. Recall from Chapter 6 that an array of length 5 has
-indices <code>0, 1, 2, 3, 4</code> &#8212; counting starts at 0, and the last
-index is one <em>less</em> than the length. The standard array loop is
-built around exactly that fact:</p>
-<div class="sourceCode" id="cb9"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> items<span class="op">.</span><span class="at">length</span><span class="op">;</span> i<span class="op">++</span>) {</span>
-<span id="cb9-2"><a aria-hidden="true" href="#cb9-2" tabindex="-1"></a>  <span class="co">// items[i] is the current element</span></span>
-<span id="cb9-3"><a aria-hidden="true" href="#cb9-3" tabindex="-1"></a>}</span></code></pre></div>
-<p>Read the three parts carefully. Start <code>i</code> at
-<code>0</code> because that is the first index. Continue <strong>while
-<code>i</code> is less than</strong> <code>items.length</code> &#8212;
-<em>not</em> less than or equal. An array of length 5 has no index 5;
-reading <code>items[5]</code> gives back <code>undefined</code>. Using
-<code>&lt;=</code> instead of <code>&lt;</code> is the famous
-<strong>off-by-one error</strong>, and it is worth checking for every
-single time you write an array loop.</p>
-<h3 data-number="7.4.2"
-id="worked-example-flagging-items-that-need-reordering"><span
-class="header-section-number">7.4.2</span> Worked example: flagging
-items that need reordering</h3>
-<p>Now the synthesis. This example uses variables, primitive types,
-<code>if</code> / <code>else if</code> / <code>else</code>, comparison
-operators, arrays, <code>getValues()</code>, <code>setValues()</code> &#8212;
-and the <code>for</code> loop to tie them all together.</p>
-<p>Create a sheet named <strong><code>Inventory</code></strong> with a
-row of headers and one row per product:</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>A</th>
-<th>B</th>
-<th>C</th>
-<th>D</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>1</strong></td>
-<td>SKU</td>
-<td>On Hand</td>
-<td>Reorder Point</td>
-<td>Status</td>
-</tr>
-<tr>
-<td><strong>2</strong></td>
-<td>SKU-100</td>
-<td>480</td>
-<td>150</td>
-<td></td>
-</tr>
-<tr>
-<td><strong>3</strong></td>
-<td>SKU-101</td>
-<td>90</td>
-<td>150</td>
-<td></td>
-</tr>
-<tr>
-<td><strong>4</strong></td>
-<td>SKU-102</td>
-<td>0</td>
-<td>75</td>
-<td></td>
-</tr>
-<tr>
-<td><strong>5</strong></td>
-<td>SKU-103</td>
-<td>220</td>
-<td>200</td>
-<td></td>
-</tr>
-<tr>
-<td><strong>6</strong></td>
-<td>SKU-104</td>
-<td>60</td>
-<td>120</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>Column D is empty. The program will fill it with one of three
-statuses for every product:</p>
-<div class="sourceCode" id="cb10"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb10-1"><a aria-hidden="true" href="#cb10-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">flagReorders</span>() {</span>
-<span id="cb10-2"><a aria-hidden="true" href="#cb10-2" tabindex="-1"></a>  <span class="kw">const</span> sheet <span class="op">=</span> SpreadsheetApp<span class="op">.</span><span class="fu">getActiveSpreadsheet</span>()<span class="op">.</span><span class="fu">getSheetByName</span>(<span class="st">&quot;Inventory&quot;</span>)<span class="op">;</span></span>
-<span id="cb10-3"><a aria-hidden="true" href="#cb10-3" tabindex="-1"></a></span>
-<span id="cb10-4"><a aria-hidden="true" href="#cb10-4" tabindex="-1"></a>  <span class="kw">const</span> lastRow <span class="op">=</span> sheet<span class="op">.</span><span class="fu">getLastRow</span>()<span class="op">;</span></span>
-<span id="cb10-5"><a aria-hidden="true" href="#cb10-5" tabindex="-1"></a>  <span class="kw">const</span> numItems <span class="op">=</span> lastRow <span class="op">-</span> <span class="dv">1</span><span class="op">;</span>        <span class="co">// subtract the header row</span></span>
-<span id="cb10-6"><a aria-hidden="true" href="#cb10-6" tabindex="-1"></a></span>
-<span id="cb10-7"><a aria-hidden="true" href="#cb10-7" tabindex="-1"></a>  <span class="co">// Read the On Hand and Reorder Point columns in one batch</span></span>
-<span id="cb10-8"><a aria-hidden="true" href="#cb10-8" tabindex="-1"></a>  <span class="kw">const</span> data <span class="op">=</span> sheet<span class="op">.</span><span class="fu">getRange</span>(<span class="dv">2</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> numItems<span class="op">,</span> <span class="dv">2</span>)<span class="op">.</span><span class="fu">getValues</span>()<span class="op">;</span></span>
-<span id="cb10-9"><a aria-hidden="true" href="#cb10-9" tabindex="-1"></a>  <span class="kw">let</span> statuses <span class="op">=</span> []<span class="op">;</span></span>
-<span id="cb10-10"><a aria-hidden="true" href="#cb10-10" tabindex="-1"></a></span>
-<span id="cb10-11"><a aria-hidden="true" href="#cb10-11" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> data<span class="op">.</span><span class="at">length</span><span class="op">;</span> i<span class="op">++</span>) {</span>
-<span id="cb10-12"><a aria-hidden="true" href="#cb10-12" tabindex="-1"></a>    <span class="kw">let</span> onHand <span class="op">=</span> data[i][<span class="dv">0</span>]<span class="op">;</span>           <span class="co">// column B for this row</span></span>
-<span id="cb10-13"><a aria-hidden="true" href="#cb10-13" tabindex="-1"></a>    <span class="kw">let</span> reorderPoint <span class="op">=</span> data[i][<span class="dv">1</span>]<span class="op">;</span>     <span class="co">// column C for this row</span></span>
-<span id="cb10-14"><a aria-hidden="true" href="#cb10-14" tabindex="-1"></a>    <span class="kw">let</span> status <span class="op">=</span> <span class="st">&quot;&quot;</span><span class="op">;</span></span>
-<span id="cb10-15"><a aria-hidden="true" href="#cb10-15" tabindex="-1"></a></span>
-<span id="cb10-16"><a aria-hidden="true" href="#cb10-16" tabindex="-1"></a>    <span class="cf">if</span> (onHand <span class="op">&lt;=</span> <span class="dv">0</span>) {</span>
-<span id="cb10-17"><a aria-hidden="true" href="#cb10-17" tabindex="-1"></a>      status <span class="op">=</span> <span class="st">&quot;STOCKOUT&quot;</span><span class="op">;</span></span>
-<span id="cb10-18"><a aria-hidden="true" href="#cb10-18" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (onHand <span class="op">&lt;=</span> reorderPoint) {</span>
-<span id="cb10-19"><a aria-hidden="true" href="#cb10-19" tabindex="-1"></a>      status <span class="op">=</span> <span class="st">&quot;REORDER&quot;</span><span class="op">;</span></span>
-<span id="cb10-20"><a aria-hidden="true" href="#cb10-20" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb10-21"><a aria-hidden="true" href="#cb10-21" tabindex="-1"></a>      status <span class="op">=</span> <span class="st">&quot;OK&quot;</span><span class="op">;</span></span>
-<span id="cb10-22"><a aria-hidden="true" href="#cb10-22" tabindex="-1"></a>    }</span>
-<span id="cb10-23"><a aria-hidden="true" href="#cb10-23" tabindex="-1"></a></span>
-<span id="cb10-24"><a aria-hidden="true" href="#cb10-24" tabindex="-1"></a>    statuses<span class="op">.</span><span class="fu">push</span>([status])<span class="op">;</span>           <span class="co">// wrap in [ ] &#8212; see note below</span></span>
-<span id="cb10-25"><a aria-hidden="true" href="#cb10-25" tabindex="-1"></a>  }</span>
-<span id="cb10-26"><a aria-hidden="true" href="#cb10-26" tabindex="-1"></a></span>
-<span id="cb10-27"><a aria-hidden="true" href="#cb10-27" tabindex="-1"></a>  <span class="co">// Write the whole Status column back in one batch</span></span>
-<span id="cb10-28"><a aria-hidden="true" href="#cb10-28" tabindex="-1"></a>  sheet<span class="op">.</span><span class="fu">getRange</span>(<span class="dv">2</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> statuses<span class="op">.</span><span class="at">length</span><span class="op">,</span> <span class="dv">1</span>)<span class="op">.</span><span class="fu">setValues</span>(statuses)<span class="op">;</span></span>
-<span id="cb10-29"><a aria-hidden="true" href="#cb10-29" tabindex="-1"></a>}</span></code></pre></div>
-<p>Walk through what happens:</p>
-<ul>
-<li><strong><code>getLastRow()</code></strong> reports the last row that
-has data, so <code>numItems</code> is the product count, however many
-that is. Add a product to the sheet and the program adapts with no
-edit.</li>
-<li><strong><code>getRange(2, 2, numItems, 2).getValues()</code></strong>
-reads a block starting at row 2, column 2 (B), spanning
-<code>numItems</code> rows and 2 columns. The result, <code>data</code>,
-is a two-dimensional array: <code>data[i]</code> is one product&#8217;s row,
-<code>data[i][0]</code> is its On Hand, <code>data[i][1]</code> is its
-Reorder Point.</li>
-<li>The <strong><code>for</code> loop</strong> visits every row index
-from <code>0</code> to <code>data.length - 1</code>.</li>
-<li>Inside the loop, the <strong><code>if</code> / <code>else if</code>
-/ <code>else</code></strong> chain &#8212; straight from Chapter 5 &#8212; assigns
-one of three statuses. Order matters: <code>STOCKOUT</code> is tested
-first because a stocked-out item is also below its reorder point, and
-you want the more urgent label to win.</li>
-<li><strong><code>statuses.push([status])</code></strong> adds the
-result to an array. Each pushed value is itself a one-element array &#8212;
-<code>[status]</code>, not <code>status</code> &#8212; because
-<code>setValues()</code> expects a two-dimensional array, and a single
-column is a stack of one-cell rows.</li>
-<li><strong><code>setValues()</code></strong> writes the entire column
-back in one operation.</li>
-</ul>
-<p>Run it, and column D fills: <code>OK</code>, <code>REORDER</code>,
-<code>STOCKOUT</code>, <code>OK</code>, <code>REORDER</code>. The
-decisive point: <strong>this same function processes 5 products or 5,000
-with not one character changed.</strong> That is the payoff the
-copy-paste approach of Section 7.1 could never deliver.</p>
-<h3 data-number="7.4.3" id="worked-example-finding-the-bottleneck"><span
-class="header-section-number">7.4.3</span> Worked example: finding the
-bottleneck</h3>
-<p>The <code>for</code> loop is also the natural home for a pattern
-called the <strong>running comparison</strong> &#8212; scanning a list to find
-its largest or smallest value. In supply chain terms, that is exactly
-how you find a <strong>bottleneck</strong>.</p>
-<p>A process is a sequence of steps, and each step has a
-<em>capacity</em> &#8212; the most it can produce per hour. A chain is only as
-strong as its weakest link, and a process line is only as fast as its
-slowest step. The bottleneck is the step with the <em>minimum</em>
-capacity, and that minimum is also the throughput of the entire
-line.</p>
-<div class="sourceCode" id="cb11"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb11-1"><a aria-hidden="true" href="#cb11-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">findBottleneck</span>() {</span>
-<span id="cb11-2"><a aria-hidden="true" href="#cb11-2" tabindex="-1"></a>  <span class="kw">const</span> stepCapacities <span class="op">=</span> [<span class="dv">120</span><span class="op">,</span> <span class="dv">95</span><span class="op">,</span> <span class="dv">140</span><span class="op">,</span> <span class="dv">80</span><span class="op">,</span> <span class="dv">110</span>]<span class="op">;</span>   <span class="co">// units/hour, steps 1&#8211;5</span></span>
-<span id="cb11-3"><a aria-hidden="true" href="#cb11-3" tabindex="-1"></a></span>
-<span id="cb11-4"><a aria-hidden="true" href="#cb11-4" tabindex="-1"></a>  <span class="kw">let</span> bottleneck <span class="op">=</span> stepCapacities[<span class="dv">0</span>]<span class="op">;</span>   <span class="co">// assume step 1 is slowest, for now</span></span>
-<span id="cb11-5"><a aria-hidden="true" href="#cb11-5" tabindex="-1"></a>  <span class="kw">let</span> bottleneckStep <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb11-6"><a aria-hidden="true" href="#cb11-6" tabindex="-1"></a></span>
-<span id="cb11-7"><a aria-hidden="true" href="#cb11-7" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> stepCapacities<span class="op">.</span><span class="at">length</span><span class="op">;</span> i<span class="op">++</span>) {</span>
-<span id="cb11-8"><a aria-hidden="true" href="#cb11-8" tabindex="-1"></a>    <span class="cf">if</span> (stepCapacities[i] <span class="op">&lt;</span> bottleneck) {</span>
-<span id="cb11-9"><a aria-hidden="true" href="#cb11-9" tabindex="-1"></a>      bottleneck <span class="op">=</span> stepCapacities[i]<span class="op">;</span></span>
-<span id="cb11-10"><a aria-hidden="true" href="#cb11-10" tabindex="-1"></a>      bottleneckStep <span class="op">=</span> i <span class="op">+</span> <span class="dv">1</span><span class="op">;</span>           <span class="co">// human-friendly step number</span></span>
-<span id="cb11-11"><a aria-hidden="true" href="#cb11-11" tabindex="-1"></a>    }</span>
-<span id="cb11-12"><a aria-hidden="true" href="#cb11-12" tabindex="-1"></a>  }</span>
-<span id="cb11-13"><a aria-hidden="true" href="#cb11-13" tabindex="-1"></a></span>
-<span id="cb11-14"><a aria-hidden="true" href="#cb11-14" tabindex="-1"></a>  <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">&quot;Bottleneck is step &quot;</span> <span class="op">+</span> bottleneckStep <span class="op">+</span></span>
-<span id="cb11-15"><a aria-hidden="true" href="#cb11-15" tabindex="-1"></a>              <span class="st">&quot; at &quot;</span> <span class="op">+</span> bottleneck <span class="op">+</span> <span class="st">&quot; units/hour.&quot;</span>)<span class="op">;</span></span>
-<span id="cb11-16"><a aria-hidden="true" href="#cb11-16" tabindex="-1"></a>  <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">&quot;The whole line can produce at most &quot;</span> <span class="op">+</span></span>
-<span id="cb11-17"><a aria-hidden="true" href="#cb11-17" tabindex="-1"></a>              bottleneck <span class="op">+</span> <span class="st">&quot; units/hour.&quot;</span>)<span class="op">;</span></span>
-<span id="cb11-18"><a aria-hidden="true" href="#cb11-18" tabindex="-1"></a>}</span></code></pre></div>
-<p>Two design choices are worth pausing on:</p>
-<ul>
-<li><strong>Why seed <code>bottleneck</code> with the first element and
-start the loop at <code>i = 1</code>?</strong> You need
-<em>something</em> to compare against on the first pass. Treating step 1
-as the provisional answer, then checking steps 2 onward, does exactly
-that. (An alternative is to seed with a deliberately huge number and
-loop from <code>i = 0</code>; both are valid.)</li>
-<li><strong>Why <code>i + 1</code>?</strong> The array is indexed from
-0, but people number process steps from 1.
-<code>bottleneckStep = i + 1</code> translates the machine&#8217;s count into
-a human&#8217;s.</li>
-</ul>
-<p>For the data above, the loop reports <strong>step 4, at 80
-units/hour</strong> &#8212; and that 80 is the ceiling on the entire line&#8217;s
-output, no matter how fast the other four steps run.</p>
-<h3 data-number="7.4.4" id="choosing-between-for-and-while"><span
-class="header-section-number">7.4.4</span> Choosing between
-<code>for</code> and <code>while</code></h3>
-<p>Because a <code>for</code> loop is just a packaged <code>while</code>
-loop, the two are interchangeable in principle. The choice is about
-making your <em>intent</em> obvious to the next person who reads the
-code &#8212; often a future you.</p>
-<ul>
-<li>Reach for <strong><code>for</code></strong> when the number of
-repetitions, or the collection, is known up front. <em>&#8220;Do this for
-every SKU.&#8221; &#8220;Repeat for all twelve months.&#8221; &#8220;Visit every process
-step.&#8221;</em> If you can phrase the task with the words <strong>&#8220;for
-each,&#8221;</strong> a <code>for</code> loop will read naturally.</li>
-<li>Reach for <strong><code>while</code></strong> when the number of
-repetitions depends on something that unfolds <em>as the loop runs</em>.
-<em>&#8220;Keep depleting until the product stocks out.&#8221; &#8220;Keep reading rows
-until a blank one.&#8221;</em> If you phrase the task with
-<strong>&#8220;until&#8221;</strong> or <strong>&#8220;as long as,&#8221;</strong> a
-<code>while</code> loop will read naturally.</li>
-</ul>
-<hr />
-<h2 data-number="7.5" id="chapter-summary"><span
-class="header-section-number">7.5</span> Chapter Summary</h2>
-<ul>
-<li>A <strong>loop</strong> pairs a block of code with a rule for how
-many times it runs, letting you write logic once and apply it many times
-&#8212; across many items, or across many repetitions.</li>
-<li>A <strong><code>while</code> loop</strong> runs its body as long as
-a condition stays <code>true</code>. Every correct <code>while</code>
-loop has four parts: <strong>initialization</strong> before the loop,
-and a <strong>condition</strong>, a <strong>body</strong>, and an
-<strong>update</strong> working together.</li>
-<li>A <strong><code>while</code> loop</strong> is the right choice when
-the number of repetitions is unknown in advance &#8212; and is often the very
-answer you are computing (weeks until stockout, number of data
-rows).</li>
-<li>An <strong>infinite loop</strong> happens when the update never
-moves the condition toward <code>false</code>. Always ask: <em>what does
-my body change that my condition checks, and does it move toward
-stopping?</em></li>
-<li>A <strong><code>for</code> loop</strong> is the same four parts as a
-<code>while</code> loop, gathered onto one line:
-<code>for (initialization; condition; update)</code>. It is the right
-choice when the count or the collection is known up front.</li>
-<li>The standard pattern for looping an array is
-<code>for (let i = 0; i &lt; arr.length; i++)</code>. Use
-<code>&lt;</code>, not <code>&lt;=</code> &#8212; the <strong>off-by-one
-error</strong> is the most common bug in array loops.</li>
-<li>Loops and arrays are partners: arrays <em>hold</em> many values;
-loops <em>act on</em> them. Combined with <code>getValues()</code> and
-<code>setValues()</code>, a single loop can process a spreadsheet of any
-size.</li>
-</ul>
-<hr />
-<h2 data-number="7.6" id="practice-problems"><span
-class="header-section-number">7.6</span> Practice Problems</h2>
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, birth</span>
+<span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb6-3"><a aria-hidden="true" href="#cb6-3" tabindex="-1"></a><span class="kw">WHERE</span> birth<span class="op">&gt;=</span><span class="dv">1800</span> <span class="kw">AND</span> birth<span class="op">&lt;=</span><span class="dv">1900</span>;</span></code></pre></div>
+<p>In the example query, the keyword AND is used to apply two criteria
+to the same column (<code>birth&gt;=1800 AND birth&lt;=1900</code>). In
+order for both of these conditions to be met, the artist&#8217;s birth must
+have happened between 1800 and 1900 (including either 1800 or 1900). It
+is important to note that the same results would be achieved using the
+BETWEEN and AND keywords in a single condition
+(<code>WHERE birth BETWEEN 1800 AND 1900</code>).</p>
+<h2 data-number="7.3" id="using-the-or-operator"><span
+class="header-section-number">7.3</span> Using the OR Operator</h2>
+<p>The keyword OR can also be used to combine conditions in the WHERE
+clause. Whereas the keyword AND requires that all conditions are met
+within a row for that row to be included in a query result, OR requires
+that only one condition is met. This is particularly helpful if you want
+to apply two different conditions to the same column.</p>
+<p>For example, you may want to list both the English and French artists
+and their nationality. You can use a chat with an AI assistant to create
+the SELECT statement that will do this:</p>
+<div class="ai">
 <blockquote>
-<p><strong>Working With Your AI Tutor</strong> Treat these as
-conversations, not quizzes. A productive prompt is not <em>&#8220;give me the
-answer to problem 3&#8221;</em> but <em>&#8220;Here is my code for problem 3 and the
-error I&#8217;m getting &#8212; ask me questions until I can find the bug
-myself.&#8221;</em> The goal is to leave each problem able to write the loop
-unaided.</p>
+<p><strong>You:</strong> Write a SQL statement to list the English and
+French artists and their nationality. Use the keyword OR.</p>
+<p><strong>AI:</strong> Certainly! Here&#8217;s the SQL statement to list the
+English and French artists and their nationality using the OR
+keyword:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality</span>
+<span id="cb7-2"><a aria-hidden="true" href="#cb7-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb7-3"><a aria-hidden="true" href="#cb7-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality<span class="op">=</span><span class="st">&#39;English&#39;</span> <span class="kw">OR</span> nationality<span class="op">=</span><span class="st">&#39;French&#39;</span>;</span></code></pre></div>
+<p>This query selects the full_name and nationality columns from the
+artist table. The WHERE clause filters the results to include only
+artists whose nationality is either &#8216;English&#8217; OR &#8216;French&#8217;. The resulting
+rows will contain the artist&#8217;s full name and nationality for artists who
+are either English or French. The OR keyword is used to combine multiple
+conditions for the nationality column.</p>
 </blockquote>
-<p><strong>1. Average demand (forecasting).</strong> A sheet named
-<code>Demand</code> holds twelve monthly demand values in cells
-<code>B2:B13</code>. Write a <code>for</code> loop that computes the
-average monthly demand and writes it to <code>B15</code>. <em>Hint: keep
-a running total inside the loop, then divide by the number of values
-after the loop ends.</em></p>
-<p><strong>2. Moving average (forecasting).</strong> Harder. Using the
-same <code>Demand</code> sheet, compute a <strong>3-month moving
-average</strong> and write each result into column C. <em>Hint: think
-carefully about which rows can have a 3-month average at all &#8212; the first
-two cannot.</em></p>
-<p><strong>3. Weeks of supply for every product (inventory).</strong>
-Combine Sections 7.3 and 7.4. A sheet named <code>Inventory</code> has
-columns for SKU, On Hand, and Weekly Demand. For <em>every</em> product,
-compute the weeks until stockout and write it into a new column.
-<em>Hint: this is your first <strong>nested loop</strong> &#8212; a
-<code>while</code> loop (the stockout simulation) running inside a
-<code>for</code> loop (one pass per product).</em></p>
-<p><strong>4. Step utilization (process flow capacity).</strong> Given
-the step capacities <code>[120, 95, 140, 80, 110]</code>, the line
-throughput equals the bottleneck (Section 7.4). For each step, compute
-its <strong>utilization</strong> = throughput &#247; step capacity, expressed
-as a percentage. Which step comes out at 100%, and why does that make
-sense?</p>
-<p><strong>5. Fix the infinite loop (debugging).</strong> The loop below
-never stops. Explain precisely why, then fix it so it counts down from
-500 to 0.</p>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality</span>
+<span id="cb8-2"><a aria-hidden="true" href="#cb8-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb8-3"><a aria-hidden="true" href="#cb8-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="op">=</span> <span class="st">&#39;English&#39;</span> <span class="kw">OR</span> nationality <span class="op">=</span> <span class="st">&#39;French&#39;</span>;</span></code></pre></div>
+<p>In this example, the keyword OR is used to combine two conditions on
+the nationality column. If an artist is either English or French, they
+will be included in the query result. You might be wondering what would
+happen if you combined these two conditions using the keyword AND
+instead of OR, as in this SQL statement:</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality</span>
+<span id="cb9-2"><a aria-hidden="true" href="#cb9-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb9-3"><a aria-hidden="true" href="#cb9-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="op">=</span> <span class="st">&#39;English&#39;</span> <span class="kw">AND</span> nationality <span class="op">=</span> <span class="st">&#39;French&#39;</span>;</span></code></pre></div>
+<p>Notice that this example query does not return any rows. This happens
+because there is only one nationality for each artist on the table. It
+would be impossible for an artist to be English <em>and</em> French in
+the database. Therefore, none of the artists meet <em>both</em>
+conditions and the query does not return any rows.</p>
+<p>The keyword OR can be used to combine more than two conditions. It
+can also be used to combine conditions on different columns. Perhaps you
+want to list the artists, their nationality, birth, and death for those
+artists whose nationality is Mexican, who were born before 1400, or who
+died after 1970. You can use a chat with an AI assistant to create the
+SELECT statement that will do this:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Write a SQL statement to list the artists,
+their nationality, birth, and death for those artists whose nationality
+is Mexican, who were born before 1400, or who died after 1970.</p>
+<p><strong>AI:</strong> To list the artists, their nationality, birth,
+and death for those artists whose nationality is Mexican, who were born
+before 1400, or who died after 1970, you can use the following SQL
+statement:</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a aria-hidden="true" href="#cb10-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, birth, death</span>
+<span id="cb10-2"><a aria-hidden="true" href="#cb10-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb10-3"><a aria-hidden="true" href="#cb10-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="op">=</span> <span class="st">&#39;Mexican&#39;</span> <span class="kw">OR</span> birth <span class="op">&lt;</span> <span class="dv">1400</span> <span class="kw">OR</span> death <span class="op">&gt;</span> <span class="dv">1970</span>;</span></code></pre></div>
+<p>This query selects the full_name, nationality, birth, and death
+columns from the artist table. The WHERE clause filters the results to
+include only artists who meet any of the following conditions:</p>
+<ul>
+<li>Nationality is &#8216;Mexican&#8217;</li>
+<li>Birth year is before 1400</li>
+<li>Death year is after 1970</li>
+</ul>
+<p>The resulting rows will contain the artist&#8217;s full name, nationality,
+birth year, and death year for Mexican artists, artists born before
+1400, or artists who died after 1970.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb11-1"><a aria-hidden="true" href="#cb11-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, birth, death</span>
+<span id="cb11-2"><a aria-hidden="true" href="#cb11-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb11-3"><a aria-hidden="true" href="#cb11-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="op">=</span> <span class="st">&#39;Mexican&#39;</span> <span class="kw">OR</span> birth<span class="op">&lt;</span><span class="dv">1400</span> <span class="kw">OR</span> death<span class="op">&gt;</span><span class="dv">1970</span>;</span></code></pre></div>
+<p>The example query demonstrates a few important concepts relating to
+the keyword OR. First, OR can be used to combine more than two
+conditions. Second, OR can be used to combine conditions on different
+columns in the table. Third, this example clearly demonstrates how OR
+works. The query returns three rows. Each of the rows is returned
+because it satisfies only one of the three conditions in the WHERE
+clause. Angel Zarraga has a nationality of Mexican, Jan Van Eyck was
+born before 1400, and Salvador Dali died after 1970. None of these three
+artists satisfy more than one of the conditions in the WHERE clause.</p>
+<h2 data-number="7.4" id="understanding-order-of-evaluation"><span
+class="header-section-number">7.4</span> Understanding Order of
+Evaluation</h2>
+<p>The WHERE clause can use any number of AND and OR keywords. Using
+combinations of the two enables you to build a sophisticated set of
+conditions that precisely retrieve the data you need. However, combining
+AND and OR creates an unexpected problem. This problem is best explained
+using an example. Assume you want to list the Irish and Canadian artists
+who died after 1900. You might use this SQL statement to retrieve these
+artists:</p>
 <div class="sourceCode" id="cb12"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a><span class="kw">let</span> units <span class="op">=</span> <span class="dv">500</span><span class="op">;</span></span>
-<span id="cb12-2"><a aria-hidden="true" href="#cb12-2" tabindex="-1"></a><span class="cf">while</span> (units <span class="op">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb12-3"><a aria-hidden="true" href="#cb12-3" tabindex="-1"></a>  <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(units)<span class="op">;</span></span>
-<span id="cb12-4"><a aria-hidden="true" href="#cb12-4" tabindex="-1"></a>}</span></code></pre></div>
-<p><em>Hint: review the four parts of a <code>while</code> loop from
-Section 7.2. One of them is missing.</em></p>
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, death</span>
+<span id="cb12-2"><a aria-hidden="true" href="#cb12-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb12-3"><a aria-hidden="true" href="#cb12-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="op">=</span> <span class="st">&#39;Irish&#39;</span> <span class="kw">OR</span> nationality <span class="op">=</span> <span class="st">&#39;Canadian&#39;</span> <span class="kw">AND</span> death<span class="op">&gt;</span><span class="dv">1900</span>;</span></code></pre></div>
+<p>Notice that the rows in the query result are not quite right. Ernest
+Lawson and Jack Butler Yeats are artists that meet the conditions you
+were hoping to set. However, Charles Cromwell Ingham does not. Charles
+is of Irish nationality, but died before 1900. The SELECT statement does
+not return the desired artists because of the order of operations for
+AND and OR. When AND and OR are combined in the WHERE clause, the
+conditions combined with the keyword AND run before those combined with
+OR.</p>
+<p>In this case, <code>nationality = 'Canadian' AND death&gt;1900</code>
+will be checked together and first. Canadian artists who died after 1900
+will be retrieved by the query. With this pair of conditions checked,
+the remaining OR condition is applied
+(<code>nationality='Irish'</code>). Any Irish artists will be returned
+by the query regardless of when they died (the condition
+<code>death&gt;1900</code> is only applied to Canadian artists). This
+query can be revised to ensure that only the Irish artists returned by
+the query are those who died after 1900. The revised syntax would
+be:</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb13-1"><a aria-hidden="true" href="#cb13-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, death</span>
+<span id="cb13-2"><a aria-hidden="true" href="#cb13-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb13-3"><a aria-hidden="true" href="#cb13-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="op">=</span> <span class="st">&#39;Irish&#39;</span> <span class="kw">AND</span> death<span class="op">&gt;</span><span class="dv">1900</span> <span class="kw">OR</span> nationality <span class="op">=</span> <span class="st">&#39;Canadian&#39;</span> <span class="kw">AND</span> death<span class="op">&gt;</span><span class="dv">1900</span>;</span></code></pre></div>
+<p>Duplicating the condition <code>death&gt;1900</code> and combining it
+with the <code>nationality='Irish'</code> condition with the keyword AND
+will ensure that only those Irish artists who died after 1900 will be
+returned by the query. A more elegant way to write this query would be
+to use parentheses. Parentheses are used to group condition statements
+that must be executed together first, much like parentheses in
+arithmetic force certain operations to be completed first. The revised
+SQL statement that uses parentheses would be:</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb14-1"><a aria-hidden="true" href="#cb14-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, death</span>
+<span id="cb14-2"><a aria-hidden="true" href="#cb14-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb14-3"><a aria-hidden="true" href="#cb14-3" tabindex="-1"></a><span class="kw">WHERE</span> (nationality <span class="op">=</span> <span class="st">&#39;Irish&#39;</span> <span class="kw">OR</span> nationality <span class="op">=</span> <span class="st">&#39;Canadian&#39;</span>) <span class="kw">AND</span> death<span class="op">&gt;</span><span class="dv">1900</span>;</span></code></pre></div>
+<p>The parentheses in this last example force the conditions
+<code>nationality = 'Irish' OR nationality = 'Canadian'</code> to be
+combined first. When checked, the Irish and Canadian artists are added
+to the query result. Once these conditions are checked, the remaining
+condition (<code>death&gt;1900</code>) is applied to the set of Irish
+and Canadian artists. This will ensure only the Irish and Canadian
+artists who died after 1900 are retrieved by the query.</p>
+<div class="tip">
+<blockquote>
+<p><strong>Tip: Parentheses and Grouping Conditions in the WHERE
+Clause.</strong> When a WHERE clause must include a combination of the
+keywords AND and OR, use parentheses to group the combinations of
+conditions that must be executed together.</p>
+</blockquote>
+</div>
+<h2 data-number="7.5" id="using-the-in-operator"><span
+class="header-section-number">7.5</span> Using the IN Operator</h2>
+<p>The keyword IN can be used in the WHERE clause to compare the values
+in a column to a set of alternative values. You can use IN as an
+alternative to combining conditions against a single column using the
+keyword OR. It is particularly helpful when you have more than two or
+three alternative values to check for in a column.</p>
+<div class="term">
+<blockquote>
+<p><strong>IN</strong> &#8212; The keyword IN is used in the WHERE clause to
+compare the values in a column to a set of alternative values.</p>
+</blockquote>
+</div>
+<p>Suppose you wish to list the English, French, and Spanish artists and
+their nationality. You can use a chat with an AI assistant to create the
+SELECT statement that will do this:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Write a SQL statement to list the English,
+French, and Spanish artists and their nationality.</p>
+<p><strong>AI:</strong> To list the English, French, and Spanish artists
+and their nationality, you can use the following SQL statement:</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb15-1"><a aria-hidden="true" href="#cb15-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality</span>
+<span id="cb15-2"><a aria-hidden="true" href="#cb15-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb15-3"><a aria-hidden="true" href="#cb15-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="kw">IN</span> (<span class="st">&#39;English&#39;</span>, <span class="st">&#39;French&#39;</span>, <span class="st">&#39;Spanish&#39;</span>);</span></code></pre></div>
+<p>This query selects the full_name and nationality columns from the
+artist table. The WHERE clause filters the results to include only
+artists whose nationality is either &#8216;English&#8217;, &#8216;French&#8217;, or &#8216;Spanish&#8217;.
+The IN keyword is used to specify a list of multiple values for the
+nationality column. The resulting rows will contain the artist&#8217;s full
+name and nationality for artists who are either English, French, or
+Spanish.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb16-1"><a aria-hidden="true" href="#cb16-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality</span>
+<span id="cb16-2"><a aria-hidden="true" href="#cb16-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb16-3"><a aria-hidden="true" href="#cb16-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="kw">IN</span> (<span class="st">&#39;English&#39;</span>, <span class="st">&#39;French&#39;</span>, <span class="st">&#39;Spanish&#39;</span>);</span></code></pre></div>
+<p>This query uses the keyword IN to return the English, French, and
+Spanish artists. You could also return the same records using this
+syntax:</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb17-1"><a aria-hidden="true" href="#cb17-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality</span>
+<span id="cb17-2"><a aria-hidden="true" href="#cb17-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb17-3"><a aria-hidden="true" href="#cb17-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality<span class="op">=</span><span class="st">&#39;English&#39;</span> <span class="kw">OR</span> nationality<span class="op">=</span><span class="st">&#39;French&#39;</span> <span class="kw">OR</span> nationality<span class="op">=</span><span class="st">&#39;Spanish&#39;</span>;</span></code></pre></div>
+<p>Since both produce the same results, you may be wondering why you
+would use IN in place of OR. Here are a few reasons:</p>
+<ol type="1">
+<li>The IN syntax is shorter and easier to read, particularly when there
+are a lot of options to check.</li>
+<li>It is easier to manage the order of operations using IN when it is
+combined with other criteria using the AND keyword.</li>
+<li>Queries that use the keyword IN will process faster than those that
+use OR, though the differences in processing speed may not be
+noticeable.</li>
+<li>The keyword IN can be used with more advanced queries that you will
+learn about later in this resource. OR cannot be used with these
+queries.</li>
+</ol>
+<h2 data-number="7.6" id="using-the-not-operator"><span
+class="header-section-number">7.6</span> Using the NOT Operator</h2>
+<p>The keyword NOT has a unique function in the WHERE clause. It is used
+to negate the condition that appears after it in the clause. There are
+times when it is easier to describe a condition in terms of what
+something isn&#8217;t rather than what it is. NOT provides the simplest way to
+create conditions that accomplish this.</p>
+<div class="term">
+<blockquote>
+<p><strong>NOT</strong> &#8212; The keyword NOT is used in the WHERE clause to
+negate the condition that appears after it in the clause.</p>
+</blockquote>
+</div>
+<p>For example, you may wish to list the artists and their nationality
+who are not &#8216;French&#8217;. You can use a chat with an AI assistant to create
+the SELECT statement that will do this:</p>
+<div class="ai">
+<blockquote>
+<p><strong>You:</strong> Use the keyword NOT to write a SQL statement to
+list the artists and their nationality who are not &#8216;French&#8217;.</p>
+<p><strong>AI:</strong> Certainly! Here&#8217;s the SQL statement to list the
+artists and their nationality who are not &#8216;French&#8217; using the NOT
+keyword:</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb18-1"><a aria-hidden="true" href="#cb18-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality</span>
+<span id="cb18-2"><a aria-hidden="true" href="#cb18-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb18-3"><a aria-hidden="true" href="#cb18-3" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">NOT</span> nationality <span class="op">=</span> <span class="st">&#39;French&#39;</span>;</span></code></pre></div>
+<p>This query selects the full_name and nationality columns from the
+artist table. The WHERE clause uses the NOT keyword to negate the
+condition (<code>nationality = 'French'</code>). This means that the
+condition will be true for all nationalities except &#8216;French&#8217;. The
+resulting rows will contain the artist&#8217;s full name and nationality for
+artists who are not &#8216;French&#8217;.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb19-1"><a aria-hidden="true" href="#cb19-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality</span>
+<span id="cb19-2"><a aria-hidden="true" href="#cb19-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb19-3"><a aria-hidden="true" href="#cb19-3" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">NOT</span> nationality <span class="op">=</span> <span class="st">&#39;French&#39;</span>;</span></code></pre></div>
+<p>In this example the condition that is negated by the keyword NOT is
+<code>nationality = 'French'</code>. The query returns all of the rows
+in the table that don&#8217;t meet this condition. Alternatively, the same
+records could be returned if you created a condition to include artists
+with each of the other nationalities. Notice how much easier it is to
+use the NOT keyword to exclude French artists than it would be to write
+the condition to include the artists with all of the other
+nationalities.</p>
+<p>There is a third way to retrieve the same records. The WHERE clause
+could have also used the <code>&lt;&gt;</code> operator. The syntax of
+this SQL statement would be:</p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb20-1"><a aria-hidden="true" href="#cb20-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality</span>
+<span id="cb20-2"><a aria-hidden="true" href="#cb20-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb20-3"><a aria-hidden="true" href="#cb20-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="op">&lt;&gt;</span> <span class="st">&#39;French&#39;</span>;</span></code></pre></div>
+<p>The <code>&lt;&gt;</code> operator can often be used instead of the
+keyword NOT to retrieve the same rows. There are situations, when
+creating more advanced SQL statements, where this will not be the
+case.</p>
+<h2 data-number="7.7" id="summary"><span
+class="header-section-number">7.7</span> Summary</h2>
+<p>This lesson described how to use the WHERE clause of a SELECT
+statement to combine filtering conditions. It also discussed the order
+of operations for combined filtering conditions. Finally, it covered the
+use of the specialized keywords IN and NOT.</p>
 <!--postEnd-->
               </div>
 </div>
@@ -1551,8 +1337,8 @@ Section 7.2. One of them is missing.</em></p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZr2xo8bpnlV6-KifUapJx5x:1784765284378';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d1676106165289640444','//book1011.blogspot.com/2000/02/7.html','1676106165289640444');
-_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '1676106165289640444', 'title': 'book1011', 'url': 'https://book1011.blogspot.com/2000/02/7.html', 'canonicalUrl': 'https://book1011.blogspot.com/2000/02/7.html', 'homepageUrl': 'https://book1011.blogspot.com/', 'searchUrl': 'https://book1011.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1011.blogspot.com/', 'blogspotFaviconUrl': 'https://book1011.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://book1011.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1011 - RSS\x22 href\x3d\x22https://book1011.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/1676106165289640444/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1011 - Atom\x22 href\x3d\x22https://book1011.blogspot.com/feeds/1867706787166155116/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/37c4cc789ad2acf9', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '1867706787166155116', 'pageName': '7. Loops and Repetition', 'pageTitle': 'book1011: 7. Loops and Repetition'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '7. Loops and Repetition', 'description': 'monaco  appsscript  7  Loops and Repetition \r \r Before you start.  This chapter assumes you are\r comfortable with Chapters 4 through 6: decl...', 'url': 'https://book1011.blogspot.com/2000/02/7.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 1867706787166155116}}]);
+window['__wavt'] = 'AEUoTZo019zCJabhA2ziN5Xgtxpu:1784899980094';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/7.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/7.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/7.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/5946282447877525176/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '5946282447877525176', 'pageName': '7. Advanced Data Filtering', 'pageTitle': 'book1014 SQL: 7. Advanced Data Filtering'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '7. Advanced Data Filtering', 'description': '7  Advanced Data Filtering \r Objectives.  After completing this lesson, the\r successful student will be able to: \r \r Use the WHERE clause of...', 'url': 'https://book1014.blogspot.com/2000/02/7.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 5946282447877525176}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>
 </body>

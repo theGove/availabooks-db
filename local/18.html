@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html class='v2' dir='ltr' lang='en-US' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<head>
+<link href='https://www.blogger.com/static/v1/widgets/2872013778-css_bundle_v2.css' rel='stylesheet' type='text/css'/>
+<meta charset='UTF-8'/>
+<meta content='width=device-width, initial-scale=1' name='viewport'/>
+<title>book1014 SQL</title>
+<!-- external libraries -->
+<script src='https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js'></script>
+<script src='https://unpkg.com/turndown/dist/turndown.js'></script>
+<!-- font links -->
+<link href='https://fonts.googleapis.com' rel='preconnect'/>
+<link href='https://fonts.gstatic.com' rel='preconnect'/>
+<link href='https://fonts.googleapis.com/css2?family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900' rel='stylesheet'/>
+<link href='https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900' rel='stylesheet'/>
+<!-- button icon -->
+<link href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0' rel='stylesheet'/>
+<style id='page-skin-1' type='text/css'><!--
+:root {
+--font-zoom: 1;
+--page-bg: #f8fafc;
+--surface: #ffffff;
+--surface-soft: #f1f5f9;
+--surface-muted: #e2e8f0;
+--text: #172033;
+--text-muted: #64748b;
+--heading: #0f172a;
+--accent: #2563eb;
+--accent-strong: #1d4ed8;
+--accent-soft: #dbeafe;
+--danger: #dc2626;
+--warning: #fef3c7;
+--border: #dbe3ee;
+--shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+--shadow-md: 0 12px 30px rgba(15, 23, 42, 0.12);
+--shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.18);
+--radius-sm: 0.5rem;
+--radius-md: 0.85rem;
+--radius-lg: 1.35rem;
+}
+* {
+box-sizing: border-box;
+}
+html {
+scroll-behavior: smooth;
+}
+body {
+margin: 0;
+min-height: 100vh;
+font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+font-weight: 400;
+font-style: normal;
+font-size: calc(1rem  * var(--font-zoom));
+line-height: 1.72;
+color: var(--text);
+background: var(--page-bg);
+text-rendering: optimizeLegibility;
+-webkit-font-smoothing: antialiased;
+}
+.module{
+display:none
+}
+h1:has(span.header-section-number){
+display:none;
+}
+.material-symbols-outlined{
+font-size: calc(1rem  * var(--font-zoom));
+cursor:pointer;
+user-select:none;
+}
+summary::marker {
+color: var(--text-muted);
+}
+#msg-galley{
+position:fixed;
+top:0;
+right:0;
+height:100vh;
+min-width:calc(20rem  * var(--font-zoom));
+max-width:50%;
+z-index:12;
+background-color: transparent;
+pointer-events: none;
+padding: 1rem 1rem 0 0;
+font-family: "Roboto", sans-serif;
+font-optical-sizing: auto;
+font-weight: 400;
+font-style: normal;
+font-variation-settings: "wdth" 100;
+}
+.msg-close{
+position:absolute;
+top:calc(3px  * var(--font-zoom));
+right:calc(3px  * var(--font-zoom));
+display: inline-flex;
+align-items: center;
+justify-content: center;
+width: 1.25rem;
+height: 1.25rem;
+padding: 0;
+background-color:var(--danger);
+color: white;
+font-weight:700;
+font-size:calc(.7rem  * var(--font-zoom));
+border-radius: 999px;
+cursor:pointer;
+}
+.msg-dialog{
+position: relative;
+background-color:var(--surface);
+margin-bottom:.75rem;
+pointer-events: auto;
+border-radius:var(--radius-md);
+border: 1px solid var(--border);
+box-shadow: var(--shadow-md);
+overflow: hidden;
+}
+.msg-button-{
+margin: 0 .5rem .5rem 0;
+}
+.msg-button-bar{
+background-color:var(--surface-soft);
+text-align:center;
+padding:.75rem;
+border-top: 1px solid var(--border);
+}
+.msg-title{
+background:var(--accent);
+color:white;
+font-weight:700;
+padding:.55rem 2rem .55rem .85rem;
+}
+.msg-message{
+background-color:var(--surface);
+padding: .85rem;
+}
+#page-data{
+display:none
+}
+#menu{
+top:0;
+left:-100px;
+position:fixed;
+display:none;
+background:var(--surface);
+padding:0;
+z-index:11;
+transition: left .25s ease, box-shadow .25s ease;
+height:100vh;
+min-width:min(22rem, 88vw);
+max-width:75vw;
+overflow: auto;
+border-right: 1px solid var(--border);
+box-shadow: var(--shadow-lg);
+}
+#book-data{display:none}
+#menu-content{
+padding:1rem 1.25rem 2rem;
+}
+.menu-button{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+min-width:2.4rem;
+height:2.4rem;
+padding:0 .6rem;
+cursor:pointer;
+color:var(--text-muted);
+border-radius:999px;
+transition: background .18s ease, color .18s ease, transform .18s ease;
+vertical-align:middle;
+}
+.menu-button:hover{
+background:var(--accent-soft);
+color:var(--accent-strong);
+transform: translateY(-1px);
+}
+.menu-header{
+top:0;
+position:sticky;
+background:var(--surface);
+opacity:1;
+margin:0;
+padding:.45rem .6rem;
+border-bottom:1px solid var(--border);
+box-shadow: var(--shadow-sm);
+z-index:1;
+}
+#book-title{
+font-weight:700;
+letter-spacing:.02em;
+}
+#search-div{
+width:100%;
+white-space: nowrap;
+margin-top: 1.5rem;
+}
+#search-div h6{
+margin:0 0 .45rem 0;
+font-size:.78rem;
+font-weight:700;
+letter-spacing:.08em;
+text-transform:uppercase;
+color:var(--text-muted);
+}
+#search{
+width: calc(100% - 2.25rem);
+border:1px solid var(--border);
+border-radius:999px;
+padding:.55rem .85rem;
+font: inherit;
+font-size:.92rem;
+color:var(--text);
+background:var(--surface);
+box-shadow: var(--shadow-sm);
+outline:none;
+transition: border-color .18s ease, box-shadow .18s ease;
+}
+#search:focus{
+border-color:var(--accent);
+box-shadow:0 0 0 4px rgba(37, 99, 235, .13);
+}
+#search-button{
+padding-left:.45rem;
+color:var(--accent);
+vertical-align:middle;
+}
+#search-results{
+font-size:.86rem;
+margin-top: .85rem;
+}
+.search-result{
+margin-top:.65rem;
+padding:.75rem;
+cursor:pointer;
+border:1px solid var(--border);
+border-radius:var(--radius-sm);
+background:var(--surface);
+box-shadow: var(--shadow-sm);
+transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.search-result:hover{
+background-color:#f8fbff;
+border-color:#bfdbfe;
+box-shadow:0 10px 24px rgba(37, 99, 235, .1);
+transform: translateY(-1px);
+}
+.search-result-title{
+font-weight:bold;
+color:var(--heading);
+}
+.search-result-line{
+margin:.25rem 0 .35rem .75rem;
+color:var(--text-muted);
+}
+.search-term{
+background-color:var(--warning);
+border-radius:.2rem;
+padding:0 .15rem;
+}
+.chapter-result-link{
+color:var(--heading);
+}
+.toc-section-container{
+margin-left:.75rem;
+}
+.toc-text-container{
+margin-left:1.25rem;
+color:var(--text-muted);
+}
+.chapter-section{
+margin-top: calc(3rem  * var(--font-zoom));
+margin-bottom: calc(3rem  * var(--font-zoom));
+}
+.hide{
+display:none
+}
+img{
+max-width:100%;
+height:auto;
+border-radius:var(--radius-md);
+}
+.entry-header{
+position:fixed;
+top:0;
+left: 0;
+width: 100%;
+transition:opacity 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+padding: .35rem .75rem;
+-webkit-user-select: none; /* Safari */
+user-select: none; /* Standard syntax */
+background: var(--surface);
+border-bottom:1px solid var(--border);
+box-shadow:var(--shadow-sm);
+z-index:10;
+}
+button.nav{
+border-radius:999px;
+border:1px solid var(--border);
+background:var(--surface);
+color:var(--accent);
+box-shadow: var(--shadow-md);
+width:2.8rem;
+height:2.8rem;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+}
+.nav{
+position: fixed;
+bottom: 1rem;
+opacity:1.0;
+transition:opacity 0.35s ease, transform 0.18s ease, box-shadow 0.18s ease;
+pointer-events: all;
+}
+.nav:hover{
+transform: translateY(-2px);
+box-shadow: var(--shadow-lg);
+}
+.dim-button:hover{opacity: 1.0;}
+.dim-button{opacity: .35;}
+.dim-header:hover{opacity: 1.0;}
+.dim-header{opacity: 0;}
+#prior-button {
+left: 1rem;
+}
+#next-button {
+right: 1rem;
+}
+.span-link{
+cursor:pointer;
+color:var(--accent);
+font-weight:500;
+}
+.span-link:hover{
+text-decoration: underline;
+color:var(--accent-strong);
+}
+a:link {color: var(--accent); text-decoration:none}
+a:visited {color: #4f46e5;}
+a:hover {background-color: var(--accent-soft); color: var(--accent-strong); border-radius:.25rem;}
+a:active {color: var(--accent-strong);}
+.book-title{
+margin-top: 6rem;
+font-family:"Taviraj", Georgia, serif;
+font-size:clamp(2.4rem, 7vw, calc(4rem  * var(--font-zoom)));
+line-height:1.05;
+text-align: center;
+font-weight: 700;
+color:var(--heading);
+}
+.book-author{
+margin-top: 1rem;
+font-size:calc(1.45rem  * var(--font-zoom));
+text-align: center;
+color:var(--text-muted);
+}
+.book-toc{
+text-align: center;
+margin-top:2rem;
+}
+.book-chapters{
+display: inline-block;
+}
+.book-chapter{
+text-align:left;
+padding-left: 1rem;
+text-indent: -1rem;
+margin-bottom: 0.55rem;
+}
+.tool {
+cursor:pointer;
+font-size:calc(18px  * var(--font-zoom));
+font-weight:400;
+vertical-align: middle;
+padding-left:.6rem;
+color:var(--text-muted);
+transition: color .18s ease, transform .18s ease;
+}
+.tool:hover {
+color:var(--accent);
+transform: translateY(-1px);
+}
+.lead-in{
+margin-top:4rem;
+}
+.example, .indent, .category{
+margin:1rem 0 0 1.1rem;
+}
+.category div:first-child{
+color:var(--danger);
+font-weight:700;
+}
+.example div:first-child{
+color:var(--danger);
+font-style: italic;
+}
+h1{
+font-family:"Taviraj", Georgia, serif;
+font-size:clamp(1.35rem, 4vw, calc(2.1rem * var(--font-zoom)));
+line-height:1.18;
+color:var(--heading);
+font-weight:700;
+margin:0;
+}
+h2, h3{
+font-family:"Taviraj", Georgia, serif;
+color:var(--heading);
+line-height:1.24;
+letter-spacing:-.015em;
+}
+h2{
+font-size:clamp(1.55rem, 4vw, calc(2.15rem * var(--font-zoom)));
+margin:3rem 0 1rem;
+padding-top:.5rem;
+}
+h3{
+font-size:clamp(1.2rem, 3vw, calc(1.45rem * var(--font-zoom)));
+margin:2.25rem 0 .8rem;
+}
+.header-section-number{
+color:var(--accent);
+font-weight:700;
+}
+p{
+margin-top:0;
+margin-bottom:1.15rem;
+}
+p.vignette{
+color:var(--danger)
+}
+.no-dot{
+list-style-type: none;
+}
+ul.no-dot li{
+padding-left: 1rem;
+text-indent: -1rem;
+margin-bottom: 0.3rem;
+}
+audio{
+height:30px;
+width:100%;
+max-width:34rem;
+}
+div.post-body{
+max-width:940px;
+margin:0 auto;
+padding:clamp(5.2rem, 7vw, 6.25rem) clamp(1.15rem, 4vw, 3.5rem) 4rem;
+background:transparent;
+}
+div.index-boxnbt{
+background:var(--surface);
+padding-bottom:2rem;
+}
+.material-symbols-outlined {
+font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+font-size: 18px;
+line-height: 1;
+}
+blockquote{
+margin:1.75rem 0;
+background:var(--surface-soft);
+border-left:.35rem solid var(--accent);
+padding:1rem 1.25rem 1rem 1.35rem;
+border-radius:0 var(--radius-md) var(--radius-md) 0;
+color:#334155;
+}
+.note blockquote{
+background:#E8F5E9;
+border-left:.35rem solid darkgreen;
+}
+.note blockquote p::before {
+content: "Note: ";
+font-weight: bold;
+}
+.tip blockquote{
+background:#F3E5F5;
+border-left:.35rem solid purple;
+}
+.tip blockquote p::before {
+content: "Tip: ";
+font-weight: bold;
+}
+.term blockquote{
+background:#E3EDF7;
+border-left:.35rem solid darkblue;
+}
+.term blockquote p::before {
+content: "Term: ";
+font-weight: bold;
+}
+.caution blockquote{
+background:#FFE2E2;
+border-left:.35rem solid red;
+}
+.caution blockquote p::before {
+content: "Caution: ";
+font-weight: bold;
+}
+.objectives blockquote{
+background:#FFF8E1;
+border-left:.35rem solid gold;
+}
+.review blockquote{
+background:#FFF0EC;
+border-left:.35rem solid salmon;
+}
+.review blockquote p::before {
+content: "Review: ";
+font-weight: bold;
+}
+blockquote p:last-child{
+margin-bottom:0;
+}
+hr{
+height:1px;
+border:0;
+background:var(--border);
+margin:2.75rem 0;
+}
+ul, ol{
+padding-left:1.45rem;
+margin:0 0 1.25rem;
+}
+li{
+margin:.45rem 0;
+}
+code{
+font-family:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+font-size:.92em;
+color:#0f766e;
+background:#ecfdf5;
+border:1px solid #bbf7d0;
+border-radius:.35rem;
+padding:.08rem .32rem;
+}
+pre code,
+.sourceCode code{
+color:inherit;
+background:transparent;
+border:0;
+border-radius:0;
+padding:0;
+font-size:inherit;
+}
+pre,
+pre.javascript-code,
+pre.javascript-example,
+pre.spreadsheet,
+div.sourceCode pre{
+margin:1rem 0;
+padding:.75rem .85rem;
+overflow:auto;
+background:#0f172a;
+color:#dbeafe;
+border:1px solid rgba(148, 163, 184, .28);
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-md);
+font-family:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+font-size:.88rem;
+line-height:1.38;
+tab-size:2;
+white-space:pre;
+}
+div.sourceCode{
+margin:1rem 0;
+}
+div.sourceCode pre{
+margin:0;
+}
+.sourceCode .kw,
+.sourceCode .cf{
+color:#93c5fd;
+}
+.sourceCode .fu,
+.sourceCode .at{
+color:#67e8f9;
+}
+.sourceCode .st{
+color:#86efac;
+}
+.sourceCode .dv{
+color:#fbbf24;
+}
+.sourceCode .co{
+color:#94a3b8;
+font-style:italic;
+}
+table.blog{
+display:block;
+width:max-content;
+max-width:100%;
+border-collapse:separate;
+border-spacing:0;
+margin:1.5rem 0 2rem;
+overflow-x:auto;
+-webkit-overflow-scrolling:touch;
+border:1px solid var(--border);
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-sm);
+background:var(--surface);
+}
+th.blog,
+td.blog{
+padding:.72rem .85rem;
+border-bottom:1px solid var(--border);
+text-align:left;
+vertical-align:top;
+white-space:nowrap;
+}
+th.blog{
+font-size:.86rem;
+font-weight:700;
+color:var(--heading);
+background:var(--surface-soft);
+}
+tr.blog:last-child td{
+border-bottom:0;
+}
+tr.blog:nth-child(even) td{
+background:#f8fafc;
+}
+.monaco {
+width: 100%;
+margin: 1.5rem 0;
+border-radius: var(--radius-md);
+overflow: hidden;
+box-shadow: var(--shadow-lg);
+border: 1px solid rgba(148, 163, 184, 0.22);
+}
+.monaco-bar {
+display: flex;
+align-items: center;
+justify-content: flex-end;
+gap: 2px;
+padding: 8px 10px;
+background: linear-gradient(180deg, #1f2937, #111827);
+border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.monaco-bar-label {
+flex: 1;
+font-family: "Roboto", sans-serif;
+font-size: 11px;
+font-weight: 700;
+color: #94a3b8;
+letter-spacing: 0.5px;
+text-transform: uppercase;
+padding-left: 4px;
+}
+.monaco-tool {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 30px;
+height: 30px;
+border-radius: 6px;
+color: #8b949e;
+cursor: pointer;
+transition: background 0.15s ease, color 0.15s ease;
+}
+.monaco-tool:hover {
+background: rgba(255, 255, 255, 0.1);
+color: #e6edf3;
+}
+.monaco-tool:active {
+background: rgba(255, 255, 255, 0.06);
+transform: scale(0.92);
+}
+.monaco-tool[data-action="run"]:hover {
+background: rgba(63, 185, 80, 0.18);
+color: #3fb950;
+}
+.editor-holder {
+background-color: #1e1e1e;
+padding: 8px 0;
+}
+.editor {
+margin: 0;
+padding: 0;
+}
+.console {
+background: #161b22;
+border-top: 1px solid rgba(255, 255, 255, 0.07);
+padding: 8px 0 6px;
+position: relative;
+min-height: 36px;
+font-family: 'Consolas', 'Cascadia Code', 'Courier New', monospace;
+font-size: 13px;
+}
+.console-line {
+color: #c9d1d9;
+padding: 2px 40px 2px 14px;
+line-height: 1.6;
+white-space: pre-wrap;
+word-break: break-all;
+}
+.console-line:first-of-type {
+margin-top: 2px;
+}
+.console-line.error {
+color: #f85149;
+background: rgba(248, 81, 73, 0.06);
+}
+span.exitButton {
+position: absolute;
+top: 6px;
+right: 8px;
+display: flex;
+align-items: center;
+justify-content: center;
+width: 22px;
+height: 22px;
+border-radius: 4px;
+color: #6e7681;
+cursor: pointer;
+transition: background 0.15s ease, color 0.15s ease;
+}
+span.exitButton:hover {
+background: rgba(255, 255, 255, 0.1);
+color: #c9d1d9;
+}
+span.exitButton .material-symbols-outlined {
+font-size: 15px;
+}
+pre.code {
+color: #a8ff78;
+background: #0d1117;
+padding: 1rem 1.15rem;
+margin: 1.35rem 0;
+font-size: 14px;
+border-radius: var(--radius-md);
+border: 1px solid rgba(255, 255, 255, 0.07);
+overflow-x: auto;
+}
+@media (max-width: 700px) {
+body {
+font-size: calc(.98rem * var(--font-zoom));
+}
+#msg-galley {
+left: 0;
+right: 0;
+max-width: none;
+min-width: 0;
+padding: .75rem;
+}
+#menu {
+max-width: 92vw;
+}
+.entry-header {
+padding: .25rem .4rem;
+}
+div.post-body {
+padding-left: 1rem;
+padding-right: 1rem;
+}
+.nav {
+bottom: .75rem;
+}
+#prior-button {
+left: .75rem;
+}
+#next-button {
+right: .75rem;
+}
+}
+
+--></style>
+<script>
+    const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
+	async function initialize(){
+
+      const kind = document.getElementById(`kind`).innerHTML
+      console.log(`kind`, kind)
+      switch(kind){
+        case `redirect`:
+          location.href=document.getElementById(`post-json`).innerText
+          return
+        case `chapter`:
+          console.log(`processing Chapter`)
+          // load any modules used in the chapter
+          for(const module of document.querySelectorAll(`div.module`)){
+            console.log(`module:`, module.innerText)
+            loadModule(module.innerText)
+    
+    
+    
+          }
+      }
+    
+    // calls the page that has our code in it
+    //const response = await fetch(`/1970/01/system.html`)
+  	//const code = await response.text()
+    
+ 
+	//const s = document.createElement('script')
+	//s.replaceChildren(code.split(`<p`+`re>`)[1].split(`</pre>`)[0])
+	//document.head.appendChild(s)
+    //console.log("got system")
+    await loadModule("system")
+	init()
+    
+    }
+    
+    async function loadModule(label){// get the first post of a specified label and load the code
+      const code = await getPage(label)
+      const s = document.createElement(`script`)
+      s.replaceChildren(code)
+      document.head.appendChild(s)          
+    }
+    
+    async function getPage(label){//get the first post with the specified label.
+        
+        if(localhost){
+          const url=`/tools/api/${label}.js`
+          const response = await fetch(url)
+          const code = await response.text()  
+          return code
+        }else{
+          const url=`${location.origin}/feeds/posts/default/-/${label}?alt=json`
+          const response = await fetch(url)
+          console.log("feed url", url)
+          const page = await response.json()
+          return page.feed.entry[0].content.$t
+        }
+    }    
+
+  </script>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' rel='stylesheet'/></noscript>
+<meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
+<meta name='google-adsense-platform-domain' content='blogspot.com'/>
+
+</head>
+<body onload='initialize()'>
+<div class='sitenbt' id='pagenbt'>
+<div class='site-contentnbt' id='contentnbt'>
+<div class='testing' id='item'></div>
+<div class='content-areanbt' id='primarynbt'>
+<div class='site-mainnbt' id='mainnbt' role='main'>
+<div class='section' id='mainblogsec'><div class='widget Blog' data-version='1' id='Blog1'>
+<div class='blog-posts hfeed'>
+<div class='post-outer'>
+<article class='post'>
+<div id='msg-galley'></div>
+<div class='hide' id='kind'>chapter</div>
+<div class='index-boxnbt'>
+<header class='entry-header'>
+<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>18. Creating and Manipulating
+Tables</span></h1>
+</header>
+<div id='menu'>
+<div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
+<div id='menu-content'>
+<div id='toc'></div>
+<div id='tools'>
+                  Text Size: 
+                  <span class='material-symbols-outlined tool' onclick='fontSize(.1)'>text_increase</span>
+<span class='material-symbols-outlined tool' onclick='fontSize(-.1)'>text_decrease</span>
+<span class='material-symbols-outlined tool' onclick='fontSize()'>rotate_auto</span>
+</div>
+<div id='search-div'>
+<h6>Search Book</h6>
+<input id='search' placeholder='search book'/><span class='material-symbols-outlined tool' id='search-button'>search</span></div>
+<div id='search-results'></div>
+</div>
+</div>
+<div class='post-body entry-content' data-blog-id='3986204447440040189' data-post-id='607263837006155585'>
+<button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
+<button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
+              
+              <!--postBegin--><h1 data-number="18" id="creating-and-manipulating-tables"><span
+class="header-section-number">18</span> Creating and Manipulating
+Tables</h1>
+<p><strong>Objectives.</strong> After completing this lesson, the
+successful student will be able to use SQL statements to:</p>
+<ol type="1">
+<li>Create database tables.</li>
+<li>Make changes to database tables.</li>
+<li>Remove tables from a database.</li>
+</ol>
+<p>You can use structured query language to do more than retrieve and
+manipulate the data stored in database tables &#8212; it can also be used to
+perform database and table maintenance tasks, including creating,
+editing, and deleting database tables. Most DBMSs have interactive tools
+for completing these tasks, but it is helpful to have some basic
+understanding of the SQL statements that perform them, because the
+syntax highlights some important database concepts. This lesson
+describes how to create, edit, and delete database tables.</p>
+<h2 data-number="18.1" id="creating-tables"><span
+class="header-section-number">18.1</span> Creating Tables</h2>
+<p>As with all of the SQL statements covered in this resource, creating
+database tables involves using SQL keywords. The statement for creating
+a database table starts with the keywords <code>CREATE</code> and
+<code>TABLE</code>. The keyword <code>CREATE</code> is used whenever you
+want to add a new object to the database. A table is a database object,
+which is why the keyword <code>TABLE</code> follows <code>CREATE</code>
+&#8212; together they tell the DBMS that a new table object is being added to
+the database.</p>
+<div class="term">
+<blockquote>
+<p><strong>CREATE</strong> &#8212; The SQL keyword used to add a new object to
+the database.</p>
+</blockquote>
+</div>
+<div class="term">
+<blockquote>
+<p><strong>TABLE</strong> &#8212; The SQL keyword that, when used with
+<code>CREATE</code>, specifies that the new object being added to the
+database is a table.</p>
+</blockquote>
+</div>
+<p>When you add a table to the database, you provide the DBMS with the
+details of the table. These details include:</p>
+<ol type="1">
+<li>The name of the table.</li>
+<li>The list of columns that will be stored on the table, including the
+details of each column.</li>
+<li>The columns that will act as the primary and foreign keys of the
+table.</li>
+</ol>
+<p>The generic syntax for adding a table to the database is:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> tablename (</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a>    column1_name column1_details,</span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a>    column2_name column2_details,</span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a>    optional_table_details</span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a>);</span></code></pre></div>
+<p>The table name is specified after the keywords
+<code>CREATE TABLE</code>. The individual columns of the table are
+detailed as a comma-separated list in parentheses after the table name.
+Primary and foreign keys are defined either as part of a column&#8217;s
+details or as optional table-level details listed after the columns.</p>
+<h3 data-number="18.1.1" id="table-names"><span
+class="header-section-number">18.1.1</span> Table Names</h3>
+<p>Table names must be unique within a database &#8212; two tables in the same
+database can&#8217;t have the same name. Additionally, a table name cannot be
+a reserved word; you can&#8217;t name a table <code>select</code>. While these
+are the only hard rules for naming database tables, there are a few
+suggestions worth keeping in mind:</p>
+<ol type="1">
+<li><strong>Table names should be descriptive.</strong> A table name
+should convey what is stored in the table clearly enough that users
+don&#8217;t have to guess. If the table names in a database are too ambiguous,
+the database becomes difficult to use.</li>
+<li><strong>Table names should be brief.</strong> Writing SQL statements
+can already feel tedious; overly verbose table names only make it
+worse.</li>
+<li><strong>Table names may include most characters typically allowed in
+a filename</strong> (though not <code>/</code>, <code>\</code>, or
+<code>.</code>), but it&#8217;s best to avoid spaces in table names.</li>
+<li><strong>Use a consistent naming convention for all table names in a
+database.</strong> Table names should all look alike &#8212; for example, if
+one table name is singular (<code>customer</code> rather than
+<code>customers</code>), all of them should be. Naming conventions make
+a database easier to use, because its elements become predictable. If
+some tables are named in the singular and others in the plural, users
+have to keep checking the schema diagram to know which form to use.</li>
+</ol>
+<p>The next suggestion is somewhat debated among database experts, but
+it&#8217;s practical advice for avoiding a common problem:</p>
+<ol start="5" type="1">
+<li><strong>Use snake_case for table names.</strong> Snake case replaces
+all the spaces in a name with underscore characters &#8212; for example, a
+table that stores museum hours would be named <code>museum_hours</code>.
+Snake case is generally easier to read than other naming conventions,
+such as CamelCase (capitalizing the first letter of each word in a name
+with no spaces), and it reduces the potential for ambiguity in table
+names.</li>
+</ol>
+<p>An example of the syntax used to add a table named
+<code>vendor</code> to the database is:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> vendor ( <span class="op">..</span>. );</span></code></pre></div>
+<h3 data-number="18.1.2" id="defining-table-columns"><span
+class="header-section-number">18.1.2</span> Defining Table Columns</h3>
+<p>Columns are defined as a comma-separated list. Each column definition
+specifies a column name, the type of data that will be stored in the
+column, and &#8212; optionally &#8212; any constraints on how data can be stored in
+that column. A name and data type are required for every column;
+additional constraints are optional.</p>
+<h4 data-number="18.1.2.1" id="column-names"><span
+class="header-section-number">18.1.2.1</span> Column Names</h4>
+<p>Column names must be unique within a table. The same naming
+suggestions that apply to table names apply to column names.
+Additionally, it&#8217;s a good idea to begin each primary key column name
+with the name of its table &#8212; for example, the primary key of the
+<code>museum</code> table should be named <code>museum_id</code> rather
+than just <code>id</code>.</p>
+<h4 data-number="18.1.2.2" id="data-types"><span
+class="header-section-number">18.1.2.2</span> Data Types</h4>
+<p>You must also define the type of data that will be stored in each
+column. PostgreSQL supports a wide range of data types, but the ones
+you&#8217;ll use most often store text, integer numbers, decimal numbers,
+dates and times, and boolean (true/false) values.</p>
+<table>
+<colgroup>
+<col style="width: 62%" />
+<col style="width: 37%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;">Data Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><code>INTEGER</code></td>
+<td>Whole numbers</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>NUMERIC(p, s)</code></td>
+<td>Exact decimal numbers, with <code>p</code> total digits and
+<code>s</code> digits after the decimal point</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>VARCHAR(n)</code></td>
+<td>A string of text up to <code>n</code> characters</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>TEXT</code></td>
+<td>A string of text of unlimited length</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>DATE</code></td>
+<td>A calendar date, with no time component</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>BOOLEAN</code></td>
+<td>A true/false value</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<blockquote>
+<p><strong>Note: PostgreSQL&#8217;s Full Data Type Catalog.</strong>
+PostgreSQL supports many more data types than are listed here &#8212;
+including several, like <code>JSONB</code> and array types, that are
+unique to PostgreSQL. Consult the PostgreSQL documentation for the
+complete list.</p>
+</blockquote>
+</div>
+<p>An example of the syntax used to define the <code>name</code> column
+on the <code>vendor</code> table with a data type of <code>TEXT</code>
+is:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> vendor (</span>
+<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a>    name TEXT</span>
+<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a>);</span></code></pre></div>
+<h4 data-number="18.1.2.3" id="column-constraints"><span
+class="header-section-number">18.1.2.3</span> Column Constraints</h4>
+<p>You can also add constraints on the values that can be stored in a
+column. These constraints are enforced by the DBMS &#8212; when a user tries
+to add a row that violates one of them, the DBMS rejects the row rather
+than saving it to the table.</p>
+<p>The first constraint you can add to a column is the unique
+constraint, applied with the keyword <code>UNIQUE</code>. It ensures
+that every value stored in that column is different from every other
+value already in the column. If a user tries to add a row with a value
+that duplicates an existing one, the DBMS will reject the new row.</p>
+<div class="term">
+<blockquote>
+<p><strong>UNIQUE</strong> &#8212; A constraint added to a column that ensures
+every value in that column is different from every other value in that
+column.</p>
+</blockquote>
+</div>
+<p>You can also add a constraint that ensures a column has a value
+whenever a new row is added to the table. This is done using the
+keywords <code>NOT NULL</code>, which essentially makes a value required
+in that column for every row.</p>
+<div class="term">
+<blockquote>
+<p><strong>NOT NULL</strong> &#8212; A constraint added to a column that
+ensures the column has a value whenever a new row is added to the
+table.</p>
+</blockquote>
+</div>
+<p>A column can also be designated as the primary key using a column
+constraint, with the keywords <code>PRIMARY KEY</code>. Recall that the
+values in a primary key column must be both unique and not null &#8212;
+<code>PRIMARY KEY</code> combines the <code>UNIQUE</code> and
+<code>NOT NULL</code> constraints on a single column. PostgreSQL will
+also add an index on the column automatically to keep primary-key
+lookups fast.</p>
+<div class="term">
+<blockquote>
+<p><strong>PRIMARY KEY constraint</strong> &#8212; Constrains the values in a
+column to be both unique and not null. PostgreSQL also adds an index to
+a primary key column automatically.</p>
+</blockquote>
+</div>
+<p>An example of the syntax used to define the <code>vendor</code>
+table, with <code>vendor_id</code> as an integer primary key and the
+<code>name</code> column as a required (<code>NOT NULL</code>) piece of
+text, is:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> vendor (</span>
+<span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a>    vendor_id <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb4-3"><a aria-hidden="true" href="#cb4-3" tabindex="-1"></a>    name      TEXT <span class="kw">NOT</span> <span class="kw">NULL</span></span>
+<span id="cb4-4"><a aria-hidden="true" href="#cb4-4" tabindex="-1"></a>);</span></code></pre></div>
+<p>You can also add custom constraints to the columns of a table using
+the keyword <code>CHECK</code>. A <code>CHECK</code> constraint defines
+a logical test that the values for a column must satisfy before a new
+row can be added to the table. For example, you could add a check
+constraint to ensure that a new employee&#8217;s salary falls within an
+appropriate range.</p>
+<div class="term">
+<blockquote>
+<p><strong>CHECK</strong> &#8212; A custom constraint that ensures the values
+for a column satisfy a logical test before a new row can be added to a
+table.</p>
+</blockquote>
+</div>
+<h3 data-number="18.1.3" id="defining-table-level-options"><span
+class="header-section-number">18.1.3</span> Defining Table-Level
+Options</h3>
+<p>After the columns have been defined in a <code>CREATE TABLE</code>
+statement, table-level constraints can be added. The two most common
+table-level constraints are primary and foreign keys. Generally, a
+primary key is designated as part of a single column&#8217;s definition. If
+multiple columns are used together as a composite primary key, though,
+the primary key must instead be added as a table-level constraint, using
+the keywords <code>PRIMARY KEY</code> followed by a comma-separated list
+of the columns that make up the composite key, in parentheses. An
+example of the syntax used to define a composite primary key made up of
+the <code>product_id</code>, <code>sale_id</code>, and
+<code>product_size</code> columns is:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">PRIMARY</span> <span class="kw">KEY</span> (product_id, sale_id, product_size)</span></code></pre></div>
+<p>Foreign keys are also added as table-level constraints, and a foreign
+key constraint has three parts. First, the column to be used as the
+foreign key is identified &#8212; this column must already exist on the table.
+Second, the table (and, implicitly, its primary key) that the foreign
+key references is specified. Third, the constraint designates what
+should happen if the referenced row on the related table is deleted. The
+following syntax demonstrates how <code>museum_id</code> would be
+defined as a foreign key on the <code>vendor</code> table, referencing
+the <code>museum</code> table:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> vendor (</span>
+<span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a>    vendor_id <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb6-3"><a aria-hidden="true" href="#cb6-3" tabindex="-1"></a>    <span class="op">..</span>.</span>
+<span id="cb6-4"><a aria-hidden="true" href="#cb6-4" tabindex="-1"></a>    museum_id <span class="dt">INTEGER</span>,</span>
+<span id="cb6-5"><a aria-hidden="true" href="#cb6-5" tabindex="-1"></a>    <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (museum_id) <span class="kw">REFERENCES</span> museum (museum_id) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">SET</span> <span class="kw">NULL</span></span>
+<span id="cb6-6"><a aria-hidden="true" href="#cb6-6" tabindex="-1"></a>);</span></code></pre></div>
+<p>Notice the set of keywords in the foreign key constraint.
+<code>FOREIGN KEY</code> designates the column that will act as the
+foreign key. <code>REFERENCES</code> specifies the table &#8212; and, in
+parentheses, the column on that table &#8212; that the foreign key relates to.
+<code>ON DELETE SET NULL</code> ensures that if a museum is deleted from
+the <code>museum</code> table, the corresponding <code>museum_id</code>
+values on the <code>vendor</code> table are set to <code>NULL</code>, so
+the <code>vendor</code> table never references a museum that no longer
+exists.</p>
+<p>Putting all of these pieces together produces a complete table
+creation statement. A statement to create the <code>vendor</code> table
+in the museum database would be:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> vendor (</span>
+<span id="cb7-2"><a aria-hidden="true" href="#cb7-2" tabindex="-1"></a>    vendor_id <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb7-3"><a aria-hidden="true" href="#cb7-3" tabindex="-1"></a>    name      TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb7-4"><a aria-hidden="true" href="#cb7-4" tabindex="-1"></a>    country   TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb7-5"><a aria-hidden="true" href="#cb7-5" tabindex="-1"></a>    museum_id <span class="dt">INTEGER</span>,</span>
+<span id="cb7-6"><a aria-hidden="true" href="#cb7-6" tabindex="-1"></a>    <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (museum_id) <span class="kw">REFERENCES</span> museum (museum_id) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">SET</span> <span class="kw">NULL</span></span>
+<span id="cb7-7"><a aria-hidden="true" href="#cb7-7" tabindex="-1"></a>);</span></code></pre></div>
+<div class="note">
+<blockquote>
+<p>This is one of the book&#8217;s interactive query boxes (tied to the
+<code>artist</code>/<code>work</code>/<code>museum</code> schema
+diagram, with a &#8220;Play&#8221; button and results panel) &#8212; shown here as a plain
+code block until that component is built on this platform.</p>
+</blockquote>
+</div>
+<p>If the statement executes without errors, PostgreSQL responds that
+the table was created, and the (still empty) table is added to the
+database. The SQL statements used to add data to a table are discussed
+in the lesson on inserting data. If an error occurs while the statement
+is executing, PostgreSQL responds with an error message describing the
+problem instead.</p>
+<h2 data-number="18.2" id="deleting-tables"><span
+class="header-section-number">18.2</span> Deleting Tables</h2>
+<p>A common error occurs when you try to add a table that already exists
+in the database &#8212; if you want to replace an existing table, you must
+remove it first. To remove a table from the database, you use the
+keywords <code>DROP TABLE</code>. <code>DROP</code> is the keyword used
+to remove objects from the database, and <code>TABLE</code> designates
+that the object being removed is a table.</p>
+<div class="term">
+<blockquote>
+<p><strong>DROP</strong> &#8212; The keyword used in a SQL statement to remove
+an object from the database.</p>
+</blockquote>
+</div>
+<p>When a table is dropped from the database, it is completely removed,
+along with all of the data stored on it. The syntax used to remove the
+<code>vendor</code> table you just created is:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> vendor;</span></code></pre></div>
+<div class="caution">
+<blockquote>
+<p><strong>Caution: Removing Database Tables.</strong> The SQL statement
+used to remove a table from a database is simple, and there is no
+command to undo it. Take care when dropping tables to avoid accidental
+deletion and data loss.</p>
+</blockquote>
+</div>
+<h2 data-number="18.3" id="editing-tables"><span
+class="header-section-number">18.3</span> Editing Tables</h2>
+<p>From time to time, you will need to make changes to an existing
+database table. The keywords used to change a table are
+<code>ALTER TABLE</code>; <code>ALTER</code> is the keyword used to
+change a database object. The syntax for changing a database table
+is:</p>
+<div class="term">
+<blockquote>
+<p><strong>ALTER</strong> &#8212; The keyword used in a SQL statement to
+change an object in the database.</p>
+</blockquote>
+</div>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> tablename</span>
+<span id="cb9-2"><a aria-hidden="true" href="#cb9-2" tabindex="-1"></a>statements_that_define_the_changes;</span></code></pre></div>
+<p>For example, you can add a column to, or remove a column from, an
+existing table. The syntax used to add a column named
+<code>vendor_phone</code> to the existing <code>vendor</code> table
+is:</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb10-1"><a aria-hidden="true" href="#cb10-1" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> vendor</span>
+<span id="cb10-2"><a aria-hidden="true" href="#cb10-2" tabindex="-1"></a><span class="kw">ADD</span> <span class="kw">COLUMN</span> vendor_phone TEXT;</span></code></pre></div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb11-1"><a aria-hidden="true" href="#cb11-1" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> vendor (</span>
+<span id="cb11-2"><a aria-hidden="true" href="#cb11-2" tabindex="-1"></a>    vendor_id <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb11-3"><a aria-hidden="true" href="#cb11-3" tabindex="-1"></a>    name      TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb11-4"><a aria-hidden="true" href="#cb11-4" tabindex="-1"></a>    country   TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb11-5"><a aria-hidden="true" href="#cb11-5" tabindex="-1"></a>    museum_id <span class="dt">INTEGER</span>,</span>
+<span id="cb11-6"><a aria-hidden="true" href="#cb11-6" tabindex="-1"></a>    <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (museum_id) <span class="kw">REFERENCES</span> museum (museum_id) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">SET</span> <span class="kw">NULL</span></span>
+<span id="cb11-7"><a aria-hidden="true" href="#cb11-7" tabindex="-1"></a>);</span>
+<span id="cb11-8"><a aria-hidden="true" href="#cb11-8" tabindex="-1"></a></span>
+<span id="cb11-9"><a aria-hidden="true" href="#cb11-9" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> vendor</span>
+<span id="cb11-10"><a aria-hidden="true" href="#cb11-10" tabindex="-1"></a><span class="kw">ADD</span> <span class="kw">COLUMN</span> vendor_phone TEXT;</span></code></pre></div>
+<p>Note that if you ran the <code>DROP TABLE</code> statement in the
+last section, your copy of the <code>vendor</code> table was deleted
+from the database, which is why this example re-creates the
+<code>vendor</code> table first. If you didn&#8217;t drop the table, you&#8217;ll
+get an error when this example tries to create it again.</p>
+<p>Similarly, the syntax used to alter the table and remove the
+<code>vendor_phone</code> column is:</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> vendor</span>
+<span id="cb12-2"><a aria-hidden="true" href="#cb12-2" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">COLUMN</span> vendor_phone;</span></code></pre></div>
+<p>Tables can also be altered to add primary and foreign keys after the
+table has already been created, using <code>ADD CONSTRAINT</code>. For
+example, the following statement adds a foreign key to the
+<code>vendor</code> table&#8217;s <code>museum_id</code> column after the
+fact:</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb13-1"><a aria-hidden="true" href="#cb13-1" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> vendor</span>
+<span id="cb13-2"><a aria-hidden="true" href="#cb13-2" tabindex="-1"></a><span class="kw">ADD</span> <span class="kw">CONSTRAINT</span> vendor_museum_fk</span>
+<span id="cb13-3"><a aria-hidden="true" href="#cb13-3" tabindex="-1"></a><span class="kw">FOREIGN</span> <span class="kw">KEY</span> (museum_id) <span class="kw">REFERENCES</span> museum (museum_id) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">SET</span> <span class="kw">NULL</span>;</span></code></pre></div>
+<p>Finally, <code>ALTER TABLE</code> can also be used to rename a table,
+with the <code>RENAME TO</code> clause:</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb14-1"><a aria-hidden="true" href="#cb14-1" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> vendor</span>
+<span id="cb14-2"><a aria-hidden="true" href="#cb14-2" tabindex="-1"></a><span class="kw">RENAME</span> <span class="kw">TO</span> supplier;</span></code></pre></div>
+<div class="tip">
+<blockquote>
+<p><strong>Tip: Renaming and Retyping Columns.</strong>
+<code>ALTER TABLE</code> also supports
+<code>RENAME COLUMN old_name TO new_name</code> and
+<code>ALTER COLUMN column_name TYPE new_type</code>, letting you rename
+a column or change its data type without dropping and recreating it.</p>
+</blockquote>
+</div>
+<h2 data-number="18.4" id="summary"><span
+class="header-section-number">18.4</span> Summary</h2>
+<p>This lesson described how to write SQL statements to manipulate
+database tables. Specifically, it described how to add database tables
+using the <code>CREATE TABLE</code> keywords, including how to define
+table columns and table-level constraints. It also described how to
+remove tables from a database and how to edit existing tables.</p>
+<!--postEnd-->
+              </div>
+</div>
+</article>
+</div>
+</div>
+</div></div>
+</div><!-- #main -->
+</div><!-- #primary -->
+<!--end of error vs non error block-->
+</div><!-- #content -->
+<footer class='site-footernbt' id='colophonnbt' role='contentinfo'>
+<div id='supplementarynbt'>
+<div class='footer-widgetsnbt widget-areanbt clearnbt' id='footer-widgetsnbt' role='complementary'>
+<div class='sidebarwidgetsarea no-items section' id='sidebarwidgetsarea'></div>
+</div><!-- #footer-sidebar -->
+</div><!-- #supplementary -->
+</footer><!-- #colophon -->
+</div><!-- #page -->
+
+<script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
+<script type='text/javascript'>
+window['__wavt'] = 'AEUoTZowXam-It77eIZEP-5wRoAp:1784899987506';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/18.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/18.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/18.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/607263837006155585/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '607263837006155585', 'pageName': '18. Creating and Manipulating\nTables', 'pageTitle': 'book1014 SQL: 18. Creating and Manipulating\nTables'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '18. Creating and Manipulating\nTables', 'description': '18  Creating and Manipulating\r Tables \r Objectives.  After completing this lesson, the\r successful student will be able to use SQL statement...', 'url': 'https://book1014.blogspot.com/2000/02/18.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 607263837006155585}}]);
+_WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
+</script>
+</body>
+</html>
