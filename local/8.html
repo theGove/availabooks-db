@@ -16,6 +16,11 @@
 <!-- button icon -->
 <link href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0' rel='stylesheet'/>
 <style id='page-skin-1' type='text/css'><!--
+/* This file is the source of truth for book CSS, but there is no publish script for it.
+After editing, copy the changed rules by hand into each book's Blogger theme HTML
+(the page-skin-1 <style> block) via the Blogger dashboard.
+Do NOT edit local/*.html to apply these changes - those files are downloaded verbatim
+from the live blog by download.py and get overwritten on the next run. */
 :root {
 --font-zoom: 1;
 --page-bg: #f8fafc;
@@ -136,6 +141,24 @@ padding: .85rem;
 }
 #page-data{
 display:none
+}
+.toast{
+position:fixed;
+bottom:2rem;
+left:50%;
+transform:translateX(-50%);
+z-index:9999;
+background-color:green;
+color:#fff;
+padding:.7rem 1.25rem;
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-lg);
+}
+.toast.success{
+background-color:#15803d;
+}
+.toast.error{
+background-color:var(--danger);
 }
 #menu{
 top:0;
@@ -460,9 +483,9 @@ line-height: 1;
 }
 blockquote{
 margin:1.75rem 0;
+padding:1rem 1.25rem 1rem 1.35rem;
 background:var(--surface-soft);
 border-left:.35rem solid var(--accent);
-padding:1rem 1.25rem 1rem 1.35rem;
 border-radius:0 var(--radius-md) var(--radius-md) 0;
 color:#334155;
 }
@@ -489,6 +512,7 @@ border-left:.35rem solid darkblue;
 .term blockquote p::before {
 content: "Term: ";
 font-weight: bold;
+color:#2B7FFF;
 }
 .caution blockquote{
 background:#FFE2E2;
@@ -501,6 +525,12 @@ font-weight: bold;
 .objectives blockquote{
 background:#FFF8E1;
 border-left:.35rem solid gold;
+border-right:.35rem solid gold;
+border-radius:0;
+}
+.objectives blockquote p::before {
+content: "Objectives: ";
+font-weight: bold;
 }
 .review blockquote{
 background:#FFF0EC;
@@ -509,6 +539,25 @@ border-left:.35rem solid salmon;
 .review blockquote p::before {
 content: "Review: ";
 font-weight: bold;
+}
+.ai-conversation blockquote{
+background:lightgrey;
+border:1px solid #bbb;
+border-radius: 5px;
+}
+div.ai-prompt{
+background:white;
+border:1px solid grey;
+border-radius: 10px;
+padding:10px 20px 10px 20px;
+box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.3);
+margin: 0 1rem 1rem 1rem;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+span.ai-prompt-x{
+font-size: 1.8em;
 }
 blockquote p:last-child{
 margin-bottom:0;
@@ -766,6 +815,25 @@ right: .75rem;
 }
 
 --></style>
+<!-- the next style tag gets filled automatically with css from availabooktools.blogspot.com-->
+<style id='dynamic-override-css' type='text/css'></style>
+<script type='text/javascript'>
+//<![CDATA[
+function loadCss(response){
+  console.log("$$$$$$$$$$$$$$ response", response)
+  const newCss = response.feed.entry[0].content.$t;
+  if (newCss.length > 0) {
+    const overrideStyleBlock = document.getElementById('dynamic-override-css');
+    if (overrideStyleBlock) {
+      overrideStyleBlock.textContent = newCss;
+    }
+  }
+}
+
+
+//]]>
+</script>
+<script src='https://availabooktools.blogspot.com/feeds/posts/default/-/css-staging?alt=json-in-script&max-results=1&callback=loadCss'></script>
 <script>
     const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
 	async function initialize(){
@@ -826,7 +894,7 @@ right: .75rem;
     }    
 
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d8927c69-f824-4d33-86aa-f3669be7367c' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d8927c69-f824-4d33-86aa-f3669be7367c' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -850,6 +918,7 @@ right: .75rem;
 <div id='menu'>
 <div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
 <div id='menu-content'>
+<div id='ai' style='text-align:right'><button id='ai-prompt' onClick='getAiHelpPrompt()'>Copy AI Prompt</button></div>
 <div id='toc'></div>
 <div id='tools'>
                   Text Size: 
@@ -867,22 +936,20 @@ right: .75rem;
 <button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
 <button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
               
-              <!--postBegin--><h1 data-number="8" id="using-wildcard-filtering"><span
-class="header-section-number">8</span> Using Wildcard Filtering</h1>
+              <!--postBegin--><h1 data-number="8" id="using-wildcard-filtering"><span class="header-section-number">8</span> Using Wildcard Filtering</h1>
 <p><strong>Objectives.</strong> After completing this lesson, the
-successful student will be able to:</p>
-<ol type="1">
+successful student will be able to:</p>
+<ol type="1">
 <li>Create complex filters using wildcard characters and the keyword
-LIKE.</li>
+LIKE.</li>
 <li>Use the wildcard character <code>%</code> in place of multiple
-characters.</li>
+characters.</li>
 <li>Use the wildcard character <code>_</code> in place of a single
-character.</li>
+character.</li>
 <li>Use SIMILAR TO with a bracket expression to match one of a set of
-characters.</li>
-</ol>
-<h2 data-number="8.1" id="using-the-like-operator"><span
-class="header-section-number">8.1</span> Using the LIKE Operator</h2>
+characters.</li>
+</ol>
+<h2 data-number="8.1" id="using-the-like-operator"><span class="header-section-number">8.1</span> Using the LIKE Operator</h2>
 <p>In each of the filtering examples you have examined in this resource,
 you compared values in a table to one or more known values. The
 expression <code>WHERE birth = 1861</code> compares the values in the
@@ -891,72 +958,67 @@ this condition. Similarly, the statement
 <code>WHERE birth BETWEEN 1861 AND 1865</code> compares the values in
 the birth column to both 1861 and 1865 (known values) and returns those
 rows where the birth is greater than or equal to 1861 <em>and</em> less
-than or equal to 1865.</p>
+than or equal to 1865.</p>
 <p>There are times when the values you wish to compare are not
 completely known. When this happens you can use a wildcard to replace
 missing characters in a filter to create comparisons based on patterns
 rather than exact values. A pattern contains literal text and one or
 more wildcard characters that stand in the place of unknown
-characters.</p>
-<div class="term">
-<blockquote>
+characters.</p>
+<div class="term">
+<blockquote>
 <p><strong>Wildcard</strong> &#8212; A special character used to replace one
-or more missing characters in a filter.</p>
-</blockquote>
-</div>
-<div class="term">
-<blockquote>
+or more missing characters in a filter.</p>
+</blockquote>
+</div>
+<div class="term">
+<blockquote>
 <p><strong>Pattern</strong> &#8212; A filter value that contains literal text
 and one or more wildcard characters that stand in the place of unknown
-characters.</p>
-</blockquote>
-</div>
+characters.</p>
+</blockquote>
+</div>
 <p>For example, you may want to list all of the artists whose style
 includes the word &#8216;classic&#8217;. The word classic could appear anywhere in
 the style. You can use a chat with an AI assistant to create the SELECT
-statement that will do this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write a SQL statement to list the artists and
-their style whose style includes the word &#8220;classic&#8221;.</p>
-<p><strong>AI:</strong> Sure! Here&#8217;s the SQL statement to list the
-artists and their style whose style includes the word &#8220;classic&#8221;:</p>
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, style</span>
+statement that will do this:</p>
+<div class="ai-conversation" data-prompt='Write a SQL statement to list the artists and their style whose style includes the word "classic".'>
+<blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to list the artists and their style whose style includes the word "classic".</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
+<p>Sure! Here&#8217;s the SQL statement to list the artists and their style
+whose style includes the word &#8220;classic&#8221;:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, style</span>
 <span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="kw">like</span> <span class="st">&#39;%classic%&#39;</span>;</span></code></pre></div>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="kw">like</span> <span class="st">'%classic%'</span>;</span></code></pre></div>
 <p>This query selects the full_name and style columns from the artist
 table. The WHERE clause uses the LIKE operator to search for the word
 &#8220;classic&#8221; somewhere within the style column. The % symbol is a wildcard
 that represents any number of characters before or after the word
 &#8220;classic&#8221;. This query will return the names of artists and their
 corresponding styles where the style includes the word &#8220;classic&#8221; in any
-position.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, style</span>
+position.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, style</span>
 <span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="kw">LIKE</span> <span class="st">&#39;%classic%&#39;</span>;</span></code></pre></div>
+<span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="kw">LIKE</span> <span class="st">'%classic%'</span>;</span></code></pre></div>
 <p>Notice the syntax of the WHERE clause. A wildcard filter uses the
 keyword LIKE to signal to the DBMS that a wildcard filter has been
 specified. It also contains a pattern to be used for comparison. The
 pattern in this filter contains two wildcard characters &#8216;%&#8217; and the
 literal text classic to return all artists with the word classic
-somewhere in the style.</p>
-<div class="note">
-<blockquote>
-<p><strong>Note: Wildcards and Data Types.</strong> Wildcard filters can
-only be used with columns that have a text data type. They cannot be
-used with columns of any other data type.</p>
-</blockquote>
-</div>
+somewhere in the style.</p>
+<div class="note">
+<blockquote>
+<p><strong>Wildcards and Data Types.</strong> Wildcard filters can only
+be used with columns that have a text data type. They cannot be used
+with columns of any other data type.</p>
+</blockquote>
+</div>
 <p>SQL supports more than one wildcard character. Each of them is
-discussed in the next three sections of this lesson.</p>
-<h2 data-number="8.2" id="the-percent-sign-wildcard"><span
-class="header-section-number">8.2</span> The Percent Sign (%)
-Wildcard</h2>
+discussed in the next three sections of this lesson.</p>
+<h2 data-number="8.2" id="the-percent-sign-wildcard"><span class="header-section-number">8.2</span> The Percent Sign (%)
+Wildcard</h2>
 <p>The most commonly used wildcard character is the % sign. The % sign
 substitutes for any character or set of characters as you set a pattern
 for the text you&#8217;d like to see in the query results. In the previous
@@ -967,220 +1029,194 @@ characters could appear before the word classic in the results.
 Likewise, the % after the word classic means that any character or set
 of characters could appear after the word classic. This means that the
 word classic would need to appear anywhere in the style for an artist to
-appear in the query result.</p>
-<div class="note">
-<blockquote>
-<p><strong>Note: The % Wildcard.</strong> The % character substitutes
-for <em>any</em> character or set of characters including no characters
-at all. This means that the pattern <code>%classic%</code> in the last
+appear in the query result.</p>
+<div class="note">
+<blockquote>
+<p><strong>The % Wildcard.</strong> The % character substitutes for
+<em>any</em> character or set of characters including no characters at
+all. This means that the pattern <code>%classic%</code> in the last
 example would include those styles with the word classic as the first or
-last word of the style.</p>
-</blockquote>
-</div>
+last word of the style.</p>
+</blockquote>
+</div>
 <p>It is helpful to examine a few more examples. Suppose you wish to
 list the artists whose style starts with the word &#8220;art&#8221;. You can use a
 chat with an AI assistant to create the SELECT statement that will do
-this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write an SQL statement to list the artists and
-their style whose style starts with the word &#8220;art&#8221;.</p>
-<p><strong>AI:</strong> Certainly! Here&#8217;s the SQL statement to list the
-artists and their style whose style starts with the word &#8220;art&#8221;:</p>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, style</span>
+this:</p>
+<div class="ai-conversation" data-prompt='Write an SQL statement to list the artists and their style whose style starts with the word "art".'>
+<blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write an SQL statement to list the artists and their style whose style starts with the word "art".</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
+<p>Certainly! Here&#8217;s the SQL statement to list the artists and their
+style whose style starts with the word &#8220;art&#8221;:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, style</span>
 <span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="kw">like</span> <span class="st">&#39;art%&#39;</span>;</span></code></pre></div>
+<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="kw">like</span> <span class="st">'art%'</span>;</span></code></pre></div>
 <p>This query selects the full_name and style columns from the artist
 table. The WHERE clause uses the LIKE operator to search for the word
 &#8220;art&#8221; at the beginning of the style column. The % symbol is a wildcard
 that represents any number of characters after the word &#8220;art&#8221;. This
 query will return the names of artists and their corresponding styles
-where the style starts with the word &#8220;art&#8221;.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, style</span>
+where the style starts with the word &#8220;art&#8221;.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, style</span>
 <span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb4-3"><a aria-hidden="true" href="#cb4-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="kw">LIKE</span> <span class="st">&#39;art%&#39;</span>;</span></code></pre></div>
+<span id="cb4-3"><a aria-hidden="true" href="#cb4-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="kw">LIKE</span> <span class="st">'art%'</span>;</span></code></pre></div>
 <p>In this example, the pattern for the text to be selected is &#8220;art%&#8221;.
 This means that the word &#8220;art&#8221; must be first in the style, but it can be
 followed by any character or set of characters. In this case, the style
 &#8220;Art Nouveau&#8221; is returned, because it starts with the word &#8220;art&#8221;. Any
-style that starts with the word &#8220;art&#8221; would be selected.</p>
+style that starts with the word &#8220;art&#8221; would be selected.</p>
 <p>Consider another example. Assume you wish to list the artists whose
 style ends with the word &#8220;art&#8221;. You can use a chat with an AI assistant
-to create the SELECT statement that will do this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write an SQL statement to list the artists and
-their style whose style ends with the word &#8220;art&#8221;.</p>
-<p><strong>AI:</strong> Sure! Here&#8217;s the SQL statement to list the
-artists and their style whose style ends with the word &#8220;art&#8221;:</p>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, style</span>
+to create the SELECT statement that will do this:</p>
+<div class="ai-conversation" data-prompt='Write an SQL statement to list the artists and their style whose style ends with the word "art".'>
+<blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write an SQL statement to list the artists and their style whose style ends with the word "art".</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
+<p>Sure! Here&#8217;s the SQL statement to list the artists and their style
+whose style ends with the word &#8220;art&#8221;:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, style</span>
 <span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb5-3"><a aria-hidden="true" href="#cb5-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="kw">like</span> <span class="st">&#39;%art&#39;</span>;</span></code></pre></div>
+<span id="cb5-3"><a aria-hidden="true" href="#cb5-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="kw">like</span> <span class="st">'%art'</span>;</span></code></pre></div>
 <p>This query selects the full_name and style columns from the artist
 table. The WHERE clause uses the LIKE operator to search for the word
 &#8220;art&#8221; at the end of the style column. The % symbol is a wildcard that
 represents any number of characters before the word &#8220;art&#8221;. This query
 will return the names of artists and their corresponding styles where
-the style ends with the word &#8220;art&#8221;.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb6"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, style</span>
+the style ends with the word &#8220;art&#8221;.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, style</span>
 <span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb6-3"><a aria-hidden="true" href="#cb6-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="kw">LIKE</span> <span class="st">&#39;%art&#39;</span>;</span></code></pre></div>
+<span id="cb6-3"><a aria-hidden="true" href="#cb6-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="kw">LIKE</span> <span class="st">'%art'</span>;</span></code></pre></div>
 <p>In this case, the pattern is &#8220;%art&#8221;. This will return all artists
 whose style has the word &#8220;art&#8221; at the end with any character or set of
 characters before the word art. This includes the styles of Landscape
-Art and Modern Art.</p>
+Art and Modern Art.</p>
 <p>In this next example assume you wish to list the artists whose style
 contains the word &#8220;art&#8221;. You can use a chat with an AI assistant to
-create the SELECT statement that will do this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write an SQL statement to list the artists and
-their style whose style contains the word &#8220;art&#8221;.</p>
-<p><strong>AI:</strong> Certainly! Here&#8217;s the SQL statement to list the
-artists and their style whose style contains the word &#8220;art&#8221;:</p>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, style</span>
+create the SELECT statement that will do this:</p>
+<div class="ai-conversation" data-prompt='Write an SQL statement to list the artists and their style whose style contains the word "art".'>
+<blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write an SQL statement to list the artists and their style whose style contains the word "art".</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
+<p>Certainly! Here&#8217;s the SQL statement to list the artists and their
+style whose style contains the word &#8220;art&#8221;:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, style</span>
 <span id="cb7-2"><a aria-hidden="true" href="#cb7-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb7-3"><a aria-hidden="true" href="#cb7-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="kw">like</span> <span class="st">&#39;%art%&#39;</span>;</span></code></pre></div>
+<span id="cb7-3"><a aria-hidden="true" href="#cb7-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="kw">like</span> <span class="st">'%art%'</span>;</span></code></pre></div>
 <p>This query selects the full_name and style columns from the artist
 table. The WHERE clause uses the LIKE operator with % wildcard on both
 sides of the word &#8220;art&#8221;. This allows the query to search for the word
 &#8220;art&#8221; anywhere within the style column. The query will return the names
 of artists and their corresponding styles where the style contains the
-word &#8220;art&#8221; in any position.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, style</span>
+word &#8220;art&#8221; in any position.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, style</span>
 <span id="cb8-2"><a aria-hidden="true" href="#cb8-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb8-3"><a aria-hidden="true" href="#cb8-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="kw">LIKE</span> <span class="st">&#39;%art%&#39;</span>;</span></code></pre></div>
+<span id="cb8-3"><a aria-hidden="true" href="#cb8-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="kw">LIKE</span> <span class="st">'%art%'</span>;</span></code></pre></div>
 <p>This example uses a pattern you used before with the word classic. In
 this case, the pattern &#8220;%art%&#8221; will return artists whose style has the
-word art anywhere in the style.</p>
+word art anywhere in the style.</p>
 <p>Consider one final example. Assume you wish to list the artists whose
 style starts with the letter &#8220;a&#8221; and ends with the letter &#8220;t&#8221;. You can
 use a chat with an AI assistant to create the SELECT statement that will
-do this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write an SQL statement to list the artists and
-their style whose style starts with &#8220;a&#8221; and ends with &#8220;t&#8221;.</p>
-<p><strong>AI:</strong> Sure! Here&#8217;s the SQL statement to list the
-artists and their style whose style starts with &#8216;a&#8217; and ends with
-&#8216;t&#8217;:</p>
-<div class="sourceCode" id="cb9"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, style</span>
+do this:</p>
+<div class="ai-conversation" data-prompt='Write an SQL statement to list the artists and their style whose style starts with "a" and ends with "t".'>
+<blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write an SQL statement to list the artists and their style whose style starts with "a" and ends with "t".</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
+<p>Sure! Here&#8217;s the SQL statement to list the artists and their style
+whose style starts with &#8216;a&#8217; and ends with &#8216;t&#8217;:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, style</span>
 <span id="cb9-2"><a aria-hidden="true" href="#cb9-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb9-3"><a aria-hidden="true" href="#cb9-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="kw">like</span> <span class="st">&#39;a%t&#39;</span>;</span></code></pre></div>
+<span id="cb9-3"><a aria-hidden="true" href="#cb9-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="kw">like</span> <span class="st">'a%t'</span>;</span></code></pre></div>
 <p>This query selects the full_name and style columns from the artist
 table. The WHERE clause uses the LIKE operator with &#8216;a&#8217; followed by %
 wildcard at the beginning, and &#8216;t&#8217; at the end. This allows the query to
 search for styles that start with &#8216;a&#8217; and end with &#8216;t&#8217;. The query will
 return the names of artists and their corresponding styles that meet
-this condition.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb10"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb10-1"><a aria-hidden="true" href="#cb10-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, style</span>
+this condition.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb10-1"><a aria-hidden="true" href="#cb10-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, style</span>
 <span id="cb10-2"><a aria-hidden="true" href="#cb10-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb10-3"><a aria-hidden="true" href="#cb10-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="kw">LIKE</span> <span class="st">&#39;a%t&#39;</span>;</span></code></pre></div>
+<span id="cb10-3"><a aria-hidden="true" href="#cb10-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="kw">LIKE</span> <span class="st">'a%t'</span>;</span></code></pre></div>
 <p>In this case, the pattern &#8220;a%t&#8221; retrieves the artists whose style
 starts with the letter &#8220;a&#8221; and ends with the letter &#8220;t&#8221;. This includes
-American West and America West.</p>
-<div class="caution">
-<blockquote>
-<p><strong>Caution: Wildcards and Unusual Situations.</strong> There are
-some interesting unusual cases to be aware of when using wildcard
-criteria.</p>
-<ul>
+American West and America West.</p>
+<div class="caution">
+<blockquote>
+<p><strong>Wildcards and Unusual Situations.</strong> There are some
+interesting unusual cases to be aware of when using wildcard
+criteria.</p>
+<ul>
 <li>Not all DBMS behave the same when it comes to case sensitivity. A
 DBMS may match &#8216;art%&#8217; with Art Nouveau. Another may require the pattern
-&#8216;Art%&#8217; to match Art Nouveau.</li>
+&#8216;Art%&#8217; to match Art Nouveau.</li>
 <li>Some DBMS will pad the end of the values in a column with trailing
 spaces. For example, a column may be set to limit the values in the
 column to 25 characters. If this is the case the entry Modern Art (10
 characters) would have 15 spaces at the end to fill the 25 characters
 allocated to entries in the column. As a consequence, the pattern &#8216;%art&#8217;
 would not return Modern Art. Most modern DBMS do not pad the end of
-values with trailing spaces.</li>
+values with trailing spaces.</li>
 <li>Finally, the NULL value does not behave as you might expect.
 Wildcard searches do not return rows with NULL values. Specifically the
 clause <code>WHERE style LIKE '%'</code> will not return artists with a
 null value for their style (note that it will return artists with any
-non-NULL style).</li>
-</ul>
-</blockquote>
-</div>
-<h2 data-number="8.3" id="the-underscore-_-wildcard"><span
-class="header-section-number">8.3</span> The Underscore (_)
-Wildcard</h2>
+non-NULL style).</li>
+</ul>
+</blockquote>
+</div>
+<h2 data-number="8.3" id="the-underscore-_-wildcard"><span class="header-section-number">8.3</span> The Underscore (_)
+Wildcard</h2>
 <p>The % wildcard character is powerful and useful. The underscore
 (<code>_</code>) character is also useful, particularly when using a
 more prescriptive pattern. The underscore character is used to
 substitute for any single character. It is used in place of only one
-character (no more and no fewer).</p>
+character (no more and no fewer).</p>
 <p>Suppose you wish to list the artists whose last name is similar to
 &#8220;monet&#8221;. In particular, you want to retrieve those artists whose last
 name starts with the letters &#8220;mo&#8221;, has any third character, and ends
 with the letters &#8220;et&#8221;. You can use a chat with an AI assistant to create
-the SELECT statement that will do this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write an SQL statement to list the artists
-whose last name starts with the letters &#8216;mo&#8217;, has any third character,
-and ends with the letters &#8216;et&#8217;.</p>
-<p><strong>AI:</strong> To list the artists whose last name starts with
-the letters &#8216;mo&#8217;, has any third character, and ends with the letters
-&#8216;et&#8217;, you can use the following SQL statement:</p>
-<div class="sourceCode" id="cb11"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb11-1"><a aria-hidden="true" href="#cb11-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name</span>
+the SELECT statement that will do this:</p>
+<div class="ai-conversation" data-prompt="Write an SQL statement to list the artists whose last name starts with the letters 'mo', has any third character, and ends with the letters 'et'.">
+<blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write an SQL statement to list the artists whose last name starts with the letters 'mo', has any third character, and ends with the letters 'et'.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
+<p>To list the artists whose last name starts with the letters &#8216;mo&#8217;, has
+any third character, and ends with the letters &#8216;et&#8217;, you can use the
+following SQL statement:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb11-1"><a aria-hidden="true" href="#cb11-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name</span>
 <span id="cb11-2"><a aria-hidden="true" href="#cb11-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb11-3"><a aria-hidden="true" href="#cb11-3" tabindex="-1"></a><span class="kw">WHERE</span> last_name <span class="kw">like</span> <span class="st">&#39;mo_et&#39;</span>;</span></code></pre></div>
+<span id="cb11-3"><a aria-hidden="true" href="#cb11-3" tabindex="-1"></a><span class="kw">WHERE</span> last_name <span class="kw">like</span> <span class="st">'mo_et'</span>;</span></code></pre></div>
 <p>In this query, the SELECT clause selects the full_name column from
 the artist table. The WHERE clause uses the LIKE operator with &#8216;mo_et&#8217;
 pattern to search for artists whose last name meets the specified
 conditions. The underscore _ is a wildcard that matches any single
 character, so &#8216;mo_et&#8217; will match any last name that starts with &#8216;mo&#8217;,
 has any third character, and ends with &#8216;et&#8217;. The query will return the
-names of artists whose last names satisfy this pattern.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb12"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name</span>
+names of artists whose last names satisfy this pattern.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name</span>
 <span id="cb12-2"><a aria-hidden="true" href="#cb12-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb12-3"><a aria-hidden="true" href="#cb12-3" tabindex="-1"></a><span class="kw">WHERE</span> last_name <span class="kw">LIKE</span> <span class="st">&#39;mo_et&#39;</span>;</span></code></pre></div>
+<span id="cb12-3"><a aria-hidden="true" href="#cb12-3" tabindex="-1"></a><span class="kw">WHERE</span> last_name <span class="kw">LIKE</span> <span class="st">'mo_et'</span>;</span></code></pre></div>
 <p>Notice that the query returns two artists, Claude Monet and Henry
 Moret. The last name of each artist follows the same pattern. They both
 start with the letters &#8216;mo&#8217;, have any third character, and end with the
-letters &#8216;et&#8217;.</p>
+letters &#8216;et&#8217;.</p>
 <p>You can also mix and match wildcard characters. Suppose you wish to
 list the artists whose last name has the letter &#8216;n&#8217; as the third letter.
 You can use a chat with an AI assistant to create the SELECT statement
-that will do this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write an SQL statement to list the artists
-whose last name contains the letter &#8216;n&#8217; as the third letter.</p>
-<p><strong>AI:</strong> To list the artists whose last name contains the
-letter &#8216;n&#8217; as the third letter, you can use the following SQL statement
-with the LIKE operator and underscore _ wildcard:</p>
-<div class="sourceCode" id="cb13"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb13-1"><a aria-hidden="true" href="#cb13-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name</span>
+that will do this:</p>
+<div class="ai-conversation" data-prompt="Write an SQL statement to list the artists whose last name contains the letter 'n' as the third letter.">
+<blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write an SQL statement to list the artists whose last name contains the letter 'n' as the third letter.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
+<p>To list the artists whose last name contains the letter &#8216;n&#8217; as the
+third letter, you can use the following SQL statement with the LIKE
+operator and underscore _ wildcard:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb13-1"><a aria-hidden="true" href="#cb13-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name</span>
 <span id="cb13-2"><a aria-hidden="true" href="#cb13-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb13-3"><a aria-hidden="true" href="#cb13-3" tabindex="-1"></a><span class="kw">WHERE</span> last_name <span class="kw">like</span> <span class="st">&#39;__n%&#39;</span>;</span></code></pre></div>
+<span id="cb13-3"><a aria-hidden="true" href="#cb13-3" tabindex="-1"></a><span class="kw">WHERE</span> last_name <span class="kw">like</span> <span class="st">'__n%'</span>;</span></code></pre></div>
 <p>In this query, the SELECT clause selects the full_name column from
 the artist table. The WHERE clause uses the LIKE operator with &#8217;__n%&#8217;
 pattern to search for artists whose last name contains the letter &#8216;n&#8217; as
@@ -1188,57 +1224,49 @@ the third letter. The underscore _ is a wildcard that matches any single
 character, so &#8217;__n%&#8217; will match any last name with any two characters,
 followed by &#8216;n&#8217; in the third position, and then any number of characters
 afterward. The query will return the names of artists whose last names
-satisfy this pattern.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb14"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb14-1"><a aria-hidden="true" href="#cb14-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name</span>
+satisfy this pattern.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb14-1"><a aria-hidden="true" href="#cb14-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name</span>
 <span id="cb14-2"><a aria-hidden="true" href="#cb14-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb14-3"><a aria-hidden="true" href="#cb14-3" tabindex="-1"></a><span class="kw">WHERE</span> last_name <span class="kw">LIKE</span> <span class="st">&#39;__n%&#39;</span>;</span></code></pre></div>
+<span id="cb14-3"><a aria-hidden="true" href="#cb14-3" tabindex="-1"></a><span class="kw">WHERE</span> last_name <span class="kw">LIKE</span> <span class="st">'__n%'</span>;</span></code></pre></div>
 <p>The pattern in this example uses both the &#8220;<em>&#8221; and &#8221;%&#8221; wildcards.
 The pattern starts with two &#8221;</em>&#8221; characters that allow the first two
 characters to be wildcards. The letter in the third position must be
 &#8220;n&#8221;. The pattern then allows any character or set of characters after
 the third position. This pattern matches &#8220;Henri&#8221; and &#8220;Landseer&#8221;. It
-would also match &#8220;Van Der Heist&#8221; and &#8220;Man&#8221;.</p>
-<h2 data-number="8.4"
-id="matching-a-set-of-characters-with-similar-to"><span
-class="header-section-number">8.4</span> Matching a Set of Characters
-with SIMILAR TO</h2>
+would also match &#8220;Van Der Heist&#8221; and &#8220;Man&#8221;.</p>
+<h2 data-number="8.4" id="matching-a-set-of-characters-with-similar-to"><span class="header-section-number">8.4</span> Matching a Set of Characters
+with SIMILAR TO</h2>
 <p>Some DBMSs let you use square brackets &#8212; <code>[]</code> &#8212; directly
 inside a LIKE pattern to match a set of characters at a single position.
 PostgreSQL&#8217;s LIKE does not support this: brackets in a LIKE pattern are
 treated as ordinary, literal characters, not as a wildcard. To get this
-behavior in PostgreSQL, you use a different operator: SIMILAR TO.</p>
-<div class="caution">
-<blockquote>
-<p><strong>Caution: LIKE Does Not Support Brackets in
-PostgreSQL.</strong> If you write
-<code>WHERE last_name LIKE '[ab]%'</code> in PostgreSQL, you are asking
-for last names that literally begin with the characters
+behavior in PostgreSQL, you use a different operator: SIMILAR TO.</p>
+<div class="caution">
+<blockquote>
+<p><strong>LIKE Does Not Support Brackets in PostgreSQL.</strong> If you
+write <code>WHERE last_name LIKE '[ab]%'</code> in PostgreSQL, you are
+asking for last names that literally begin with the characters
 <code>[ab]</code> &#8212; not last names that begin with either &#8220;a&#8221; or &#8220;b&#8221;. To
 match a set of characters at a position, use SIMILAR TO instead of
-LIKE.</p>
-</blockquote>
-</div>
+LIKE.</p>
+</blockquote>
+</div>
 <p>SIMILAR TO combines pattern matching with SQL regular expression
 syntax, including bracket expressions. Suppose you want to list the
 artists whose last name starts with either the letter A or B. You can
 use a chat with an AI assistant to create the SELECT statement that will
-do this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write a SQL statement to list the artists whose
-last name starts with the letter a or b using PostgreSQL&#8217;s SIMILAR TO
-operator.</p>
-<p><strong>AI:</strong> Sure! Since PostgreSQL&#8217;s LIKE doesn&#8217;t support
-bracket expressions, you can use SIMILAR TO instead, which does. Here&#8217;s
-the SQL statement:</p>
-<div class="sourceCode" id="cb15"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb15-1"><a aria-hidden="true" href="#cb15-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name</span>
+do this:</p>
+<div class="ai-conversation" data-prompt="Write a SQL statement to list the artists whose last name starts with the letter a or b using PostgreSQL's SIMILAR TO operator.">
+<blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to list the artists whose last name starts with the letter a or b using PostgreSQL's SIMILAR TO operator.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
+<p>Sure! Since PostgreSQL&#8217;s LIKE doesn&#8217;t support bracket expressions,
+you can use SIMILAR TO instead, which does. Here&#8217;s the SQL
+statement:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb15-1"><a aria-hidden="true" href="#cb15-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name</span>
 <span id="cb15-2"><a aria-hidden="true" href="#cb15-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb15-3"><a aria-hidden="true" href="#cb15-3" tabindex="-1"></a><span class="kw">WHERE</span> last_name SIMILAR <span class="kw">TO</span> <span class="st">&#39;[ab]%&#39;</span>;</span></code></pre></div>
+<span id="cb15-3"><a aria-hidden="true" href="#cb15-3" tabindex="-1"></a><span class="kw">WHERE</span> last_name SIMILAR <span class="kw">TO</span> <span class="st">'[ab]%'</span>;</span></code></pre></div>
 <p>In this query, the SELECT clause selects the full_name column from
 the artist table. The WHERE clause uses the SIMILAR TO operator with the
 pattern &#8216;[ab]%&#8217; to search for artists whose last name starts with either
@@ -1246,51 +1274,49 @@ pattern &#8216;[ab]%&#8217; to search for artists whose last name starts with ei
 represents any number of characters after the specified letter, but
 SIMILAR TO additionally understands the bracket expression [ab] as
 &#8220;either a or b.&#8221; The query will return the names of artists whose last
-names start with either &#8216;a&#8217; or &#8216;b&#8217;.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb16"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb16-1"><a aria-hidden="true" href="#cb16-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name</span>
+names start with either &#8216;a&#8217; or &#8216;b&#8217;.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb16-1"><a aria-hidden="true" href="#cb16-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name</span>
 <span id="cb16-2"><a aria-hidden="true" href="#cb16-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb16-3"><a aria-hidden="true" href="#cb16-3" tabindex="-1"></a><span class="kw">WHERE</span> last_name SIMILAR <span class="kw">TO</span> <span class="st">&#39;[ab]%&#39;</span>;</span></code></pre></div>
+<span id="cb16-3"><a aria-hidden="true" href="#cb16-3" tabindex="-1"></a><span class="kw">WHERE</span> last_name SIMILAR <span class="kw">TO</span> <span class="st">'[ab]%'</span>;</span></code></pre></div>
 <p>The pattern in this example uses brackets to specify a set of
 characters (a or b) for the character in the first position of the last
 name. Any artist whose last name starts with a or b will be retrieved by
 the query. Notice that the % wildcard still works the same way inside a
-SIMILAR TO pattern as it does with LIKE.</p>
-<div class="tip">
-<blockquote>
-<p><strong>Tip: SIMILAR TO Supports Full SQL Regular
-Expressions.</strong> Bracket expressions are just one small piece of
-what SIMILAR TO can do &#8212; it supports the full SQL standard regular
-expression syntax, including alternation with <code>|</code> (for
-example, <code>'(mo|va)_et'</code>) and repetition with <code>*</code>
-and <code>+</code>. If you find yourself wanting more powerful pattern
-matching than SIMILAR TO offers, PostgreSQL also supports POSIX regular
-expressions directly through the <code>~</code> operator (for example,
+SIMILAR TO pattern as it does with LIKE.</p>
+<div class="tip">
+<blockquote>
+<p><strong>SIMILAR TO Supports Full SQL Regular Expressions.</strong>
+Bracket expressions are just one small piece of what SIMILAR TO can do &#8212;
+it supports the full SQL standard regular expression syntax, including
+alternation with <code>|</code> (for example, <code>'(mo|va)_et'</code>)
+and repetition with <code>*</code> and <code>+</code>. If you find
+yourself wanting more powerful pattern matching than SIMILAR TO offers,
+PostgreSQL also supports POSIX regular expressions directly through the
+<code>~</code> operator (for example,
 <code>WHERE last_name ~ '^[AB]'</code>), which is even more flexible
-still.</p>
-</blockquote>
-</div>
-<div class="tip">
-<blockquote>
-<p><strong>Tip: Using Wildcards.</strong> Queries that use wildcards or
+still.</p>
+</blockquote>
+</div>
+<div class="tip">
+<blockquote>
+<p><strong>Using Wildcards.</strong> Queries that use wildcards or
 pattern matching in the criteria of the WHERE clause take longer to
-process than other queries. Keep these general principles in mind:</p>
-<ul>
+process than other queries. Keep these general principles in mind:</p>
+<ul>
 <li>Whenever possible, write queries without using wildcards, because
-they will process more quickly.</li>
+they will process more quickly.</li>
 <li>Queries with a wildcard character at the beginning of the search
-pattern will take the longest to process.</li>
+pattern will take the longest to process.</li>
 <li>Carefully design the patterns you wish to use in your search
 criteria. It is easy to misplace a character and not retrieve the
-results you need.</li>
-</ul>
-</blockquote>
-</div>
-<h2 data-number="8.5" id="summary"><span
-class="header-section-number">8.5</span> Summary</h2>
+results you need.</li>
+</ul>
+</blockquote>
+</div>
+<h2 data-number="8.5" id="summary"><span class="header-section-number">8.5</span> Summary</h2>
 <p>This lesson described how to use wildcard characters in the WHERE
 clause to create sophisticated filtering conditions. When using
 wildcards with LIKE, you will use a combination of the wildcard
@@ -1299,7 +1325,7 @@ expressions the way some other DBMSs do, so matching a set of characters
 at a position requires the SIMILAR TO operator (or, for full regular
 expressions, the <code>~</code> operator) instead. Wildcard and
 pattern-matching searches are powerful and you will likely use them
-often in your query writing.</p>
+often in your query writing.</p>
 <!--postEnd-->
               </div>
 </div>
@@ -1322,8 +1348,8 @@ often in your query writing.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZqXO4mUXqOYnFCeUK-ijTvt:1784899980808';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/8.html','3986204447440040189');
-_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/8.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/8.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/5401146439125664128/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '5401146439125664128', 'pageName': '8. Using Wildcard Filtering', 'pageTitle': 'book1014 SQL: 8. Using Wildcard Filtering'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '8. Using Wildcard Filtering', 'description': '8  Using Wildcard Filtering \r Objectives.  After completing this lesson, the\r successful student will be able to: \r \r Create complex filters...', 'url': 'https://book1014.blogspot.com/2000/02/8.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 5401146439125664128}}]);
+window['__wavt'] = 'AEUoTZrKYf9_CY-wUlclcUmVc-70:1784981196455';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/8.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/8.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/8.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/5401146439125664128/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '5401146439125664128', 'pageName': '8. Using Wildcard Filtering', 'pageTitle': 'book1014 SQL: 8. Using Wildcard Filtering'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '8. Using Wildcard Filtering', 'description': '8  Using Wildcard Filtering  Objectives.  After completing this lesson, the\r successful student will be able to:   Create complex filters us...', 'url': 'https://book1014.blogspot.com/2000/02/8.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 5401146439125664128}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>
 </body>

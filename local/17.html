@@ -16,6 +16,11 @@
 <!-- button icon -->
 <link href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0' rel='stylesheet'/>
 <style id='page-skin-1' type='text/css'><!--
+/* This file is the source of truth for book CSS, but there is no publish script for it.
+After editing, copy the changed rules by hand into each book's Blogger theme HTML
+(the page-skin-1 <style> block) via the Blogger dashboard.
+Do NOT edit local/*.html to apply these changes - those files are downloaded verbatim
+from the live blog by download.py and get overwritten on the next run. */
 :root {
 --font-zoom: 1;
 --page-bg: #f8fafc;
@@ -136,6 +141,24 @@ padding: .85rem;
 }
 #page-data{
 display:none
+}
+.toast{
+position:fixed;
+bottom:2rem;
+left:50%;
+transform:translateX(-50%);
+z-index:9999;
+background-color:green;
+color:#fff;
+padding:.7rem 1.25rem;
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-lg);
+}
+.toast.success{
+background-color:#15803d;
+}
+.toast.error{
+background-color:var(--danger);
 }
 #menu{
 top:0;
@@ -460,9 +483,9 @@ line-height: 1;
 }
 blockquote{
 margin:1.75rem 0;
+padding:1rem 1.25rem 1rem 1.35rem;
 background:var(--surface-soft);
 border-left:.35rem solid var(--accent);
-padding:1rem 1.25rem 1rem 1.35rem;
 border-radius:0 var(--radius-md) var(--radius-md) 0;
 color:#334155;
 }
@@ -489,6 +512,7 @@ border-left:.35rem solid darkblue;
 .term blockquote p::before {
 content: "Term: ";
 font-weight: bold;
+color:#2B7FFF;
 }
 .caution blockquote{
 background:#FFE2E2;
@@ -501,6 +525,12 @@ font-weight: bold;
 .objectives blockquote{
 background:#FFF8E1;
 border-left:.35rem solid gold;
+border-right:.35rem solid gold;
+border-radius:0;
+}
+.objectives blockquote p::before {
+content: "Objectives: ";
+font-weight: bold;
 }
 .review blockquote{
 background:#FFF0EC;
@@ -509,6 +539,25 @@ border-left:.35rem solid salmon;
 .review blockquote p::before {
 content: "Review: ";
 font-weight: bold;
+}
+.ai-conversation blockquote{
+background:lightgrey;
+border:1px solid #bbb;
+border-radius: 5px;
+}
+div.ai-prompt{
+background:white;
+border:1px solid grey;
+border-radius: 10px;
+padding:10px 20px 10px 20px;
+box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.3);
+margin: 0 1rem 1rem 1rem;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+span.ai-prompt-x{
+font-size: 1.8em;
 }
 blockquote p:last-child{
 margin-bottom:0;
@@ -766,6 +815,25 @@ right: .75rem;
 }
 
 --></style>
+<!-- the next style tag gets filled automatically with css from availabooktools.blogspot.com-->
+<style id='dynamic-override-css' type='text/css'></style>
+<script type='text/javascript'>
+//<![CDATA[
+function loadCss(response){
+  console.log("$$$$$$$$$$$$$$ response", response)
+  const newCss = response.feed.entry[0].content.$t;
+  if (newCss.length > 0) {
+    const overrideStyleBlock = document.getElementById('dynamic-override-css');
+    if (overrideStyleBlock) {
+      overrideStyleBlock.textContent = newCss;
+    }
+  }
+}
+
+
+//]]>
+</script>
+<script src='https://availabooktools.blogspot.com/feeds/posts/default/-/css-staging?alt=json-in-script&max-results=1&callback=loadCss'></script>
 <script>
     const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
 	async function initialize(){
@@ -826,7 +894,7 @@ right: .75rem;
     }    
 
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d8927c69-f824-4d33-86aa-f3669be7367c' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d8927c69-f824-4d33-86aa-f3669be7367c' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -850,6 +918,7 @@ right: .75rem;
 <div id='menu'>
 <div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
 <div id='menu-content'>
+<div id='ai' style='text-align:right'><button id='ai-prompt' onClick='getAiHelpPrompt()'>Copy AI Prompt</button></div>
 <div id='toc'></div>
 <div id='tools'>
                   Text Size: 
@@ -867,292 +936,269 @@ right: .75rem;
 <button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
 <button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
               
-              <!--postBegin--><h1 data-number="17" id="combining-queries"><span
-class="header-section-number">17</span> Combining Queries</h1>
+              <!--postBegin--><h1 data-number="17" id="combining-queries"><span class="header-section-number">17</span> Combining Queries</h1>
 <p><strong>Objectives.</strong> After completing this lesson, the
-successful student will be able to:</p>
-<ol type="1">
-<li>Describe when and why to use combined queries.</li>
-<li>Combine two or more SELECT statements using the UNION operator.</li>
+successful student will be able to:</p>
+<ol type="1">
+<li>Describe when and why to use combined queries.</li>
+<li>Combine two or more SELECT statements using the UNION operator.</li>
 <li>Describe the rules that govern which SELECT statements can be
-combined with UNION.</li>
-<li>Use UNION ALL to include duplicate rows in a combined result.</li>
-<li>Sort the results of a combined query.</li>
-</ol>
-<h2 data-number="17.1" id="understanding-combined-queries"><span
-class="header-section-number">17.1</span> Understanding Combined
-Queries</h2>
+combined with UNION.</li>
+<li>Use UNION ALL to include duplicate rows in a combined result.</li>
+<li>Sort the results of a combined query.</li>
+</ol>
+<h2 data-number="17.1" id="understanding-combined-queries"><span class="header-section-number">17.1</span> Understanding Combined
+Queries</h2>
 <p>Most SQL queries contain a single SELECT statement that returns data
 from one or more tables. SQL also enables you to perform multiple
 queries (multiple SELECT statements) and return the results as a single
 query result set. These combined queries are usually known as unions or
-compound queries.</p>
+compound queries.</p>
 <p>There are basically two scenarios in which you&#8217;d use combined
-queries:</p>
-<ul>
+queries:</p>
+<ul>
 <li>To return similarly structured data from different tables in a
-single query</li>
+single query</li>
 <li>To perform multiple queries against a single table returning the
-data as one query</li>
-</ul>
-<div class="tip">
-<blockquote>
-<p><strong>Tip: Combining Queries and Multiple WHERE
-Conditions.</strong> For the most part, combining two queries to the
-same table accomplishes the same thing as a single query with multiple
-WHERE clause conditions. In other words, any SELECT statement with
-multiple WHERE clauses can also be specified as a combined query, as
-you&#8217;ll see in the section that follows.</p>
-</blockquote>
-</div>
-<h2 data-number="17.2" id="creating-combined-queries"><span
-class="header-section-number">17.2</span> Creating Combined Queries</h2>
+data as one query</li>
+</ul>
+<div class="tip">
+<blockquote>
+<p><strong>Combining Queries and Multiple WHERE Conditions.</strong> For
+the most part, combining two queries to the same table accomplishes the
+same thing as a single query with multiple WHERE clause conditions. In
+other words, any SELECT statement with multiple WHERE clauses can also
+be specified as a combined query, as you&#8217;ll see in the section that
+follows.</p>
+</blockquote>
+</div>
+<h2 data-number="17.2" id="creating-combined-queries"><span class="header-section-number">17.2</span> Creating Combined Queries</h2>
 <p>SQL queries are combined using the UNION operator. Using UNION, you
 can specify multiple SELECT statements, and their results can be
-combined into a single result set.</p>
-<h2 data-number="17.3" id="using-union"><span
-class="header-section-number">17.3</span> Using UNION</h2>
+combined into a single result set.</p>
+<h2 data-number="17.3" id="using-union"><span class="header-section-number">17.3</span> Using UNION</h2>
 <p>Using UNION is simple enough. All you do is specify each SELECT
 statement and place the keyword UNION between each. Let&#8217;s look at an
 example. You need a report on all your French, Italian, and Spanish
 artists. You also want to include all Impressionist artists, regardless
 of nationality. Of course, you can create a WHERE clause that will do
-this, but this time you&#8217;ll use a UNION instead.</p>
+this, but this time you&#8217;ll use a UNION instead.</p>
 <p>As just explained, creating a UNION involves writing multiple SELECT
-statements. First, look at the individual statements:</p>
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, style</span>
+statements. First, look at the individual statements:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, style</span>
 <span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="kw">IN</span> (<span class="st">&#39;French&#39;</span>, <span class="st">&#39;Italian&#39;</span>, <span class="st">&#39;Spanish&#39;</span>);</span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, style</span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="kw">IN</span> (<span class="st">'French'</span>, <span class="st">'Italian'</span>, <span class="st">'Spanish'</span>);</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, style</span>
 <span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">&#39;Impressionist&#39;</span>;</span></code></pre></div>
+<span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">'Impressionist'</span>;</span></code></pre></div>
 <p>The first SELECT retrieves all rows for artists of French, Italian,
 or Spanish nationality by passing those values to the IN clause. The
 second SELECT uses a simple equality test to find all artists working in
 the Impressionist style. You&#8217;ll notice that an artist like Claude Monet
 &#8212; French, and working in the Impressionist style &#8212; appears on both
-outputs, since he meets both WHERE conditions.</p>
+outputs, since he meets both WHERE conditions.</p>
 <p>To combine these two statements, you can use a chat with an AI
-assistant to write the SELECT statement:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write a SQL statement that combines two queries
-into one result set using UNION: one that lists French, Italian, and
-Spanish artists, and one that lists Impressionist artists.</p>
-<p><strong>AI:</strong> You place the keyword UNION between the two
-SELECT statements. Here&#8217;s the SQL statement:</p>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, style</span>
+assistant to write the SELECT statement:</p>
+<div class="ai-conversation" data-prompt="Write a SQL statement that combines two queries into one result set using UNION: one that lists French, Italian, and Spanish artists, and one that lists Impressionist artists.">
+<blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement that combines two queries into one result set using UNION: one that lists French, Italian, and Spanish artists, and one that lists Impressionist artists.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
+<p>You place the keyword UNION between the two SELECT statements. Here&#8217;s
+the SQL statement:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, style</span>
 <span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="kw">IN</span> (<span class="st">&#39;French&#39;</span>, <span class="st">&#39;Italian&#39;</span>, <span class="st">&#39;Spanish&#39;</span>)</span>
+<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="kw">IN</span> (<span class="st">'French'</span>, <span class="st">'Italian'</span>, <span class="st">'Spanish'</span>)</span>
 <span id="cb3-4"><a aria-hidden="true" href="#cb3-4" tabindex="-1"></a><span class="kw">UNION</span></span>
 <span id="cb3-5"><a aria-hidden="true" href="#cb3-5" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, style</span>
 <span id="cb3-6"><a aria-hidden="true" href="#cb3-6" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb3-7"><a aria-hidden="true" href="#cb3-7" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">&#39;Impressionist&#39;</span>;</span></code></pre></div>
+<span id="cb3-7"><a aria-hidden="true" href="#cb3-7" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">'Impressionist'</span>;</span></code></pre></div>
 <p>UNION instructs the DBMS to run both SELECT statements and combine
 their output into a single result set, automatically removing any
 duplicate rows &#8212; so an artist who matches both conditions, like a French
-Impressionist, will only appear once.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, style</span>
+Impressionist, will only appear once.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, style</span>
 <span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb4-3"><a aria-hidden="true" href="#cb4-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="kw">IN</span> (<span class="st">&#39;French&#39;</span>, <span class="st">&#39;Italian&#39;</span>, <span class="st">&#39;Spanish&#39;</span>)</span>
+<span id="cb4-3"><a aria-hidden="true" href="#cb4-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="kw">IN</span> (<span class="st">'French'</span>, <span class="st">'Italian'</span>, <span class="st">'Spanish'</span>)</span>
 <span id="cb4-4"><a aria-hidden="true" href="#cb4-4" tabindex="-1"></a><span class="kw">UNION</span></span>
 <span id="cb4-5"><a aria-hidden="true" href="#cb4-5" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, style</span>
 <span id="cb4-6"><a aria-hidden="true" href="#cb4-6" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb4-7"><a aria-hidden="true" href="#cb4-7" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">&#39;Impressionist&#39;</span>;</span></code></pre></div>
+<span id="cb4-7"><a aria-hidden="true" href="#cb4-7" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">'Impressionist'</span>;</span></code></pre></div>
 <p>The preceding statement is made up of both of the previous SELECT
 statements separated by the UNION keyword. UNION instructs the DBMS to
 execute both SELECT statements and combine the output into a single
-query result set.</p>
+query result set.</p>
 <p>As a point of reference, here is the same query using a single WHERE
-clause with an OR condition instead of a UNION:</p>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, style</span>
+clause with an OR condition instead of a UNION:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, style</span>
 <span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb5-3"><a aria-hidden="true" href="#cb5-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="kw">IN</span> (<span class="st">&#39;French&#39;</span>, <span class="st">&#39;Italian&#39;</span>, <span class="st">&#39;Spanish&#39;</span>) <span class="kw">OR</span> style <span class="op">=</span> <span class="st">&#39;Impressionist&#39;</span>;</span></code></pre></div>
+<span id="cb5-3"><a aria-hidden="true" href="#cb5-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="kw">IN</span> (<span class="st">'French'</span>, <span class="st">'Italian'</span>, <span class="st">'Spanish'</span>) <span class="kw">OR</span> style <span class="op">=</span> <span class="st">'Impressionist'</span>;</span></code></pre></div>
 <p>In our simple example, the UNION might actually be more complicated
 than using a WHERE clause. But with more complex filtering conditions,
 or if the data is being retrieved from multiple tables (and not just a
 single table), the UNION could have made the process much simpler
-indeed.</p>
-<div class="tip">
-<blockquote>
-<p><strong>Tip: UNION Limits.</strong> There is no standard SQL limit to
-the number of SELECT statements that can be combined with UNION
-statements. However, it is best to consult your DBMS documentation to
-ensure that it does not enforce any maximum statement restrictions of
-its own.</p>
-</blockquote>
-</div>
-<div class="caution">
-<blockquote>
-<p><strong>Caution: Performance Issues.</strong> Most good DBMSs use an
-internal query optimizer to combine the SELECT statements before they
-are even processed. In theory, this means that from a performance
-perspective, there should be no real difference between using multiple
-WHERE clause conditions or a UNION. In practice, though, most query
-optimizers don&#8217;t always do as good a job as they should. Your best bet
-is to test both methods to see which will work best for you.</p>
-</blockquote>
-</div>
-<h2 data-number="17.4" id="union-rules"><span
-class="header-section-number">17.4</span> UNION Rules</h2>
+indeed.</p>
+<div class="tip">
+<blockquote>
+<p><strong>UNION Limits.</strong> There is no standard SQL limit to the
+number of SELECT statements that can be combined with UNION statements.
+However, it is best to consult your DBMS documentation to ensure that it
+does not enforce any maximum statement restrictions of its own.</p>
+</blockquote>
+</div>
+<div class="caution">
+<blockquote>
+<p><strong>Performance Issues.</strong> Most good DBMSs use an internal
+query optimizer to combine the SELECT statements before they are even
+processed. In theory, this means that from a performance perspective,
+there should be no real difference between using multiple WHERE clause
+conditions or a UNION. In practice, though, most query optimizers don&#8217;t
+always do as good a job as they should. Your best bet is to test both
+methods to see which will work best for you.</p>
+</blockquote>
+</div>
+<h2 data-number="17.4" id="union-rules"><span class="header-section-number">17.4</span> UNION Rules</h2>
 <p>As you can see, unions are very easy to use. But there are a few
-rules governing exactly which can be combined:</p>
-<ul>
+rules governing exactly which can be combined:</p>
+<ul>
 <li>A UNION must be composed of two or more SELECT statements, each
 separated by the keyword UNION (so, if you&#8217;re combining four SELECT
-statements, you would use three UNION keywords).</li>
+statements, you would use three UNION keywords).</li>
 <li>Each query in a UNION must contain the same columns, expressions, or
 aggregate functions (and some DBMSs even require that columns be listed
-in the same order).</li>
+in the same order).</li>
 <li>Column datatypes must be compatible. They need not be the same name
 or the exact same type, but they must be of a type that the DBMS can
 implicitly convert (for example, different numeric types or different
-date types).</li>
-</ul>
-<div class="note">
-<blockquote>
-<p><strong>Note: UNION Column Names.</strong> If SELECT statements that
-are combined with a UNION have different column names, what name is
-actually returned? For example, if one statement contained
+date types).</li>
+</ul>
+<div class="note">
+<blockquote>
+<p><strong>UNION Column Names.</strong> If SELECT statements that are
+combined with a UNION have different column names, what name is actually
+returned? For example, if one statement contained
 <code>SELECT full_name</code> and the next used
 <code>SELECT artist_name</code>, what would be the name of the combined
-returned column?</p>
+returned column?</p>
 <p>The answer is that the first name is used, so in our example the
 combined column would be named full_name, even though the second SELECT
 used a different name. This also means that you can use an alias on the
-first name to set the returned column name as needed.</p>
+first name to set the returned column name as needed.</p>
 <p>This behavior has another interesting side effect. Because the first
 set of column names are used, only those names can be specified when
 sorting. Again, in our example, you could use
 <code>ORDER BY full_name</code> to sort the combined results, but
 <code>ORDER BY artist_name</code> would display an error message because
-there is no column artist_name in the combined results.</p>
-</blockquote>
-</div>
+there is no column artist_name in the combined results.</p>
+</blockquote>
+</div>
 <p>Aside from these basic rules and restrictions, unions can be used for
-any data retrieval tasks.</p>
-<h2 data-number="17.5"
-id="including-or-eliminating-duplicate-rows"><span
-class="header-section-number">17.5</span> Including or Eliminating
-Duplicate Rows</h2>
+any data retrieval tasks.</p>
+<h2 data-number="17.5" id="including-or-eliminating-duplicate-rows"><span class="header-section-number">17.5</span> Including or Eliminating
+Duplicate Rows</h2>
 <p>Go back to the preceding section titled &#8220;Using UNION&#8221; and look at the
 sample SELECT statements used. You&#8217;ll notice that when executed
 individually, the first SELECT statement returns three rows, and the
 second SELECT statement returns two rows. However, when the two SELECT
 statements are combined with a UNION, only four rows are returned, not
-five.</p>
+five.</p>
 <p>The UNION automatically removes any duplicate rows from the query
 result set (in other words, it behaves just as multiple WHERE clause
 conditions in a single SELECT would). Because Claude Monet is both
 French and Impressionist, that row was returned by both SELECT
 statements. When the UNION was used, the duplicate row was
-eliminated.</p>
+eliminated.</p>
 <p>This is the default behavior of UNION, but you can change it if you
 so desire. If you would, in fact, want all occurrences of all matches
-returned, you could use UNION ALL instead of UNION.</p>
-<p>Look at the following example:</p>
-<div class="sourceCode" id="cb6"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, style</span>
+returned, you could use UNION ALL instead of UNION.</p>
+<p>Look at the following example:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, style</span>
 <span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb6-3"><a aria-hidden="true" href="#cb6-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="kw">IN</span> (<span class="st">&#39;French&#39;</span>, <span class="st">&#39;Italian&#39;</span>, <span class="st">&#39;Spanish&#39;</span>)</span>
+<span id="cb6-3"><a aria-hidden="true" href="#cb6-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="kw">IN</span> (<span class="st">'French'</span>, <span class="st">'Italian'</span>, <span class="st">'Spanish'</span>)</span>
 <span id="cb6-4"><a aria-hidden="true" href="#cb6-4" tabindex="-1"></a><span class="kw">UNION</span> <span class="kw">ALL</span></span>
 <span id="cb6-5"><a aria-hidden="true" href="#cb6-5" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, style</span>
 <span id="cb6-6"><a aria-hidden="true" href="#cb6-6" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb6-7"><a aria-hidden="true" href="#cb6-7" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">&#39;Impressionist&#39;</span>;</span></code></pre></div>
+<span id="cb6-7"><a aria-hidden="true" href="#cb6-7" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">'Impressionist'</span>;</span></code></pre></div>
 <p>When you use UNION ALL, the DBMS does not eliminate duplicates.
 Therefore, the preceding example returns five rows, one of them (Claude
-Monet) occurring twice.</p>
-<div class="tip">
-<blockquote>
-<p><strong>Tip: UNION Versus WHERE.</strong> At the beginning of this
-lesson, we said that UNION almost always accomplishes the same thing as
-multiple WHERE conditions. UNION ALL is the form of UNION that
-accomplishes what cannot be done with WHERE clauses. If you do, in fact,
-want all occurrences of matches for every condition (including
-duplicates), you must use UNION ALL and not WHERE.</p>
-</blockquote>
-</div>
-<h2 data-number="17.6" id="sorting-combined-query-results"><span
-class="header-section-number">17.6</span> Sorting Combined Query
-Results</h2>
+Monet) occurring twice.</p>
+<div class="tip">
+<blockquote>
+<p><strong>UNION Versus WHERE.</strong> At the beginning of this lesson,
+we said that UNION almost always accomplishes the same thing as multiple
+WHERE conditions. UNION ALL is the form of UNION that accomplishes what
+cannot be done with WHERE clauses. If you do, in fact, want all
+occurrences of matches for every condition (including duplicates), you
+must use UNION ALL and not WHERE.</p>
+</blockquote>
+</div>
+<h2 data-number="17.6" id="sorting-combined-query-results"><span class="header-section-number">17.6</span> Sorting Combined Query
+Results</h2>
 <p>SELECT statement output is sorted using the ORDER BY clause. When
 combining queries with a UNION, you may use only one ORDER BY clause,
 and it must occur after the final SELECT statement. There is very little
 point in sorting part of a result set one way and part another way, and
-so multiple ORDER BY clauses are not allowed.</p>
+so multiple ORDER BY clauses are not allowed.</p>
 <p>The following example sorts the results returned by the previously
-used UNION:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Adjust the previous UNION query so the combined
-results are sorted by full_name and then nationality.</p>
-<p><strong>AI:</strong> You add a single ORDER BY clause after the final
-SELECT statement &#8212; it will apply to the combined result set as a whole.
-Here&#8217;s the SQL statement:</p>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, style</span>
+used UNION:</p>
+<div class="ai-conversation" data-prompt="Adjust the previous UNION query so the combined results are sorted by full_name and then nationality.">
+<blockquote><div class="ai-prompt"><span class="ai-prompt-text">Adjust the previous UNION query so the combined results are sorted by full_name and then nationality.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
+<p>You add a single ORDER BY clause after the final SELECT statement &#8212;
+it will apply to the combined result set as a whole. Here&#8217;s the SQL
+statement:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, style</span>
 <span id="cb7-2"><a aria-hidden="true" href="#cb7-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb7-3"><a aria-hidden="true" href="#cb7-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="kw">IN</span> (<span class="st">&#39;French&#39;</span>, <span class="st">&#39;Italian&#39;</span>, <span class="st">&#39;Spanish&#39;</span>)</span>
+<span id="cb7-3"><a aria-hidden="true" href="#cb7-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="kw">IN</span> (<span class="st">'French'</span>, <span class="st">'Italian'</span>, <span class="st">'Spanish'</span>)</span>
 <span id="cb7-4"><a aria-hidden="true" href="#cb7-4" tabindex="-1"></a><span class="kw">UNION</span></span>
 <span id="cb7-5"><a aria-hidden="true" href="#cb7-5" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, style</span>
 <span id="cb7-6"><a aria-hidden="true" href="#cb7-6" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb7-7"><a aria-hidden="true" href="#cb7-7" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">&#39;Impressionist&#39;</span></span>
-<span id="cb7-8"><a aria-hidden="true" href="#cb7-8" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> full_name, nationality;</span></code></pre></div>
+<span id="cb7-7"><a aria-hidden="true" href="#cb7-7" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">'Impressionist'</span></span>
+<span id="cb7-8"><a aria-hidden="true" href="#cb7-8" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> full_name, nationality;</span></code></pre></div>
 <p>Even though the ORDER BY clause appears to belong only to the last
 SELECT statement, the DBMS uses it to sort all of the rows returned by
-the entire UNION.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, style</span>
+the entire UNION.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, style</span>
 <span id="cb8-2"><a aria-hidden="true" href="#cb8-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb8-3"><a aria-hidden="true" href="#cb8-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="kw">IN</span> (<span class="st">&#39;French&#39;</span>, <span class="st">&#39;Italian&#39;</span>, <span class="st">&#39;Spanish&#39;</span>)</span>
+<span id="cb8-3"><a aria-hidden="true" href="#cb8-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="kw">IN</span> (<span class="st">'French'</span>, <span class="st">'Italian'</span>, <span class="st">'Spanish'</span>)</span>
 <span id="cb8-4"><a aria-hidden="true" href="#cb8-4" tabindex="-1"></a><span class="kw">UNION</span></span>
 <span id="cb8-5"><a aria-hidden="true" href="#cb8-5" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality, style</span>
 <span id="cb8-6"><a aria-hidden="true" href="#cb8-6" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb8-7"><a aria-hidden="true" href="#cb8-7" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">&#39;Impressionist&#39;</span></span>
-<span id="cb8-8"><a aria-hidden="true" href="#cb8-8" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> full_name, nationality;</span></code></pre></div>
+<span id="cb8-7"><a aria-hidden="true" href="#cb8-7" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">'Impressionist'</span></span>
+<span id="cb8-8"><a aria-hidden="true" href="#cb8-8" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> full_name, nationality;</span></code></pre></div>
 <p>This UNION takes a single ORDER BY clause after the final SELECT
 statement. Even though the ORDER BY appears to be a part of only that
 last SELECT statement, the DBMS will in fact use it to sort all the
-results returned by all the SELECT statements.</p>
-<div class="note">
-<blockquote>
-<p><strong>Note: Other UNION Types.</strong> PostgreSQL supports two
+results returned by all the SELECT statements.</p>
+<div class="note">
+<blockquote>
+<p><strong>Other UNION Types.</strong> PostgreSQL supports two
 additional types of UNION. EXCEPT can be used to retrieve only the rows
 that exist in the first query but not in the second (some other DBMSs,
 notably Oracle, call this same operation MINUS instead &#8212; PostgreSQL uses
 EXCEPT), and INTERSECT can be used to retrieve only the rows that exist
 in both queries. In practice, however, these UNION types are rarely used
-because the same results can be accomplished using joins.</p>
-</blockquote>
-</div>
-<div class="tip">
-<blockquote>
-<p><strong>Tip: Working with Multiple Tables.</strong> For simplicity&#8217;s
-sake, the examples in this lesson have all used UNION to combine
-multiple queries on the same table. In practice, UNION is really useful
-when you need to combine data from multiple tables, even tables with
-mismatched column names, in which case you can combine UNION with
-aliases to retrieve a single set of results.</p>
-</blockquote>
-</div>
-<h2 data-number="17.7" id="summary"><span
-class="header-section-number">17.7</span> Summary</h2>
+because the same results can be accomplished using joins.</p>
+</blockquote>
+</div>
+<div class="tip">
+<blockquote>
+<p><strong>Working with Multiple Tables.</strong> For simplicity&#8217;s sake,
+the examples in this lesson have all used UNION to combine multiple
+queries on the same table. In practice, UNION is really useful when you
+need to combine data from multiple tables, even tables with mismatched
+column names, in which case you can combine UNION with aliases to
+retrieve a single set of results.</p>
+</blockquote>
+</div>
+<h2 data-number="17.7" id="summary"><span class="header-section-number">17.7</span> Summary</h2>
 <p>In this lesson, you learned how to combine SELECT statements with the
 UNION operator. Using UNION, you can return the results of multiple
 queries as one combined query, either including or excluding duplicates.
 The use of UNION can greatly simplify complex WHERE clauses and
-retrieval of data from multiple tables.</p>
+retrieval of data from multiple tables.</p>
 <!--postEnd-->
               </div>
 </div>
@@ -1175,8 +1221,8 @@ retrieval of data from multiple tables.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZrFYNg1Z7XC4EHpNO5R-ITP:1784899986698';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/17.html','3986204447440040189');
-_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/17.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/17.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/7994282474936528017/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '7994282474936528017', 'pageName': '17. Combining Queries', 'pageTitle': 'book1014 SQL: 17. Combining Queries'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '17. Combining Queries', 'description': '17  Combining Queries \r Objectives.  After completing this lesson, the\r successful student will be able to: \r \r Describe when and why to use...', 'url': 'https://book1014.blogspot.com/2000/02/17.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 7994282474936528017}}]);
+window['__wavt'] = 'AEUoTZo9e2AAD6wwADLf0Y3RGkbs:1784981203672';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/17.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/17.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/17.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/7994282474936528017/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '7994282474936528017', 'pageName': '17. Combining Queries', 'pageTitle': 'book1014 SQL: 17. Combining Queries'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '17. Combining Queries', 'description': '17  Combining Queries  Objectives.  After completing this lesson, the\r successful student will be able to:   Describe when and why to use co...', 'url': 'https://book1014.blogspot.com/2000/02/17.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 7994282474936528017}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>
 </body>

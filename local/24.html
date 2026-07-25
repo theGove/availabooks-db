@@ -16,6 +16,11 @@
 <!-- button icon -->
 <link href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0' rel='stylesheet'/>
 <style id='page-skin-1' type='text/css'><!--
+/* This file is the source of truth for book CSS, but there is no publish script for it.
+After editing, copy the changed rules by hand into each book's Blogger theme HTML
+(the page-skin-1 <style> block) via the Blogger dashboard.
+Do NOT edit local/*.html to apply these changes - those files are downloaded verbatim
+from the live blog by download.py and get overwritten on the next run. */
 :root {
 --font-zoom: 1;
 --page-bg: #f8fafc;
@@ -136,6 +141,24 @@ padding: .85rem;
 }
 #page-data{
 display:none
+}
+.toast{
+position:fixed;
+bottom:2rem;
+left:50%;
+transform:translateX(-50%);
+z-index:9999;
+background-color:green;
+color:#fff;
+padding:.7rem 1.25rem;
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-lg);
+}
+.toast.success{
+background-color:#15803d;
+}
+.toast.error{
+background-color:var(--danger);
 }
 #menu{
 top:0;
@@ -460,9 +483,9 @@ line-height: 1;
 }
 blockquote{
 margin:1.75rem 0;
+padding:1rem 1.25rem 1rem 1.35rem;
 background:var(--surface-soft);
 border-left:.35rem solid var(--accent);
-padding:1rem 1.25rem 1rem 1.35rem;
 border-radius:0 var(--radius-md) var(--radius-md) 0;
 color:#334155;
 }
@@ -489,6 +512,7 @@ border-left:.35rem solid darkblue;
 .term blockquote p::before {
 content: "Term: ";
 font-weight: bold;
+color:#2B7FFF;
 }
 .caution blockquote{
 background:#FFE2E2;
@@ -501,6 +525,12 @@ font-weight: bold;
 .objectives blockquote{
 background:#FFF8E1;
 border-left:.35rem solid gold;
+border-right:.35rem solid gold;
+border-radius:0;
+}
+.objectives blockquote p::before {
+content: "Objectives: ";
+font-weight: bold;
 }
 .review blockquote{
 background:#FFF0EC;
@@ -509,6 +539,25 @@ border-left:.35rem solid salmon;
 .review blockquote p::before {
 content: "Review: ";
 font-weight: bold;
+}
+.ai-conversation blockquote{
+background:lightgrey;
+border:1px solid #bbb;
+border-radius: 5px;
+}
+div.ai-prompt{
+background:white;
+border:1px solid grey;
+border-radius: 10px;
+padding:10px 20px 10px 20px;
+box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.3);
+margin: 0 1rem 1rem 1rem;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+span.ai-prompt-x{
+font-size: 1.8em;
 }
 blockquote p:last-child{
 margin-bottom:0;
@@ -766,6 +815,25 @@ right: .75rem;
 }
 
 --></style>
+<!-- the next style tag gets filled automatically with css from availabooktools.blogspot.com-->
+<style id='dynamic-override-css' type='text/css'></style>
+<script type='text/javascript'>
+//<![CDATA[
+function loadCss(response){
+  console.log("$$$$$$$$$$$$$$ response", response)
+  const newCss = response.feed.entry[0].content.$t;
+  if (newCss.length > 0) {
+    const overrideStyleBlock = document.getElementById('dynamic-override-css');
+    if (overrideStyleBlock) {
+      overrideStyleBlock.textContent = newCss;
+    }
+  }
+}
+
+
+//]]>
+</script>
+<script src='https://availabooktools.blogspot.com/feeds/posts/default/-/css-staging?alt=json-in-script&max-results=1&callback=loadCss'></script>
 <script>
     const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
 	async function initialize(){
@@ -826,7 +894,7 @@ right: .75rem;
     }    
 
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d8927c69-f824-4d33-86aa-f3669be7367c' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d8927c69-f824-4d33-86aa-f3669be7367c' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -851,6 +919,7 @@ Processing</span></h1>
 <div id='menu'>
 <div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
 <div id='menu-content'>
+<div id='ai' style='text-align:right'><button id='ai-prompt' onClick='getAiHelpPrompt()'>Copy AI Prompt</button></div>
 <div id='toc'></div>
 <div id='tools'>
                   Text Size: 
@@ -966,7 +1035,7 @@ back an entire transaction)</li>
 </ul>
 <div class="tip">
 <blockquote>
-<p><strong>Tip: Which Statements Can You Roll Back?</strong> Transaction
+<p><strong>Which Statements Can You Roll Back?</strong> Transaction
 processing is used to manage INSERT, UPDATE, and DELETE statements &#8212;
 these can always be rolled back. Unlike many other DBMSs, PostgreSQL
 also supports fully transactional DDL: statements like CREATE TABLE,
@@ -988,7 +1057,7 @@ transaction block using BEGIN (the ANSI-standard
 <code>START TRANSACTION</code> also works, if you prefer that
 spelling):</p>
 <div class="sourceCode" id="cb1"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="cf">BEGIN</span>;</span>
+class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="cf">BEGIN</span>;</span>
 <span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="op">..</span>.</span>
 <span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="kw">COMMIT</span>;</span></code></pre></div>
 <p>In this example, any SQL between the BEGIN and COMMIT statements must
@@ -998,12 +1067,12 @@ simply continues until something terminates it, usually a COMMIT to save
 changes or a ROLLBACK to undo them, as will be explained next.</p>
 <div class="caution">
 <blockquote>
-<p><strong>Caution: Autocommit Mode.</strong> Outside of an explicit
-BEGIN&#8230;COMMIT block, PostgreSQL runs each individual statement as its own
-transaction, automatically committed the moment it succeeds. This is
-important to keep in mind: if you don&#8217;t wrap a set of related statements
-in BEGIN, each one is saved permanently as soon as it runs, whether or
-not the statements that follow it succeed.</p>
+<p><strong>Autocommit Mode.</strong> Outside of an explicit BEGIN&#8230;COMMIT
+block, PostgreSQL runs each individual statement as its own transaction,
+automatically committed the moment it succeeds. This is important to
+keep in mind: if you don&#8217;t wrap a set of related statements in BEGIN,
+each one is saved permanently as soon as it runs, whether or not the
+statements that follow it succeed.</p>
 </blockquote>
 </div>
 <h2 data-number="24.3" id="using-rollback"><span
@@ -1094,17 +1163,17 @@ subsequent INSERT operations fail, the transaction can be rolled back
 only that far, rather than losing the artist row too.</p>
 <div class="caution">
 <blockquote>
-<p><strong>Caution: Error Handling Is Stricter in PostgreSQL.</strong>
-Unlike some other DBMSs, plain PostgreSQL SQL has no equivalent of an
-inline <code>@@ERROR</code>-style variable that lets you check the
-outcome of the previous statement and decide whether to continue.
-Instead, PostgreSQL takes a stricter approach: the moment any statement
-inside a transaction fails, the entire transaction is marked as aborted,
-and every subsequent statement is rejected until you issue either
-ROLLBACK (undoing everything back to BEGIN) or ROLLBACK TO SAVEPOINT
-(undoing everything back to a named savepoint). In practice, this means
-that if, say, the second INSERT INTO subject above were to fail, you
-would recover with:</p>
+<p><strong>Error Handling Is Stricter in PostgreSQL.</strong> Unlike
+some other DBMSs, plain PostgreSQL SQL has no equivalent of an inline
+<code>@@ERROR</code>-style variable that lets you check the outcome of
+the previous statement and decide whether to continue. Instead,
+PostgreSQL takes a stricter approach: the moment any statement inside a
+transaction fails, the entire transaction is marked as aborted, and
+every subsequent statement is rejected until you issue either ROLLBACK
+(undoing everything back to BEGIN) or ROLLBACK TO SAVEPOINT (undoing
+everything back to a named savepoint). In practice, this means that if,
+say, the second INSERT INTO subject above were to fail, you would
+recover with:</p>
 <div class="sourceCode" id="cb7"><pre
 class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">ROLLBACK</span> <span class="kw">TO</span> <span class="kw">SAVEPOINT</span> start_work;</span></code></pre></div>
 <p>This would undo the failed work and both subject inserts, while
@@ -1116,10 +1185,10 @@ the artist row saved.</p>
 </div>
 <div class="tip">
 <blockquote>
-<p><strong>Tip: The More Savepoints the Better.</strong> You can have as
-many savepoints as you&#8217;d like within your SQL code, and the more the
-better. Why? Because the more savepoints you have, the more flexibility
-you have in managing rollbacks exactly as you need them.</p>
+<p><strong>The More Savepoints the Better.</strong> You can have as many
+savepoints as you&#8217;d like within your SQL code, and the more the better.
+Why? Because the more savepoints you have, the more flexibility you have
+in managing rollbacks exactly as you need them.</p>
 </blockquote>
 </div>
 <h2 data-number="24.6" id="summary"><span
@@ -1156,7 +1225,7 @@ details.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZpquSQj2tEqnU-AgBaukjVY:1784899991563';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/24.html','3986204447440040189');
+window['__wavt'] = 'AEUoTZoQjuthHSNTcgiTnRWkuFiB:1784981209321';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/24.html','3986204447440040189');
 _WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/24.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/24.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/6555716424631740302/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '6555716424631740302', 'pageName': '24. Managing Transaction\nProcessing', 'pageTitle': 'book1014 SQL: 24. Managing Transaction\nProcessing'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '24. Managing Transaction\nProcessing', 'description': '24  Managing Transaction\r Processing \r Objectives.  After completing this lesson, the\r successful student will be able to: \r \r Describe why ...', 'url': 'https://book1014.blogspot.com/2000/02/24.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 6555716424631740302}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>

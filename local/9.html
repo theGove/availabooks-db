@@ -16,6 +16,11 @@
 <!-- button icon -->
 <link href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0' rel='stylesheet'/>
 <style id='page-skin-1' type='text/css'><!--
+/* This file is the source of truth for book CSS, but there is no publish script for it.
+After editing, copy the changed rules by hand into each book's Blogger theme HTML
+(the page-skin-1 <style> block) via the Blogger dashboard.
+Do NOT edit local/*.html to apply these changes - those files are downloaded verbatim
+from the live blog by download.py and get overwritten on the next run. */
 :root {
 --font-zoom: 1;
 --page-bg: #f8fafc;
@@ -136,6 +141,24 @@ padding: .85rem;
 }
 #page-data{
 display:none
+}
+.toast{
+position:fixed;
+bottom:2rem;
+left:50%;
+transform:translateX(-50%);
+z-index:9999;
+background-color:green;
+color:#fff;
+padding:.7rem 1.25rem;
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-lg);
+}
+.toast.success{
+background-color:#15803d;
+}
+.toast.error{
+background-color:var(--danger);
 }
 #menu{
 top:0;
@@ -460,9 +483,9 @@ line-height: 1;
 }
 blockquote{
 margin:1.75rem 0;
+padding:1rem 1.25rem 1rem 1.35rem;
 background:var(--surface-soft);
 border-left:.35rem solid var(--accent);
-padding:1rem 1.25rem 1rem 1.35rem;
 border-radius:0 var(--radius-md) var(--radius-md) 0;
 color:#334155;
 }
@@ -489,6 +512,7 @@ border-left:.35rem solid darkblue;
 .term blockquote p::before {
 content: "Term: ";
 font-weight: bold;
+color:#2B7FFF;
 }
 .caution blockquote{
 background:#FFE2E2;
@@ -501,6 +525,12 @@ font-weight: bold;
 .objectives blockquote{
 background:#FFF8E1;
 border-left:.35rem solid gold;
+border-right:.35rem solid gold;
+border-radius:0;
+}
+.objectives blockquote p::before {
+content: "Objectives: ";
+font-weight: bold;
 }
 .review blockquote{
 background:#FFF0EC;
@@ -509,6 +539,25 @@ border-left:.35rem solid salmon;
 .review blockquote p::before {
 content: "Review: ";
 font-weight: bold;
+}
+.ai-conversation blockquote{
+background:lightgrey;
+border:1px solid #bbb;
+border-radius: 5px;
+}
+div.ai-prompt{
+background:white;
+border:1px solid grey;
+border-radius: 10px;
+padding:10px 20px 10px 20px;
+box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.3);
+margin: 0 1rem 1rem 1rem;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+span.ai-prompt-x{
+font-size: 1.8em;
 }
 blockquote p:last-child{
 margin-bottom:0;
@@ -766,6 +815,25 @@ right: .75rem;
 }
 
 --></style>
+<!-- the next style tag gets filled automatically with css from availabooktools.blogspot.com-->
+<style id='dynamic-override-css' type='text/css'></style>
+<script type='text/javascript'>
+//<![CDATA[
+function loadCss(response){
+  console.log("$$$$$$$$$$$$$$ response", response)
+  const newCss = response.feed.entry[0].content.$t;
+  if (newCss.length > 0) {
+    const overrideStyleBlock = document.getElementById('dynamic-override-css');
+    if (overrideStyleBlock) {
+      overrideStyleBlock.textContent = newCss;
+    }
+  }
+}
+
+
+//]]>
+</script>
+<script src='https://availabooktools.blogspot.com/feeds/posts/default/-/css-staging?alt=json-in-script&max-results=1&callback=loadCss'></script>
 <script>
     const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
 	async function initialize(){
@@ -826,7 +894,7 @@ right: .75rem;
     }    
 
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d8927c69-f824-4d33-86aa-f3669be7367c' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d8927c69-f824-4d33-86aa-f3669be7367c' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -850,6 +918,7 @@ right: .75rem;
 <div id='menu'>
 <div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
 <div id='menu-content'>
+<div id='ai' style='text-align:right'><button id='ai-prompt' onClick='getAiHelpPrompt()'>Copy AI Prompt</button></div>
 <div id='toc'></div>
 <div id='tools'>
                   Text Size: 
@@ -867,64 +936,62 @@ right: .75rem;
 <button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
 <button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
               
-              <!--postBegin--><h1 data-number="9" id="creating-calculated-fields"><span
-class="header-section-number">9</span> Creating Calculated Fields</h1>
+              <!--postBegin--><h1 data-number="9" id="creating-calculated-fields"><span class="header-section-number">9</span> Creating Calculated Fields</h1>
 <p><strong>Objectives.</strong> After completing this lesson, the
-successful student will be able to:</p>
-<ol type="1">
+successful student will be able to:</p>
+<ol type="1">
 <li>Create calculated fields to perform simple mathematical calculations
-in a query.</li>
-<li>Use aliases to name calculated fields.</li>
-<li>Use calculated fields to manipulate text.</li>
-</ol>
-<h2 data-number="9.1" id="understanding-calculated-fields"><span
-class="header-section-number">9.1</span> Understanding Calculated
-Fields</h2>
+in a query.</li>
+<li>Use aliases to name calculated fields.</li>
+<li>Use calculated fields to manipulate text.</li>
+</ol>
+<h2 data-number="9.1" id="understanding-calculated-fields"><span class="header-section-number">9.1</span> Understanding Calculated
+Fields</h2>
 <p>Often the data that you need is not stored in the database in the
 precise way that you need it. When this is the case, you can choose to
 manipulate the data when you retrieve it with a query or you can choose
 to make the changes you need in a separate application. In this lesson
 you will learn how to use calculated fields to manipulate data using a
 query. Here are some reasons why you might choose to manipulate data
-when you retrieve it in a query.</p>
-<ul>
+when you retrieve it in a query.</p>
+<ul>
 <li>You need to perform some arithmetic on the value in a database
 table. For example, the database might store when a customer starts and
 finishes using a service and you need to know how much time the customer
 used the service for billing purposes. To determine this, you would need
-to take the difference between the starting and ending times.</li>
+to take the difference between the starting and ending times.</li>
 <li>You may need to combine data from multiple columns in a database
 table. For example, the customer&#8217;s first and last names may be stored in
-different columns, but you need their full name combined together.</li>
-</ul>
+different columns, but you need their full name combined together.</li>
+</ul>
 <p>In both of these cases, you could use a calculated field to perform
 the needed manipulation. A calculated field is a column that is created
 by the query when it is executed. Because of this, it appears in the
 query result, but it is not stored in the database table. This has an
 important benefit. If any of the underlying data were to change, the
 calculated field would be refreshed when the query is executed
-again.</p>
-<div class="term">
-<blockquote>
+again.</p>
+<div class="term">
+<blockquote>
 <p><strong>Calculated Field</strong> &#8212; A column in a query result that
 contains the results of an algorithm used to manipulate the data stored
-in the database.</p>
-</blockquote>
-</div>
+in the database.</p>
+</blockquote>
+</div>
 <p>A calculated field is used as part of the SELECT clause of the SQL
 statement. Any of the columns in the database table outlined in the FROM
 clause can be used as part of a calculated field, even if the column is
 not used elsewhere in the SELECT clause. You can have as many calculated
-fields in a query as you need.</p>
-<div class="note">
-<blockquote>
-<p><strong>Note: Fields and Columns.</strong> Often the terms &#8216;column&#8217;
-and &#8216;field&#8217; are used interchangeably. Technically, column refers to the
+fields in a query as you need.</p>
+<div class="note">
+<blockquote>
+<p><strong>Fields and Columns.</strong> Often the terms &#8216;column&#8217; and
+&#8216;field&#8217; are used interchangeably. Technically, column refers to the
 values that are stored in the database and a field is calculated and
 appears only in the query result. You will likely find even the most
-experienced SQL programmers will refer to both as columns or fields.</p>
-</blockquote>
-</div>
+experienced SQL programmers will refer to both as columns or fields.</p>
+</blockquote>
+</div>
 <p>There are a couple of important things to keep in mind about
 calculated fields. First, calculated fields are performed on every row
 of the query result. This means that you will have a separate value for
@@ -934,209 +1001,194 @@ result in a later lesson. Second, because the SELECT clause is executed
 before the ORDER BY clause, you can sort the query result by the values
 in the calculated field. Third, you can manipulate a query result in a
 separate application, but it is often easier to use a calculated field
-in the query to do so.</p>
-<h2 data-number="9.2" id="performing-mathematical-calculations"><span
-class="header-section-number">9.2</span> Performing Mathematical
-Calculations</h2>
+in the query to do so.</p>
+<h2 data-number="9.2" id="performing-mathematical-calculations"><span class="header-section-number">9.2</span> Performing Mathematical
+Calculations</h2>
 <p>Calculated fields can be used to perform arithmetic on the values in
 database tables. You can use the standard mathematical operations below
 in your calculations. When using multiple operators, the standard order
 of operations applies (multiplication and division will be completed
 before addition and subtraction). You can also use parentheses to ensure
 different ordering of calculations. Calculated fields can use the values
-from a single column or multiple columns at the same time.</p>
-<h4 data-number="9.2.0.1" id="mathematical-operators-used-in-sql"><span
-class="header-section-number">9.2.0.1</span> Mathematical Operators Used
-in SQL</h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: center;">Operator</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center;"><code>+</code></td>
-<td>Addition</td>
-</tr>
-<tr>
-<td style="text-align: center;"><code>-</code></td>
-<td>Subtraction</td>
-</tr>
-<tr>
-<td style="text-align: center;"><code>*</code></td>
-<td>Multiplication</td>
-</tr>
-<tr>
-<td style="text-align: center;"><code>/</code></td>
-<td>Division</td>
-</tr>
-</tbody>
-</table>
+from a single column or multiple columns at the same time.</p>
+<h4 data-number="9.2.0.1" id="mathematical-operators-used-in-sql"><span class="header-section-number">9.2.0.1</span> Mathematical Operators Used
+in SQL</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Operator</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><code>+</code></td>
+<td>Addition</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>-</code></td>
+<td>Subtraction</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>*</code></td>
+<td>Multiplication</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>/</code></td>
+<td>Division</td>
+</tr>
+</tbody>
+</table>
 <p>Suppose you want to list the artists and calculate the age of each at
 their death. This can be calculated as the difference between their
 birth year and their death year (of course this is not necessarily their
 exact age as an artist may die before their birthday in the year of
 their death). You can use a chat with an AI assistant to create the
-SELECT statement that will do this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write an SQL statement to list the artists and
-the difference between their death and birth.</p>
-<p><strong>AI:</strong> To list the artists and the difference between
-their death and birth, you can use the following SQL statement:</p>
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, (death <span class="op">-</span> birth) <span class="kw">AS</span> age_difference</span>
-<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
+SELECT statement that will do this:</p>
+<div class="ai-conversation" data-prompt="Write an SQL statement to list the artists and the difference between their death and birth.">
+<blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write an SQL statement to list the artists and the difference between their death and birth.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
+<p>To list the artists and the difference between their death and birth,
+you can use the following SQL statement:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, (death <span class="op">-</span> birth) <span class="kw">AS</span> age_difference</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
 <p>This query selects the full_name column from the artist table and
 calculates the difference between the death and birth columns using
 (death - birth). The calculated difference is aliased as age_difference.
 The result will show the names of artists and the calculated age
-difference between their death and birth.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, (death <span class="op">-</span> birth) <span class="kw">AS</span> age_difference</span>
-<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
+difference between their death and birth.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, (death <span class="op">-</span> birth) <span class="kw">AS</span> age_difference</span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
 <p>Notice that the arithmetic in this calculated field involves two
 columns from the artist table. The calculated field subtracts the birth
 year from the death year. You will also notice some additional syntax
 after the calculation. This is used to assign an alias, or name, to the
 calculated field. This will be discussed in the next section. The
 resulting calculation approximates the artists&#8217; age at their death.
-Notice that the calculation is completed separately for each artist.</p>
-<h2 data-number="9.3" id="using-aliases"><span
-class="header-section-number">9.3</span> Using Aliases</h2>
+Notice that the calculation is completed separately for each artist.</p>
+<h2 data-number="9.3" id="using-aliases"><span class="header-section-number">9.3</span> Using Aliases</h2>
 <p>Since a calculated field manipulates the data in one or more columns
 of the database table, it is unclear what the name of the column should
 be. Often the DBMS will return the calculated values without a column
 name. If all you need is to see the calculated values, this is not a big
 deal. If you want to sort the query results by the calculated values or
 use them in a different application, you will need to create a name for
-the calculated column.</p>
+the calculated column.</p>
 <p>SQL allows you to create an alias, or a column name, for the
 calculated field. The syntax for creating an alias to a column involves
 adding the keyword AS followed by the name you&#8217;d like to use for the
 column. In the above example, the calculated field could be named &#8220;age&#8221;
-using this syntax.</p>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, death <span class="op">-</span> birth <span class="kw">AS</span> age</span>
+using this syntax.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, death <span class="op">-</span> birth <span class="kw">AS</span> age</span>
 <span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> age;</span></code></pre></div>
+<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> age;</span></code></pre></div>
 <p>Notice the syntax of the SELECT clause. The calculated field is
 followed by the keyword AS and the alias, &#8220;age&#8221;. Notice that the alias
 age is also used to sort the query result. Because the ORDER BY clause
 processes after the SELECT clause, the name age can be used to define
 the sort column for the ORDER BY clause. The query results will be
-sorted by the age of the artists from the youngest to the oldest.</p>
-<div class="term">
-<blockquote>
+sorted by the age of the artists from the youngest to the oldest.</p>
+<div class="term">
+<blockquote>
 <p><strong>Alias</strong> &#8212; An alias is used to specify the name of a
-database column.</p>
-</blockquote>
-</div>
-<p>There are a few things to keep in mind about using aliases.</p>
-<ol type="1">
+database column.</p>
+</blockquote>
+</div>
+<p>There are a few things to keep in mind about using aliases.</p>
+<ol type="1">
 <li>Using aliases is optional for calculated fields, but it is a best
 practice even if you don&#8217;t need the calculated field to have a column
-name.</li>
+name.</li>
 <li>Aliases can be a single word or multiple words. If an alias contains
 spaces, the entire alias must be enclosed in single quotes. Although it
-is possible, it is best practice to not use spaces in an alias.</li>
+is possible, it is best practice to not use spaces in an alias.</li>
 <li>You can use an alias to rename <em>any</em> column name, even a
 column that exists in the database table. If you create an alias for an
 existing column, the new name applies to the query. It won&#8217;t change the
-name of the column in the underlying database table.</li>
-</ol>
-<h2 data-number="9.4" id="concatenating-fields"><span
-class="header-section-number">9.4</span> Concatenating Fields</h2>
+name of the column in the underlying database table.</li>
+</ol>
+<h2 data-number="9.4" id="concatenating-fields"><span class="header-section-number">9.4</span> Concatenating Fields</h2>
 <p>The term &#8220;calculated field&#8221; implies math. You&#8217;ve already seen how to
 use a calculated field to perform arithmetic on the numeric values in a
 query result. However, calculated fields can also be used to manipulate
 text. Perhaps the most common way to manipulate text involves joining
 text together into a single value. When you join text, you concatenate
-it.</p>
-<div class="term">
-<blockquote>
+it.</p>
+<div class="term">
+<blockquote>
 <p><strong>Concatenate</strong> &#8212; Joining separate text values together
-into a single value.</p>
-</blockquote>
-</div>
+into a single value.</p>
+</blockquote>
+</div>
 <p>To concatenate text into a single value, you use the double pipe &#8220;||&#8221;
 operator. To concatenate the text &#8220;Hello&#8221; and &#8220;World&#8221; together, the
 syntax would be: <code>'Hello' || ' ' || 'World'</code>. In this
-example, three text values are concatenated:</p>
-<ol type="1">
-<li>The word &#8220;Hello&#8221;</li>
-<li>a single space</li>
-<li>The word &#8220;World&#8221;</li>
-</ol>
+example, three text values are concatenated:</p>
+<ol type="1">
+<li>The word &#8220;Hello&#8221;</li>
+<li>a single space</li>
+<li>The word &#8220;World&#8221;</li>
+</ol>
 <p>The result of the concatenation is &#8220;Hello World&#8221;. You can also
-concatenate text values from columns in a database.</p>
+concatenate text values from columns in a database.</p>
 <p>Suppose you want to list the artists by concatenating the full name
 of the artist with their nationality in parentheses. You will use the
 alias artist_and_nationality for the calculated field. You can use a
 chat with an AI assistant to create the SELECT statement that will do
-this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write an SQL statement that will work in your
-database platform that lists the artists concatenated with their
-nationality in parentheses. Name the column artist_and_nationality.</p>
-<p><strong>AI:</strong> Sure. Here&#8217;s the SQL statement for your database
-platform that lists the artists concatenated with their nationality in
-parentheses, and names the column as artist_and_nationality:</p>
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name <span class="op">||</span> <span class="st">&#39; (&#39;</span> <span class="op">||</span> nationality <span class="op">||</span> <span class="st">&#39;)&#39;</span> <span class="kw">as</span> artist_and_nationality</span>
-<span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
+this:</p>
+<div class="ai-conversation" data-prompt="Write an SQL statement that will work in your database platform that lists the artists concatenated with their nationality in parentheses. Name the column artist_and_nationality.">
+<blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write an SQL statement that will work in your database platform that lists the artists concatenated with their nationality in parentheses. Name the column artist_and_nationality.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
+<p>Sure. Here&#8217;s the SQL statement for your database platform that lists
+the artists concatenated with their nationality in parentheses, and
+names the column as artist_and_nationality:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name <span class="op">||</span> <span class="st">' ('</span> <span class="op">||</span> nationality <span class="op">||</span> <span class="st">')'</span> <span class="kw">as</span> artist_and_nationality</span>
+<span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
 <p>In your database platform, you can use the || operator for
 concatenation. The query will return a list of artists with their
 respective nationalities in the format &#8220;Full Name (Nationality)&#8221; under
-the column name artist_and_nationality.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name <span class="op">||</span> <span class="st">&#39; (&#39;</span> <span class="op">||</span> nationality <span class="op">||</span> <span class="st">&#39;)&#39;</span> <span class="kw">as</span> artist_and_nationality</span>
-<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
+the column name artist_and_nationality.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name <span class="op">||</span> <span class="st">' ('</span> <span class="op">||</span> nationality <span class="op">||</span> <span class="st">')'</span> <span class="kw">as</span> artist_and_nationality</span>
+<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
 <p>The syntax for the concatenation may seem a little complicated. In
 this case, there are four different text values that are concatenated
-into a single value for each row. These are:</p>
-<ol type="1">
+into a single value for each row. These are:</p>
+<ol type="1">
 <li><strong>full_name:</strong> the value for the full name of the
-artist from the database table.</li>
+artist from the database table.</li>
 <li><strong>&#8217; (&#8217;:</strong> a literal (fixed) text value of a space and
-an open parenthesis.</li>
+an open parenthesis.</li>
 <li><strong>nationality:</strong> the value for the artists&#8217; nationality
-from the database table.</li>
+from the database table.</li>
 <li><strong>&#8216;)&#8217;:</strong> a literal text value of a close
-parenthesis.</li>
-</ol>
+parenthesis.</li>
+</ol>
 <p>Notice that each text element is concatenated using the double pipe
 &#8220;||&#8221; operator. The result of the calculated field is a single text value
 for each artist that contains the artists&#8217; full name followed by their
 nationality in parentheses. The calculated field is named
-artist_and_nationality using the keyword AS.</p>
-<div class="note">
-<blockquote>
-<p><strong>Note: Concatenation in PostgreSQL.</strong> PostgreSQL uses
-the double pipe &#8220;||&#8221; operator to concatenate text values. (If you ever
-work with a different DBMS, be aware that some &#8212; like SQL Server &#8212; use a
-&#8220;+&#8221; operator instead, and others use a function rather than an
-operator.) Using functions to manipulate data in a query will be
-discussed in the next lesson.</p>
-</blockquote>
-</div>
-<h2 data-number="9.5" id="summary"><span
-class="header-section-number">9.5</span> Summary</h2>
+artist_and_nationality using the keyword AS.</p>
+<div class="note">
+<blockquote>
+<p><strong>Concatenation in PostgreSQL.</strong> PostgreSQL uses the
+double pipe &#8220;||&#8221; operator to concatenate text values. (If you ever work
+with a different DBMS, be aware that some &#8212; like SQL Server &#8212; use a &#8220;+&#8221;
+operator instead, and others use a function rather than an operator.)
+Using functions to manipulate data in a query will be discussed in the
+next lesson.</p>
+</blockquote>
+</div>
+<h2 data-number="9.5" id="summary"><span class="header-section-number">9.5</span> Summary</h2>
 <p>In this lesson, you learned how to manipulate data in a query using
 calculated fields. Calculated fields can perform arithmetic or
 manipulate text. They are helpful, because the data may not be stored in
 the database in a way that it can be directly used to meet your needs.
 Using a calculated field alters the data in the query results, but does
-not affect the underlying data in the database table.</p>
+not affect the underlying data in the database table.</p>
 <!--postEnd-->
               </div>
 </div>
@@ -1159,8 +1211,8 @@ not affect the underlying data in the database table.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZo1TcmxCn_2m6qwt-96CuKZ:1784899981429';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/9.html','3986204447440040189');
-_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/9.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/9.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/8368931250453884008/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '8368931250453884008', 'pageName': '9. Creating Calculated Fields', 'pageTitle': 'book1014 SQL: 9. Creating Calculated Fields'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '9. Creating Calculated Fields', 'description': '9  Creating Calculated Fields \r Objectives.  After completing this lesson, the\r successful student will be able to: \r \r Create calculated fi...', 'url': 'https://book1014.blogspot.com/2000/02/9.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 8368931250453884008}}]);
+window['__wavt'] = 'AEUoTZrKCR1O6Hw2KF2DTqc3Gq7F:1784981197375';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/9.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/9.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/9.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/8368931250453884008/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '8368931250453884008', 'pageName': '9. Creating Calculated Fields', 'pageTitle': 'book1014 SQL: 9. Creating Calculated Fields'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '9. Creating Calculated Fields', 'description': '9  Creating Calculated Fields  Objectives.  After completing this lesson, the\r successful student will be able to:   Create calculated field...', 'url': 'https://book1014.blogspot.com/2000/02/9.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 8368931250453884008}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>
 </body>

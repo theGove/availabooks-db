@@ -16,6 +16,11 @@
 <!-- button icon -->
 <link href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0' rel='stylesheet'/>
 <style id='page-skin-1' type='text/css'><!--
+/* This file is the source of truth for book CSS, but there is no publish script for it.
+After editing, copy the changed rules by hand into each book's Blogger theme HTML
+(the page-skin-1 <style> block) via the Blogger dashboard.
+Do NOT edit local/*.html to apply these changes - those files are downloaded verbatim
+from the live blog by download.py and get overwritten on the next run. */
 :root {
 --font-zoom: 1;
 --page-bg: #f8fafc;
@@ -136,6 +141,24 @@ padding: .85rem;
 }
 #page-data{
 display:none
+}
+.toast{
+position:fixed;
+bottom:2rem;
+left:50%;
+transform:translateX(-50%);
+z-index:9999;
+background-color:green;
+color:#fff;
+padding:.7rem 1.25rem;
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-lg);
+}
+.toast.success{
+background-color:#15803d;
+}
+.toast.error{
+background-color:var(--danger);
 }
 #menu{
 top:0;
@@ -460,9 +483,9 @@ line-height: 1;
 }
 blockquote{
 margin:1.75rem 0;
+padding:1rem 1.25rem 1rem 1.35rem;
 background:var(--surface-soft);
 border-left:.35rem solid var(--accent);
-padding:1rem 1.25rem 1rem 1.35rem;
 border-radius:0 var(--radius-md) var(--radius-md) 0;
 color:#334155;
 }
@@ -489,6 +512,7 @@ border-left:.35rem solid darkblue;
 .term blockquote p::before {
 content: "Term: ";
 font-weight: bold;
+color:#2B7FFF;
 }
 .caution blockquote{
 background:#FFE2E2;
@@ -501,6 +525,12 @@ font-weight: bold;
 .objectives blockquote{
 background:#FFF8E1;
 border-left:.35rem solid gold;
+border-right:.35rem solid gold;
+border-radius:0;
+}
+.objectives blockquote p::before {
+content: "Objectives: ";
+font-weight: bold;
 }
 .review blockquote{
 background:#FFF0EC;
@@ -509,6 +539,25 @@ border-left:.35rem solid salmon;
 .review blockquote p::before {
 content: "Review: ";
 font-weight: bold;
+}
+.ai-conversation blockquote{
+background:lightgrey;
+border:1px solid #bbb;
+border-radius: 5px;
+}
+div.ai-prompt{
+background:white;
+border:1px solid grey;
+border-radius: 10px;
+padding:10px 20px 10px 20px;
+box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.3);
+margin: 0 1rem 1rem 1rem;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+span.ai-prompt-x{
+font-size: 1.8em;
 }
 blockquote p:last-child{
 margin-bottom:0;
@@ -766,6 +815,25 @@ right: .75rem;
 }
 
 --></style>
+<!-- the next style tag gets filled automatically with css from availabooktools.blogspot.com-->
+<style id='dynamic-override-css' type='text/css'></style>
+<script type='text/javascript'>
+//<![CDATA[
+function loadCss(response){
+  console.log("$$$$$$$$$$$$$$ response", response)
+  const newCss = response.feed.entry[0].content.$t;
+  if (newCss.length > 0) {
+    const overrideStyleBlock = document.getElementById('dynamic-override-css');
+    if (overrideStyleBlock) {
+      overrideStyleBlock.textContent = newCss;
+    }
+  }
+}
+
+
+//]]>
+</script>
+<script src='https://availabooktools.blogspot.com/feeds/posts/default/-/css-staging?alt=json-in-script&max-results=1&callback=loadCss'></script>
 <script>
     const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
 	async function initialize(){
@@ -826,7 +894,7 @@ right: .75rem;
     }    
 
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d8927c69-f824-4d33-86aa-f3669be7367c' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d8927c69-f824-4d33-86aa-f3669be7367c' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -850,6 +918,7 @@ right: .75rem;
 <div id='menu'>
 <div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
 <div id='menu-content'>
+<div id='ai' style='text-align:right'><button id='ai-prompt' onClick='getAiHelpPrompt()'>Copy AI Prompt</button></div>
 <div id='toc'></div>
 <div id='tools'>
                   Text Size: 
@@ -867,125 +936,116 @@ right: .75rem;
 <button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
 <button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
               
-              <!--postBegin--><h1 data-number="11" id="summarizing-data"><span
-class="header-section-number">11</span> Summarizing Data</h1>
+              <!--postBegin--><h1 data-number="11" id="summarizing-data"><span class="header-section-number">11</span> Summarizing Data</h1>
 <p><strong>Objectives.</strong> After completing this lesson, the
-successful student will be able to:</p>
-<ol type="1">
-<li>Describe the uses of aggregate functions.</li>
-<li>Use aggregate functions to summarize the values in a table.</li>
-</ol>
-<h2 data-number="11.1" id="using-aggregate-functions"><span
-class="header-section-number">11.1</span> Using Aggregate Functions</h2>
+successful student will be able to:</p>
+<ol type="1">
+<li>Describe the uses of aggregate functions.</li>
+<li>Use aggregate functions to summarize the values in a table.</li>
+</ol>
+<h2 data-number="11.1" id="using-aggregate-functions"><span class="header-section-number">11.1</span> Using Aggregate Functions</h2>
 <p>The previous lesson described how to use scalar functions, or
 functions that perform calculations for each row of a query result. This
 lesson will describe how to use aggregate functions that perform summary
 calculations across the rows of a query result. Examples of aggregate
-calculations include:</p>
-<ul>
-<li>Counting the rows in a table or query result</li>
+calculations include:</p>
+<ul>
+<li>Counting the rows in a table or query result</li>
 <li>Calculating the total or average of the values in a table
-column</li>
-<li>Finding the largest or smallest value in a table column</li>
-</ul>
+column</li>
+<li>Finding the largest or smallest value in a table column</li>
+</ul>
 <p>Queries that include aggregate functions are different than other
 queries. Each of the example queries presented in this resource have
 either returned all of the rows of the database table or a smaller set
 of rows that meet the filter conditions set in the WHERE clause.
 Aggregate queries display a summary of the data in a table. The table
-rows are not displayed.</p>
-<div class="term">
-<blockquote>
+rows are not displayed.</p>
+<div class="term">
+<blockquote>
 <p><strong>Aggregate Function</strong> &#8212; A function that performs
 summary calculations across the rows of a database table or query
-result.</p>
-</blockquote>
-</div>
+result.</p>
+</blockquote>
+</div>
 <p>There are five aggregate functions supported in structured query
 language. Unlike the scalar functions discussed in the last lesson, each
 of these functions are supported by the different DBMS. Each of these
-functions are described in the table below.</p>
-<h4 data-number="11.1.0.1" id="sql-aggregate-functions"><span
-class="header-section-number">11.1.0.1</span> SQL Aggregate
-Functions</h4>
-<table>
-<thead>
-<tr>
-<th style="text-align: center;">Function</th>
-<th>Argument(s)</th>
-<th>Result</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center;">SUM</td>
-<td>A column</td>
-<td>Returns the total of the values in a column</td>
-</tr>
-<tr>
-<td style="text-align: center;">AVG</td>
-<td>A column</td>
-<td>Returns the average of the values in a column</td>
-</tr>
-<tr>
-<td style="text-align: center;">COUNT</td>
-<td>A column</td>
-<td>Returns the number of rows in a column</td>
-</tr>
-<tr>
-<td style="text-align: center;">MAX</td>
-<td>A column</td>
-<td>Returns the largest value in a column</td>
-</tr>
-<tr>
-<td style="text-align: center;">MIN</td>
-<td>A column</td>
-<td>Returns the smallest value in a column</td>
-</tr>
-</tbody>
-</table>
+functions are described in the table below.</p>
+<h4 data-number="11.1.0.1" id="sql-aggregate-functions"><span class="header-section-number">11.1.0.1</span> SQL Aggregate
+Functions</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Function</th>
+<th>Argument(s)</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">SUM</td>
+<td>A column</td>
+<td>Returns the total of the values in a column</td>
+</tr>
+<tr>
+<td style="text-align: center;">AVG</td>
+<td>A column</td>
+<td>Returns the average of the values in a column</td>
+</tr>
+<tr>
+<td style="text-align: center;">COUNT</td>
+<td>A column</td>
+<td>Returns the number of rows in a column</td>
+</tr>
+<tr>
+<td style="text-align: center;">MAX</td>
+<td>A column</td>
+<td>Returns the largest value in a column</td>
+</tr>
+<tr>
+<td style="text-align: center;">MIN</td>
+<td>A column</td>
+<td>Returns the smallest value in a column</td>
+</tr>
+</tbody>
+</table>
 <p>The remaining sections in this lesson describe how to use each of
 these functions, how the functions handle distinct values, and how to
-write queries that combine calculations.</p>
-<h2 data-number="11.2" id="the-sum-function"><span
-class="header-section-number">11.2</span> The SUM Function</h2>
+write queries that combine calculations.</p>
+<h2 data-number="11.2" id="the-sum-function"><span class="header-section-number">11.2</span> The SUM Function</h2>
 <p>The SUM function is used to calculate a total of the values in a
 column. The SUM function requires a column name as the only argument.
 Since the SUM function computes the total of the values in the column,
 the result is a single value. Also, since this value is calculated, you
-will want to create an alias for the result in your query.</p>
-<div class="caution">
-<blockquote>
-<p><strong>Caution: Aliases and Column Names.</strong> Some DBMS will
-not allow you to use a column name as an alias in a query. Given that
-aliases are often used with calculations, it is probably best to use a
-more descriptive alias anyway.</p>
-</blockquote>
-</div>
+will want to create an alias for the result in your query.</p>
+<div class="caution">
+<blockquote>
+<p><strong>Aliases and Column Names.</strong> Some DBMS will not allow
+you to use a column name as an alias in a query. Given that aliases are
+often used with calculations, it is probably best to use a more
+descriptive alias anyway.</p>
+</blockquote>
+</div>
 <p>The work table in the museum database contains information about the
 individual pieces of art. Included in this data is the width and height
 (in inches) of the pieces of work. Suppose you need to calculate the
 total width of all of the art in the database. Name the calculated field
 &#8216;total_width&#8217; (without the quotes). You can use a chat with an AI
-assistant to create the SELECT statement that will do this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write an SQL statement to calculate the total
-width of the artwork. Name the calculated field total_width.</p>
-<p><strong>AI:</strong> Certainly! Here&#8217;s the SQL statement to calculate
-the total width of the artwork and name the calculated field as
-total_width:</p>
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(width) <span class="kw">AS</span> total_width</span>
-<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
+assistant to create the SELECT statement that will do this:</p>
+<div class="ai-conversation" data-prompt="Write an SQL statement to calculate the total width of the artwork. Name the calculated field total_width.">
+<blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write an SQL statement to calculate the total width of the artwork. Name the calculated field total_width.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
+<p>Certainly! Here&#8217;s the SQL statement to calculate the total width of
+the artwork and name the calculated field as total_width:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(width) <span class="kw">AS</span> total_width</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
 <p>This query calculates the sum of the width column from the work table
-and renames the result as total_width.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(width) <span class="kw">AS</span> total_width</span>
-<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
+and renames the result as total_width.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(width) <span class="kw">AS</span> total_width</span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
 <p>This example demonstrates a couple of important things about using
 the SUM function. First, the syntax of the SUM function is
 straightforward. As with the scalar functions discussed in the previous
@@ -995,271 +1055,238 @@ case the width column. Second, the result of this function is the total
 of the values in the width column. The total is a single value, so there
 is only one row returned in the query result. Since the calculated field
 is the only field in the SELECT clause, this query will produce exactly
-<em>one</em> row and <em>one</em> column.</p>
+<em>one</em> row and <em>one</em> column.</p>
 <p>The SUM function returns the total of the values that are included in
 the query for the specified column. This is an important point. The
 exception to this is NULL values. A NULL value is not included in the
 SUM calculation. You can apply a filter to the query that will limit the
 values that will be included in the SUM. In the last example, the total
-width of <em>all</em> works is calculated.</p>
+width of <em>all</em> works is calculated.</p>
 <p>Assume you want to adjust the prior SQL statement to calculate the
 width of only the Renaissance style artwork. Name the calculated field
 &#8216;total_width_renaissance&#8217; (without the quotes). You can use a chat with
-an AI assistant to create the SELECT statement that will do this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Adjust the prior SQL statement to calculate the
-total width of only the Renaissance style artwork. Name the calculated
-field total_width_renaissance.</p>
-<p><strong>AI:</strong> Certainly! Here&#8217;s the adjusted SQL statement to
-calculate the total width of artworks with the Renaissance style and
-name the calculated field as total_width_renaissance:</p>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(width) <span class="kw">AS</span> total_width</span>
+an AI assistant to create the SELECT statement that will do this:</p>
+<div class="ai-conversation" data-prompt="Adjust the prior SQL statement to calculate the total width of only the Renaissance style artwork. Name the calculated field total_width_renaissance.">
+<blockquote><div class="ai-prompt"><span class="ai-prompt-text">Adjust the prior SQL statement to calculate the total width of only the Renaissance style artwork. Name the calculated field total_width_renaissance.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
+<p>Certainly! Here&#8217;s the adjusted SQL statement to calculate the total
+width of artworks with the Renaissance style and name the calculated
+field as total_width_renaissance:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(width) <span class="kw">AS</span> total_width</span>
 <span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
-<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">&#39;Renaissance&#39;</span>;</span></code></pre></div>
+<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">'Renaissance'</span>;</span></code></pre></div>
 <p>This query calculates the sum of the width column from the work table
 for artworks with the style &#8216;Renaissance&#8217; and renames the result as
-total_width_renaissance.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(width) <span class="kw">AS</span> total_width</span>
+total_width_renaissance.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(width) <span class="kw">AS</span> total_width</span>
 <span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
-<span id="cb4-3"><a aria-hidden="true" href="#cb4-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">&#39;Renaissance&#39;</span>;</span></code></pre></div>
+<span id="cb4-3"><a aria-hidden="true" href="#cb4-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">'Renaissance'</span>;</span></code></pre></div>
 <p>Notice that the syntax of the SUM function does not change, but the
 calculated total width does change. The reason for this is that the
 WHERE clause reduces the values included in the SUM calculation. It
 filters the artwork included in the calculation to be only those with a
-style of Renaissance.</p>
-<div class="note">
-<blockquote>
-<p><strong>Note: WHERE Clause and Aggregate Functions.</strong> Recall
-that the WHERE clause is executed before the SELECT clause even though
-the SELECT clause appears first in the SQL statement. Because of this,
-the rows filtered by the WHERE clause impact the value calculated by an
+style of Renaissance.</p>
+<div class="note">
+<blockquote>
+<p><strong>WHERE Clause and Aggregate Functions.</strong> Recall that
+the WHERE clause is executed before the SELECT clause even though the
+SELECT clause appears first in the SQL statement. Because of this, the
+rows filtered by the WHERE clause impact the value calculated by an
 aggregate function. Only those rows that satisfy the criteria set in the
-WHERE clause will be included in the calculation.</p>
-</blockquote>
-</div>
+WHERE clause will be included in the calculation.</p>
+</blockquote>
+</div>
 <p>The SUM function can calculate the total of more than just the values
 in a column. It would probably be more helpful to know the total area
 (height * width) of the artwork to know how much wall space is needed to
 showcase the art. Create a SQL statement that calculates the total area
 (height * width) of the artwork. Name the calculated field &#8216;total_area&#8217;
 (without the quotes). You can use a chat with an AI assistant to create
-the SELECT statement that will do this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write a SQL statement to calculate the total
-area of the artwork. Name the calculated field total_area.</p>
-<p><strong>AI:</strong> To calculate the total area of the artwork,
-you&#8217;ll need to multiply the width and height columns for each artwork
-and then sum up the resulting areas. Here&#8217;s the SQL statement to achieve
-that and name the calculated field as total_area:</p>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(width <span class="op">*</span> height) <span class="kw">AS</span> total_area</span>
-<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
+the SELECT statement that will do this:</p>
+<div class="ai-conversation" data-prompt="Write a SQL statement to calculate the total area of the artwork. Name the calculated field total_area.">
+<blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to calculate the total area of the artwork. Name the calculated field total_area.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
+<p>To calculate the total area of the artwork, you&#8217;ll need to multiply
+the width and height columns for each artwork and then sum up the
+resulting areas. Here&#8217;s the SQL statement to achieve that and name the
+calculated field as total_area:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(width <span class="op">*</span> height) <span class="kw">AS</span> total_area</span>
+<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
 <p>This query calculates the sum of the product of width and height for
 each artwork in the work table and names the result as total_area,
-representing the total combined area of all artworks.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb6"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(width <span class="op">*</span> height) <span class="kw">AS</span> total_area</span>
-<span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
+representing the total combined area of all artworks.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(width <span class="op">*</span> height) <span class="kw">AS</span> total_area</span>
+<span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
 <p>In this example, the area of the individual works is calculated by
 multiplying each work&#8217;s width by its height. The SUM function then
 totals the area of each artwork. The result is the total area of all
 artwork. Notice the argument of the SUM function. It is the formula to
 calculate the area. The query could also include a WHERE clause to
 create a filter to calculate the total area for specific works of
-art.</p>
-<h2 data-number="11.3" id="the-avg-function"><span
-class="header-section-number">11.3</span> The AVG Function</h2>
+art.</p>
+<h2 data-number="11.3" id="the-avg-function"><span class="header-section-number">11.3</span> The AVG Function</h2>
 <p>The AVG function works much like the SUM function. It takes the
 average, or mean, of the values in a column. Suppose you want to
 calculate the average area (height * width) of the Renaissance artwork.
 Name the calculated field &#8216;average_renaissance_area&#8217; (without the
 quotes). You can use a chat with an AI assistant to create the SELECT
-statement that will do this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write a SQL statement to calculate the average
-area of the Renaissance artwork. Name the calculated field
-average_renaissance_area.</p>
-<p><strong>AI:</strong> To calculate the average area of Renaissance
-artworks, you&#8217;ll need to first calculate the area (width * height) for
-each Renaissance artwork and then find the average of those areas.
-Here&#8217;s the SQL statement to achieve that and name the calculated field
-as average_renaissance_area:</p>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(width <span class="op">*</span> height) <span class="kw">AS</span> average_renaissance_area</span>
+statement that will do this:</p>
+<div class="ai-conversation" data-prompt="Write a SQL statement to calculate the average area of the Renaissance artwork. Name the calculated field average_renaissance_area.">
+<blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to calculate the average area of the Renaissance artwork. Name the calculated field average_renaissance_area.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
+<p>To calculate the average area of Renaissance artworks, you&#8217;ll need to
+first calculate the area (width * height) for each Renaissance artwork
+and then find the average of those areas. Here&#8217;s the SQL statement to
+achieve that and name the calculated field as
+average_renaissance_area:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(width <span class="op">*</span> height) <span class="kw">AS</span> average_renaissance_area</span>
 <span id="cb7-2"><a aria-hidden="true" href="#cb7-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
-<span id="cb7-3"><a aria-hidden="true" href="#cb7-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">&#39;Renaissance&#39;</span>;</span></code></pre></div>
+<span id="cb7-3"><a aria-hidden="true" href="#cb7-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">'Renaissance'</span>;</span></code></pre></div>
 <p>This query calculates the average of the product of width and height
 for each Renaissance artwork in the work table and names the result as
-average_renaissance_area.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(width <span class="op">*</span> height) <span class="kw">AS</span> average_renaissance_area</span>
+average_renaissance_area.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(width <span class="op">*</span> height) <span class="kw">AS</span> average_renaissance_area</span>
 <span id="cb8-2"><a aria-hidden="true" href="#cb8-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
-<span id="cb8-3"><a aria-hidden="true" href="#cb8-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">&#39;Renaissance&#39;</span>;</span></code></pre></div>
+<span id="cb8-3"><a aria-hidden="true" href="#cb8-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">'Renaissance'</span>;</span></code></pre></div>
 <p>In this example, the WHERE clause filters the query to include only
 those works of art with the Renaissance style. The area for each of
 these works is calculated by multiplying the width of each times the
 height. The AVG function calculates the average of the areas. As with
 the SUM function, NULL values are not included in the AVG
-calculation.</p>
-<h2 data-number="11.4" id="the-count-function"><span
-class="header-section-number">11.4</span> The COUNT Function</h2>
+calculation.</p>
+<h2 data-number="11.4" id="the-count-function"><span class="header-section-number">11.4</span> The COUNT Function</h2>
 <p>The COUNT function returns the number of rows in a query result. The
 argument for the COUNT function is also generally a column name. Since
 the COUNT function returns the number of rows in a query result, the
-wildcard character &#8217;*&#8217; can be used for its argument.</p>
+wildcard character &#8217;*&#8217; can be used for its argument.</p>
 <p>Consider this example. Suppose you want to count the number of
 artists in the database. Name the calculated field &#8216;number_of_artists&#8217;
 (without the quotes). You can use a chat with an AI assistant to create
-the SELECT statement that will do this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write a SQL statement to count the number of
-artists. Name the calculation number_of_artists.</p>
-<p><strong>AI:</strong> To count the number of artists in the artist
-table, you can use the SQL COUNT function. Here&#8217;s the SQL statement to
-achieve that and name the calculated field as number_of_artists:</p>
-<div class="sourceCode" id="cb9"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> number_of_artists</span>
-<span id="cb9-2"><a aria-hidden="true" href="#cb9-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
+the SELECT statement that will do this:</p>
+<div class="ai-conversation" data-prompt="Write a SQL statement to count the number of artists. Name the calculation number_of_artists.">
+<blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to count the number of artists. Name the calculation number_of_artists.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
+<p>To count the number of artists in the artist table, you can use the
+SQL COUNT function. Here&#8217;s the SQL statement to achieve that and name
+the calculated field as number_of_artists:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> number_of_artists</span>
+<span id="cb9-2"><a aria-hidden="true" href="#cb9-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
 <p>This query uses the COUNT function to count the number of rows
 (artists) in the artist table and names the result as
-number_of_artists.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb10"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb10-1"><a aria-hidden="true" href="#cb10-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> number_of_artists</span>
-<span id="cb10-2"><a aria-hidden="true" href="#cb10-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
+number_of_artists.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb10-1"><a aria-hidden="true" href="#cb10-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> number_of_artists</span>
+<span id="cb10-2"><a aria-hidden="true" href="#cb10-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
 <p>In this example, the COUNT function is invoked using &#8217;*&#8217; as the
 argument. It will return the number of rows on the artist table. Since
 each row of the table contains data about a unique artist, this will
 also be the number of artists in the database. The query could also be
 rewritten with one of the columns of the artist table as the argument as
-follows:</p>
-<div class="sourceCode" id="cb11"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb11-1"><a aria-hidden="true" href="#cb11-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(artist_id) <span class="kw">AS</span> number_of_artists</span>
-<span id="cb11-2"><a aria-hidden="true" href="#cb11-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
+follows:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb11-1"><a aria-hidden="true" href="#cb11-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(artist_id) <span class="kw">AS</span> number_of_artists</span>
+<span id="cb11-2"><a aria-hidden="true" href="#cb11-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
 <p>In this example, the COUNT function will return the number of rows in
 the artist_id column of the artist table. This will also equal the
-number of artists in the database.</p>
+number of artists in the database.</p>
 <p>If you filter the query using a WHERE clause, the result of the COUNT
 function will change. Also, like the other functions discussed in this
 lesson, NULL values will not be included in the COUNT calculation if you
 use a column name as the argument to the function. However, if you use
 the wildcard &#8217;<em>&#8217; character as the argument, all rows (even those that
 contain NULL values) </em>will be included* in the COUNT
-calculation.</p>
-<h2 data-number="11.5" id="the-max-function"><span
-class="header-section-number">11.5</span> The MAX Function</h2>
+calculation.</p>
+<h2 data-number="11.5" id="the-max-function"><span class="header-section-number">11.5</span> The MAX Function</h2>
 <p>The MAX function returns the largest value in a specified column. The
 argument for the MAX function is a column name or calculation (like the
 SUM and AVG functions). The MAX function ignores NULL values. For
 example, suppose you want to calculate the largest area for a work of
 art. Name the calculation &#8216;largest_area&#8217; (without the quotes). You can
 use a chat with an AI assistant to create the SELECT statement that will
-do this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write a SQL statement to find the largest area
-for a work of art. Name the calculation largest_area.</p>
-<p><strong>AI:</strong> To find the largest area for a work of art, you
-can use the MAX function to find the maximum product of width and height
-from the work table. Here&#8217;s the SQL statement to achieve that and name
-the calculated field as largest_area:</p>
-<div class="sourceCode" id="cb12"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">MAX</span>(width <span class="op">*</span> height) <span class="kw">AS</span> largest_area</span>
-<span id="cb12-2"><a aria-hidden="true" href="#cb12-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
+do this:</p>
+<div class="ai-conversation" data-prompt="Write a SQL statement to find the largest area for a work of art. Name the calculation largest_area.">
+<blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to find the largest area for a work of art. Name the calculation largest_area.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
+<p>To find the largest area for a work of art, you can use the MAX
+function to find the maximum product of width and height from the work
+table. Here&#8217;s the SQL statement to achieve that and name the calculated
+field as largest_area:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">MAX</span>(width <span class="op">*</span> height) <span class="kw">AS</span> largest_area</span>
+<span id="cb12-2"><a aria-hidden="true" href="#cb12-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
 <p>This query calculates the maximum area (width * height) among all
-artworks in the work table and names the result as largest_area.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb13"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb13-1"><a aria-hidden="true" href="#cb13-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">MAX</span>(width <span class="op">*</span> height) <span class="kw">AS</span> largest_area</span>
-<span id="cb13-2"><a aria-hidden="true" href="#cb13-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
+artworks in the work table and names the result as largest_area.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb13-1"><a aria-hidden="true" href="#cb13-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">MAX</span>(width <span class="op">*</span> height) <span class="kw">AS</span> largest_area</span>
+<span id="cb13-2"><a aria-hidden="true" href="#cb13-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
 <p>In this example, the MAX function is used to find the artwork with
 the largest area. As before, the area of each work of art is first
-calculated as the product of the width and the height.</p>
-<h2 data-number="11.6" id="the-min-function"><span
-class="header-section-number">11.6</span> The MIN Function</h2>
+calculated as the product of the width and the height.</p>
+<h2 data-number="11.6" id="the-min-function"><span class="header-section-number">11.6</span> The MIN Function</h2>
 <p>The MIN function is used to return the smallest value in a specified
 column. The argument for the MIN function is a column name or
 calculation (like the SUM and AVG functions). The MIN function ignores
 NULL values. Assume you want to calculate the smallest area for a work
 of art. Name the calculation &#8216;smallest_area&#8217; (without the quotes). You
 can use a chat with an AI assistant to create the SELECT statement that
-will do this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write a SQL statement to find the smallest area
-for a work of art. Name the calculation smallest_area.</p>
-<p><strong>AI:</strong> To find the smallest area for a work of art, you
-can use the MIN function to find the minimum product of width and height
-from the work table. Here&#8217;s the SQL statement to achieve that and name
-the calculated field as smallest_area:</p>
-<div class="sourceCode" id="cb14"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb14-1"><a aria-hidden="true" href="#cb14-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">MIN</span>(width <span class="op">*</span> height) <span class="kw">AS</span> smallest_area</span>
-<span id="cb14-2"><a aria-hidden="true" href="#cb14-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
+will do this:</p>
+<div class="ai-conversation" data-prompt="Write a SQL statement to find the smallest area for a work of art. Name the calculation smallest_area.">
+<blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to find the smallest area for a work of art. Name the calculation smallest_area.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
+<p>To find the smallest area for a work of art, you can use the MIN
+function to find the minimum product of width and height from the work
+table. Here&#8217;s the SQL statement to achieve that and name the calculated
+field as smallest_area:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb14-1"><a aria-hidden="true" href="#cb14-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">MIN</span>(width <span class="op">*</span> height) <span class="kw">AS</span> smallest_area</span>
+<span id="cb14-2"><a aria-hidden="true" href="#cb14-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
 <p>This query calculates the minimum area (width * height) among all
-artworks in the work table and names the result as smallest_area.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb15"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb15-1"><a aria-hidden="true" href="#cb15-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">MIN</span>(width <span class="op">*</span> height) <span class="kw">AS</span> smallest_area</span>
-<span id="cb15-2"><a aria-hidden="true" href="#cb15-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
+artworks in the work table and names the result as smallest_area.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb15-1"><a aria-hidden="true" href="#cb15-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">MIN</span>(width <span class="op">*</span> height) <span class="kw">AS</span> smallest_area</span>
+<span id="cb15-2"><a aria-hidden="true" href="#cb15-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span>;</span></code></pre></div>
 <p>In this example, the MIN function is used to find the artwork with
 the smallest area. As before, the area of each work of art is first
-calculated as the product of the width and the height.</p>
-<div class="tip">
-<blockquote>
-<p><strong>Tip: MAX and MIN with Non-Numeric Data.</strong> Although
+calculated as the product of the width and the height.</p>
+<div class="tip">
+<blockquote>
+<p><strong>MAX and MIN with Non-Numeric Data.</strong> Although
 counter-intuitive, you can use the MAX and MIN functions with columns
 that don&#8217;t contain numbers. If you calculate the MAX of a column with
 text, the result would be the last value alphabetically. The opposite
 would be true for the MIN function. One way to think of a maximum or
 minimum value is that it is the first or last value in a sorted list.
-This could be a list of numbers, dates, or text values.</p>
-</blockquote>
-</div>
-<h2 data-number="11.7" id="aggregates-on-distinct-values"><span
-class="header-section-number">11.7</span> Aggregates on Distinct
-Values</h2>
+This could be a list of numbers, dates, or text values.</p>
+</blockquote>
+</div>
+<h2 data-number="11.7" id="aggregates-on-distinct-values"><span class="header-section-number">11.7</span> Aggregates on Distinct
+Values</h2>
 <p>Recall that the keyword DISTINCT is used to remove duplicates in a
 query result. The keyword DISTINCT is also relevant for aggregate
 functions. Each of the five aggregate functions will perform a
 calculation on all of the rows in a query. Each non-NULL value will be
 included in the calculations performed by these functions &#8212; including
-duplicate values.</p>
+duplicate values.</p>
 <p>You can use DISTINCT to remove duplicates from an aggregate
 calculation. The syntax for this is below. Notice the difference in the
-results returned by the two queries in the example.</p>
-<div class="sourceCode" id="cb16"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb16-1"><a aria-hidden="true" href="#cb16-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(birth) <span class="kw">AS</span> number_of_artists</span>
+results returned by the two queries in the example.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb16-1"><a aria-hidden="true" href="#cb16-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(birth) <span class="kw">AS</span> number_of_artists</span>
 <span id="cb16-2"><a aria-hidden="true" href="#cb16-2" tabindex="-1"></a><span class="kw">from</span> artist;</span>
 <span id="cb16-3"><a aria-hidden="true" href="#cb16-3" tabindex="-1"></a></span>
 <span id="cb16-4"><a aria-hidden="true" href="#cb16-4" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> birth) <span class="kw">AS</span> number_of_years_with_artist_births</span>
-<span id="cb16-5"><a aria-hidden="true" href="#cb16-5" tabindex="-1"></a><span class="kw">from</span> artist;</span></code></pre></div>
+<span id="cb16-5"><a aria-hidden="true" href="#cb16-5" tabindex="-1"></a><span class="kw">from</span> artist;</span></code></pre></div>
 <p>The first query essentially counts the artists. The argument for the
 COUNT function is the birth column. The COUNT function will return the
 number of rows in the birth column of the artist table. Since each row
 of the artist table contains a unique artist, counting the rows of the
 birth column of the artist table will count the number of artists in the
-database.</p>
+database.</p>
 <p>The result of the second query should be interpreted very
 differently. The keyword DISTINCT in the argument of the COUNT function
 means that duplicate values for birth will be ignored. Since there are
@@ -1267,21 +1294,20 @@ multiple artists born in the same year, many rows will be excluded in
 the COUNT calculation. What will be counted is the unique set of birth
 years for the artists. Each year that an artist is born will be counted
 only once. Hence, the result of this query is the number of years with
-artist births.</p>
-<div class="tip">
-<blockquote>
-<p><strong>Tip: Limitations on DISTINCT and Aggregate
-Functions.</strong> There are a couple of important limitations on using
-the keyword DISTINCT with an aggregate function. First, DISTINCT cannot
-be used with the expression COUNT(*) &#8212; a column name must be used as the
-argument. Second, DISTINCT should also be used with a column name as the
-argument. It may not work with some DBMS when using a calculation as the
-argument to an aggregate function.</p>
-</blockquote>
-</div>
-<h2 data-number="11.8" id="combining-aggregate-functions"><span
-class="header-section-number">11.8</span> Combining Aggregate
-Functions</h2>
+artist births.</p>
+<div class="tip">
+<blockquote>
+<p><strong>Limitations on DISTINCT and Aggregate Functions.</strong>
+There are a couple of important limitations on using the keyword
+DISTINCT with an aggregate function. First, DISTINCT cannot be used with
+the expression COUNT(*) &#8212; a column name must be used as the argument.
+Second, DISTINCT should also be used with a column name as the argument.
+It may not work with some DBMS when using a calculation as the argument
+to an aggregate function.</p>
+</blockquote>
+</div>
+<h2 data-number="11.8" id="combining-aggregate-functions"><span class="header-section-number">11.8</span> Combining Aggregate
+Functions</h2>
 <p>All of the examples in this lesson have used a single aggregate
 function in the SELECT clause. SQL statements can have as many aggregate
 functions in the SELECT clause as you want. For example, you may want to
@@ -1289,30 +1315,24 @@ calculate the smallest and largest birth year in the artist table. Name
 the first column &#8216;earliest_birth_year&#8217; (without the quotes) and the
 second column &#8216;latest_birth_year&#8217; (without the quotes). You can use a
 chat with an AI assistant to create the SELECT statement that will do
-this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write a SQL statement to calculate the smallest
-and largest birth year for an artist. Name the first column
-&#8216;earliest_birth_year&#8217; (without the quotes) and the second column
-&#8216;latest_birth_year&#8217; (without the quotes).</p>
-<p><strong>AI:</strong> To calculate the smallest and largest birth
-years for artists, you can use the MIN and MAX functions on the birth
-column in the artist table. Here&#8217;s the SQL statement to achieve that and
-name the columns as specified:</p>
-<div class="sourceCode" id="cb17"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb17-1"><a aria-hidden="true" href="#cb17-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">MIN</span>(birth) <span class="kw">AS</span> earliest_birth_year, <span class="fu">MAX</span>(birth) <span class="kw">AS</span> latest_birth_year</span>
-<span id="cb17-2"><a aria-hidden="true" href="#cb17-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
+this:</p>
+<div class="ai-conversation" data-prompt="Write a SQL statement to calculate the smallest and largest birth year for an artist. Name the first column 'earliest_birth_year' (without the quotes) and the second column 'latest_birth_year' (without the quotes).">
+<blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to calculate the smallest and largest birth year for an artist. Name the first column 'earliest_birth_year' (without the quotes) and the second column 'latest_birth_year' (without the quotes).</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
+<p>To calculate the smallest and largest birth years for artists, you
+can use the MIN and MAX functions on the birth column in the artist
+table. Here&#8217;s the SQL statement to achieve that and name the columns as
+specified:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb17-1"><a aria-hidden="true" href="#cb17-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">MIN</span>(birth) <span class="kw">AS</span> earliest_birth_year, <span class="fu">MAX</span>(birth) <span class="kw">AS</span> latest_birth_year</span>
+<span id="cb17-2"><a aria-hidden="true" href="#cb17-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
 <p>This query calculates the smallest (earliest) and largest (latest)
 birth years among all artists in the artist table and assigns the
 calculated values to the columns named earliest_birth_year and
-latest_birth_year, respectively.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb18"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb18-1"><a aria-hidden="true" href="#cb18-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">MIN</span>(birth) <span class="kw">AS</span> earliest_birth_year, <span class="fu">MAX</span>(birth) <span class="kw">AS</span> latest_birth_year</span>
-<span id="cb18-2"><a aria-hidden="true" href="#cb18-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
+latest_birth_year, respectively.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb18-1"><a aria-hidden="true" href="#cb18-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">MIN</span>(birth) <span class="kw">AS</span> earliest_birth_year, <span class="fu">MAX</span>(birth) <span class="kw">AS</span> latest_birth_year</span>
+<span id="cb18-2"><a aria-hidden="true" href="#cb18-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
 <p>In this example, the MIN function is used to find the earliest
 (smallest) birth year. The MAX function is used to find the latest
 (largest) birth year. Notice that the two aggregate calculations are
@@ -1320,14 +1340,13 @@ separated with a comma in the SELECT clause. This is just like adding
 more than one column to the SELECT clause. Since there are two
 calculated fields in the query, the result will have two columns. Since
 each calculation will produce a single result, the query will produce
-only one row.</p>
-<h2 data-number="11.9" id="summary"><span
-class="header-section-number">11.9</span> Summary</h2>
+only one row.</p>
+<h2 data-number="11.9" id="summary"><span class="header-section-number">11.9</span> Summary</h2>
 <p>Aggregate functions allow you to perform summary calculations in a
 query. This lesson discussed how to use each of the five aggregate
 functions: SUM, AVG, COUNT, MAX, and MIN. It also described how to use
 the keyword DISTINCT with an aggregate function and how to combine more
-than one aggregate calculation in the same query result.</p>
+than one aggregate calculation in the same query result.</p>
 <!--postEnd-->
               </div>
 </div>
@@ -1350,8 +1369,8 @@ than one aggregate calculation in the same query result.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZrLOLql9z91vVcyA1TsF364:1784899982747';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/11.html','3986204447440040189');
-_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/11.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/11.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/5466737572812117031/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '5466737572812117031', 'pageName': '11. Summarizing Data', 'pageTitle': 'book1014 SQL: 11. Summarizing Data'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '11. Summarizing Data', 'description': '11  Summarizing Data \r Objectives.  After completing this lesson, the\r successful student will be able to: \r \r Describe the uses of aggregat...', 'url': 'https://book1014.blogspot.com/2000/02/11.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 5466737572812117031}}]);
+window['__wavt'] = 'AEUoTZoQcnhLApJjD2pLwaj3Bdt0:1784981199024';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/11.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/11.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/11.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/5466737572812117031/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '5466737572812117031', 'pageName': '11. Summarizing Data', 'pageTitle': 'book1014 SQL: 11. Summarizing Data'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '11. Summarizing Data', 'description': '11  Summarizing Data  Objectives.  After completing this lesson, the\r successful student will be able to:   Describe the uses of aggregate f...', 'url': 'https://book1014.blogspot.com/2000/02/11.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 5466737572812117031}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>
 </body>

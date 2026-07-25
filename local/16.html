@@ -16,6 +16,11 @@
 <!-- button icon -->
 <link href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0' rel='stylesheet'/>
 <style id='page-skin-1' type='text/css'><!--
+/* This file is the source of truth for book CSS, but there is no publish script for it.
+After editing, copy the changed rules by hand into each book's Blogger theme HTML
+(the page-skin-1 <style> block) via the Blogger dashboard.
+Do NOT edit local/*.html to apply these changes - those files are downloaded verbatim
+from the live blog by download.py and get overwritten on the next run. */
 :root {
 --font-zoom: 1;
 --page-bg: #f8fafc;
@@ -136,6 +141,24 @@ padding: .85rem;
 }
 #page-data{
 display:none
+}
+.toast{
+position:fixed;
+bottom:2rem;
+left:50%;
+transform:translateX(-50%);
+z-index:9999;
+background-color:green;
+color:#fff;
+padding:.7rem 1.25rem;
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-lg);
+}
+.toast.success{
+background-color:#15803d;
+}
+.toast.error{
+background-color:var(--danger);
 }
 #menu{
 top:0;
@@ -460,9 +483,9 @@ line-height: 1;
 }
 blockquote{
 margin:1.75rem 0;
+padding:1rem 1.25rem 1rem 1.35rem;
 background:var(--surface-soft);
 border-left:.35rem solid var(--accent);
-padding:1rem 1.25rem 1rem 1.35rem;
 border-radius:0 var(--radius-md) var(--radius-md) 0;
 color:#334155;
 }
@@ -489,6 +512,7 @@ border-left:.35rem solid darkblue;
 .term blockquote p::before {
 content: "Term: ";
 font-weight: bold;
+color:#2B7FFF;
 }
 .caution blockquote{
 background:#FFE2E2;
@@ -501,6 +525,12 @@ font-weight: bold;
 .objectives blockquote{
 background:#FFF8E1;
 border-left:.35rem solid gold;
+border-right:.35rem solid gold;
+border-radius:0;
+}
+.objectives blockquote p::before {
+content: "Objectives: ";
+font-weight: bold;
 }
 .review blockquote{
 background:#FFF0EC;
@@ -509,6 +539,25 @@ border-left:.35rem solid salmon;
 .review blockquote p::before {
 content: "Review: ";
 font-weight: bold;
+}
+.ai-conversation blockquote{
+background:lightgrey;
+border:1px solid #bbb;
+border-radius: 5px;
+}
+div.ai-prompt{
+background:white;
+border:1px solid grey;
+border-radius: 10px;
+padding:10px 20px 10px 20px;
+box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.3);
+margin: 0 1rem 1rem 1rem;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+span.ai-prompt-x{
+font-size: 1.8em;
 }
 blockquote p:last-child{
 margin-bottom:0;
@@ -766,6 +815,25 @@ right: .75rem;
 }
 
 --></style>
+<!-- the next style tag gets filled automatically with css from availabooktools.blogspot.com-->
+<style id='dynamic-override-css' type='text/css'></style>
+<script type='text/javascript'>
+//<![CDATA[
+function loadCss(response){
+  console.log("$$$$$$$$$$$$$$ response", response)
+  const newCss = response.feed.entry[0].content.$t;
+  if (newCss.length > 0) {
+    const overrideStyleBlock = document.getElementById('dynamic-override-css');
+    if (overrideStyleBlock) {
+      overrideStyleBlock.textContent = newCss;
+    }
+  }
+}
+
+
+//]]>
+</script>
+<script src='https://availabooktools.blogspot.com/feeds/posts/default/-/css-staging?alt=json-in-script&max-results=1&callback=loadCss'></script>
 <script>
     const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
 	async function initialize(){
@@ -826,7 +894,7 @@ right: .75rem;
     }    
 
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d8927c69-f824-4d33-86aa-f3669be7367c' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d8927c69-f824-4d33-86aa-f3669be7367c' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -850,6 +918,7 @@ right: .75rem;
 <div id='menu'>
 <div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
 <div id='menu-content'>
+<div id='ai' style='text-align:right'><button id='ai-prompt' onClick='getAiHelpPrompt()'>Copy AI Prompt</button></div>
 <div id='toc'></div>
 <div id='tools'>
                   Text Size: 
@@ -867,125 +936,112 @@ right: .75rem;
 <button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
 <button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
               
-              <!--postBegin--><h1 data-number="16" id="advanced-joins"><span
-class="header-section-number">16</span> Advanced Joins</h1>
+              <!--postBegin--><h1 data-number="16" id="advanced-joins"><span class="header-section-number">16</span> Advanced Joins</h1>
 <p><strong>Objectives.</strong> After completing this lesson, the
-successful student will be able to:</p>
-<ol type="1">
+successful student will be able to:</p>
+<ol type="1">
 <li>Use table aliases to shorten SQL syntax and to reference the same
-table more than once in a query.</li>
-<li>Create a self join to relate a table to itself.</li>
-<li>Create a natural join that avoids returning duplicate columns.</li>
+table more than once in a query.</li>
+<li>Create a self join to relate a table to itself.</li>
+<li>Create a natural join that avoids returning duplicate columns.</li>
 <li>Create left, right, and full outer joins to include unmatched
-rows.</li>
-<li>Use aggregate functions together with joins.</li>
-</ol>
-<h2 data-number="16.1" id="using-table-aliases"><span
-class="header-section-number">16.1</span> Using Table Aliases</h2>
+rows.</li>
+<li>Use aggregate functions together with joins.</li>
+</ol>
+<h2 data-number="16.1" id="using-table-aliases"><span class="header-section-number">16.1</span> Using Table Aliases</h2>
 <p>Before we look at additional types of joins, we need to revisit
 aliases. Back in the lesson on creating calculated fields, you learned
 how to use aliases to refer to retrieved table columns. The syntax to
-alias a column looks like this:</p>
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">RTRIM</span>(name) <span class="op">||</span> <span class="st">&#39; (&#39;</span> <span class="op">||</span> <span class="fu">RTRIM</span>(city) <span class="op">||</span> <span class="st">&#39;)&#39;</span> <span class="kw">AS</span> museum_title</span>
+alias a column looks like this:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">RTRIM</span>(name) <span class="op">||</span> <span class="st">' ('</span> <span class="op">||</span> <span class="fu">RTRIM</span>(city) <span class="op">||</span> <span class="st">')'</span> <span class="kw">AS</span> museum_title</span>
 <span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">FROM</span> museum</span>
-<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> name;</span></code></pre></div>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> name;</span></code></pre></div>
 <p>In addition to using aliases for column names and calculated fields,
 SQL also enables you to alias table names. There are two primary reasons
-to do this:</p>
-<ul>
-<li>To shorten the SQL syntax</li>
+to do this:</p>
+<ul>
+<li>To shorten the SQL syntax</li>
 <li>To enable multiple uses of the same table within a single SELECT
-statement</li>
-</ul>
+statement</li>
+</ul>
 <p>Take a look at the following SELECT statement. It is basically the
 same statement as an example used in the previous lesson, but it has
-been modified to use aliases:</p>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality</span>
+been modified to use aliases:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality</span>
 <span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">FROM</span> artist <span class="kw">AS</span> A, <span class="kw">work</span> <span class="kw">AS</span> W, subject <span class="kw">AS</span> S</span>
 <span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a><span class="kw">WHERE</span> A.artist_id <span class="op">=</span> W.artist_id</span>
 <span id="cb2-4"><a aria-hidden="true" href="#cb2-4" tabindex="-1"></a><span class="kw">AND</span> S.work_id <span class="op">=</span> W.work_id</span>
-<span id="cb2-5"><a aria-hidden="true" href="#cb2-5" tabindex="-1"></a><span class="kw">AND</span> S.subject <span class="op">=</span> <span class="st">&#39;Portrait&#39;</span>;</span></code></pre></div>
+<span id="cb2-5"><a aria-hidden="true" href="#cb2-5" tabindex="-1"></a><span class="kw">AND</span> S.subject <span class="op">=</span> <span class="st">'Portrait'</span>;</span></code></pre></div>
 <p>You&#8217;ll notice that the three tables in the FROM clause all have
 aliases. <code>artist AS A</code> establishes A as an alias for artist,
 and so on. This approach enables you to use the abbreviated A instead of
 the full text artist. In this example, the table aliases were used only
 in the WHERE clause, but aliases are not limited to just WHERE. You can
 use aliases in the SELECT list, the ORDER BY clause, and in any other
-part of the statement as well.</p>
-<div class="tip">
-<blockquote>
-<p><strong>Tip: AS Is Optional for Table Aliases.</strong> PostgreSQL
-allows you to drop the AS keyword when aliasing a table, so
+part of the statement as well.</p>
+<div class="tip">
+<blockquote>
+<p><strong>AS Is Optional for Table Aliases.</strong> PostgreSQL allows
+you to drop the AS keyword when aliasing a table, so
 <code>artist A</code> works exactly the same as
 <code>artist AS A</code>. Most PostgreSQL style guides recommend keeping
 the AS anyway, since it makes it obvious at a glance that A is an alias
-and not, say, a typo.</p>
-</blockquote>
-</div>
+and not, say, a typo.</p>
+</blockquote>
+</div>
 <p>It is also worth noting that table aliases are only used during query
 execution. Unlike column aliases, table aliases are never returned to
-the client.</p>
-<h2 data-number="16.2" id="using-different-join-types"><span
-class="header-section-number">16.2</span> Using Different Join
-Types</h2>
+the client.</p>
+<h2 data-number="16.2" id="using-different-join-types"><span class="header-section-number">16.2</span> Using Different Join
+Types</h2>
 <p>Thus far you have used only simple joins known as inner joins or
 equijoins. You&#8217;ll now take a look at three additional join types: the
-self join, the natural join, and the outer join.</p>
-<h2 data-number="16.3" id="self-joins"><span
-class="header-section-number">16.3</span> Self Joins</h2>
+self join, the natural join, and the outer join.</p>
+<h2 data-number="16.3" id="self-joins"><span class="header-section-number">16.3</span> Self Joins</h2>
 <p>As mentioned earlier, one of the primary reasons to use table aliases
 is to be able to refer to the same table more than once in a single
-SELECT statement. An example will demonstrate this.</p>
+SELECT statement. An example will demonstrate this.</p>
 <p>Suppose you wanted to identify all the artists who share a
 nationality with Claude Monet. This query requires that you first find
 out what nationality Claude Monet is and next which artists share that
-nationality. The following is one way to approach this problem:</p>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> artist_id, full_name, nationality</span>
+nationality. The following is one way to approach this problem:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> artist_id, full_name, nationality</span>
 <span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
 <span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a><span class="kw">WHERE</span> nationality <span class="op">=</span> (<span class="kw">SELECT</span> nationality</span>
 <span id="cb3-4"><a aria-hidden="true" href="#cb3-4" tabindex="-1"></a>                     <span class="kw">FROM</span> artist</span>
-<span id="cb3-5"><a aria-hidden="true" href="#cb3-5" tabindex="-1"></a>                     <span class="kw">WHERE</span> full_name <span class="op">=</span> <span class="st">&#39;Claude Monet&#39;</span>);</span></code></pre></div>
+<span id="cb3-5"><a aria-hidden="true" href="#cb3-5" tabindex="-1"></a>                     <span class="kw">WHERE</span> full_name <span class="op">=</span> <span class="st">'Claude Monet'</span>);</span></code></pre></div>
 <p>This first solution uses a subquery. The inner SELECT statement does
 a simple retrieval to return the nationality of Claude Monet. That
 nationality is the one used in the WHERE clause of the outer query so
 that all artists who share that nationality are retrieved. (You learned
 all about subqueries in the lesson on working with subqueries. Refer to
-that lesson for more information.)</p>
+that lesson for more information.)</p>
 <p>Now look at the same query using a join. You can use a chat with an
-AI assistant to create the SELECT statement that will do this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write a SQL statement to list the artist_id,
-full_name, and nationality of every artist who shares a nationality with
-Claude Monet. Use a self join on the artist table instead of a
-subquery.</p>
-<p><strong>AI:</strong> Since you need to compare rows within the same
-table to each other, you join the artist table to itself using two
-different aliases. Here&#8217;s the SQL statement:</p>
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> a1.artist_id, a1.full_name, a1.nationality</span>
+AI assistant to create the SELECT statement that will do this:</p>
+<div class="ai-conversation" data-prompt="Write a SQL statement to list the artist_id, full_name, and nationality of every artist who shares a nationality with Claude Monet. Use a self join on the artist table instead of a subquery.">
+<blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to list the artist_id, full_name, and nationality of every artist who shares a nationality with Claude Monet. Use a self join on the artist table instead of a subquery.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
+<p>Since you need to compare rows within the same table to each other,
+you join the artist table to itself using two different aliases. Here&#8217;s
+the SQL statement:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> a1.artist_id, a1.full_name, a1.nationality</span>
 <span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a><span class="kw">FROM</span> artist <span class="kw">AS</span> a1, artist <span class="kw">AS</span> a2</span>
 <span id="cb4-3"><a aria-hidden="true" href="#cb4-3" tabindex="-1"></a><span class="kw">WHERE</span> a1.nationality <span class="op">=</span> a2.nationality</span>
-<span id="cb4-4"><a aria-hidden="true" href="#cb4-4" tabindex="-1"></a><span class="kw">AND</span> a2.full_name <span class="op">=</span> <span class="st">&#39;Claude Monet&#39;</span>;</span></code></pre></div>
+<span id="cb4-4"><a aria-hidden="true" href="#cb4-4" tabindex="-1"></a><span class="kw">AND</span> a2.full_name <span class="op">=</span> <span class="st">'Claude Monet'</span>;</span></code></pre></div>
 <p>The a2 alias is used to find the row for Claude Monet and read off
 his nationality. The a1 alias is then matched to any row (including
-Monet&#8217;s own) that shares that same nationality.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> a1.artist_id, a1.full_name, a1.nationality</span>
+Monet&#8217;s own) that shares that same nationality.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> a1.artist_id, a1.full_name, a1.nationality</span>
 <span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="kw">FROM</span> artist <span class="kw">AS</span> a1, artist <span class="kw">AS</span> a2</span>
 <span id="cb5-3"><a aria-hidden="true" href="#cb5-3" tabindex="-1"></a><span class="kw">WHERE</span> a1.nationality <span class="op">=</span> a2.nationality</span>
-<span id="cb5-4"><a aria-hidden="true" href="#cb5-4" tabindex="-1"></a><span class="kw">AND</span> a2.full_name <span class="op">=</span> <span class="st">&#39;Claude Monet&#39;</span>;</span></code></pre></div>
+<span id="cb5-4"><a aria-hidden="true" href="#cb5-4" tabindex="-1"></a><span class="kw">AND</span> a2.full_name <span class="op">=</span> <span class="st">'Claude Monet'</span>;</span></code></pre></div>
 <p>The two tables needed in this query are actually the same table, and
 so the artist table appears in the FROM clause twice. Although this is
 perfectly legal, any references to table artist would be ambiguous
 because the DBMS does not know which artist table you are referring
-to.</p>
+to.</p>
 <p>To resolve this problem, table aliases are used. The first occurrence
 of artist has an alias of a1, and the second has an alias of a2. Now
 those aliases can be used as table names. The SELECT statement, for
@@ -995,36 +1051,34 @@ there are two of each column named artist_id, full_name, and
 nationality. It cannot know which one you want. (Even though they are
 the same.) The WHERE clause first joins the tables and then filters the
 data by full_name in the second table to return only the wanted
-data.</p>
-<div class="tip">
-<blockquote>
-<p><strong>Tip: Self Joins Instead of Subqueries.</strong> Self joins
-are often used to replace statements using subqueries that retrieve data
+data.</p>
+<div class="tip">
+<blockquote>
+<p><strong>Self Joins Instead of Subqueries.</strong> Self joins are
+often used to replace statements using subqueries that retrieve data
 from the same table as the outer statement. Although the end result is
 the same, many DBMSs process joins far more quickly than they do
 subqueries. It is usually worth experimenting with both to determine
-which performs better.</p>
-</blockquote>
-</div>
-<h2 data-number="16.4" id="natural-joins"><span
-class="header-section-number">16.4</span> Natural Joins</h2>
+which performs better.</p>
+</blockquote>
+</div>
+<h2 data-number="16.4" id="natural-joins"><span class="header-section-number">16.4</span> Natural Joins</h2>
 <p>Whenever tables are joined, at least one column will appear in more
 than one table (the columns being used to create the join). Standard
 joins (the inner joins that you learned about in the last lesson) return
 all data, even multiple occurrences of the same column. A natural join
 simply eliminates those multiple occurrences so that only one of each
-column is returned.</p>
+column is returned.</p>
 <p>How does it do this? The answer is it doesn&#8217;t &#8212; you do it. A natural
 join is a join in which you select only columns that are unique. This is
 typically done using a wildcard (SELECT *) for one table and explicit
 subsets of the columns for all other tables. The following is an
-example:</p>
-<div class="sourceCode" id="cb6"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> A.<span class="op">*</span>, W.work_id, W.name, W.style, S.subject</span>
+example:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> A.<span class="op">*</span>, W.work_id, W.name, W.style, S.subject</span>
 <span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a><span class="kw">FROM</span> artist <span class="kw">AS</span> A, <span class="kw">work</span> <span class="kw">AS</span> W, subject <span class="kw">AS</span> S</span>
 <span id="cb6-3"><a aria-hidden="true" href="#cb6-3" tabindex="-1"></a><span class="kw">WHERE</span> A.artist_id <span class="op">=</span> W.artist_id</span>
 <span id="cb6-4"><a aria-hidden="true" href="#cb6-4" tabindex="-1"></a><span class="kw">AND</span> S.work_id <span class="op">=</span> W.work_id</span>
-<span id="cb6-5"><a aria-hidden="true" href="#cb6-5" tabindex="-1"></a><span class="kw">AND</span> S.subject <span class="op">=</span> <span class="st">&#39;Portrait&#39;</span>;</span></code></pre></div>
+<span id="cb6-5"><a aria-hidden="true" href="#cb6-5" tabindex="-1"></a><span class="kw">AND</span> S.subject <span class="op">=</span> <span class="st">'Portrait'</span>;</span></code></pre></div>
 <p>In this example, a wildcard is used for the first table only. All
 other columns are explicitly listed so that no duplicate columns are
 retrieved (notice, for instance, that <code>W.artist_id</code> and
@@ -1032,45 +1086,42 @@ retrieved (notice, for instance, that <code>W.artist_id</code> and
 <code>A.*</code> already includes artist_id and <code>W.work_id</code>
 is already listed). The truth is, every inner join you have created thus
 far is actually a natural join, and you will probably never need an
-inner join that is not a natural join.</p>
-<h2 data-number="16.5" id="outer-joins"><span
-class="header-section-number">16.5</span> Outer Joins</h2>
+inner join that is not a natural join.</p>
+<h2 data-number="16.5" id="outer-joins"><span class="header-section-number">16.5</span> Outer Joins</h2>
 <p>Most joins relate rows in one table with rows in another. But
 occasionally, you want to include rows that have no related rows. For
-example, you might use joins to accomplish the following tasks:</p>
-<ul>
+example, you might use joins to accomplish the following tasks:</p>
+<ul>
 <li>Count how many works each artist has created, including artists who
-have yet to have a work catalogued.</li>
+have yet to have a work catalogued.</li>
 <li>List all works with their subjects, including works that have not
-yet been assigned a subject.</li>
+yet been assigned a subject.</li>
 <li>Calculate the average area of artwork, taking into account artists
-who have no works recorded at all.</li>
-</ul>
+who have no works recorded at all.</li>
+</ul>
 <p>In each of these examples, the join includes table rows that have no
 associated rows in the related table. This type of join is called an
-outer join.</p>
-<div class="caution">
-<blockquote>
-<p><strong>Caution: Syntax Differences.</strong> It is important to note
-that the syntax used to create an outer join can vary slightly among
-different SQL implementations. The various forms of syntax described in
-the following section cover most implementations, but refer to your DBMS
-documentation to verify its syntax before proceeding.</p>
-</blockquote>
-</div>
+outer join.</p>
+<div class="caution">
+<blockquote>
+<p><strong>Syntax Differences.</strong> It is important to note that the
+syntax used to create an outer join can vary slightly among different
+SQL implementations. The various forms of syntax described in the
+following section cover most implementations, but refer to your DBMS
+documentation to verify its syntax before proceeding.</p>
+</blockquote>
+</div>
 <p>The following SELECT statement is a simple inner join. It retrieves a
-list of all artists and their works:</p>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span> artist.full_name, <span class="kw">work</span>.name</span>
+list of all artists and their works:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span> artist.full_name, <span class="kw">work</span>.name</span>
 <span id="cb7-2"><a aria-hidden="true" href="#cb7-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb7-3"><a aria-hidden="true" href="#cb7-3" tabindex="-1"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> <span class="kw">work</span> <span class="kw">ON</span> artist.artist_id <span class="op">=</span> <span class="kw">work</span>.artist_id;</span></code></pre></div>
+<span id="cb7-3"><a aria-hidden="true" href="#cb7-3" tabindex="-1"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> <span class="kw">work</span> <span class="kw">ON</span> artist.artist_id <span class="op">=</span> <span class="kw">work</span>.artist_id;</span></code></pre></div>
 <p>Outer join syntax is similar. To retrieve a list of all artists
 including those who have no works recorded, you can do the
-following:</p>
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="kw">SELECT</span> artist.full_name, <span class="kw">work</span>.name</span>
+following:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="kw">SELECT</span> artist.full_name, <span class="kw">work</span>.name</span>
 <span id="cb8-2"><a aria-hidden="true" href="#cb8-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb8-3"><a aria-hidden="true" href="#cb8-3" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span> <span class="kw">work</span> <span class="kw">ON</span> artist.artist_id <span class="op">=</span> <span class="kw">work</span>.artist_id;</span></code></pre></div>
+<span id="cb8-3"><a aria-hidden="true" href="#cb8-3" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span> <span class="kw">work</span> <span class="kw">ON</span> artist.artist_id <span class="op">=</span> <span class="kw">work</span>.artist_id;</span></code></pre></div>
 <p>Like the inner join seen in the last lesson, this SELECT statement
 uses the keywords OUTER JOIN to specify the join type (instead of
 specifying it in the WHERE clause). But unlike inner joins, which relate
@@ -1080,117 +1131,107 @@ specify the table from which to include all rows (RIGHT for the one on
 the right of OUTER JOIN and LEFT for the one on the left). The previous
 example uses LEFT OUTER JOIN to select all the rows from the table on
 the left in the FROM clause (the artist table). To select all the rows
-from the table on the right, you use a RIGHT OUTER JOIN.</p>
-<div class="tip">
-<blockquote>
-<p><strong>Tip: Outer Join Types.</strong> Remember that there are
-always two basic forms of outer joins &#8212; the left outer join and the
-right outer join. The only difference between them is the order of the
-tables that they are relating. In other words, a left outer join can be
-turned into a right outer join simply by reversing the order of the
-tables in the FROM or WHERE clause. As such, the two types of outer join
-can be used interchangeably, and the decision about which one is used is
-based purely on convenience.</p>
-</blockquote>
-</div>
+from the table on the right, you use a RIGHT OUTER JOIN.</p>
+<div class="tip">
+<blockquote>
+<p><strong>Outer Join Types.</strong> Remember that there are always two
+basic forms of outer joins &#8212; the left outer join and the right outer
+join. The only difference between them is the order of the tables that
+they are relating. In other words, a left outer join can be turned into
+a right outer join simply by reversing the order of the tables in the
+FROM or WHERE clause. As such, the two types of outer join can be used
+interchangeably, and the decision about which one is used is based
+purely on convenience.</p>
+</blockquote>
+</div>
 <p>There is one other variant of the outer join, one that tends to be
 rarely used. The full outer join retrieves all rows from both tables and
 relates those that can be related. Unlike a left outer join or right
 outer join, which includes unrelated rows from a single table, the full
 outer join includes unrelated rows from both tables. The syntax for a
-full outer join is as follows:</p>
-<div class="sourceCode" id="cb9"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="kw">SELECT</span> artist.full_name, <span class="kw">work</span>.name</span>
+full outer join is as follows:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="kw">SELECT</span> artist.full_name, <span class="kw">work</span>.name</span>
 <span id="cb9-2"><a aria-hidden="true" href="#cb9-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb9-3"><a aria-hidden="true" href="#cb9-3" tabindex="-1"></a><span class="kw">FULL</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span> <span class="kw">work</span> <span class="kw">ON</span> artist.artist_id <span class="op">=</span> <span class="kw">work</span>.artist_id;</span></code></pre></div>
-<div class="note">
-<blockquote>
-<p><strong>Note: FULL OUTER JOIN Support.</strong> Not every DBMS
-supports FULL OUTER JOIN (MariaDB, MySQL, and SQLite, notably, do not).
+<span id="cb9-3"><a aria-hidden="true" href="#cb9-3" tabindex="-1"></a><span class="kw">FULL</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span> <span class="kw">work</span> <span class="kw">ON</span> artist.artist_id <span class="op">=</span> <span class="kw">work</span>.artist_id;</span></code></pre></div>
+<div class="note">
+<blockquote>
+<p><strong>FULL OUTER JOIN Support.</strong> Not every DBMS supports
+FULL OUTER JOIN (MariaDB, MySQL, and SQLite, notably, do not).
 PostgreSQL does support it, so you can use the syntax above exactly as
-written.</p>
-</blockquote>
-</div>
-<h2 data-number="16.6" id="using-joins-with-aggregate-functions"><span
-class="header-section-number">16.6</span> Using Joins with Aggregate
-Functions</h2>
+written.</p>
+</blockquote>
+</div>
+<h2 data-number="16.6" id="using-joins-with-aggregate-functions"><span class="header-section-number">16.6</span> Using Joins with Aggregate
+Functions</h2>
 <p>As you learned in the lesson on summarizing data, aggregate functions
 are used to summarize data. Although all the examples of aggregate
 functions thus far only summarized data from a single table, these
-functions can also be used with joins.</p>
+functions can also be used with joins.</p>
 <p>To demonstrate this, let&#8217;s look at an example. You want to retrieve a
 list of all artists and the number of works that each has created. You
 can use a chat with an AI assistant to create the SELECT statement that
-will do this:</p>
-<div class="ai">
-<blockquote>
-<p><strong>You:</strong> Write a SQL statement to list every artist_id
-along with the number of works each artist has created. Join the artist
-and work tables and use GROUP BY instead of a correlated subquery.</p>
-<p><strong>AI:</strong> You can join artist to work and then group the
-results by artist_id, using COUNT() to tally the works in each group.
-Here&#8217;s the SQL statement:</p>
-<div class="sourceCode" id="cb10"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a aria-hidden="true" href="#cb10-1" tabindex="-1"></a><span class="kw">SELECT</span> artist.artist_id, <span class="fu">COUNT</span>(<span class="kw">work</span>.work_id) <span class="kw">AS</span> num_works</span>
+will do this:</p>
+<div class="ai-conversation" data-prompt="Write a SQL statement to list every artist_id along with the number of works each artist has created. Join the artist and work tables and use GROUP BY instead of a correlated subquery.">
+<blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to list every artist_id along with the number of works each artist has created. Join the artist and work tables and use GROUP BY instead of a correlated subquery.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
+<p>You can join artist to work and then group the results by artist_id,
+using COUNT() to tally the works in each group. Here&#8217;s the SQL
+statement:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a aria-hidden="true" href="#cb10-1" tabindex="-1"></a><span class="kw">SELECT</span> artist.artist_id, <span class="fu">COUNT</span>(<span class="kw">work</span>.work_id) <span class="kw">AS</span> num_works</span>
 <span id="cb10-2"><a aria-hidden="true" href="#cb10-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
 <span id="cb10-3"><a aria-hidden="true" href="#cb10-3" tabindex="-1"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> <span class="kw">work</span> <span class="kw">ON</span> artist.artist_id <span class="op">=</span> <span class="kw">work</span>.artist_id</span>
-<span id="cb10-4"><a aria-hidden="true" href="#cb10-4" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> artist.artist_id;</span></code></pre></div>
+<span id="cb10-4"><a aria-hidden="true" href="#cb10-4" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> artist.artist_id;</span></code></pre></div>
 <p>The INNER JOIN relates each artist to their works. The GROUP BY
 clause then groups the joined rows by artist_id, and COUNT(work.work_id)
-counts how many work rows fall into each group.</p>
-</blockquote>
-</div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb11"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb11-1"><a aria-hidden="true" href="#cb11-1" tabindex="-1"></a><span class="kw">SELECT</span> artist.artist_id, <span class="fu">COUNT</span>(<span class="kw">work</span>.work_id) <span class="kw">AS</span> num_works</span>
+counts how many work rows fall into each group.</p>
+</blockquote>
+</div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb11-1"><a aria-hidden="true" href="#cb11-1" tabindex="-1"></a><span class="kw">SELECT</span> artist.artist_id, <span class="fu">COUNT</span>(<span class="kw">work</span>.work_id) <span class="kw">AS</span> num_works</span>
 <span id="cb11-2"><a aria-hidden="true" href="#cb11-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
 <span id="cb11-3"><a aria-hidden="true" href="#cb11-3" tabindex="-1"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> <span class="kw">work</span> <span class="kw">ON</span> artist.artist_id <span class="op">=</span> <span class="kw">work</span>.artist_id</span>
-<span id="cb11-4"><a aria-hidden="true" href="#cb11-4" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> artist.artist_id;</span></code></pre></div>
+<span id="cb11-4"><a aria-hidden="true" href="#cb11-4" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> artist.artist_id;</span></code></pre></div>
 <p>This SELECT statement uses INNER JOIN to relate the artist and work
 tables to each other. The GROUP BY clause groups the data by artist, and
 so the function call <code>COUNT(work.work_id)</code> counts the number
-of works for each artist and returns it as num_works.</p>
+of works for each artist and returns it as num_works.</p>
 <p>Aggregate functions can be used just as easily with other join types.
-See the following example:</p>
-<div class="sourceCode" id="cb12"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a><span class="kw">SELECT</span> artist.artist_id, <span class="fu">COUNT</span>(<span class="kw">work</span>.work_id) <span class="kw">AS</span> num_works</span>
+See the following example:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a><span class="kw">SELECT</span> artist.artist_id, <span class="fu">COUNT</span>(<span class="kw">work</span>.work_id) <span class="kw">AS</span> num_works</span>
 <span id="cb12-2"><a aria-hidden="true" href="#cb12-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
 <span id="cb12-3"><a aria-hidden="true" href="#cb12-3" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span> <span class="kw">work</span> <span class="kw">ON</span> artist.artist_id <span class="op">=</span> <span class="kw">work</span>.artist_id</span>
-<span id="cb12-4"><a aria-hidden="true" href="#cb12-4" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> artist.artist_id;</span></code></pre></div>
+<span id="cb12-4"><a aria-hidden="true" href="#cb12-4" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> artist.artist_id;</span></code></pre></div>
 <p>This example uses a left outer join to include all artists, even
 those who have no works recorded in the work table. The results now
 include those artists, each shown with a num_works of 0, unlike when the
-INNER JOIN was used.</p>
-<h2 data-number="16.7" id="using-joins-and-join-conditions"><span
-class="header-section-number">16.7</span> Using Joins and Join
-Conditions</h2>
+INNER JOIN was used.</p>
+<h2 data-number="16.7" id="using-joins-and-join-conditions"><span class="header-section-number">16.7</span> Using Joins and Join
+Conditions</h2>
 <p>Before wrapping up this two-lesson discussion on joins, it is
 worthwhile to summarize some key points regarding joins and their
-use:</p>
-<ul>
+use:</p>
+<ul>
 <li>Pay careful attention to the type of join being used. More often
 than not, you&#8217;ll want an inner join, but there are often valid uses for
-outer joins too.</li>
+outer joins too.</li>
 <li>Check your DBMS documentation for the exact join syntax it supports.
 (Most DBMSs use one of the forms of syntax described in these two
-lessons.)</li>
+lessons.)</li>
 <li>Make sure you use the correct join condition (regardless of the
-syntax being used), or you&#8217;ll return incorrect data.</li>
+syntax being used), or you&#8217;ll return incorrect data.</li>
 <li>Make sure you always provide a join condition, or you&#8217;ll end up with
-the Cartesian product.</li>
+the Cartesian product.</li>
 <li>You may include multiple tables in a join and even have different
 join types for each. Although this is legal and often useful, make sure
 you test each join separately before testing them together. This will
-make troubleshooting far simpler.</li>
-</ul>
-<h2 data-number="16.8" id="summary"><span
-class="header-section-number">16.8</span> Summary</h2>
+make troubleshooting far simpler.</li>
+</ul>
+<h2 data-number="16.8" id="summary"><span class="header-section-number">16.8</span> Summary</h2>
 <p>This lesson was a continuation of the last lesson on joins. This
 lesson started by teaching you how and why to use aliases, and then
 continued with a discussion on different join types and various forms of
 syntax used with each. You also learned how to use aggregate functions
 with joins and some important do&#8217;s and don&#8217;ts to keep in mind when
-working with joins.</p>
+working with joins.</p>
 <!--postEnd-->
               </div>
 </div>
@@ -1213,8 +1254,8 @@ working with joins.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZoa0nrIROvZ6hvte7BHzGBE:1784899986046';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/16.html','3986204447440040189');
-_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/16.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/16.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/7312242228432267517/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '7312242228432267517', 'pageName': '16. Advanced Joins', 'pageTitle': 'book1014 SQL: 16. Advanced Joins'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '16. Advanced Joins', 'description': '16  Advanced Joins \r Objectives.  After completing this lesson, the\r successful student will be able to: \r \r Use table aliases to shorten SQ...', 'url': 'https://book1014.blogspot.com/2000/02/16.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 7312242228432267517}}]);
+window['__wavt'] = 'AEUoTZrgQWvkYwd5cJONKbtQ-0i1:1784981202909';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/16.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/16.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/16.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/7312242228432267517/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '7312242228432267517', 'pageName': '16. Advanced Joins', 'pageTitle': 'book1014 SQL: 16. Advanced Joins'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '16. Advanced Joins', 'description': '16  Advanced Joins  Objectives.  After completing this lesson, the\r successful student will be able to:   Use table aliases to shorten SQL s...', 'url': 'https://book1014.blogspot.com/2000/02/16.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 7312242228432267517}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>
 </body>

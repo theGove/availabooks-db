@@ -16,6 +16,11 @@
 <!-- button icon -->
 <link href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0' rel='stylesheet'/>
 <style id='page-skin-1' type='text/css'><!--
+/* This file is the source of truth for book CSS, but there is no publish script for it.
+After editing, copy the changed rules by hand into each book's Blogger theme HTML
+(the page-skin-1 <style> block) via the Blogger dashboard.
+Do NOT edit local/*.html to apply these changes - those files are downloaded verbatim
+from the live blog by download.py and get overwritten on the next run. */
 :root {
 --font-zoom: 1;
 --page-bg: #f8fafc;
@@ -136,6 +141,24 @@ padding: .85rem;
 }
 #page-data{
 display:none
+}
+.toast{
+position:fixed;
+bottom:2rem;
+left:50%;
+transform:translateX(-50%);
+z-index:9999;
+background-color:green;
+color:#fff;
+padding:.7rem 1.25rem;
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-lg);
+}
+.toast.success{
+background-color:#15803d;
+}
+.toast.error{
+background-color:var(--danger);
 }
 #menu{
 top:0;
@@ -460,9 +483,9 @@ line-height: 1;
 }
 blockquote{
 margin:1.75rem 0;
+padding:1rem 1.25rem 1rem 1.35rem;
 background:var(--surface-soft);
 border-left:.35rem solid var(--accent);
-padding:1rem 1.25rem 1rem 1.35rem;
 border-radius:0 var(--radius-md) var(--radius-md) 0;
 color:#334155;
 }
@@ -489,6 +512,7 @@ border-left:.35rem solid darkblue;
 .term blockquote p::before {
 content: "Term: ";
 font-weight: bold;
+color:#2B7FFF;
 }
 .caution blockquote{
 background:#FFE2E2;
@@ -501,6 +525,12 @@ font-weight: bold;
 .objectives blockquote{
 background:#FFF8E1;
 border-left:.35rem solid gold;
+border-right:.35rem solid gold;
+border-radius:0;
+}
+.objectives blockquote p::before {
+content: "Objectives: ";
+font-weight: bold;
 }
 .review blockquote{
 background:#FFF0EC;
@@ -509,6 +539,25 @@ border-left:.35rem solid salmon;
 .review blockquote p::before {
 content: "Review: ";
 font-weight: bold;
+}
+.ai-conversation blockquote{
+background:lightgrey;
+border:1px solid #bbb;
+border-radius: 5px;
+}
+div.ai-prompt{
+background:white;
+border:1px solid grey;
+border-radius: 10px;
+padding:10px 20px 10px 20px;
+box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.3);
+margin: 0 1rem 1rem 1rem;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+span.ai-prompt-x{
+font-size: 1.8em;
 }
 blockquote p:last-child{
 margin-bottom:0;
@@ -766,6 +815,25 @@ right: .75rem;
 }
 
 --></style>
+<!-- the next style tag gets filled automatically with css from availabooktools.blogspot.com-->
+<style id='dynamic-override-css' type='text/css'></style>
+<script type='text/javascript'>
+//<![CDATA[
+function loadCss(response){
+  console.log("$$$$$$$$$$$$$$ response", response)
+  const newCss = response.feed.entry[0].content.$t;
+  if (newCss.length > 0) {
+    const overrideStyleBlock = document.getElementById('dynamic-override-css');
+    if (overrideStyleBlock) {
+      overrideStyleBlock.textContent = newCss;
+    }
+  }
+}
+
+
+//]]>
+</script>
+<script src='https://availabooktools.blogspot.com/feeds/posts/default/-/css-staging?alt=json-in-script&max-results=1&callback=loadCss'></script>
 <script>
     const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
 	async function initialize(){
@@ -826,7 +894,7 @@ right: .75rem;
     }    
 
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d8927c69-f824-4d33-86aa-f3669be7367c' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d8927c69-f824-4d33-86aa-f3669be7367c' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -850,6 +918,7 @@ right: .75rem;
 <div id='menu'>
 <div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
 <div id='menu-content'>
+<div id='ai' style='text-align:right'><button id='ai-prompt' onClick='getAiHelpPrompt()'>Copy AI Prompt</button></div>
 <div id='toc'></div>
 <div id='tools'>
                   Text Size: 
@@ -899,7 +968,7 @@ database table. INSERT can be used in several ways:</p>
 <p>Let&#8217;s now look at each of these.</p>
 <div class="tip">
 <blockquote>
-<p><strong>Tip: INSERT and System Security.</strong> Use of the INSERT
+<p><strong>INSERT and System Security.</strong> Use of the INSERT
 statement might require special security privileges in client/server
 DBMSs. Before you attempt to use INSERT, make sure you have adequate
 security privileges to do so.</p>
@@ -911,7 +980,7 @@ class="header-section-number">19.2</span> Inserting Complete Rows</h2>
 INSERT syntax, which requires that you specify the table name and the
 values to be inserted into the new row. Here is an example of this:</p>
 <div class="sourceCode" id="cb1"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> artist</span>
+class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> artist</span>
 <span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">501</span>, <span class="st">&#39;Elena Voss&#39;</span>, <span class="st">&#39;Elena&#39;</span>, <span class="kw">NULL</span>, <span class="st">&#39;Voss&#39;</span>, <span class="st">&#39;German&#39;</span>, <span class="st">&#39;Abstract&#39;</span>, <span class="dv">1962</span>, <span class="kw">NULL</span>);</span></code></pre></div>
 <p>The above example inserts a new artist into the artist table. The
 data to be stored in each table column is specified in the VALUES
@@ -925,10 +994,10 @@ full_name, first_name, middle_names, last_name, nationality, style,
 birth, death.</p>
 <div class="tip">
 <blockquote>
-<p><strong>Tip: The INTO Keyword.</strong> In some SQL implementations,
-the INTO keyword following INSERT is optional. However, it is good
-practice to provide this keyword even if it is not needed. Doing so will
-ensure that your SQL code is portable between DBMSs.</p>
+<p><strong>The INTO Keyword.</strong> In some SQL implementations, the
+INTO keyword following INSERT is optional. However, it is good practice
+to provide this keyword even if it is not needed. Doing so will ensure
+that your SQL code is portable between DBMSs.</p>
 </blockquote>
 </div>
 <p>Although this syntax is indeed simple, it is not at all safe and
@@ -959,8 +1028,8 @@ The advantage of this is that, even if the table layout changes, the
 INSERT statement will still work correctly.</p>
 <div class="note">
 <blockquote>
-<p><strong>Note: Can&#8217;t INSERT Same Record Twice.</strong> If you tried
-both versions of this example, you&#8217;ll have discovered that the second
+<p><strong>Can&#8217;t INSERT Same Record Twice.</strong> If you tried both
+versions of this example, you&#8217;ll have discovered that the second
 generated an error because an artist with an artist_id of 501 already
 existed. As discussed in the lesson on understanding SQL, primary key
 values must be unique, and because artist_id is the primary key, the
@@ -979,7 +1048,7 @@ class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a a
 <span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">501</span>, <span class="kw">NULL</span>, <span class="kw">NULL</span>, <span class="st">&#39;Elena&#39;</span>, <span class="st">&#39;Voss&#39;</span>, <span class="st">&#39;Abstract&#39;</span>, <span class="st">&#39;German&#39;</span>, <span class="dv">1962</span>, <span class="st">&#39;Elena Voss&#39;</span>);</span></code></pre></div>
 <div class="tip">
 <blockquote>
-<p><strong>Tip: Always Use a Columns List.</strong> As a rule, never use
+<p><strong>Always Use a Columns List.</strong> As a rule, never use
 INSERT without explicitly specifying the column list. This will greatly
 increase the probability that your SQL will continue to function in the
 event that table changes occur.</p>
@@ -987,12 +1056,12 @@ event that table changes occur.</p>
 </div>
 <div class="caution">
 <blockquote>
-<p><strong>Caution: Use VALUES Carefully.</strong> Regardless of the
-INSERT syntax being used, the correct number of VALUES must be
-specified. If no column names are provided, a value must be present for
-every table column. If column names are provided, a value must be
-present for each listed column. If none is present, an error message
-will be generated, and the row will not be inserted.</p>
+<p><strong>Use VALUES Carefully.</strong> Regardless of the INSERT
+syntax being used, the correct number of VALUES must be specified. If no
+column names are provided, a value must be present for every table
+column. If column names are provided, a value must be present for each
+listed column. If none is present, an error message will be generated,
+and the row will not be inserted.</p>
 </blockquote>
 </div>
 <h2 data-number="19.3" id="inserting-partial-rows"><span
@@ -1012,9 +1081,9 @@ statement. This INSERT statement, therefore, omits those three columns
 and their three corresponding values.</p>
 <div class="caution">
 <blockquote>
-<p><strong>Caution: Omitting Columns.</strong> You may omit columns from
-an INSERT operation if the table definition so allows. One of the
-following conditions must exist:</p>
+<p><strong>Omitting Columns.</strong> You may omit columns from an
+INSERT operation if the table definition so allows. One of the following
+conditions must exist:</p>
 <ul>
 <li>The column is defined as allowing NULL values (no value at
 all).</li>
@@ -1025,10 +1094,10 @@ default value will be used if no value is specified.</li>
 </div>
 <div class="caution">
 <blockquote>
-<p><strong>Caution: Omitting Required Values.</strong> If you omit a
-value from a table that does not allow NULL values and does not have a
-default, the DBMS will generate an error message, and the row will not
-be inserted.</p>
+<p><strong>Omitting Required Values.</strong> If you omit a value from a
+table that does not allow NULL values and does not have a default, the
+DBMS will generate an error message, and the row will not be
+inserted.</p>
 </blockquote>
 </div>
 <h2 data-number="19.4" id="inserting-retrieved-data"><span
@@ -1047,7 +1116,7 @@ class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb5-1"><a a
 <span id="cb5-3"><a aria-hidden="true" href="#cb5-3" tabindex="-1"></a><span class="kw">FROM</span> new_artists;</span></code></pre></div>
 <div class="note">
 <blockquote>
-<p><strong>Note: Instructions Needed for the Next Example.</strong> The
+<p><strong>Instructions Needed for the Next Example.</strong> The
 following example imports data from a table named new_artists into the
 artist table. To try this example, create and populate the new_artists
 table first. The format of the new_artists table should match the artist
@@ -1068,8 +1137,8 @@ If the table does, in fact, contain data, all that data will be inserted
 into artist.</p>
 <div class="tip">
 <blockquote>
-<p><strong>Tip: Column Names in INSERT SELECT.</strong> This example
-uses the same column names in both the INSERT and SELECT statements for
+<p><strong>Column Names in INSERT SELECT.</strong> This example uses the
+same column names in both the INSERT and SELECT statements for
 simplicity&#8217;s sake. But there is no requirement that the column names
 match. In fact, the DBMS does not even pay attention to the column names
 returned by the SELECT. Rather, the column position is used, so the
@@ -1081,11 +1150,11 @@ used to populate the first specified table column, and so on.</p>
 clause to filter the data to be inserted.</p>
 <div class="tip">
 <blockquote>
-<p><strong>Tip: Inserting Multiple Rows.</strong> INSERT usually inserts
-only a single row. To insert multiple rows, you must execute multiple
-INSERT statements. The exception to this rule is INSERT SELECT, which
-can be used to insert multiple rows with a single statement; whatever
-the SELECT statement returns will be inserted by the INSERT.</p>
+<p><strong>Inserting Multiple Rows.</strong> INSERT usually inserts only
+a single row. To insert multiple rows, you must execute multiple INSERT
+statements. The exception to this rule is INSERT SELECT, which can be
+used to insert multiple rows with a single statement; whatever the
+SELECT statement returns will be inserted by the INSERT.</p>
 </blockquote>
 </div>
 <h2 data-number="19.5" id="copying-from-one-table-to-another"><span
@@ -1128,16 +1197,16 @@ tables the data was retrieved from.</li>
 </ul>
 <div class="tip">
 <blockquote>
-<p><strong>Tip: Making Copies of Tables.</strong> The technique
-described here is a great way to make copies of tables before
-experimenting with new SQL statements. By making a copy first, you&#8217;ll be
-able to test your SQL on that copy instead of on live data.</p>
+<p><strong>Making Copies of Tables.</strong> The technique described
+here is a great way to make copies of tables before experimenting with
+new SQL statements. By making a copy first, you&#8217;ll be able to test your
+SQL on that copy instead of on live data.</p>
 </blockquote>
 </div>
 <div class="note">
 <blockquote>
-<p><strong>Note: More Examples.</strong> Looking for more examples of
-INSERT usage? Experiment with the artist, work, museum, subject, and
+<p><strong>More Examples.</strong> Looking for more examples of INSERT
+usage? Experiment with the artist, work, museum, subject, and
 museum_hours tables introduced throughout this book.</p>
 </blockquote>
 </div>
@@ -1171,7 +1240,7 @@ UPDATE and DELETE to further manipulate table data.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZqnYKb9ee9tQlouj-_26jmd:1784899988129';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/19.html','3986204447440040189');
+window['__wavt'] = 'AEUoTZrFnvRaaM_nHi65lH4DvPIT:1784981205308';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/19.html','3986204447440040189');
 _WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/19.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/19.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/546428370552505659/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '546428370552505659', 'pageName': '19. Inserting Data', 'pageTitle': 'book1014 SQL: 19. Inserting Data'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '19. Inserting Data', 'description': '19  Inserting Data \r Objectives.  After completing this lesson, the\r successful student will be able to: \r \r Describe the different ways the...', 'url': 'https://book1014.blogspot.com/2000/02/19.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 546428370552505659}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>

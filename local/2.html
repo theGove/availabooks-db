@@ -16,6 +16,11 @@
 <!-- button icon -->
 <link href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0' rel='stylesheet'/>
 <style id='page-skin-1' type='text/css'><!--
+/* This file is the source of truth for book CSS, but there is no publish script for it.
+After editing, copy the changed rules by hand into each book's Blogger theme HTML
+(the page-skin-1 <style> block) via the Blogger dashboard.
+Do NOT edit local/*.html to apply these changes - those files are downloaded verbatim
+from the live blog by download.py and get overwritten on the next run. */
 :root {
 --font-zoom: 1;
 --page-bg: #f8fafc;
@@ -136,6 +141,24 @@ padding: .85rem;
 }
 #page-data{
 display:none
+}
+.toast{
+position:fixed;
+bottom:2rem;
+left:50%;
+transform:translateX(-50%);
+z-index:9999;
+background-color:green;
+color:#fff;
+padding:.7rem 1.25rem;
+border-radius:var(--radius-md);
+box-shadow:var(--shadow-lg);
+}
+.toast.success{
+background-color:#15803d;
+}
+.toast.error{
+background-color:var(--danger);
 }
 #menu{
 top:0;
@@ -460,9 +483,9 @@ line-height: 1;
 }
 blockquote{
 margin:1.75rem 0;
+padding:1rem 1.25rem 1rem 1.35rem;
 background:var(--surface-soft);
 border-left:.35rem solid var(--accent);
-padding:1rem 1.25rem 1rem 1.35rem;
 border-radius:0 var(--radius-md) var(--radius-md) 0;
 color:#334155;
 }
@@ -499,7 +522,6 @@ border-left:.35rem solid red;
 content: "Caution: ";
 font-weight: bold;
 }
-
 .objectives blockquote{
 background:#FFF8E1;
 border-left:.35rem solid gold;
@@ -510,7 +532,6 @@ border-radius:0;
 content: "Objectives: ";
 font-weight: bold;
 }
-
 .review blockquote{
 background:#FFF0EC;
 border-left:.35rem solid salmon;
@@ -518,6 +539,25 @@ border-left:.35rem solid salmon;
 .review blockquote p::before {
 content: "Review: ";
 font-weight: bold;
+}
+.ai-conversation blockquote{
+background:lightgrey;
+border:1px solid #bbb;
+border-radius: 5px;
+}
+div.ai-prompt{
+background:white;
+border:1px solid grey;
+border-radius: 10px;
+padding:10px 20px 10px 20px;
+box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.3);
+margin: 0 1rem 1rem 1rem;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+span.ai-prompt-x{
+font-size: 1.8em;
 }
 blockquote p:last-child{
 margin-bottom:0;
@@ -775,6 +815,25 @@ right: .75rem;
 }
 
 --></style>
+<!-- the next style tag gets filled automatically with css from availabooktools.blogspot.com-->
+<style id='dynamic-override-css' type='text/css'></style>
+<script type='text/javascript'>
+//<![CDATA[
+function loadCss(response){
+  console.log("$$$$$$$$$$$$$$ response", response)
+  const newCss = response.feed.entry[0].content.$t;
+  if (newCss.length > 0) {
+    const overrideStyleBlock = document.getElementById('dynamic-override-css');
+    if (overrideStyleBlock) {
+      overrideStyleBlock.textContent = newCss;
+    }
+  }
+}
+
+
+//]]>
+</script>
+<script src='https://availabooktools.blogspot.com/feeds/posts/default/-/css-staging?alt=json-in-script&max-results=1&callback=loadCss'></script>
 <script>
     const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
 	async function initialize(){
@@ -835,7 +894,7 @@ right: .75rem;
     }    
 
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d7464fc0-b15c-4486-a75d-6aa2d76855ea' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d8927c69-f824-4d33-86aa-f3669be7367c' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=d8927c69-f824-4d33-86aa-f3669be7367c' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -859,6 +918,7 @@ right: .75rem;
 <div id='menu'>
 <div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
 <div id='menu-content'>
+<div id='ai' style='text-align:right'><button id='ai-prompt' onClick='getAiHelpPrompt()'>Copy AI Prompt</button></div>
 <div id='toc'></div>
 <div id='tools'>
                   Text Size: 
@@ -876,658 +936,326 @@ right: .75rem;
 <button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
 <button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
               
-              <!--postBegin--><h1 data-number="2" id="understanding-sql"><span
-
-class="header-section-number">2</span> Understanding SQL</h1>
-
-<div class="objectives">
-
-<blockquote>
-
-<p>After completing this lesson, the successful student will be able
-
-to:</p>
-
-<ol type="1">
-
-<li>Describe the building blocks of a database</li>
-
-<li>Explain what Structured Query Language (SQL) is and why it is
-
-used</li>
-
-</ol>
-
-</blockquote>
-
-</div>
-
-<p>Without knowing it, you probably use databases nearly every day.
-
-Databases are a key component of almost every computer-based system.
-
-When you check a bank account balance on your phone, you are using a
-
-database to display your account information. When you make a purchase
-
-online, your purchase information is recorded in a database. When you
-
-perform an internet search to find a new restaurant to visit for dinner,
-
-you are accessing data stored in a database. In truth, most websites and
-
-mobile apps rely on databases.</p>
-
-<p>Although you frequently interact with databases, you are not alone if
-
-you don’t really understand what a database is or how it works. Like
-
-most technologies, you don’t need to completely understand how a
-
-database works to benefit from using one. However, the fact that you are
-
-using this resource means that you want to understand more about how
-
-databases work so that you can interact with them in more advanced
-
-ways.</p>
-
-<p>In this lesson, you will learn what a database is and how to interact
-
-with one. In particular, the lesson will describe the building blocks of
-
-a database. It will also describe the SQL programming language used to
-
-retrieve data from and manipulate data in a database. The remaining
-
-lessons will dive deeply into various aspects of SQL to describe how to
-
-interact with databases in powerful ways.</p>
-
-<h2 data-number="2.1" id="what-is-a-database"><span
-
-class="header-section-number">2.1</span> What is a database?</h2>
-
-<p>There is a bit of confusion about just what a database is. Often a
-
-database is mistaken for the software used to create and manage it. The
-
-software used to create and manage a database is called a
-
-<strong>database management system (DBMS)</strong>. Examples of popular
-
-DBMS software include PostgreSQL, Oracle DB, Microsoft SQL Server,
-
-MySQL, and SQLite.</p>
-
-<p>The relationships among a database, the DBMS, and the applications
-
-that use the data are depicted in Figure 1. Data is stored in the
-
-database. The DBMS creates and manages the database. It also manages
-
-requests for data made by applications or users. Applications and users
-
-can access the data stored in the database, but not directly. Requests
-
-to access or manipulate the data stored in a database are made through
-
-the DBMS.</p>
-
-<p><img
-
-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhzpb8P1qg72OHxej0PZ3ieLcYy9A7xAEF3NViP9AFjXVTk0YUMXu718a2aZZKdaz8rt4-aDmuGeCVjCQT4WqqyQbyGbwu7c6zvKunV9-bKPbuwEySdfRV9QMslgQwgSPb0E0IWFbWet9npRvihk69YdKobN2mXCU-uXe-UMWsoQfcr_VILUm9otdY9KLVu/s800/DataDBMSApps.png" /></p>
-
-<p><em>Figure 1: Database, DBMS, and Applications</em></p>
-
-<p>Separating the data stored in the database from the applications and
-
-users that consume the data has significant advantages over applications
-
-and users maintaining their own data.</p>
-
-<ol type="1">
-
-<li><strong>Sharing.</strong> The data can be shared across
-
-applications. If the data used by an application were stored within the
-
-application, it would only be available to that application.</li>
-
-<li><strong>Data Independence.</strong> Because the storage (database),
-
-management (DBMS), and use (applications/users) of data are separated,
-
-changes or maintenance can be made on applications, the DBMS, or the
-
-database without affecting the other elements. For example, you can
-
-upgrade or replace the disk drive that stores the database without
-
-interrupting applications and users.</li>
-
-</ol>
-
-<div class="term">
-
-<blockquote>
-
-<p><strong>Data Independence</strong> — Occurs when the storage,
-
-management, and use of data are separated.</p>
-
-</blockquote>
-
-</div>
-
-<p>A database is a collection of data stored in an organized way. Care
-
-is taken to properly organize data in a database. A well organized
-
-database is easier to use and is more effective than a poorly organized
-
-database. It is important to understand the basic building blocks of a
-
-database to be able to effectively interact with the data stored in the
-
-database.</p>
-
-<div class="term">
-
-<blockquote>
-
-<p><strong>Database</strong> — A collection of data stored in an
-
-organized way.</p>
-
-</blockquote>
-
-</div>
-
-<h3 data-number="2.1.1" id="the-building-blocks-of-a-database"><span
-
-class="header-section-number">2.1.1</span> The building blocks of a
-
-database</h3>
-
-<p>The most common way to organize data in a database is the relational
-
-model. In a relational database, data are separated and stored in
-
-tables. A database can include any number of tables, each storing data
-
-about different things. The data in one table may be associated with the
-
-data in another table. When this happens, a relationship is created
-
-between the tables. Table relationships will be discussed in a later
-
-lesson.</p>
-
-<div class="term">
-
-<blockquote>
-
-<p><strong>Relationship</strong> — Associations between database tables
-
-that contain connected data.</p>
-
-</blockquote>
-
-</div>
-
-<p>Not to be confused with the word “relationship,” the word
-
-“relational” refers to the mathematical term <em>relation</em>. A
-
-relation is a two-dimensional table. The two-dimensional tables in a
-
-relational database contain rows and columns. Each of these building
-
-blocks is described in the next few sections.</p>
-
-<div class="term">
-
-<blockquote>
-
-<p><strong>Relational</strong> — A database approach where data is
-
-stored in two-dimensional tables.</p>
-
-</blockquote>
-
-</div>
-
-<h4 data-number="2.1.1.1" id="tables"><span
-
-class="header-section-number">2.1.1.1</span> Tables</h4>
-
-<p>Tables are the largest building blocks of a database. A table
-
-contains data about persons, places, things, or ideas. Each table will
-
-store information about a single theme. For example, a database may
-
-contain information about the artists and the museums that showcase
-
-their art. An artist and a museum are two very different things, so the
-
-data stored about each would also be very different.</p>
-
-<div class="term">
-
-<blockquote>
-
-<p><strong>Table</strong> — A two-dimensional way to store data in a
-
-database.</p>
-
-</blockquote>
-
-</div>
-
-<p>Information about each different theme will be stored on separate
-
-tables. At a minimum this artist and museum database would have two
-
-tables, one for the artist information and one for the museum
-
-information (though there would likely be other tables to further
-
-organize the data in the database). All of the artist data would be
-
-stored on the artist table. Likewise, all of the museum data would be
-
-stored on the museum table. Generally, a database table contains little
-
-or no data about a different theme. This means that you would not expect
-
-to see artist information on the museum table or the other way around.
-
-Figure 2 shows an example of an artist table.</p>
-
-<p><img
-
-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhEvUTYVTJVnMc2coAWFjAga2rAK82Gua1cVCONX9kxCVCueexmayShHHnu3q4X-U2lWiqpT05lj16Ftt8UjQt89I5lxXHgLEXftiYp0b9fZeZMBvHSMZGCdKadrmvYek5v7EHNgkJfcVAJekJLd277HAlTopbYZGvhx-9L_9gj5-L26M68K0nqt_FwjrSl/s1219/ArtistTableData.png" /></p>
-
-<p><em>Figure 2: Example Artist Table</em></p>
-
-<p>Database tables are given a name. A table name should describe the
-
-data stored in the table. The name will also be unique for each table to
-
-identify them from the other tables in the database. No two tables in a
-
-database can have the same name.</p>
-
-<p>A database table is two-dimensional, much like a worksheet in a
-
-spreadsheet. It contains both columns and rows. The columns and rows of
-
-a database table are structured in a standard way, making it easy to
-
-add, edit, and retrieve data in the table.</p>
-
-<h4 data-number="2.1.1.2" id="rows"><span
-
-class="header-section-number">2.1.1.2</span> Rows</h4>
-
-<p>The rows of a table contain information about the specific instances
-
-of the theme of the table. This means that the rows of the artist table
-
-would contain all of the data stored about each artist. Each row
-
-contains the data for only one instance. For example, the artist table
-
-might contain data on James Ensor (see Figure 3). All information about
-
-Ensor would be stored on a single row of the artist table. Additionally,
-
-this row would not contain information about any other artist. Because
-
-of this, every row on a database table will be unique.</p>
-
-<div class="term">
-
-<blockquote>
-
-<p><strong>Row</strong> — Contains information about each instance of
-
-the items stored in a table.</p>
-
-</blockquote>
-
-</div>
-
-<p><img
-
-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgnZ7-XaKLzMCq3YovlDQpokk_PI91eNyqhbUZBxRktoC4xeGCEYtpmdmLvcZyZAGKgqsgx5A1EVfbS1xQwswh-dzYlVAJU7BkgdKVyWIXOULCwSvTaUPPdoYPoRi5ADmAhjMaEb8Fan8qDMX1qUPA-3k5y6Er-1k6mcoTMYMHRhOhu2xDmDgQL7VaegV9r/s1219/ArtistTableRow.png" /></p>
-
-<p><em>Figure 3: Artist Table Row for James Ensor</em></p>
-
-<h4 data-number="2.1.1.3" id="columns"><span
-
-class="header-section-number">2.1.1.3</span> Columns</h4>
-
-<p>The columns of the table store the characteristics of the items
-
-stored on the table. The columns of the artist table would store the
-
-characteristics of artists — such as their name, nationality, birth, and
-
-death information. Figure 4 highlights the column that stores the last
-
-name of each artist. Care is taken to identify all of the relevant
-
-characteristics of the items stored on the table, so that the data is as
-
-useful as possible.</p>
-
-<div class="term">
-
-<blockquote>
-
-<p><strong>Column</strong> — Contains the individual characteristics of
-
-the items stored in a table.</p>
-
-</blockquote>
-
-</div>
-
-<p><img
-
-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhA-75ImP3mU2Kp46AYv9di_dtD7RsA_FfglgwAPlj_rEDbm7b4V2TxeImFNC2yvf0qo3OXtRCj3LHhug1SgJAWx4XB2aEoHvjePpciRI4P7Jg6MpFbhijkUh6SoicRVkIlgeSdya-dJiZajCGl5OC0eHKRI-gw5dylR1ecHHGAk3Ax7T1uQn3durpSWDoL/s1219/ArtistTableColumn.png" /></p>
-
-<p><em>Figure 4: Table Column for Artist’s Last Names</em></p>
-
-<p>Care is taken to divide the data on a table into multiple columns.
-
-When the data in a table is appropriately broken into columns, it is
-
-easier to sort and filter the data on the table. Database tables are
-
-also designed to reduce or eliminate errors. Errors can occur when data
-
-is added to a table, changed, or deleted from a table. The process of
-
-optimizing the design of database tables will be discussed in subsequent
-
-lessons.</p>
-
-<div class="term">
-
-<blockquote>
-
-<p><strong>Datatype</strong> — Constrains the values in a column to be a
-
-specific type of data like numbers, text, or dates/times.</p>
-
-</blockquote>
-
-</div>
-
-<p>To help reduce errors in data, each column of a table has a specific
-
-datatype. The datatype determines the data that can be stored in that
-
-column. Common datatypes include numbers, text, and dates/times. Since a
-
-column has a specific datatype, it can only store that type of data.
-
-When a column is set to store numbers, for example, it cannot store text
-
-characters or other symbols. Constraining the datatype in a column helps
-
-to prevent incorrect values from being stored in a table. It also helps
-
-the DBMS to optimally store values in the table. Because of this, care
-
-is taken to appropriately define the datatype for each column in a
-
-table.</p>
-
-<h2 data-number="2.2" id="key-columns"><span
-
-class="header-section-number">2.2</span> “Key” Columns</h2>
-
-<p>There are two special purpose columns that can be included on
-
-database tables. These are called primary and foreign keys. Each table
-
-should have a primary key. The role of the primary key is described
-
-below. Foreign keys are used to connect data from different tables
-
-together. Foreign keys will be discussed in a later lesson on joining
-
-tables.</p>
-
-<div class="term">
-
-<blockquote>
-
-<p><strong>Foreign Key</strong> — A special purpose column on a database
-
-table that connects the data in one table to another table.</p>
-
-</blockquote>
-
-</div>
-
-<p>As mentioned, each row of a database table must be unique. To make
-
-sure that this is the case, a column (or set of columns) is designated
-
-as a primary key. Technically, <em>any</em> column on a table could be
-
-made the primary key, but it must meet each of these conditions:</p>
-
-<ul>
-
-<li>The values for that column must be unique (no two rows of the table
-
-can have the same value).</li>
-
-<li>Every row of the table must have a value for that column (no missing
-
-values in the column).</li>
-
-<li>The values in that column should not be changed after they are added
-
-to the table.</li>
-
-<li>The values for that column must not be reused (even if you delete
-
-the row that was originally using that value).</li>
-
-</ul>
-
-<p>Usually, one column of a table will be set as the primary key. It is
-
-possible to use a combination of columns as the primary key. When this
-
-is the case, the combination of columns must still meet the conditions
-
-listed above.</p>
-
-<div class="term">
-
-<blockquote>
-
-<p><strong>Primary Key</strong> — A special purpose column on a database
-
-table that ensures that all rows of the table are unique.</p>
-
-</blockquote>
-
-</div>
-
-<p>Most columns in a typical table don’t meet all of these conditions.
-
-Consider the artist table. The attributes of an artist might be things
-
-like their first and last names, their preferred artistic style, their
-
-nationality, and their birth and death years. Each of these is helpful
-
-in describing characteristics of the artists, but none of them would be
-
-a good primary key. You could not guarantee that the values for any of
-
-them would be unique across all artists. More than one artist might have
-
-the same first or last name, come from the same country, work in the
-
-same style, or share a birth or death year.</p>
-
-<p>To make sure that the primary key values are unique, it is often
-
-easiest to create a column, such as <code>artist_id</code> (see Figure
-
-5). The values in this column would identify (numbers or a set of
-
-characters) each row of artists on the table. The simplest way to do
-
-this would be to just assign a number to each artist. Any additional
-
-artist would be given the next number in sequence.</p>
-
-<p><img
-
-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhckAGqAjU8Xzcal1iz6OA7Os1blsn711pN8twQfSIfgXZCKPi0r5JX8SzafQQJZ_nJxT8dTIwalI_UWbz7_aH1SUQ5zUclI-1ZAGIqwmKepySCneWOcUukaSsYUNFJpCLrDkcuC-KDeI_ptJJLSpVwt0NrjHbeMQgJUn_mWqxpdfey--1eqrh2ImfclCTk/s1219/ArtistTablePrimaryKey.png" /></p>
-
-<p><em>Figure 5: The Primary Key of the Artist Table</em></p>
-
-<p>The main purpose of a primary key is to uniquely identify the rows on
-
-a table. Interestingly, the <code>artist_id</code> would not usefully
-
-describe a meaningful characteristic of an artist. The only purpose of
-
-the <code>artist_id</code> would be to uniquely identify the artists on
-
-the table. This is often the case with primary keys of most tables.</p>
-
-<div class="tip">
-
-<blockquote>
-
-<p>Although it is not required that a table has a primary key, it is a
-
-good idea to make sure that every table in your database has a defined
-
-primary key.</p>
-
-</blockquote>
-
-</div>
-
-<p>The primary key is useful because it allows you to identify a
-
-specific row. This is particularly helpful when you connect data from
-
-one table to another. It is absolutely necessary when you want to update
-
-or delete data in a table, since you don’t want to change or delete the
-
-wrong data.</p>
-
-<h2 data-number="2.3" id="what-is-structured-query-language-sql"><span
-
-class="header-section-number">2.3</span> What Is Structured Query
-
-Language (SQL)?</h2>
-
-<p>Structured Query Language (SQL) is a computer language used to
-
-interact with a database. Specifically, SQL is the way that applications
-
-and users interact with the DBMS to make requests of the database.
-
-Figure 6 depicts this relationship. For simplicity, it’s easiest to
-
-think of SQL as a method for interacting with a database.</p>
-
-<p><img
-
-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgsVhy-Rt81WQ1s9ed2O0eaMYuttzRx5MQagiEbnS5x_I9ufHKo6xcskfT3iZPWHP1_EgbTqbMOQ_HC6vGRR8Dq1h_xdqK6ijc8RhkchzawWWzEZEQlH42Dou75TF8AP0OSueFTAzsuJuIYxDZ-lJbf1HTyuhLZMASZE3dF4peG_7QhC3kRHgGvXaWjV0bx/s795/DataDBMSAppsSQL.png" /></p>
-
-<p><em>Figure 6: Where SQL Fits</em></p>
-
-<p>SQL statements are written as English phrases that are translated to
-
-a form that can be processed by a computer. To facilitate this
-
-translation, SQL uses a limited set of keywords and follows a standard
-
-protocol for using them. You will learn more about these keywords and
-
-the rules for using them throughout this book.</p>
-
-<p>SQL is an excellent tool for working with databases. Some of the
-
-advantages of SQL are:</p>
-
-<ul>
-
-<li>SQL statements are English phrases, which means they are relatively
-
-easy to learn and understand.</li>
-
-<li>SQL is focused as a tool for interacting with databases. This means
-
-that it has a small set of keywords.</li>
-
-<li>SQL is powerful. You can use it to perform sophisticated database
-
-operations.</li>
-
-<li>SQL is not proprietary. This means that all of the major DBMS
-
-support SQL.</li>
-
-</ul>
-
-<p>As with any language, the best way to learn SQL is to try it for
-
-yourself. To help you do this, we’ve integrated the ability to execute
-
-SQL directly in this book. You’ll see it in the next chapter and
-
-throughout this set of lessons.</p>
-
-<div class="note">
-
-<blockquote>
-
-<p><strong>Note: SQL Extensions.</strong> The ANSI standards committee
-
-(ANSI SQL) governs standard SQL. It is the same across DBMS. Most of the
-
-major DBMS vendors have extended the functionality of standard SQL to
-
-add features to their products. These extensions are proprietary to
-
-their product and are not supported by other DBMS. The lessons in this
-
-book describe standard SQL as much as possible.</p>
-
-</blockquote>
-
-</div>
-
-<h2 data-number="2.4" id="summary"><span
-
-class="header-section-number">2.4</span> Summary</h2>
-
-<p>This lesson described the basics of databases. It covered the
-
-building blocks of database tables. It also defined Structured Query
-
-Language and why it is used.</p>
-
+              <!--postBegin--><h1 data-number="2" id="understanding-sql"><span
+class="header-section-number">2</span> Understanding SQL</h1>
+<div class="objectives">
+<blockquote>
+<p>After completing this lesson, the successful student will be able
+to:</p>
+<ol type="1">
+<li>Describe the building blocks of a database</li>
+<li>Explain what Structured Query Language (SQL) is and why it is
+used</li>
+</ol>
+</blockquote>
+</div>
+<p>Without knowing it, you probably use databases nearly every day.
+Databases are a key component of almost every computer-based system.
+When you check a bank account balance on your phone, you are using a
+database to display your account information. When you make a purchase
+online, your purchase information is recorded in a database. When you
+perform an internet search to find a new restaurant to visit for dinner,
+you are accessing data stored in a database. In truth, most websites and
+mobile apps rely on databases.</p>
+<p>Although you frequently interact with databases, you are not alone if
+you don&#8217;t really understand what a database is or how it works. Like
+most technologies, you don&#8217;t need to completely understand how a
+database works to benefit from using one. However, the fact that you are
+using this resource means that you want to understand more about how
+databases work so that you can interact with them in more advanced
+ways.</p>
+<p>In this lesson, you will learn what a database is and how to interact
+with one. In particular, the lesson will describe the building blocks of
+a database. It will also describe the SQL programming language used to
+retrieve data from and manipulate data in a database. The remaining
+lessons will dive deeply into various aspects of SQL to describe how to
+interact with databases in powerful ways.</p>
+<h2 data-number="2.1" id="what-is-a-database"><span
+class="header-section-number">2.1</span> What is a database?</h2>
+<p>There is a bit of confusion about just what a database is. Often a
+database is mistaken for the software used to create and manage it. The
+software used to create and manage a database is called a
+<strong>database management system (DBMS)</strong>. Examples of popular
+DBMS software include PostgreSQL, Oracle DB, Microsoft SQL Server,
+MySQL, and SQLite.</p>
+<p>The relationships among a database, the DBMS, and the applications
+that use the data are depicted in Figure 1. Data is stored in the
+database. The DBMS creates and manages the database. It also manages
+requests for data made by applications or users. Applications and users
+can access the data stored in the database, but not directly. Requests
+to access or manipulate the data stored in a database are made through
+the DBMS.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhzpb8P1qg72OHxej0PZ3ieLcYy9A7xAEF3NViP9AFjXVTk0YUMXu718a2aZZKdaz8rt4-aDmuGeCVjCQT4WqqyQbyGbwu7c6zvKunV9-bKPbuwEySdfRV9QMslgQwgSPb0E0IWFbWet9npRvihk69YdKobN2mXCU-uXe-UMWsoQfcr_VILUm9otdY9KLVu/s800/DataDBMSApps.png" /></p>
+<p><em>Figure 1: Database, DBMS, and Applications</em></p>
+<p>Separating the data stored in the database from the applications and
+users that consume the data has significant advantages over applications
+and users maintaining their own data.</p>
+<ol type="1">
+<li><strong>Sharing.</strong> The data can be shared across
+applications. If the data used by an application were stored within the
+application, it would only be available to that application.</li>
+<li><strong>Data Independence.</strong> Because the storage (database),
+management (DBMS), and use (applications/users) of data are separated,
+changes or maintenance can be made on applications, the DBMS, or the
+database without affecting the other elements. For example, you can
+upgrade or replace the disk drive that stores the database without
+interrupting applications and users.</li>
+</ol>
+<div class="term">
+<blockquote>
+<p><strong>Data Independence</strong> &#8212; Occurs when the storage,
+management, and use of data are separated.</p>
+</blockquote>
+</div>
+<p>A database is a collection of data stored in an organized way. Care
+is taken to properly organize data in a database. A well organized
+database is easier to use and is more effective than a poorly organized
+database. It is important to understand the basic building blocks of a
+database to be able to effectively interact with the data stored in the
+database.</p>
+<div class="term">
+<blockquote>
+<p><strong>Database</strong> &#8212; A collection of data stored in an
+organized way.</p>
+</blockquote>
+</div>
+<h3 data-number="2.1.1" id="the-building-blocks-of-a-database"><span
+class="header-section-number">2.1.1</span> The building blocks of a
+database</h3>
+<p>The most common way to organize data in a database is the relational
+model. In a relational database, data are separated and stored in
+tables. A database can include any number of tables, each storing data
+about different things. The data in one table may be associated with the
+data in another table. When this happens, a relationship is created
+between the tables. Table relationships will be discussed in a later
+lesson.</p>
+<div class="term">
+<blockquote>
+<p><strong>Relationship</strong> &#8212; Associations between database tables
+that contain connected data.</p>
+</blockquote>
+</div>
+<p>Not to be confused with the word &#8220;relationship,&#8221; the word
+&#8220;relational&#8221; refers to the mathematical term <em>relation</em>. A
+relation is a two-dimensional table. The two-dimensional tables in a
+relational database contain rows and columns. Each of these building
+blocks is described in the next few sections.</p>
+<div class="term">
+<blockquote>
+<p><strong>Relational</strong> &#8212; A database approach where data is
+stored in two-dimensional tables.</p>
+</blockquote>
+</div>
+<h4 data-number="2.1.1.1" id="tables"><span
+class="header-section-number">2.1.1.1</span> Tables</h4>
+<p>Tables are the largest building blocks of a database. A table
+contains data about persons, places, things, or ideas. Each table will
+store information about a single theme. For example, a database may
+contain information about the artists and the museums that showcase
+their art. An artist and a museum are two very different things, so the
+data stored about each would also be very different.</p>
+<div class="term">
+<blockquote>
+<p><strong>Table</strong> &#8212; A two-dimensional way to store data in a
+database.</p>
+</blockquote>
+</div>
+<p>Information about each different theme will be stored on separate
+tables. At a minimum this artist and museum database would have two
+tables, one for the artist information and one for the museum
+information (though there would likely be other tables to further
+organize the data in the database). All of the artist data would be
+stored on the artist table. Likewise, all of the museum data would be
+stored on the museum table. Generally, a database table contains little
+or no data about a different theme. This means that you would not expect
+to see artist information on the museum table or the other way around.
+Figure 2 shows an example of an artist table.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhEvUTYVTJVnMc2coAWFjAga2rAK82Gua1cVCONX9kxCVCueexmayShHHnu3q4X-U2lWiqpT05lj16Ftt8UjQt89I5lxXHgLEXftiYp0b9fZeZMBvHSMZGCdKadrmvYek5v7EHNgkJfcVAJekJLd277HAlTopbYZGvhx-9L_9gj5-L26M68K0nqt_FwjrSl/s1219/ArtistTableData.png" /></p>
+<p><em>Figure 2: Example Artist Table</em></p>
+<p>Database tables are given a name. A table name should describe the
+data stored in the table. The name will also be unique for each table to
+identify them from the other tables in the database. No two tables in a
+database can have the same name.</p>
+<p>A database table is two-dimensional, much like a worksheet in a
+spreadsheet. It contains both columns and rows. The columns and rows of
+a database table are structured in a standard way, making it easy to
+add, edit, and retrieve data in the table.</p>
+<h4 data-number="2.1.1.2" id="rows"><span
+class="header-section-number">2.1.1.2</span> Rows</h4>
+<p>The rows of a table contain information about the specific instances
+of the theme of the table. This means that the rows of the artist table
+would contain all of the data stored about each artist. Each row
+contains the data for only one instance. For example, the artist table
+might contain data on James Ensor (see Figure 3). All information about
+Ensor would be stored on a single row of the artist table. Additionally,
+this row would not contain information about any other artist. Because
+of this, every row on a database table will be unique.</p>
+<div class="term">
+<blockquote>
+<p><strong>Row</strong> &#8212; Contains information about each instance of
+the items stored in a table.</p>
+</blockquote>
+</div>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgnZ7-XaKLzMCq3YovlDQpokk_PI91eNyqhbUZBxRktoC4xeGCEYtpmdmLvcZyZAGKgqsgx5A1EVfbS1xQwswh-dzYlVAJU7BkgdKVyWIXOULCwSvTaUPPdoYPoRi5ADmAhjMaEb8Fan8qDMX1qUPA-3k5y6Er-1k6mcoTMYMHRhOhu2xDmDgQL7VaegV9r/s1219/ArtistTableRow.png" /></p>
+<p><em>Figure 3: Artist Table Row for James Ensor</em></p>
+<h4 data-number="2.1.1.3" id="columns"><span
+class="header-section-number">2.1.1.3</span> Columns</h4>
+<p>The columns of the table store the characteristics of the items
+stored on the table. The columns of the artist table would store the
+characteristics of artists &#8212; such as their name, nationality, birth, and
+death information. Figure 4 highlights the column that stores the last
+name of each artist. Care is taken to identify all of the relevant
+characteristics of the items stored on the table, so that the data is as
+useful as possible.</p>
+<div class="term">
+<blockquote>
+<p><strong>Column</strong> &#8212; Contains the individual characteristics of
+the items stored in a table.</p>
+</blockquote>
+</div>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhA-75ImP3mU2Kp46AYv9di_dtD7RsA_FfglgwAPlj_rEDbm7b4V2TxeImFNC2yvf0qo3OXtRCj3LHhug1SgJAWx4XB2aEoHvjePpciRI4P7Jg6MpFbhijkUh6SoicRVkIlgeSdya-dJiZajCGl5OC0eHKRI-gw5dylR1ecHHGAk3Ax7T1uQn3durpSWDoL/s1219/ArtistTableColumn.png" /></p>
+<p><em>Figure 4: Table Column for Artist&#8217;s Last Names</em></p>
+<p>Care is taken to divide the data on a table into multiple columns.
+When the data in a table is appropriately broken into columns, it is
+easier to sort and filter the data on the table. Database tables are
+also designed to reduce or eliminate errors. Errors can occur when data
+is added to a table, changed, or deleted from a table. The process of
+optimizing the design of database tables will be discussed in subsequent
+lessons.</p>
+<div class="term">
+<blockquote>
+<p><strong>Datatype</strong> &#8212; Constrains the values in a column to be a
+specific type of data like numbers, text, or dates/times.</p>
+</blockquote>
+</div>
+<p>To help reduce errors in data, each column of a table has a specific
+datatype. The datatype determines the data that can be stored in that
+column. Common datatypes include numbers, text, and dates/times. Since a
+column has a specific datatype, it can only store that type of data.
+When a column is set to store numbers, for example, it cannot store text
+characters or other symbols. Constraining the datatype in a column helps
+to prevent incorrect values from being stored in a table. It also helps
+the DBMS to optimally store values in the table. Because of this, care
+is taken to appropriately define the datatype for each column in a
+table.</p>
+<h2 data-number="2.2" id="key-columns"><span
+class="header-section-number">2.2</span> &#8220;Key&#8221; Columns</h2>
+<p>There are two special purpose columns that can be included on
+database tables. These are called primary and foreign keys. Each table
+should have a primary key. The role of the primary key is described
+below. Foreign keys are used to connect data from different tables
+together. Foreign keys will be discussed in a later lesson on joining
+tables.</p>
+<div class="term">
+<blockquote>
+<p><strong>Foreign Key</strong> &#8212; A special purpose column on a database
+table that connects the data in one table to another table.</p>
+</blockquote>
+</div>
+<p>As mentioned, each row of a database table must be unique. To make
+sure that this is the case, a column (or set of columns) is designated
+as a primary key. Technically, <em>any</em> column on a table could be
+made the primary key, but it must meet each of these conditions:</p>
+<ul>
+<li>The values for that column must be unique (no two rows of the table
+can have the same value).</li>
+<li>Every row of the table must have a value for that column (no missing
+values in the column).</li>
+<li>The values in that column should not be changed after they are added
+to the table.</li>
+<li>The values for that column must not be reused (even if you delete
+the row that was originally using that value).</li>
+</ul>
+<p>Usually, one column of a table will be set as the primary key. It is
+possible to use a combination of columns as the primary key. When this
+is the case, the combination of columns must still meet the conditions
+listed above.</p>
+<div class="term">
+<blockquote>
+<p><strong>Primary Key</strong> &#8212; A special purpose column on a database
+table that ensures that all rows of the table are unique.</p>
+</blockquote>
+</div>
+<p>Most columns in a typical table don&#8217;t meet all of these conditions.
+Consider the artist table. The attributes of an artist might be things
+like their first and last names, their preferred artistic style, their
+nationality, and their birth and death years. Each of these is helpful
+in describing characteristics of the artists, but none of them would be
+a good primary key. You could not guarantee that the values for any of
+them would be unique across all artists. More than one artist might have
+the same first or last name, come from the same country, work in the
+same style, or share a birth or death year.</p>
+<p>To make sure that the primary key values are unique, it is often
+easiest to create a column, such as <code>artist_id</code> (see Figure
+5). The values in this column would identify (numbers or a set of
+characters) each row of artists on the table. The simplest way to do
+this would be to just assign a number to each artist. Any additional
+artist would be given the next number in sequence.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhckAGqAjU8Xzcal1iz6OA7Os1blsn711pN8twQfSIfgXZCKPi0r5JX8SzafQQJZ_nJxT8dTIwalI_UWbz7_aH1SUQ5zUclI-1ZAGIqwmKepySCneWOcUukaSsYUNFJpCLrDkcuC-KDeI_ptJJLSpVwt0NrjHbeMQgJUn_mWqxpdfey--1eqrh2ImfclCTk/s1219/ArtistTablePrimaryKey.png" /></p>
+<p><em>Figure 5: The Primary Key of the Artist Table</em></p>
+<p>The main purpose of a primary key is to uniquely identify the rows on
+a table. Interestingly, the <code>artist_id</code> would not usefully
+describe a meaningful characteristic of an artist. The only purpose of
+the <code>artist_id</code> would be to uniquely identify the artists on
+the table. This is often the case with primary keys of most tables.</p>
+<div class="tip">
+<blockquote>
+<p>Although it is not required that a table has a primary key, it is a
+good idea to make sure that every table in your database has a defined
+primary key.</p>
+</blockquote>
+</div>
+<p>The primary key is useful because it allows you to identify a
+specific row. This is particularly helpful when you connect data from
+one table to another. It is absolutely necessary when you want to update
+or delete data in a table, since you don&#8217;t want to change or delete the
+wrong data.</p>
+<h2 data-number="2.3" id="what-is-structured-query-language-sql"><span
+class="header-section-number">2.3</span> What Is Structured Query
+Language (SQL)?</h2>
+<p>Structured Query Language (SQL) is a computer language used to
+interact with a database. Specifically, SQL is the way that applications
+and users interact with the DBMS to make requests of the database.
+Figure 6 depicts this relationship. For simplicity, it&#8217;s easiest to
+think of SQL as a method for interacting with a database.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgsVhy-Rt81WQ1s9ed2O0eaMYuttzRx5MQagiEbnS5x_I9ufHKo6xcskfT3iZPWHP1_EgbTqbMOQ_HC6vGRR8Dq1h_xdqK6ijc8RhkchzawWWzEZEQlH42Dou75TF8AP0OSueFTAzsuJuIYxDZ-lJbf1HTyuhLZMASZE3dF4peG_7QhC3kRHgGvXaWjV0bx/s795/DataDBMSAppsSQL.png" /></p>
+<p><em>Figure 6: Where SQL Fits</em></p>
+<p>SQL statements are written as English phrases that are translated to
+a form that can be processed by a computer. To facilitate this
+translation, SQL uses a limited set of keywords and follows a standard
+protocol for using them. You will learn more about these keywords and
+the rules for using them throughout this book.</p>
+<p>SQL is an excellent tool for working with databases. Some of the
+advantages of SQL are:</p>
+<ul>
+<li>SQL statements are English phrases, which means they are relatively
+easy to learn and understand.</li>
+<li>SQL is focused as a tool for interacting with databases. This means
+that it has a small set of keywords.</li>
+<li>SQL is powerful. You can use it to perform sophisticated database
+operations.</li>
+<li>SQL is not proprietary. This means that all of the major DBMS
+support SQL.</li>
+</ul>
+<p>As with any language, the best way to learn SQL is to try it for
+yourself. To help you do this, we&#8217;ve integrated the ability to execute
+SQL directly in this book. You&#8217;ll see it in the next chapter and
+throughout this set of lessons.</p>
+<div class="note">
+<blockquote>
+<p><strong>SQL Extensions.</strong> The ANSI standards committee (ANSI
+SQL) governs standard SQL. It is the same across DBMS. Most of the major
+DBMS vendors have extended the functionality of standard SQL to add
+features to their products. These extensions are proprietary to their
+product and are not supported by other DBMS. The lessons in this book
+describe standard SQL as much as possible.</p>
+</blockquote>
+</div>
+<h2 data-number="2.4" id="summary"><span
+class="header-section-number">2.4</span> Summary</h2>
+<p>This lesson described the basics of databases. It covered the
+building blocks of database tables. It also defined Structured Query
+Language and why it is used.</p>
 <!--postEnd-->
               </div>
 </div>
@@ -1550,7 +1278,7 @@ Language and why it is used.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZqK3Q_wFnr0Ahjm3eWovQIE:1784899976798';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/2.html','3986204447440040189');
+window['__wavt'] = 'AEUoTZqKdfHFcTbZrI6hTAstwyXA:1784981191550';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/2.html','3986204447440040189');
 _WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/2.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/2.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/3454509745030117539/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '3454509745030117539', 'postImageThumbnailUrl': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhzpb8P1qg72OHxej0PZ3ieLcYy9A7xAEF3NViP9AFjXVTk0YUMXu718a2aZZKdaz8rt4-aDmuGeCVjCQT4WqqyQbyGbwu7c6zvKunV9-bKPbuwEySdfRV9QMslgQwgSPb0E0IWFbWet9npRvihk69YdKobN2mXCU-uXe-UMWsoQfcr_VILUm9otdY9KLVu/s72-c/DataDBMSApps.png', 'postImageUrl': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhzpb8P1qg72OHxej0PZ3ieLcYy9A7xAEF3NViP9AFjXVTk0YUMXu718a2aZZKdaz8rt4-aDmuGeCVjCQT4WqqyQbyGbwu7c6zvKunV9-bKPbuwEySdfRV9QMslgQwgSPb0E0IWFbWet9npRvihk69YdKobN2mXCU-uXe-UMWsoQfcr_VILUm9otdY9KLVu/s800/DataDBMSApps.png', 'pageName': '2. Understanding SQL', 'pageTitle': 'book1014 SQL: 2. Understanding SQL'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '2. Understanding SQL', 'description': '2  Understanding SQL \r \r \r After completing this lesson, the successful student will be able\r to: \r \r Describe the building blocks of a data...', 'featuredImage': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhzpb8P1qg72OHxej0PZ3ieLcYy9A7xAEF3NViP9AFjXVTk0YUMXu718a2aZZKdaz8rt4-aDmuGeCVjCQT4WqqyQbyGbwu7c6zvKunV9-bKPbuwEySdfRV9QMslgQwgSPb0E0IWFbWet9npRvihk69YdKobN2mXCU-uXe-UMWsoQfcr_VILUm9otdY9KLVu/s800/DataDBMSApps.png', 'url': 'https://book1014.blogspot.com/2000/02/2.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 3454509745030117539}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>
