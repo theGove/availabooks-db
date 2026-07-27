@@ -6,7 +6,8 @@
 <meta content='width=device-width, initial-scale=1' name='viewport'/>
 <title>book1014 SQL</title>
 <!-- external libraries -->
-<script src='https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js'></script>
+<!--script src='https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js'/-->
+<script src='https://unpkg.com/turndown/dist/turndown.js'></script>
 <script src='https://unpkg.com/turndown/dist/turndown.js'></script>
 <!-- font links -->
 <link href='https://fonts.googleapis.com' rel='preconnect'/>
@@ -22,7 +23,7 @@
 function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.entry[0].content.$t}
 //]]>
 </script>
-<!-- ################################### Set the version of the system that this book uses by specifying the appropraite tag in the next line (dev, stable, etc) ################################### -->
+<!-- ################################### Set the version of the system that this book uses by specifying the appropraite tag in the next line (dev, stable, etc.) ################################### -->
 <script id='cssScript' src='https://availabooks-system.blogspot.com/feeds/posts/default/-/dev/css?alt=json-in-script&max-results=1&callback=loadCss'></script>
 <!--If we ever get page loads showing before the css loads, we can put the current copy of the css here to be sure there is always soem css, but it seems to load fast enough relying on the call above that brings in css dynamically-->
 <style id='page-skin-1' type='text/css'><!--
@@ -82,9 +83,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
     }
     
     function loadCode(x){
-      console.log(33,x.feed.entry[0])
-      injectJs(x.feed.entry[0].content.$t)
-      
+      injectJs(x.feed.entry[0].content.$t)      
     }
     
     function injectJs(code){
@@ -94,28 +93,9 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
     }
     
     
-    async function loadModule(label){// get the first post of a specified label and load the code
-      const code = await getPage(label)
-      injectJs(code)
-    }
-    
-    async function getPage(label){//get the first post with the specified label.
-        
-        if(localhost){
-          const url=`/tools/api/${label}.js`
-          const response = await fetch(url)
-          const code = await response.text()  
-          return code
-        }else{
-          const url=`${location.origin}/feeds/posts/default/-/${label}?alt=json`
-          const response = await fetch(url)
-          const page = await response.json()
-          return page.feed.entry[0].content.$t
-        }
-    }    
 //]]>
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=f04e7ff8-3a66-403b-a306-1a5abaddf5f4' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=f04e7ff8-3a66-403b-a306-1a5abaddf5f4' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=7406691c-95ba-4329-bac1-d9aff7e8554e' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=7406691c-95ba-4329-bac1-d9aff7e8554e' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -134,26 +114,10 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 <div class='hide' id='kind'>chapter</div>
 <div class='index-boxnbt'>
 <header class='entry-header'>
-<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>10. Using Data Manipulation
+<h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>10. Using Data Manipulation
 Functions</span></h1>
 </header>
-<div id='menu'>
-<div class='menu-header'><span class='material-symbols-outlined menu-button' onclick='hideMenu()'>close</span><span id='book-title'><a href='toc.html'>PPWJS</a></span></div>
-<div id='menu-content'>
-<div id='ai' style='text-align:right'><button id='ai-prompt' onClick='getAiHelpPrompt()'>Copy AI Prompt</button></div>
-<div id='toc'></div>
-<div id='tools'>
-                  Text Size: 
-                  <span class='material-symbols-outlined tool' onclick='fontSize(.1)'>text_increase</span>
-<span class='material-symbols-outlined tool' onclick='fontSize(-.1)'>text_decrease</span>
-<span class='material-symbols-outlined tool' onclick='fontSize()'>rotate_auto</span>
-</div>
-<div id='search-div'>
-<h6>Search Book</h6>
-<input id='search' placeholder='search book'/><span class='material-symbols-outlined tool' id='search-button'>search</span></div>
-<div id='search-results'></div>
-</div>
-</div>
+<div id='menu'></div>
 <div class='post-body entry-content' data-blog-id='3986204447440040189' data-post-id='9204703625674249288'>
 <button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
 <button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
@@ -183,7 +147,7 @@ desired output. Functions are helpful and an important feature of
 SQL.</p>
 <div class="term">
 <blockquote>
-<p><strong>Function</strong> — A feature of SQL that uses a defined
+<p><strong>Function</strong> &#8212; A feature of SQL that uses a defined
 algorithm to manipulate input data into a desired output.</p>
 </blockquote>
 </div>
@@ -197,7 +161,7 @@ Aggregate functions, or functions that perform calculations across the
 rows in a query result, will be discussed in a subsequent lesson.</p>
 <div class="term">
 <blockquote>
-<p><strong>Scalar Function</strong> — Functions that manipulate data on
+<p><strong>Scalar Function</strong> &#8212; Functions that manipulate data on
 individual rows of a query result.</p>
 </blockquote>
 </div>
@@ -241,15 +205,15 @@ optional. A function may also use more than one argument. Additionally,
 a function can be used as the argument for another function.</p>
 <div class="term">
 <blockquote>
-<p><strong>Argument</strong> — Data used by a function to complete the
+<p><strong>Argument</strong> &#8212; Data used by a function to complete the
 work of the function.</p>
 </blockquote>
 </div>
 <p>An example function call would be <code>UPPER('text')</code>. The
 name of the function is UPPER. The argument for this function is a
-string of text (in this case the word ‘text’). Notice that the argument
+string of text (in this case the word &#8216;text&#8217;). Notice that the argument
 is in parentheses. The function will manipulate this text and return the
-word ‘TEXT’ all in upper-case letters.</p>
+word &#8216;TEXT&#8217; all in upper-case letters.</p>
 <div class="note">
 <blockquote>
 <p><strong>Function Names and Case Sensitivity.</strong> Keywords in the
@@ -335,7 +299,7 @@ SELECT statement that will do this:</p>
 <div class="ai-conversation" data-prompt="Write an SQL statement to display the full_name of artists in uppercase letters. Name the column full_name_uppercase.">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write an SQL statement to display the full_name of artists in uppercase letters. Name the column full_name_uppercase.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
 <p>To display the full_name of artists in uppercase letters, you can use
-the UPPER() function. Here’s the SQL statement:</p>
+the UPPER() function. Here&#8217;s the SQL statement:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">UPPER</span>(full_name) <span class="kw">as</span> full_name_uppercase</span>
 <span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
 <p>In this query, the UPPER() function is applied to the full_name
@@ -354,18 +318,18 @@ function is a string of text. The values in the full_name column are
 text. The UPPER function will transform all of the text to
 uppercase.</p>
 <p>For the next example, suppose you want to calculate the number of
-characters in each artist’s full name. Name the calculated column
-‘characters_in_name’ (without the quotes). You can use a chat with an AI
+characters in each artist&#8217;s full name. Name the calculated column
+&#8216;characters_in_name&#8217; (without the quotes). You can use a chat with an AI
 assistant to create the SELECT statement that will do this:</p>
 <div class="ai-conversation" data-prompt="Write an SQL statement to calculate the number of characters in each artists' full_name. Name the calculated field characters_in_name.">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write an SQL statement to calculate the number of characters in each artists' full_name. Name the calculated field characters_in_name.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To calculate the number of characters in each artist’s full_name and
+<p>To calculate the number of characters in each artist&#8217;s full_name and
 name the calculated field as characters_in_name, you can use the
-LENGTH() function. Here’s the SQL statement:</p>
+LENGTH() function. Here&#8217;s the SQL statement:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, <span class="fu">LENGTH</span>(full_name) <span class="kw">as</span> characters_in_name</span>
 <span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
 <p>In this query, the LENGTH() function is applied to the full_name
-column, which calculates the number of characters in each artist’s full
+column, which calculates the number of characters in each artist&#8217;s full
 name. The result is aliased as characters_in_name. The query will return
 the full_name of artists along with the corresponding number of
 characters in their full names under the column name
@@ -378,16 +342,16 @@ characters_in_name.</p>
 <p>Notice the syntax of the use of the LENGTH function in the SELECT
 clause. The argument for the LENGTH function is a string of text. The
 values in the full_name column are text. The LENGTH function will
-calculate the number of characters in each artist’s full name. Notice
+calculate the number of characters in each artist&#8217;s full name. Notice
 that, as expected, the number of characters is different for each
 artist.</p>
 <p>In the next example assume you want to extract the first two
-characters of the artists’ names. Name the calculated column
-‘artist_first_letters’ (without the quotes). You can use a chat with an
+characters of the artists&#8217; names. Name the calculated column
+&#8216;artist_first_letters&#8217; (without the quotes). You can use a chat with an
 AI assistant to create the SELECT statement that will do this:</p>
 <div class="ai-conversation" data-prompt="Write an SQL statement to extract the first two characters from each artist's full name. Name the calculated column 'artist_first_letters' (without the quotes).">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write an SQL statement to extract the first two characters from each artist's full name. Name the calculated column 'artist_first_letters' (without the quotes).</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To extract the first two characters from each artist’s full name and
+<p>To extract the first two characters from each artist&#8217;s full name and
 name the calculated column as artist_first_letters, you can use the
 following SQL statement:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, <span class="fu">SUBSTR</span>(full_name, <span class="dv">1</span>, <span class="dv">2</span>) <span class="kw">AS</span> artist_first_letters</span>
@@ -410,11 +374,11 @@ the text. In this case, the text to parse is the values in the full_name
 column. You want to extract the first two characters, so you wish to
 start extracting at the first position. The final argument, the number
 of characters to extract, is 2. The result of this function is the first
-two characters of each artist’s name.</p>
+two characters of each artist&#8217;s name.</p>
 <p>In the last example of text functions you will need to use two
 functions. Suppose you want to extract the first name for each artist
 from the full name column. You will need to use the SUBSTR and STRPOS
-functions. Name the calculated column ‘artist_first_name’ (without the
+functions. Name the calculated column &#8216;artist_first_name&#8217; (without the
 quotes). You can use a chat with an AI assistant to create the SELECT
 statement that will do this:</p>
 <div class="ai-conversation" data-prompt="Write a SQL statement to extract the first name for each artist from the full name column using a combination of the SUBSTR and STRPOS functions. Name the calculated column 'artist_first_name' (without the quotes).">
@@ -441,7 +405,7 @@ using the specified combination of functions.</p>
 <p>This is a significantly more complicated example. It demonstrates a
 couple of important elements of using functions. First, it demonstrates
 that a function result can be used as an argument for a different
-function. This is called “nesting” a function. Second, it also
+function. This is called &#8220;nesting&#8221; a function. Second, it also
 demonstrates that the result of a function may need to be adjusted to
 achieve the goal of the query.</p>
 <p>The SUBSTR function is used to extract the first name of the artists
@@ -454,14 +418,14 @@ the second argument (where to start extracting the text) is 1, or the
 first position in the full_name column.</p>
 <p>The number of characters to extract will be different for each
 artist, since the first name of each artist is different. The first name
-ends one character before the position of the first space (’ ‘) in the
+ends one character before the position of the first space (&#8217; &#8216;) in the
 full_name column for each artist. The STRPOS function is used to find
-the location of the space character (’ ‘). The first argument of the
-STRPOS function is the text to search — in this case full_name. The
-second argument is the character to find, which is the space (’ ‘). The
+the location of the space character (&#8217; &#8216;). The first argument of the
+STRPOS function is the text to search &#8212; in this case full_name. The
+second argument is the character to find, which is the space (&#8217; &#8216;). The
 result of the STRPOS function for each artist will be the location of
 the space character. This position must be adjusted by subtracting 1
-character to reach the last character of the artists’ first names. This
+character to reach the last character of the artists&#8217; first names. This
 is the third argument to the SUBSTR function
 (<code>STRPOS(full_name, ' ') - 1</code>).</p>
 <h2 data-number="10.4" id="date-and-time-manipulation-functions"><span class="header-section-number">10.4</span> Date and Time Manipulation
@@ -471,6 +435,7 @@ Common date and time functions in PostgreSQL are shown on the following
 table:</p>
 <h4 data-number="10.4.0.1" id="commonly-used-date-and-time-functions"><span class="header-section-number">10.4.0.1</span> Commonly Used Date and
 Time Functions</h4>
+<div class="table">
 <table>
 <colgroup>
 <col style="width: 32%"/>
@@ -514,22 +479,23 @@ format string.</td>
 </tr>
 </tbody>
 </table>
+</div>
 <p>Notice that CURRENT_DATE and CURRENT_TIME are used without
-parentheses — they are treated more like keywords than ordinary
+parentheses &#8212; they are treated more like keywords than ordinary
 functions.</p>
 <p>The first example of using date and time functions is
 straightforward. Suppose you want to list the names of museums and the
-current date. Name the date column ‘current_date’ (without the quotes).
+current date. Name the date column &#8216;current_date&#8217; (without the quotes).
 You can use a chat with an AI assistant to create the SELECT statement
 that will do this:</p>
 <div class="ai-conversation" data-prompt="Write a SQL statement to list the museums and today's date. Name the date column 'current_date' (without the quotes).">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to list the museums and today's date. Name the date column 'current_date' (without the quotes).</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To list the museums along with today’s date and name the date column
-as ‘current_date’, you can use the following SQL statement:</p>
+<p>To list the museums along with today&#8217;s date and name the date column
+as &#8216;current_date&#8217;, you can use the following SQL statement:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="kw">SELECT</span> name, <span class="fu">CURRENT_DATE</span> <span class="kw">AS</span> <span class="fu">current_date</span></span>
 <span id="cb9-2"><a aria-hidden="true" href="#cb9-2" tabindex="-1"></a><span class="kw">FROM</span> museum;</span></code></pre></div>
-<p>CURRENT_DATE returns today’s date, and it’s aliased as current_date.
-The query will return the names of museums along with today’s date under
+<p>CURRENT_DATE returns today&#8217;s date, and it&#8217;s aliased as current_date.
+The query will return the names of museums along with today&#8217;s date under
 the column name current_date.</p>
 </blockquote>
 </div>
@@ -544,20 +510,20 @@ current time, and NOW() returns both the date and time together as a
 single timestamp value.</p>
 <p>The next example is trickier. Suppose you want to list the names of
 museums and the year of the current date. Name the date column
-‘current_year’ (without the quotes). You will use the EXTRACT function
+&#8216;current_year&#8217; (without the quotes). You will use the EXTRACT function
 for this query. You can use a chat with an AI assistant to create the
 SELECT statement that will do this:</p>
 <div class="ai-conversation" data-prompt="Write a SQL statement to list the museums and the year part of today's date. Use the EXTRACT function. Name the date column 'current_year' (without the quotes).">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to list the museums and the year part of today's date. Use the EXTRACT function. Name the date column 'current_year' (without the quotes).</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To list the museums along with the year part of today’s date using
-the EXTRACT function and name the date column as ‘current_year’, you can
+<p>To list the museums along with the year part of today&#8217;s date using
+the EXTRACT function and name the date column as &#8216;current_year&#8217;, you can
 use the following SQL statement:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb11-1"><a aria-hidden="true" href="#cb11-1" tabindex="-1"></a><span class="kw">SELECT</span> name, <span class="fu">EXTRACT</span>(<span class="dt">YEAR</span> <span class="kw">FROM</span> <span class="fu">CURRENT_DATE</span>) <span class="kw">AS</span> current_year</span>
 <span id="cb11-2"><a aria-hidden="true" href="#cb11-2" tabindex="-1"></a><span class="kw">FROM</span> museum;</span></code></pre></div>
 <p>In this query, the SELECT clause selects the name column from the
 museum table. EXTRACT(YEAR FROM CURRENT_DATE) pulls just the year part
-out of today’s date, and it’s aliased as current_year. The query will
-return the names of museums along with the year part of today’s date
+out of today&#8217;s date, and it&#8217;s aliased as current_year. The query will
+return the names of museums along with the year part of today&#8217;s date
 under the column name current_year.</p>
 </blockquote>
 </div>
@@ -571,7 +537,7 @@ EXTRACT takes two things: the part of the date/time value you want
 CURRENT_DATE), separated by the keyword FROM rather than a comma. The
 calculated field will calculate the current year (the year part of the
 current date). If you needed a specific display format instead of a
-plain number — say, a date formatted as “March 2026” — you would reach
+plain number &#8212; say, a date formatted as &#8220;March 2026&#8221; &#8212; you would reach
 for TO_CHAR instead, for example
 <code>TO_CHAR(CURRENT_DATE, 'Month YYYY')</code>.</p>
 <h2 data-number="10.5" id="numeric-manipulation-functions"><span class="header-section-number">10.5</span> Numeric Manipulation
@@ -582,6 +548,7 @@ and time manipulation functions, these functions tend to be supported by
 most DBMS. The table below contains some example numeric functions.</p>
 <h4 data-number="10.5.0.1" id="commonly-used-numeric-manipulation-functions"><span class="header-section-number">10.5.0.1</span> Commonly Used Numeric
 Manipulation Functions</h4>
+<div class="table">
 <table>
 <colgroup>
 <col style="width: 32%"/>
@@ -613,6 +580,7 @@ Manipulation Functions</h4>
 </tr>
 </tbody>
 </table>
+</div>
 <p>Most numeric functions require numbers as arguments since they
 perform mathematical calculations. Some, like the PI function, return a
 known constant. Functions like PI are often used as part of a larger
@@ -623,19 +591,19 @@ their death. This can be calculated as the difference between the birth
 and death value in the artist table. If you subtract the death year from
 the birth year, you will end up with a negative number. Use the ABS
 function to take the absolute value of this calculation. Name the
-calculated column ‘age_at_death’ (without the quotes). You can use a
+calculated column &#8216;age_at_death&#8217; (without the quotes). You can use a
 chat with an AI assistant to create the SELECT statement that will do
 this:</p>
 <div class="ai-conversation" data-prompt="Write an SQL statement to list the artists and the absolute value of their birth minus their death. Name the date column 'age_at_death' (without the quotes).">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write an SQL statement to list the artists and the absolute value of their birth minus their death. Name the date column 'age_at_death' (without the quotes).</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
 <p>To list the artists along with the absolute value of their birth year
 minus their death year, and name the calculated column as
-‘age_at_death’, you can use the following SQL statement:</p>
+&#8216;age_at_death&#8217;, you can use the following SQL statement:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb13-1"><a aria-hidden="true" href="#cb13-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, <span class="fu">ABS</span>(birth <span class="op">-</span> death) <span class="kw">AS</span> age_at_death</span>
 <span id="cb13-2"><a aria-hidden="true" href="#cb13-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
 <p>In this query, the SELECT clause selects the full_name column from
 the artist table. The ABS(birth - death) calculates the absolute value
-of the difference between the birth and death years, and it’s aliased as
+of the difference between the birth and death years, and it&#8217;s aliased as
 age_at_death. The query will return the names of artists along with the
 calculated absolute difference between their birth and death years under
 the column name age_at_death.</p>
@@ -679,8 +647,8 @@ documentation of your DBMS to learn which functions are supported.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZpaTk3xQRrczz0cAuAXIvt1:1785013387362';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/10.html','3986204447440040189');
-_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/10.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/10.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/9204703625674249288/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/d1bc633a119a9f9d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '9204703625674249288', 'pageName': '10. Using Data Manipulation\nFunctions', 'pageTitle': 'book1014 SQL: 10. Using Data Manipulation\nFunctions'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '10. Using Data Manipulation\nFunctions', 'description': '10  Using Data Manipulation\r Functions  Objectives.  After completing this lesson, the\r successful student will be able to:   Describe the u...', 'url': 'https://book1014.blogspot.com/2000/02/10.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 9204703625674249288}}]);
+window['__wavt'] = 'AEUoTZospE40hxQviGoEOhli9R14:1785190028682';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/10.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/10.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/10.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/9204703625674249288/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/9191fc3f3dc7f81d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '9204703625674249288', 'pageName': '10. Using Data Manipulation\nFunctions', 'pageTitle': 'book1014 SQL: 10. Using Data Manipulation\nFunctions'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '10. Using Data Manipulation\nFunctions', 'description': 'websql  10  Using Data Manipulation\r Functions   Learning Objectives    :   Describe the uses and limitations of data manipulation\r function...', 'url': 'https://book1014.blogspot.com/2000/02/10.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 9204703625674249288}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>
 </body>

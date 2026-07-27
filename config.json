@@ -6,5 +6,7 @@
      "Gove N. Allen",
      "Nicholas Ball"
    ],
-   "chapterLabel": "Chapter"  
+   "chapterLabel": "Chapter",
+   "tools":["ai-prompt","abby"]
+
 }
