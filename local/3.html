@@ -5,6 +5,8 @@
 <meta charset='UTF-8'/>
 <meta content='width=device-width, initial-scale=1' name='viewport'/>
 <title>book1014 SQL</title>
+<!--Favicon or serach results image-->
+<link href='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjwMmqtq5dRpmvlNLPmUDGnytksf0IkGol8E0LwUplx-c0T25cwV7F2QJU5c2NtbR02Gz89UwBFE8sRz3yai5Zo30Wi6Z1Tia1C5cxL3m9NRPJxL8I_vNgfFFp3h-dQ7R3FS-uk2_MsYuQM5UXC3ZzOKGDqh54XJNOdXsF8SkdUhyphenhyphenCgyX8h20hWC4C7kxdR/s1600/android-chrome-192x192.png' rel='icon'/>
 <!-- external libraries -->
 <!--script src='https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js'/-->
 <script src='https://unpkg.com/turndown/dist/turndown.js'></script>
@@ -24,14 +26,13 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 //]]>
 </script>
 <!-- ################################### Set the version of the system that this book uses by specifying the appropraite tag in the next line (dev, stable, etc.) ################################### -->
-<script id='cssScript' src='https://availabooks-system.blogspot.com/feeds/posts/default/-/dev/css?alt=json-in-script&max-results=1&callback=loadCss'></script>
+<script id='cssScript' src='https://system.availabooks.com/feeds/posts/default/-/dev/css?alt=json-in-script&max-results=1&callback=loadCss'></script>
 <!--If we ever get page loads showing before the css loads, we can put the current copy of the css here to be sure there is always soem css, but it seems to load fast enough relying on the call above that brings in css dynamically-->
 <style id='page-skin-1' type='text/css'><!--
 
 --></style>
 <script type='text/javascript'>
 //<![CDATA[
-    const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
 	async function initialize(){
 
       const kind = document.getElementById(`kind`).innerHTML
@@ -59,7 +60,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 
     function getSystemModule(moduleName="system"){
 		console.log(typeof location.hostname)
-		if(location.hostname.startsWith("127") || location.host.toLowerCase().startsWith("localhost")){
+		if(location.hostname==="local.availabooks.com"){
             // get files from localhost
 			fetch(`${location.origin}/tools/api/${moduleName}.js`).then(response => {
                 return response.text(); 
@@ -70,7 +71,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 		}else{
             //get files from blogger production server
       		const systemVersion=document.getElementById("cssScript").src.split("/")[7]
-      		loadCrossOrigin(`https://availabooks-system.blogspot.com/feeds/posts/default/-/${systemVersion}/${moduleName}?alt=json-in-script&max-results=1&callback=loadCode`);      
+      		loadCrossOrigin(`https://system.availabooks.com/feeds/posts/default/-/${systemVersion}/${moduleName}?alt=json-in-script&max-results=1&callback=loadCode`);      
 
        }
 
@@ -95,7 +96,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
     
 //]]>
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=7406691c-95ba-4329-bac1-d9aff7e8554e' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=7406691c-95ba-4329-bac1-d9aff7e8554e' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=5bb5ec5d-4faf-45aa-a658-fe48a34270d7' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=5bb5ec5d-4faf-45aa-a658-fe48a34270d7' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -113,8 +114,9 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 <div id='msg-galley'></div>
 <div class='hide' id='kind'>chapter</div>
 <div class='index-boxnbt'>
-<header class='entry-header'>
+<header class='entry-header' style='display:flex;align-items:center;justify-content:space-between;'>
 <h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>3. Designing Database Tables</span></h1>
+<span class='material-symbols-outlined menu-button login-button' onclick='handleLogin()' title='Log in'>person</span>
 </header>
 <div id='menu'></div>
 <div class='post-body entry-content' data-blog-id='3986204447440040189' data-post-id='40015644013862203'>
@@ -122,574 +124,579 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 <button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
               
               <!--postBegin--><div class="module">websql</div>
-<h1 data-number="3" id="designing-database-tables"><span
-class="header-section-number">3</span> Designing Database Tables</h1>
-<div class="learning">
-<p>Learning Objectives</p>
-<div class="objectives">
-<blockquote>
-<p>:</p>
-<ol type="1">
-<li>Describe the steps in designing database tables.</li>
-<li>Describe the business domain model of a proposed database.</li>
-<li>Understand how to create a database model.</li>
-<li>Understand basic syntax to build database tables and insert data
-into a table.</li>
-</ol>
-</blockquote>
-</div>
-</div>
-<h2 data-number="3.1" id="designing-database-tables-1"><span
-class="header-section-number">3.1</span> Designing Database Tables</h2>
-<p>In order to effectively interact with a database, you first need to
-know how the data in the database are organized. To understand the
-organization of data in a database, it is helpful to know the basic
-principles of database modeling and design. Because the focus of this
-book is not the nuances of database modeling and design, the design
-topics covered in this book provide just enough detail on database
-design to help you interact with databases.</p>
-<p>This lesson is a reflection of that. It is not a complete treatment
-of database design. It focuses on the design of individual database
-tables. A later lesson on joining tables describes how to model the
-relationships among database tables. A later lesson on database modeling
-and normalization covers the rules to consider to optimally design a
-database to reduce or eliminate errors in the data stored in a
-database.</p>
-<p>This lesson will describe two important ways to model data: the
-business model and the database model. Additionally, it will describe
-how to implement a database model into database tables and rows of data
-in those tables. Understanding these concepts will help you to write SQL
-statements to effectively retrieve and manipulate the data in a
-database.</p>
-<h2 data-number="3.2" id="the-business-model"><span
-class="header-section-number">3.2</span> The Business Model</h2>
-<p>Before describing what is meant by the business model of a database,
-it is important to describe what is meant by <em>business</em> and
-<em>model</em>. Business is meant in the most generic of ways. For the
-purposes of this discussion, the business is the organization or
-individual that has a data need. Business is an appropriate term,
-because it implies that the data will be put into action to complete a
-user or organizational task. When creating a business model, you must
-first understand the need for the database and the tasks that will be
-performed with the data.</p>
-<div class="term">
-<blockquote>
-<p><strong>Business</strong> &#8212; An organization or individual that has a
-data need.</p>
-</blockquote>
-</div>
-<p>It is equally important to understand the second term, model. A model
-is a representation of something else, generally in a scaled or
-simplified form. In general, the more complex a model is, the better it
-approximates what it represents. Of course, increasing complexity comes
-at an increased cost. Because of this, care must be taken when creating
-a model that it be just complex enough to serve the purposes of the
-model.</p>
-<div class="term">
-<blockquote>
-<p><strong>Model</strong> &#8212; A representation of something else,
-generally in a scaled or simplified form.</p>
-</blockquote>
-</div>
-<p>Two elements of a model are important to determining how complex a
-model should be. First, you should consider the relevance of various
-aspects of a model. Something is relevant if it is needed or helpful for
-completing the intended use of the model. For example, if you were
-building a model of a person, you could include any number of
-characteristics of people (hair color, blood type, height, weight, IQ,
-and more). If you are using the model to determine which people to admit
-to an MBA program, only a few characteristics will actually be relevant
-(such as grade point average and GMAT scores). If the model is used to
-recruit players for a university soccer team, other characteristics will
-be relevant. In general, only relevant characteristics should be
-included in a model.</p>
-<div class="term">
-<blockquote>
-<p><strong>Relevance</strong> &#8212; A characteristic that is needed or
-helpful for completing the intended use of the model.</p>
-</blockquote>
-</div>
-<p>Second, you should consider the granularity of the model. Granularity
-refers to the level of detail of the model. As with relevance,
-granularity is best understood in the context of the task to be
-performed by the model. If you are using a model to track the monthly
-sales of a company, you probably only need to see the monthly sales
-totals for the organization. On the other hand, if you are trying to
-determine which times of the day are most profitable for the company,
-you would need to track hourly sales totals (or even individual
-transactions). Hourly sales totals are more detailed (or more granular)
-than monthly totals.</p>
-<div class="term">
-<blockquote>
-<p><strong>Granularity</strong> &#8212; The level of detail of the model.</p>
-</blockquote>
-</div>
-<p>When constructing a business model of a database, you are concerned
-with understanding the business needs for the database and the tasks
-that the database will support. In constructing the model, you must
-determine what characteristics of the business and tasks are relevant.
-You must also determine the level of detail or granularity of the data
-to be stored. This is best done by talking to the people who will use
-the database to support their work.</p>
-<h3 data-number="3.2.1" id="building-a-database-diagram"><span
-class="header-section-number">3.2.1</span> Building a database
-diagram</h3>
-<p>One important tool available to SQL programmers is a database
-diagram. This diagram depicts entities, attributes of entities, and the
-relationships among the entities. It is a graphical depiction of the
-data that are stored in the database and is helpful in writing queries
-of the database.</p>
-<p>Simply put, an entity is a thing. In the context of a business model
-of a database, an entity is something that you want to store information
-about. An attribute is a characteristic of an entity. Finally, a
-relationship describes how entities are associated. A business model is
-often the starting point for a database diagram, because the business
-model describes the business entities to be represented in the database,
-the attributes of those entities, and the relationships among the
-business entities. An example database diagram is depicted below (see
-Figure 1).</p>
-<div class="term">
-<blockquote>
-<p><strong>Entity</strong> &#8212; Something that you want to store
-information about.</p>
-</blockquote>
-</div>
-<div class="term">
-<blockquote>
-<p><strong>Attribute</strong> &#8212; A characteristic of an entity.</p>
-</blockquote>
-</div>
-<div class="term">
-<blockquote>
-<p><strong>Relationship</strong> &#8212; The associations among entities.</p>
-</blockquote>
-</div>
-<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhSaQHsExG3hTy8vXdN87TCJ9GSIqNHz5VJkrL--ub82t7OPbFuCZtVEbdV4s1rdlbNrQepRknIq6unO9FWctMOqwcHhPwVnX_GqjajEG31yXyqrI_QpI5wAbxNfpKfFayNscbZU2i-WrpEv3QPl-HnxpteFacHlxqM1EiYyKLwCb6ng3pQRsH7l5OiJwEp/w640-h258/DatabaseDiagramFormat.png" /></p>
-<p><em>Figure 1: Database Diagram Format</em></p>
-<p>Entities are represented by rectangles in a database model diagram.
-Each entity is named. The name of each entity appears at the top of the
-rectangle representing that entity. The attributes are also named. They
-appear within the rectangle that represents that entity under the name
-of the entity. The relationships are depicted as lines connecting the
-entities that are related.</p>
-<h3 data-number="3.2.2"
-id="the-database-diagram-of-the-museum-database"><span
-class="header-section-number">3.2.2</span> The Database Diagram of the
-Museum Database</h3>
-<p>The lessons in this resource will use a database that stores
-information about museums, the artwork exhibited in those museums, and
-the artists who created the works of art. A database diagram can be
-built to depict this database. This diagram would depict the aspects of
-museums, artists, and works of art that are relevant and at the correct
-level of granularity to support the tasks to be performed with the
-database.</p>
-<p>After meeting with the expected users of the database you have
-determined that the database needs to include:</p>
-<ul>
-<li>The name of the artists</li>
-<li>The name of the museums</li>
-<li>The titles of the works of art</li>
-<li>The preferred style of each artist</li>
-<li>The style of the works of art</li>
-<li>The location of the museums</li>
-<li>The nationality of the artists</li>
-<li>The phone number and website of the museums</li>
-<li>The birth and death years of the artists</li>
-</ul>
-<p>The first step in creating the business model of this data is to
-identify the themes in what the database needs to include. In this case,
-it appears that the database needs to include information about artists,
-works of art, and museums. Each of these themes will be a different
-entity in the model. Figure 2 shows the database diagram with these
-entities.</p>
-<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiyjmoaTKSOGiIHPJXOuACrD7CV7QXDNzG0QaaPmcLln5qcQBe4oKUW9EOQR3era1_NxMW7O9UyLGtoU6L3HzUJpkrhmuO60eN9gp9TarreA8QsvEusnVOhA0z3Q2w8cB2AJGA1M9dc9T3-gpT2lFtw605YTmf_cW2fKjofkWYSoXgcItjybGjcNB000klv/w640-h148/DatabaseDiagramNoAttributes.png" /></p>
-<p><em>Figure 2: Simple Museum Database Diagram</em></p>
-<p>After determining the entities for the model, the next step involves
-determining the attributes for each entity. The list of data needs for
-the museum database can be used to determine the attributes of the
-artist, work, and museum entities. The attributes of each might
-include:</p>
-<p>Artist attributes:</p>
-<ul>
-<li>Name (the name of the artists)</li>
-<li>Style (the preferred style of each artist)</li>
-<li>Nationality (the nationality of the artists)</li>
-<li>Birth and Death (the birth and death years of the artists)</li>
-</ul>
-<p>Work attributes:</p>
-<ul>
-<li>Name (the titles of the works of art)</li>
-<li>Style (the style of the works of art)</li>
-</ul>
-<p>Museum attributes:</p>
-<ul>
-<li>Name (the name of the museums)</li>
-<li>Location (the location of the museums)</li>
-<li>Contact Information (the phone number and website of the
-museums)</li>
-</ul>
-<p>For simplicity, you should create a descriptive name for each
-attribute, as in the previous lists, when you add it to the diagram.
-Figure 3 shows the database diagram with the attributes of each
-entity.</p>
-<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgzn_nXa6x35UA-9FiXAbuiZTnw0mT5Wjxh4I2TuTdhqYQlqR4iiWNdygpTsMZ6iUpClk4OA-UlyMo2NzAvgHD1cwJYp6eITqExpdR2AjnnAfxO7ko6f3uXnt68poqkzlqpjplNWl1IAmbzEeiBQP36-uCHJTP64cCYOkefRO0O1gKvw1v1RCzK-l_4FKas/w640-h154/DatabaseDiagramAttributes.png" /></p>
-<p><em>Figure 3: Museum Database Diagram with Attributes</em></p>
-<p>The final step in the process involves modeling the relationships
-among the entities. Relationships are discussed in detail in a later
-lesson on joining tables. Notice that relationships are included in
-Figure 3. In this model, the artist and work entities are related. This
-makes sense. Artists are responsible for creating works. The work and
-museum entities are also related. Again this makes sense. Museums
-contain works of art.</p>
-<p>As you can see, the database diagram tells you a lot about the
-database. It shows the major themes (entities) in the data and the
-individual attributes of each entity. It also describes how the entities
-relate to each other. It can be developed further to contain enough
-technical detail to serve as the blueprint of a database.</p>
-<h2 data-number="3.3" id="the-database-model"><span
-class="header-section-number">3.3</span> The Database Model</h2>
-<p>At this point in the modeling process, the business model is
-complete. It can be used as the basis for creating the database model.
-The business model provides a conceptual blueprint for the data, but it
-is not sufficient to be used as a blueprint for the database. To develop
-the model further to the point that it can be used as the blueprint of a
-database, you must first decide the type of database you want to use.
-There are a number of types of databases. These include relational,
-hierarchical, network, and other types of databases. The relational
-database model is used in this book. A complete discussion of the types
-of databases is not provided in these lessons.</p>
-<p>A relational database stores data in two-dimensional tables as
-described in the lesson on understanding SQL. A database diagram can be
-easily used as the basis for a relational database. Each of the entities
-in the business model will become the tables of the relational database,
-and the attributes become the columns of these tables. The requirements
-of a relational database are not completely filled with a business
-model. In particular, you must ensure that the columns represented in
-the model are atomic, that a primary key has been designated, and the
-domain of the columns are defined.</p>
-<h3 data-number="3.3.1" id="atomic-columns"><span
-class="header-section-number">3.3.1</span> Atomic Columns</h3>
-<p>First, the columns in a relational database should be atomic. This
-means that they need to be decomposed to their smallest useful form. For
-example, the column location in the museum table is not atomic. It
-includes the street address, city, state, country, and postal code of
-each museum. Including all of this information in one column is
-problematic. The data is not consistent across the museums (for example,
-not all countries have states). It would also be difficult to sort or
-filter the data by an element of the data, like country.</p>
-<p>To fix this problem, location should be split into multiple columns
-that are each atomic. In this example, location should be split into
-columns for address, city, state, country, and postal code. Many of the
-attributes in the business model diagram of the museum database are not
-atomic. The attributes for each entity are listed below, and rated
-whether they are atomic or not. If they are not atomic, suggestions are
-made to make them atomic.</p>
-<div class="term">
-<blockquote>
-<p><strong>Atomic</strong> &#8212; A value that is decomposed to its smallest
-useful form.</p>
-</blockquote>
-</div>
-<p>Artist attributes:</p>
-<ul>
-<li>Name: not atomic (split to first_name, last_name, and middle_name
-columns)</li>
-<li>Style: atomic</li>
-<li>Nationality: atomic</li>
-<li>Birth and Death: not atomic (split to birth and death columns)</li>
-</ul>
-<p>Work attributes:</p>
-<ul>
-<li>Name: atomic (the title of a work is in the smallest useful
-form)</li>
-<li>Style: atomic</li>
-</ul>
-<p>Museum attributes:</p>
-<ul>
-<li>Name: atomic</li>
-<li>Location: not atomic (split to address, city, state, country, and
-postal_code columns)</li>
-<li>Contact Information: not atomic (split to phone and website
-columns)</li>
-</ul>
-<p>The database diagram should be updated to reflect these changes.
-Figure 4 shows the updated diagram.</p>
-<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjBsc7u4eu5k3ULi-MOIJ3fbv91oncU8KDFHhWec8TTgxJLvgjYxGe9WLLIMYPMg9mt_h-OC36-j96yepUmgGKXKg8g8h9ooojs5fwanUhFiIEIXEcqY3bj7h9BRHpZfUj_v67iCQNKyeVqg8YgXrImTY76Wpg7tYkj9Yzyzj7skgZxMR5snKjlSQqc3mqz/w640-h240/DatabaseDiagramAtomicAttributes.png" /></p>
-<p><em>Figure 4: Museum Database Diagram with Atomic Attributes</em></p>
-<h3 data-number="3.3.2" id="primary-keys"><span
-class="header-section-number">3.3.2</span> Primary Keys</h3>
-<p>Each table in a relational database should also have a primary key.
-The primary key is a column that keeps each of the rows of the table
-unique. The values in the primary key column must be different for each
-row of the table, cannot be blank, and should not change. In some
-tables, one or more existing columns might meet these criteria and
-qualify as a candidate key. A candidate key is an existing column of a
-database table that could be the primary key (it is unique, does not
-contain blank values, and will not change). If a table has a candidate
-key, it could be designated as the primary key for the table.</p>
-<div class="term">
-<blockquote>
-<p><strong>Candidate Key</strong> &#8212; An existing column of a database
-table that could be the primary key.</p>
-</blockquote>
-</div>
-<p>Often there is not an existing column on a table that is a candidate
-key. Examine the columns of the artist table in the museum database.
-None of the existing columns of the table are candidate keys, because
-none of them are unique. Take the first name of the artists. More than
-one artist could have the same first name. The first name column is not
-a good candidate to be the primary key. It is equally unlikely that any
-of the columns of the artist table will be unique.</p>
-<div class="note">
-<blockquote>
-<p><strong>Choosing Primary Keys Carefully.</strong> This raises an
-important point. It may well be that all of the artists that are
-currently in the database have a different first name. This means that
-the first name could be used as the primary key now. However, additional
-artists might be added to the database in the future. If a new artist
-has the same first name as one of the existing artists, the values for
-first name would no longer be unique. Whenever possible it is best to
-design the database anticipating the implications of adding new
-data.</p>
-</blockquote>
-</div>
-<p>When a table does not have a candidate key, a surrogate key is
-created to be the primary key. A surrogate key is a column that is added
-to a table for the sole purpose of becoming the primary key. The values
-for a surrogate key don&#8217;t describe a meaningful attribute of the entity.
-They just identify instances or rows for the table. A surrogate key,
-<code>artist_id</code>, could be added to the artist table to be the
-primary key. The values for <code>artist_id</code> would be numbers
-assigned to each row of the table to identify each artist.</p>
-<div class="term">
-<blockquote>
-<p><strong>Surrogate Key</strong> &#8212; A column that is added to a table
-for the sole purpose of becoming the primary key. The values for a
-surrogate key don&#8217;t describe a meaningful attribute of the entity.</p>
-</blockquote>
-</div>
-<p>None of the three tables in the museum database have a candidate key.
-Identifiers (surrogate keys) should be added to each table to become the
-primary key. Figure 5 shows the database diagram with the primary keys
-added.</p>
-<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgd2t_ecxgQ0b9y5UmyHh1kF7XbK7ps_K1qzGua01qEeiU_4paleHoZzG0V57E6V8cDPOvRwXThs4hgY0tZy1K8EBc__v7LVukSKve1vggG_HvofsfOEIfXitLt3L5TfGuszVIdikDz1kRMp1441nfZBF8fnXYEhLWLE9SmHLXZyqqPjEXuHul0I5zQq2Tp/w640-h266/DatabaseDiagramPrimaryKeys.png" /></p>
-<p><em>Figure 5: Museum Database Diagram with Primary Keys</em></p>
-<p>At this point, you can consider the database diagram to be nearly
-complete, because you will not add any new tables, columns, or
-relationships to the database until you examine the relationships among
-the tables in the database. You will not examine these relationships in
-detail until a later lesson on joining tables. At that time, foreign
-keys will be added to some of the tables to make it easier to link data
-in different tables together.</p>
-<h3 data-number="3.3.3" id="defining-column-domains"><span
-class="header-section-number">3.3.3</span> Defining Column Domains</h3>
-<p>Although the database diagram is nearly complete, an important design
-element must still be completed before you are ready to create database
-tables and add data to those tables. The domain of each column in the
-tables in the database must be defined. The domain of a column is the
-set of acceptable values that can be stored in the database for that
-column.</p>
-<div class="term">
-<blockquote>
-<p><strong>Domain</strong> &#8212; The set of acceptable values that can be
-stored in a database column.</p>
-</blockquote>
-</div>
-<p>One important aspect of domain is the datatype of the column.
-Datatype refers to the kind of data that can be stored in a column.
-Common data types are characters (text), numbers, as well as date and
-time. Depending on the type of database you use, there can be more than
-a dozen data types to choose from. When the datatype of a column is set,
-only values that fit that type can be stored in that column. This is
-helpful, because it prevents data that does not belong in a particular
-column from being stored in that column.</p>
-<p>Once the datatype is defined, additional constraints can be placed on
-the column to more completely define the data to be stored in the
-column. For example, the first_name column on the artist table would
-have a character datatype. You might further constrain the values in the
-column by adding a limit to the number of characters that can be stored
-in a single column.</p>
-<p>Columns that are defined with one of the number data types can be
-further constrained in a few ways. You can set it to store only whole
-numbers (integers), limit the number of decimal places in non-integer
-numbers, or prohibit the storage of certain ranges of values.</p>
-<p>All columns can be constrained to prohibit the storage of blank
-values. A column can also be set to allow only unique values. A more
-complete discussion of data types and the constraints that can be added
-to database columns is presented in a later lesson on creating and
-manipulating tables. The domains for each column in the museum database
-are listed below:</p>
-<p>Artist attributes:</p>
-<ul>
-<li>Artist_id: Integer</li>
-<li>Full_name: Text data limited to 50 characters. May not be blank</li>
-<li>First_name: Text data limited to 20 characters. May not be
-blank</li>
-<li>Last_name: Text data limited to 20 characters.</li>
-<li>Middle_names: Text data limited to 20 characters.</li>
-<li>Style: Text data limited to 25 characters.</li>
-<li>Nationality: Text data limited to 25 characters. May not be
-blank</li>
-<li>Birth: Integer</li>
-<li>Death: Integer</li>
-</ul>
-<p>Work attributes:</p>
-<ul>
-<li>Work_id: Integer</li>
-<li>Name: Text data limited to 50 characters. May not be blank</li>
-<li>Style: Text data limited to 25 characters.</li>
-</ul>
-<p>Museum attributes:</p>
-<ul>
-<li>Museum_id: Integer</li>
-<li>Name: Text data limited to 50 characters. May not be blank</li>
-<li>Address: Text data limited to 50 characters. May not be blank</li>
-<li>City: Text data limited to 25 characters. May not be blank</li>
-<li>State: Text data limited to 25 characters.</li>
-<li>Country: Text data limited to 25 characters.</li>
-<li>Postal_code: Text data limited to 10 characters.</li>
-<li>Phone: Text data limited to 12 characters.</li>
-<li>URL: Text data limited to 50 characters.</li>
-</ul>
-<h3 data-number="3.3.4" id="documenting-the-database-design"><span
-class="header-section-number">3.3.4</span> Documenting the database
-design</h3>
-<p>Adding the domain and constraint information for each column to the
-database diagram would make the diagram unnecessarily complex and more
-difficult to use for creating queries. A text-based modeling tool is
-used to document domain and constraint details (see below). This model
-begins with a list of the tables in the database. The columns for each
-table are listed in parentheses with the datatype and additional
-constraints for each. Primary and foreign keys are designated. The model
-for the museum database is listed below:</p>
-<pre><code>Artist(
-  Artist_id Integer Primary Key,
-  Full_name Text,
-  First_name Text,
-  Last_name Text,
-  Middle_names Text,
-  Style Text,
-  Nationality Text,
-  Birth Integer,
-  Death Integer
-)
-
-Work(
-  Work_id Integer Primary Key,
-  Name Text,
-  Style Text
-)
-
-Museum(
-  Museum_id Integer Primary Key,
-  Name Text,
-  Address Text,
-  City Text,
-  State Text,
-  Country Text,
-  Postal_code Text,
-  Phone Text,
-  URL Text
-)</code></pre>
-<p>As mentioned above, foreign keys should also be designated. Recall
-that foreign keys are used to connect tables together. A later lesson on
-table relationships and cardinality discusses the relationships between
-tables. The text-based design for the museum database will be completed
-as part of that discussion.</p>
-<h2 data-number="3.4" id="building-database-tables"><span
-class="header-section-number">3.4</span> Building Database Tables</h2>
-<p>At this point, the model is detailed enough that it can be used to
-build the database tables and add some data to the tables. The format of
-the schema is very similar to the SQL statements used to create tables.
-The syntax for creating the Artist table is below.</p>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> artist(</span>
-<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a>  artist_id <span class="dt">INT</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
-<span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a>  full_name <span class="dt">VARCHAR</span>(<span class="dv">50</span>),</span>
-<span id="cb2-4"><a aria-hidden="true" href="#cb2-4" tabindex="-1"></a>  first_name <span class="dt">VARCHAR</span>(<span class="dv">20</span>),</span>
-<span id="cb2-5"><a aria-hidden="true" href="#cb2-5" tabindex="-1"></a>  last_name <span class="dt">VARCHAR</span>(<span class="dv">20</span>),</span>
-<span id="cb2-6"><a aria-hidden="true" href="#cb2-6" tabindex="-1"></a>  middle_names <span class="dt">VARCHAR</span>(<span class="dv">20</span>),</span>
-<span id="cb2-7"><a aria-hidden="true" href="#cb2-7" tabindex="-1"></a>  style <span class="dt">VARCHAR</span>(<span class="dv">40</span>),</span>
-<span id="cb2-8"><a aria-hidden="true" href="#cb2-8" tabindex="-1"></a>  nationality <span class="dt">VARCHAR</span>(<span class="dv">40</span>),</span>
-<span id="cb2-9"><a aria-hidden="true" href="#cb2-9" tabindex="-1"></a>  birth <span class="dt">INT</span>,</span>
-<span id="cb2-10"><a aria-hidden="true" href="#cb2-10" tabindex="-1"></a>  death <span class="dt">INT</span></span>
-<span id="cb2-11"><a aria-hidden="true" href="#cb2-11" tabindex="-1"></a>);</span></code></pre></div>
-<p>The syntax for creating a table uses the keywords <code>CREATE</code>
-and <code>TABLE</code> and then the name of the table. After the table
-name, each column in the table is listed with its datatype and any
-constraints added to the columns. Keywords are used to define the
-datatypes and column constraints. Aside from the keywords, the SQL
-statement used to create a table is the same as the model. A detailed
-discussion of this syntax is presented in a later lesson on creating and
-manipulating tables.</p>
-<p>The artist table is now ready for data. Suppose you want to add a row
-to the database for the artist Pierre-Auguste Renoir. The values for
-each attribute of Renoir are below:</p>
-<div class="table">
-<table style="width:100%;">
-<colgroup>
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-</colgroup>
-<thead>
-<tr>
-<th>artist_id</th>
-<th>full_name</th>
-<th>first_name</th>
-<th>last_name</th>
-<th>middle_names</th>
-<th>style</th>
-<th>nationality</th>
-<th>birth</th>
-<th>death</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>500</td>
-<td>Pierre-Auguste Renoir</td>
-<td>Pierre</td>
-<td>Renoir</td>
-<td>Auguste</td>
-<td>Impressionist</td>
-<td>French</td>
-<td>1841</td>
-<td>1919</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>The SQL statement used to add the row for Renoir to the database
-is:</p>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> artist (artist_id, full_name, first_name, last_name, middle_names, style, nationality, birth, death)</span>
-<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">500</span>, <span class="st">&#39;Pierre-Auguste Renoir&#39;</span>, <span class="st">&#39;Pierre&#39;</span>, <span class="st">&#39;Renoir&#39;</span>, <span class="st">&#39;Auguste&#39;</span>, <span class="st">&#39;Impressionist&#39;</span>, <span class="st">&#39;French&#39;</span>, <span class="dv">1841</span>, <span class="dv">1919</span>);</span></code></pre></div>
-<p>Notice the keywords <code>INSERT</code> and <code>INTO</code> then
-the name of the table, artist. The columns you will add a value for are
-then listed in parentheses. Next the keyword <code>VALUES</code> is
-inserted. Finally, the values to be added to the table are listed in
-parentheses. Again, the SQL statements for inserting new rows into a
-database table will be discussed in a later lesson on creating and
-manipulating tables.</p>
-<h2 data-number="3.5" id="summary"><span
-class="header-section-number">3.5</span> Summary</h2>
-<p>This lesson described the process used to model and design a database
-table. First a model of the business domain is developed. This model
-serves as the starting point for a database diagram. Once the business
-domain is understood, it is time to select the database platform to be
-used. With the database platform in mind, the business domain model is
-further developed into a database model that ensures the atomicity of
-column values and the designation of primary and foreign keys. Before
-the database can be built, the domain of the columns must be defined.
-The lesson concludes by presenting the SQL statements used to create a
-table and add a new row to the table.</p>
+<h1 data-number="3" id="designing-database-tables"><span
+class="header-section-number">3</span> Designing Database Tables</h1>
+<div class="learning">
+<p>Learning Objectives</p>
+<div class="objectives">
+<blockquote>
+<p>:</p>
+<ol type="1">
+<li>Describe the steps in designing database tables.</li>
+<li>Describe the business domain model of a proposed database.</li>
+<li>Understand how to create a database model.</li>
+<li>Understand basic syntax to build database tables and insert data
+into a table.</li>
+</ol>
+</blockquote>
+</div>
+</div>
+<h2 data-number="3.1" id="designing-database-tables-1"><span
+class="header-section-number">3.1</span> Designing Database Tables</h2>
+<p>In order to effectively interact with a database, you first need to
+know how the data in the database are organized. To understand the
+organization of data in a database, it is helpful to know the basic
+principles of database modeling and design. Because the focus of this
+book is not the nuances of database modeling and design, the design
+topics covered in this book provide just enough detail on database
+design to help you interact with databases.</p>
+<p>This lesson is a reflection of that. It is not a complete treatment
+of database design. It focuses on the design of individual database
+tables. A later lesson on joining tables describes how to model the
+relationships among database tables. A later lesson on database modeling
+and normalization covers the rules to consider to optimally design a
+database to reduce or eliminate errors in the data stored in a
+database.</p>
+<p>This lesson will describe two important ways to model data: the
+business model and the database model. Additionally, it will describe
+how to implement a database model into database tables and rows of data
+in those tables. Understanding these concepts will help you to write SQL
+statements to effectively retrieve and manipulate the data in a
+database.</p>
+<h2 data-number="3.2" id="the-business-model"><span
+class="header-section-number">3.2</span> The Business Model</h2>
+<p>Before describing what is meant by the business model of a database,
+it is important to describe what is meant by <em>business</em> and
+<em>model</em>. Business is meant in the most generic of ways. For the
+purposes of this discussion, the business is the organization or
+individual that has a data need. Business is an appropriate term,
+because it implies that the data will be put into action to complete a
+user or organizational task. When creating a business model, you must
+first understand the need for the database and the tasks that will be
+performed with the data.</p>
+<div class="term">
+<blockquote>
+<p><strong>Business</strong> — An organization or individual that has a
+data need.</p>
+</blockquote>
+</div>
+<p>It is equally important to understand the second term, model. A model
+is a representation of something else, generally in a scaled or
+simplified form. In general, the more complex a model is, the better it
+approximates what it represents. Of course, increasing complexity comes
+at an increased cost. Because of this, care must be taken when creating
+a model that it be just complex enough to serve the purposes of the
+model.</p>
+<div class="term">
+<blockquote>
+<p><strong>Model</strong> — A representation of something else,
+generally in a scaled or simplified form.</p>
+</blockquote>
+</div>
+<p>Two elements of a model are important to determining how complex a
+model should be. First, you should consider the relevance of various
+aspects of a model. Something is relevant if it is needed or helpful for
+completing the intended use of the model. For example, if you were
+building a model of a person, you could include any number of
+characteristics of people (hair color, blood type, height, weight, IQ,
+and more). If you are using the model to determine which people to admit
+to an MBA program, only a few characteristics will actually be relevant
+(such as grade point average and GMAT scores). If the model is used to
+recruit players for a university soccer team, other characteristics will
+be relevant. In general, only relevant characteristics should be
+included in a model.</p>
+<div class="term">
+<blockquote>
+<p><strong>Relevance</strong> — A characteristic that is needed or
+helpful for completing the intended use of the model.</p>
+</blockquote>
+</div>
+<p>Second, you should consider the granularity of the model. Granularity
+refers to the level of detail of the model. As with relevance,
+granularity is best understood in the context of the task to be
+performed by the model. If you are using a model to track the monthly
+sales of a company, you probably only need to see the monthly sales
+totals for the organization. On the other hand, if you are trying to
+determine which times of the day are most profitable for the company,
+you would need to track hourly sales totals (or even individual
+transactions). Hourly sales totals are more detailed (or more granular)
+than monthly totals.</p>
+<div class="term">
+<blockquote>
+<p><strong>Granularity</strong> — The level of detail of the model.</p>
+</blockquote>
+</div>
+<p>When constructing a business model of a database, you are concerned
+with understanding the business needs for the database and the tasks
+that the database will support. In constructing the model, you must
+determine what characteristics of the business and tasks are relevant.
+You must also determine the level of detail or granularity of the data
+to be stored. This is best done by talking to the people who will use
+the database to support their work.</p>
+<h3 data-number="3.2.1" id="building-a-database-diagram"><span
+class="header-section-number">3.2.1</span> Building a database
+diagram</h3>
+<p>One important tool available to SQL programmers is a database
+diagram. This diagram depicts entities, attributes of entities, and the
+relationships among the entities. It is a graphical depiction of the
+data that are stored in the database and is helpful in writing queries
+of the database.</p>
+<p>Simply put, an entity is a thing. In the context of a business model
+of a database, an entity is something that you want to store information
+about. An attribute is a characteristic of an entity. Finally, a
+relationship describes how entities are associated. A business model is
+often the starting point for a database diagram, because the business
+model describes the business entities to be represented in the database,
+the attributes of those entities, and the relationships among the
+business entities. An example database diagram is depicted below (see
+Figure 1).</p>
+<div class="term">
+<blockquote>
+<p><strong>Entity</strong> — Something that you want to store
+information about.</p>
+</blockquote>
+</div>
+<div class="term">
+<blockquote>
+<p><strong>Attribute</strong> — A characteristic of an entity.</p>
+</blockquote>
+</div>
+<div class="term">
+<blockquote>
+<p><strong>Relationship</strong> — The associations among entities.</p>
+</blockquote>
+</div>
+<p><img
+src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhSaQHsExG3hTy8vXdN87TCJ9GSIqNHz5VJkrL--ub82t7OPbFuCZtVEbdV4s1rdlbNrQepRknIq6unO9FWctMOqwcHhPwVnX_GqjajEG31yXyqrI_QpI5wAbxNfpKfFayNscbZU2i-WrpEv3QPl-HnxpteFacHlxqM1EiYyKLwCb6ng3pQRsH7l5OiJwEp/w640-h258/DatabaseDiagramFormat.png" /></p>
+<p><em>Figure 1: Database Diagram Format</em></p>
+<p>Entities are represented by rectangles in a database model diagram.
+Each entity is named. The name of each entity appears at the top of the
+rectangle representing that entity. The attributes are also named. They
+appear within the rectangle that represents that entity under the name
+of the entity. The relationships are depicted as lines connecting the
+entities that are related.</p>
+<h3 data-number="3.2.2"
+id="the-database-diagram-of-the-museum-database"><span
+class="header-section-number">3.2.2</span> The Database Diagram of the
+Museum Database</h3>
+<p>The lessons in this resource will use a database that stores
+information about museums, the artwork exhibited in those museums, and
+the artists who created the works of art. A database diagram can be
+built to depict this database. This diagram would depict the aspects of
+museums, artists, and works of art that are relevant and at the correct
+level of granularity to support the tasks to be performed with the
+database.</p>
+<p>After meeting with the expected users of the database you have
+determined that the database needs to include:</p>
+<ul>
+<li>The name of the artists</li>
+<li>The name of the museums</li>
+<li>The titles of the works of art</li>
+<li>The preferred style of each artist</li>
+<li>The style of the works of art</li>
+<li>The location of the museums</li>
+<li>The nationality of the artists</li>
+<li>The phone number and website of the museums</li>
+<li>The birth and death years of the artists</li>
+</ul>
+<p>The first step in creating the business model of this data is to
+identify the themes in what the database needs to include. In this case,
+it appears that the database needs to include information about artists,
+works of art, and museums. Each of these themes will be a different
+entity in the model. Figure 2 shows the database diagram with these
+entities.</p>
+<p><img
+src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiyjmoaTKSOGiIHPJXOuACrD7CV7QXDNzG0QaaPmcLln5qcQBe4oKUW9EOQR3era1_NxMW7O9UyLGtoU6L3HzUJpkrhmuO60eN9gp9TarreA8QsvEusnVOhA0z3Q2w8cB2AJGA1M9dc9T3-gpT2lFtw605YTmf_cW2fKjofkWYSoXgcItjybGjcNB000klv/w640-h148/DatabaseDiagramNoAttributes.png" /></p>
+<p><em>Figure 2: Simple Museum Database Diagram</em></p>
+<p>After determining the entities for the model, the next step involves
+determining the attributes for each entity. The list of data needs for
+the museum database can be used to determine the attributes of the
+artist, work, and museum entities. The attributes of each might
+include:</p>
+<p>Artist attributes:</p>
+<ul>
+<li>Name (the name of the artists)</li>
+<li>Style (the preferred style of each artist)</li>
+<li>Nationality (the nationality of the artists)</li>
+<li>Birth and Death (the birth and death years of the artists)</li>
+</ul>
+<p>Work attributes:</p>
+<ul>
+<li>Name (the titles of the works of art)</li>
+<li>Style (the style of the works of art)</li>
+</ul>
+<p>Museum attributes:</p>
+<ul>
+<li>Name (the name of the museums)</li>
+<li>Location (the location of the museums)</li>
+<li>Contact Information (the phone number and website of the
+museums)</li>
+</ul>
+<p>For simplicity, you should create a descriptive name for each
+attribute, as in the previous lists, when you add it to the diagram.
+Figure 3 shows the database diagram with the attributes of each
+entity.</p>
+<p><img
+src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgzn_nXa6x35UA-9FiXAbuiZTnw0mT5Wjxh4I2TuTdhqYQlqR4iiWNdygpTsMZ6iUpClk4OA-UlyMo2NzAvgHD1cwJYp6eITqExpdR2AjnnAfxO7ko6f3uXnt68poqkzlqpjplNWl1IAmbzEeiBQP36-uCHJTP64cCYOkefRO0O1gKvw1v1RCzK-l_4FKas/w640-h154/DatabaseDiagramAttributes.png" /></p>
+<p><em>Figure 3: Museum Database Diagram with Attributes</em></p>
+<p>The final step in the process involves modeling the relationships
+among the entities. Relationships are discussed in detail in a later
+lesson on joining tables. Notice that relationships are included in
+Figure 3. In this model, the artist and work entities are related. This
+makes sense. Artists are responsible for creating works. The work and
+museum entities are also related. Again this makes sense. Museums
+contain works of art.</p>
+<p>As you can see, the database diagram tells you a lot about the
+database. It shows the major themes (entities) in the data and the
+individual attributes of each entity. It also describes how the entities
+relate to each other. It can be developed further to contain enough
+technical detail to serve as the blueprint of a database.</p>
+<h2 data-number="3.3" id="the-database-model"><span
+class="header-section-number">3.3</span> The Database Model</h2>
+<p>At this point in the modeling process, the business model is
+complete. It can be used as the basis for creating the database model.
+The business model provides a conceptual blueprint for the data, but it
+is not sufficient to be used as a blueprint for the database. To develop
+the model further to the point that it can be used as the blueprint of a
+database, you must first decide the type of database you want to use.
+There are a number of types of databases. These include relational,
+hierarchical, network, and other types of databases. The relational
+database model is used in this book. A complete discussion of the types
+of databases is not provided in these lessons.</p>
+<p>A relational database stores data in two-dimensional tables as
+described in the lesson on understanding SQL. A database diagram can be
+easily used as the basis for a relational database. Each of the entities
+in the business model will become the tables of the relational database,
+and the attributes become the columns of these tables. The requirements
+of a relational database are not completely filled with a business
+model. In particular, you must ensure that the columns represented in
+the model are atomic, that a primary key has been designated, and the
+domain of the columns are defined.</p>
+<h3 data-number="3.3.1" id="atomic-columns"><span
+class="header-section-number">3.3.1</span> Atomic Columns</h3>
+<p>First, the columns in a relational database should be atomic. This
+means that they need to be decomposed to their smallest useful form. For
+example, the column location in the museum table is not atomic. It
+includes the street address, city, state, country, and postal code of
+each museum. Including all of this information in one column is
+problematic. The data is not consistent across the museums (for example,
+not all countries have states). It would also be difficult to sort or
+filter the data by an element of the data, like country.</p>
+<p>To fix this problem, location should be split into multiple columns
+that are each atomic. In this example, location should be split into
+columns for address, city, state, country, and postal code. Many of the
+attributes in the business model diagram of the museum database are not
+atomic. The attributes for each entity are listed below, and rated
+whether they are atomic or not. If they are not atomic, suggestions are
+made to make them atomic.</p>
+<div class="term">
+<blockquote>
+<p><strong>Atomic</strong> — A value that is decomposed to its smallest
+useful form.</p>
+</blockquote>
+</div>
+<p>Artist attributes:</p>
+<ul>
+<li>Name: not atomic (split to first_name, last_name, and middle_name
+columns)</li>
+<li>Style: atomic</li>
+<li>Nationality: atomic</li>
+<li>Birth and Death: not atomic (split to birth and death columns)</li>
+</ul>
+<p>Work attributes:</p>
+<ul>
+<li>Name: atomic (the title of a work is in the smallest useful
+form)</li>
+<li>Style: atomic</li>
+</ul>
+<p>Museum attributes:</p>
+<ul>
+<li>Name: atomic</li>
+<li>Location: not atomic (split to address, city, state, country, and
+postal_code columns)</li>
+<li>Contact Information: not atomic (split to phone and website
+columns)</li>
+</ul>
+<p>The database diagram should be updated to reflect these changes.
+Figure 4 shows the updated diagram.</p>
+<p><img
+src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjBsc7u4eu5k3ULi-MOIJ3fbv91oncU8KDFHhWec8TTgxJLvgjYxGe9WLLIMYPMg9mt_h-OC36-j96yepUmgGKXKg8g8h9ooojs5fwanUhFiIEIXEcqY3bj7h9BRHpZfUj_v67iCQNKyeVqg8YgXrImTY76Wpg7tYkj9Yzyzj7skgZxMR5snKjlSQqc3mqz/w640-h240/DatabaseDiagramAtomicAttributes.png" /></p>
+<p><em>Figure 4: Museum Database Diagram with Atomic Attributes</em></p>
+<h3 data-number="3.3.2" id="primary-keys"><span
+class="header-section-number">3.3.2</span> Primary Keys</h3>
+<p>Each table in a relational database should also have a primary key.
+The primary key is a column that keeps each of the rows of the table
+unique. The values in the primary key column must be different for each
+row of the table, cannot be blank, and should not change. In some
+tables, one or more existing columns might meet these criteria and
+qualify as a candidate key. A candidate key is an existing column of a
+database table that could be the primary key (it is unique, does not
+contain blank values, and will not change). If a table has a candidate
+key, it could be designated as the primary key for the table.</p>
+<div class="term">
+<blockquote>
+<p><strong>Candidate Key</strong> — An existing column of a database
+table that could be the primary key.</p>
+</blockquote>
+</div>
+<p>Often there is not an existing column on a table that is a candidate
+key. Examine the columns of the artist table in the museum database.
+None of the existing columns of the table are candidate keys, because
+none of them are unique. Take the first name of the artists. More than
+one artist could have the same first name. The first name column is not
+a good candidate to be the primary key. It is equally unlikely that any
+of the columns of the artist table will be unique.</p>
+<div class="note">
+<blockquote>
+<p><strong>Choosing Primary Keys Carefully.</strong> This raises an
+important point. It may well be that all of the artists that are
+currently in the database have a different first name. This means that
+the first name could be used as the primary key now. However, additional
+artists might be added to the database in the future. If a new artist
+has the same first name as one of the existing artists, the values for
+first name would no longer be unique. Whenever possible it is best to
+design the database anticipating the implications of adding new
+data.</p>
+</blockquote>
+</div>
+<p>When a table does not have a candidate key, a surrogate key is
+created to be the primary key. A surrogate key is a column that is added
+to a table for the sole purpose of becoming the primary key. The values
+for a surrogate key don’t describe a meaningful attribute of the entity.
+They just identify instances or rows for the table. A surrogate key,
+<code>artist_id</code>, could be added to the artist table to be the
+primary key. The values for <code>artist_id</code> would be numbers
+assigned to each row of the table to identify each artist.</p>
+<div class="term">
+<blockquote>
+<p><strong>Surrogate Key</strong> — A column that is added to a table
+for the sole purpose of becoming the primary key. The values for a
+surrogate key don’t describe a meaningful attribute of the entity.</p>
+</blockquote>
+</div>
+<p>None of the three tables in the museum database have a candidate key.
+Identifiers (surrogate keys) should be added to each table to become the
+primary key. Figure 5 shows the database diagram with the primary keys
+added.</p>
+<p><img
+src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgd2t_ecxgQ0b9y5UmyHh1kF7XbK7ps_K1qzGua01qEeiU_4paleHoZzG0V57E6V8cDPOvRwXThs4hgY0tZy1K8EBc__v7LVukSKve1vggG_HvofsfOEIfXitLt3L5TfGuszVIdikDz1kRMp1441nfZBF8fnXYEhLWLE9SmHLXZyqqPjEXuHul0I5zQq2Tp/w640-h266/DatabaseDiagramPrimaryKeys.png" /></p>
+<p><em>Figure 5: Museum Database Diagram with Primary Keys</em></p>
+<p>At this point, you can consider the database diagram to be nearly
+complete, because you will not add any new tables, columns, or
+relationships to the database until you examine the relationships among
+the tables in the database. You will not examine these relationships in
+detail until a later lesson on joining tables. At that time, foreign
+keys will be added to some of the tables to make it easier to link data
+in different tables together.</p>
+<h3 data-number="3.3.3" id="defining-column-domains"><span
+class="header-section-number">3.3.3</span> Defining Column Domains</h3>
+<p>Although the database diagram is nearly complete, an important design
+element must still be completed before you are ready to create database
+tables and add data to those tables. The domain of each column in the
+tables in the database must be defined. The domain of a column is the
+set of acceptable values that can be stored in the database for that
+column.</p>
+<div class="term">
+<blockquote>
+<p><strong>Domain</strong> — The set of acceptable values that can be
+stored in a database column.</p>
+</blockquote>
+</div>
+<p>One important aspect of domain is the datatype of the column.
+Datatype refers to the kind of data that can be stored in a column.
+Common data types are characters (text), numbers, as well as date and
+time. Depending on the type of database you use, there can be more than
+a dozen data types to choose from. When the datatype of a column is set,
+only values that fit that type can be stored in that column. This is
+helpful, because it prevents data that does not belong in a particular
+column from being stored in that column.</p>
+<p>Once the datatype is defined, additional constraints can be placed on
+the column to more completely define the data to be stored in the
+column. For example, the first_name column on the artist table would
+have a character datatype. You might further constrain the values in the
+column by adding a limit to the number of characters that can be stored
+in a single column.</p>
+<p>Columns that are defined with one of the number data types can be
+further constrained in a few ways. You can set it to store only whole
+numbers (integers), limit the number of decimal places in non-integer
+numbers, or prohibit the storage of certain ranges of values.</p>
+<p>All columns can be constrained to prohibit the storage of blank
+values. A column can also be set to allow only unique values. A more
+complete discussion of data types and the constraints that can be added
+to database columns is presented in a later lesson on creating and
+manipulating tables. The domains for each column in the museum database
+are listed below:</p>
+<p>Artist attributes:</p>
+<ul>
+<li>Artist_id: Integer</li>
+<li>Full_name: Text data limited to 50 characters. May not be blank</li>
+<li>First_name: Text data limited to 20 characters. May not be
+blank</li>
+<li>Last_name: Text data limited to 20 characters.</li>
+<li>Middle_names: Text data limited to 20 characters.</li>
+<li>Style: Text data limited to 25 characters.</li>
+<li>Nationality: Text data limited to 25 characters. May not be
+blank</li>
+<li>Birth: Integer</li>
+<li>Death: Integer</li>
+</ul>
+<p>Work attributes:</p>
+<ul>
+<li>Work_id: Integer</li>
+<li>Name: Text data limited to 50 characters. May not be blank</li>
+<li>Style: Text data limited to 25 characters.</li>
+</ul>
+<p>Museum attributes:</p>
+<ul>
+<li>Museum_id: Integer</li>
+<li>Name: Text data limited to 50 characters. May not be blank</li>
+<li>Address: Text data limited to 50 characters. May not be blank</li>
+<li>City: Text data limited to 25 characters. May not be blank</li>
+<li>State: Text data limited to 25 characters.</li>
+<li>Country: Text data limited to 25 characters.</li>
+<li>Postal_code: Text data limited to 10 characters.</li>
+<li>Phone: Text data limited to 12 characters.</li>
+<li>URL: Text data limited to 50 characters.</li>
+</ul>
+<h3 data-number="3.3.4" id="documenting-the-database-design"><span
+class="header-section-number">3.3.4</span> Documenting the database
+design</h3>
+<p>Adding the domain and constraint information for each column to the
+database diagram would make the diagram unnecessarily complex and more
+difficult to use for creating queries. A text-based modeling tool is
+used to document domain and constraint details (see below). This model
+begins with a list of the tables in the database. The columns for each
+table are listed in parentheses with the datatype and additional
+constraints for each. Primary and foreign keys are designated. The model
+for the museum database is listed below:</p>
+<pre><code>Artist(
+  Artist_id Integer Primary Key,
+  Full_name Text,
+  First_name Text,
+  Last_name Text,
+  Middle_names Text,
+  Style Text,
+  Nationality Text,
+  Birth Integer,
+  Death Integer
+)
+
+Work(
+  Work_id Integer Primary Key,
+  Name Text,
+  Style Text
+)
+
+Museum(
+  Museum_id Integer Primary Key,
+  Name Text,
+  Address Text,
+  City Text,
+  State Text,
+  Country Text,
+  Postal_code Text,
+  Phone Text,
+  URL Text
+)</code></pre>
+<p>As mentioned above, foreign keys should also be designated. Recall
+that foreign keys are used to connect tables together. A later lesson on
+table relationships and cardinality discusses the relationships between
+tables. The text-based design for the museum database will be completed
+as part of that discussion.</p>
+<h2 data-number="3.4" id="building-database-tables"><span
+class="header-section-number">3.4</span> Building Database Tables</h2>
+<p>At this point, the model is detailed enough that it can be used to
+build the database tables and add some data to the tables. The format of
+the schema is very similar to the SQL statements used to create tables.
+The syntax for creating the Artist table is below.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> artist(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  artist_id <span class="dt">INT</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  full_name <span class="dt">VARCHAR</span>(<span class="dv">50</span>),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  first_name <span class="dt">VARCHAR</span>(<span class="dv">20</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  last_name <span class="dt">VARCHAR</span>(<span class="dv">20</span>),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  middle_names <span class="dt">VARCHAR</span>(<span class="dv">20</span>),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  style <span class="dt">VARCHAR</span>(<span class="dv">40</span>),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  nationality <span class="dt">VARCHAR</span>(<span class="dv">40</span>),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  birth <span class="dt">INT</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  death <span class="dt">INT</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
+<p>The syntax for creating a table uses the keywords <code>CREATE</code>
+and <code>TABLE</code> and then the name of the table. After the table
+name, each column in the table is listed with its datatype and any
+constraints added to the columns. Keywords are used to define the
+datatypes and column constraints. Aside from the keywords, the SQL
+statement used to create a table is the same as the model. A detailed
+discussion of this syntax is presented in a later lesson on creating and
+manipulating tables.</p>
+<p>The artist table is now ready for data. Suppose you want to add a row
+to the database for the artist Pierre-Auguste Renoir. The values for
+each attribute of Renoir are below:</p>
+<div class="table">
+<table style="width:100%;">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr>
+<th>artist_id</th>
+<th>full_name</th>
+<th>first_name</th>
+<th>last_name</th>
+<th>middle_names</th>
+<th>style</th>
+<th>nationality</th>
+<th>birth</th>
+<th>death</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>500</td>
+<td>Pierre-Auguste Renoir</td>
+<td>Pierre</td>
+<td>Renoir</td>
+<td>Auguste</td>
+<td>Impressionist</td>
+<td>French</td>
+<td>1841</td>
+<td>1919</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The SQL statement used to add the row for Renoir to the database
+is:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> artist (artist_id, full_name, first_name, last_name, middle_names, style, nationality, birth, death)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">500</span>, <span class="st">&#39;Pierre-Auguste Renoir&#39;</span>, <span class="st">&#39;Pierre&#39;</span>, <span class="st">&#39;Renoir&#39;</span>, <span class="st">&#39;Auguste&#39;</span>, <span class="st">&#39;Impressionist&#39;</span>, <span class="st">&#39;French&#39;</span>, <span class="dv">1841</span>, <span class="dv">1919</span>);</span></code></pre></div>
+<p>Notice the keywords <code>INSERT</code> and <code>INTO</code> then
+the name of the table, artist. The columns you will add a value for are
+then listed in parentheses. Next the keyword <code>VALUES</code> is
+inserted. Finally, the values to be added to the table are listed in
+parentheses. Again, the SQL statements for inserting new rows into a
+database table will be discussed in a later lesson on creating and
+manipulating tables.</p>
+<h2 data-number="3.5" id="summary"><span
+class="header-section-number">3.5</span> Summary</h2>
+<p>This lesson described the process used to model and design a database
+table. First a model of the business domain is developed. This model
+serves as the starting point for a database diagram. Once the business
+domain is understood, it is time to select the database platform to be
+used. With the database platform in mind, the business domain model is
+further developed into a database model that ensures the atomicity of
+column values and the designation of primary and foreign keys. Before
+the database can be built, the domain of the columns must be defined.
+The lesson concludes by presenting the SQL statements used to create a
+table and add a new row to the table.</p>
 <!--postEnd-->
               </div>
 </div>
@@ -712,8 +719,8 @@ table and add a new row to the table.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZoadpFMU7zcUR4_pu1TYq79:1785190022394';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/3.html','3986204447440040189');
-_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/3.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/3.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/40015644013862203/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/9191fc3f3dc7f81d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '40015644013862203', 'postImageThumbnailUrl': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhSaQHsExG3hTy8vXdN87TCJ9GSIqNHz5VJkrL--ub82t7OPbFuCZtVEbdV4s1rdlbNrQepRknIq6unO9FWctMOqwcHhPwVnX_GqjajEG31yXyqrI_QpI5wAbxNfpKfFayNscbZU2i-WrpEv3QPl-HnxpteFacHlxqM1EiYyKLwCb6ng3pQRsH7l5OiJwEp/s72-w640-c-h258/DatabaseDiagramFormat.png', 'postImageUrl': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhSaQHsExG3hTy8vXdN87TCJ9GSIqNHz5VJkrL--ub82t7OPbFuCZtVEbdV4s1rdlbNrQepRknIq6unO9FWctMOqwcHhPwVnX_GqjajEG31yXyqrI_QpI5wAbxNfpKfFayNscbZU2i-WrpEv3QPl-HnxpteFacHlxqM1EiYyKLwCb6ng3pQRsH7l5OiJwEp/w640-h258/DatabaseDiagramFormat.png', 'pageName': '3. Designing Database Tables', 'pageTitle': 'book1014 SQL: 3. Designing Database Tables'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '3. Designing Database Tables', 'description': 'websql  3  Designing Database Tables \r \r Learning Objectives \r \r \r : \r \r Describe the steps in designing database tables. \r Describe the bus...', 'featuredImage': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhSaQHsExG3hTy8vXdN87TCJ9GSIqNHz5VJkrL--ub82t7OPbFuCZtVEbdV4s1rdlbNrQepRknIq6unO9FWctMOqwcHhPwVnX_GqjajEG31yXyqrI_QpI5wAbxNfpKfFayNscbZU2i-WrpEv3QPl-HnxpteFacHlxqM1EiYyKLwCb6ng3pQRsH7l5OiJwEp/w640-h258/DatabaseDiagramFormat.png', 'url': 'https://book1014.blogspot.com/2000/02/3.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 40015644013862203}}]);
+window['__wavt'] = 'AEUoTZoarzZAejp0Vo_M2WqY9_8a:1785332707869';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//sql.availabooks.com/2000/02/3.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://sql.availabooks.com/2000/02/3.html', 'canonicalUrl': 'https://sql.availabooks.com/2000/02/3.html', 'homepageUrl': 'https://sql.availabooks.com/', 'searchUrl': 'https://sql.availabooks.com/search', 'canonicalHomepageUrl': 'https://sql.availabooks.com/', 'blogspotFaviconUrl': 'https://sql.availabooks.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': true, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://sql.availabooks.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://sql.availabooks.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://sql.availabooks.com/feeds/40015644013862203/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/68dd02567aef746f', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '40015644013862203', 'postImageThumbnailUrl': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhSaQHsExG3hTy8vXdN87TCJ9GSIqNHz5VJkrL--ub82t7OPbFuCZtVEbdV4s1rdlbNrQepRknIq6unO9FWctMOqwcHhPwVnX_GqjajEG31yXyqrI_QpI5wAbxNfpKfFayNscbZU2i-WrpEv3QPl-HnxpteFacHlxqM1EiYyKLwCb6ng3pQRsH7l5OiJwEp/s72-w640-c-h258/DatabaseDiagramFormat.png', 'postImageUrl': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhSaQHsExG3hTy8vXdN87TCJ9GSIqNHz5VJkrL--ub82t7OPbFuCZtVEbdV4s1rdlbNrQepRknIq6unO9FWctMOqwcHhPwVnX_GqjajEG31yXyqrI_QpI5wAbxNfpKfFayNscbZU2i-WrpEv3QPl-HnxpteFacHlxqM1EiYyKLwCb6ng3pQRsH7l5OiJwEp/w640-h258/DatabaseDiagramFormat.png', 'pageName': '3. Designing Database Tables', 'pageTitle': 'book1014 SQL: 3. Designing Database Tables'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '3. Designing Database Tables', 'description': 'websql  3  Designing Database Tables \r \r Learning Objectives \r \r \r : \r \r Describe the steps in designing database tables. \r Describe the bus...', 'featuredImage': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhSaQHsExG3hTy8vXdN87TCJ9GSIqNHz5VJkrL--ub82t7OPbFuCZtVEbdV4s1rdlbNrQepRknIq6unO9FWctMOqwcHhPwVnX_GqjajEG31yXyqrI_QpI5wAbxNfpKfFayNscbZU2i-WrpEv3QPl-HnxpteFacHlxqM1EiYyKLwCb6ng3pQRsH7l5OiJwEp/w640-h258/DatabaseDiagramFormat.png', 'url': 'https://sql.availabooks.com/2000/02/3.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 40015644013862203}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>
 </body>

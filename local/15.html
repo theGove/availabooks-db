@@ -5,6 +5,8 @@
 <meta charset='UTF-8'/>
 <meta content='width=device-width, initial-scale=1' name='viewport'/>
 <title>book1014 SQL</title>
+<!--Favicon or serach results image-->
+<link href='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjwMmqtq5dRpmvlNLPmUDGnytksf0IkGol8E0LwUplx-c0T25cwV7F2QJU5c2NtbR02Gz89UwBFE8sRz3yai5Zo30Wi6Z1Tia1C5cxL3m9NRPJxL8I_vNgfFFp3h-dQ7R3FS-uk2_MsYuQM5UXC3ZzOKGDqh54XJNOdXsF8SkdUhyphenhyphenCgyX8h20hWC4C7kxdR/s1600/android-chrome-192x192.png' rel='icon'/>
 <!-- external libraries -->
 <!--script src='https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js'/-->
 <script src='https://unpkg.com/turndown/dist/turndown.js'></script>
@@ -24,14 +26,13 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 //]]>
 </script>
 <!-- ################################### Set the version of the system that this book uses by specifying the appropraite tag in the next line (dev, stable, etc.) ################################### -->
-<script id='cssScript' src='https://availabooks-system.blogspot.com/feeds/posts/default/-/dev/css?alt=json-in-script&max-results=1&callback=loadCss'></script>
+<script id='cssScript' src='https://system.availabooks.com/feeds/posts/default/-/dev/css?alt=json-in-script&max-results=1&callback=loadCss'></script>
 <!--If we ever get page loads showing before the css loads, we can put the current copy of the css here to be sure there is always soem css, but it seems to load fast enough relying on the call above that brings in css dynamically-->
 <style id='page-skin-1' type='text/css'><!--
 
 --></style>
 <script type='text/javascript'>
 //<![CDATA[
-    const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
 	async function initialize(){
 
       const kind = document.getElementById(`kind`).innerHTML
@@ -59,7 +60,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 
     function getSystemModule(moduleName="system"){
 		console.log(typeof location.hostname)
-		if(location.hostname.startsWith("127") || location.host.toLowerCase().startsWith("localhost")){
+		if(location.hostname==="local.availabooks.com"){
             // get files from localhost
 			fetch(`${location.origin}/tools/api/${moduleName}.js`).then(response => {
                 return response.text(); 
@@ -70,7 +71,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 		}else{
             //get files from blogger production server
       		const systemVersion=document.getElementById("cssScript").src.split("/")[7]
-      		loadCrossOrigin(`https://availabooks-system.blogspot.com/feeds/posts/default/-/${systemVersion}/${moduleName}?alt=json-in-script&max-results=1&callback=loadCode`);      
+      		loadCrossOrigin(`https://system.availabooks.com/feeds/posts/default/-/${systemVersion}/${moduleName}?alt=json-in-script&max-results=1&callback=loadCode`);      
 
        }
 
@@ -95,7 +96,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
     
 //]]>
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=7406691c-95ba-4329-bac1-d9aff7e8554e' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=7406691c-95ba-4329-bac1-d9aff7e8554e' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=5bb5ec5d-4faf-45aa-a658-fe48a34270d7' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=5bb5ec5d-4faf-45aa-a658-fe48a34270d7' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -113,8 +114,9 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 <div id='msg-galley'></div>
 <div class='hide' id='kind'>chapter</div>
 <div class='index-boxnbt'>
-<header class='entry-header'>
+<header class='entry-header' style='display:flex;align-items:center;justify-content:space-between;'>
 <h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>15. Joining Tables</span></h1>
+<span class='material-symbols-outlined menu-button login-button' onclick='handleLogin()' title='Log in'>person</span>
 </header>
 <div id='menu'></div>
 <div class='post-body entry-content' data-blog-id='3986204447440040189' data-post-id='2747303060912102402'>
@@ -129,365 +131,365 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 <blockquote>
 <p>:</p>
 <ol type="1">
-<li>Describe the basics of relational table design and why data is split
+<li>Describe the basics of relational table design and why data is split
 across multiple tables.</li>
 <li>Explain what a join is and why it is needed.</li>
 <li>Create an equijoin (inner join) between two or more tables.</li>
-<li>Describe the Cartesian product problem and how the join condition
+<li>Describe the Cartesian product problem and how the join condition
 prevents it.</li>
 </ol>
 </blockquote>
 </div>
 </div>
 <h2 data-number="15.1" id="understanding-joins"><span class="header-section-number">15.1</span> Understanding Joins</h2>
-<p>One of SQL&#8217;s most powerful features is the capability to join tables
-on-the-fly within data retrieval queries. Joins are one of the most
-important operations that you can perform using SQL SELECT, and a good
-understanding of joins and join syntax is an extremely important part of
+<p>One of SQL’s most powerful features is the capability to join tables
+on-the-fly within data retrieval queries. Joins are one of the most
+important operations that you can perform using SQL SELECT, and a good
+understanding of joins and join syntax is an extremely important part of
 learning SQL.</p>
-<p>Before you can effectively use joins, you must understand relational
-tables and the basics of relational database design. What follows is by
-no means complete coverage of the subject, but it should be enough to
+<p>Before you can effectively use joins, you must understand relational
+tables and the basics of relational database design. What follows is by
+no means complete coverage of the subject, but it should be enough to
 get you up and running.</p>
-<h2 data-number="15.2" id="understanding-relational-tables"><span class="header-section-number">15.2</span> Understanding Relational
+<h2 data-number="15.2" id="understanding-relational-tables"><span class="header-section-number">15.2</span> Understanding Relational
 Tables</h2>
-<p>The best way to understand relational tables is to look at a
-real-world example, one based on the museum database you&#8217;ve used in the
+<p>The best way to understand relational tables is to look at a
+real-world example, one based on the museum database you’ve used in the
 lessons thus far.</p>
-<p>Suppose you had a database table containing a list of works of art,
-with each work in its own row. The kind of information you would store
-with each work would include a name and style, along with information
+<p>Suppose you had a database table containing a list of works of art,
+with each work in its own row. The kind of information you would store
+with each work would include a name and style, along with information
 about the artist who created the work.</p>
-<p>Now suppose that you had multiple works created by the same artist.
-Where would you store the artist information (things like the artist&#8217;s
-name, nationality, and birth and death years)? You wouldn&#8217;t want to
+<p>Now suppose that you had multiple works created by the same artist.
+Where would you store the artist information (things like the artist’s
+name, nationality, and birth and death years)? You wouldn’t want to
 store that data along with the works for several reasons:</p>
 <ul>
-<li>Because the artist information is the same for each work that artist
-created, repeating the information for each work is a waste of time and
+<li>Because the artist information is the same for each work that artist
+created, repeating the information for each work is a waste of time and
 storage space.</li>
-<li>If artist information changes (for example, if an error in the
-artist&#8217;s birth year is corrected), you would need to update every
+<li>If artist information changes (for example, if an error in the
+artist’s birth year is corrected), you would need to update every
 occurrence of the artist information.</li>
-<li>When data is repeated (that is, the artist information is used with
-each work), there is a high likelihood that the data will not be entered
-identically each time. Inconsistent data is extremely difficult to use
+<li>When data is repeated (that is, the artist information is used with
+each work), there is a high likelihood that the data will not be entered
+identically each time. Inconsistent data is extremely difficult to use
 in reporting.</li>
 </ul>
-<p>The key here is that having multiple occurrences of the same data is
-never a good thing, and that principle is the basis for relational
-database design. Relational tables are designed so that information is
-split into multiple tables, one for each data type. The tables are
-related to each other through common values (and thus the relational in
+<p>The key here is that having multiple occurrences of the same data is
+never a good thing, and that principle is the basis for relational
+database design. Relational tables are designed so that information is
+split into multiple tables, one for each data type. The tables are
+related to each other through common values (and thus the relational in
 relational design).</p>
-<p>In our example, you can create two tables &#8212; one for artist
-information and one for work information. The artist table contains all
-the artist information, one table row per artist, along with a unique
-identifier for each artist. This value, called a primary key, is the
+<p>In our example, you can create two tables — one for artist
+information and one for work information. The artist table contains all
+the artist information, one table row per artist, along with a unique
+identifier for each artist. This value, called a primary key, is the
 artist_id.</p>
-<p>The work table stores only work information and no artist-specific
-information other than the artist_id (the artist table&#8217;s primary key).
-This key relates the artist table to the work table, and using this
-artist_id enables you to use the artist table to find the details about
+<p>The work table stores only work information and no artist-specific
+information other than the artist_id (the artist table’s primary key).
+This key relates the artist table to the work table, and using this
+artist_id enables you to use the artist table to find the details about
 the appropriate artist.</p>
 <p>What does this do for you? Well, consider the following:</p>
 <ul>
-<li>Artist information is never repeated, and so time and space are not
+<li>Artist information is never repeated, and so time and space are not
 wasted.</li>
-<li>If artist information changes, you can update a single record, the
+<li>If artist information changes, you can update a single record, the
 one in the artist table. Data in related tables does not change.</li>
-<li>Because no data is repeated, the data used is obviously consistent,
+<li>Because no data is repeated, the data used is obviously consistent,
 making data reporting and manipulation much simpler.</li>
 </ul>
-<p>The bottom line is that relational data can be stored efficiently and
-manipulated easily. Because of this, relational databases scale far
+<p>The bottom line is that relational data can be stored efficiently and
+manipulated easily. Because of this, relational databases scale far
 better than nonrelational databases.</p>
 <div class="term">
 <blockquote>
-<p><strong>Scale</strong> &#8212; Able to handle an increasing load without
-failing. A well-designed database or application is said to scale
+<p><strong>Scale</strong> — Able to handle an increasing load without
+failing. A well-designed database or application is said to scale
 well.</p>
 </blockquote>
 </div>
 <h2 data-number="15.3" id="why-use-joins"><span class="header-section-number">15.3</span> Why Use Joins?</h2>
-<p>As just explained, breaking data into multiple tables enables more
-efficient storage, easier manipulation, and greater scalability. But
+<p>As just explained, breaking data into multiple tables enables more
+efficient storage, easier manipulation, and greater scalability. But
 these benefits come with a price.</p>
-<p>If data is stored in multiple tables, how can you retrieve that data
+<p>If data is stored in multiple tables, how can you retrieve that data
 with a single SELECT statement?</p>
-<p>The answer is to use a join. Simply put, a join is a mechanism used
-to associate, or join, tables within a SELECT statement (and thus the
-name join). By using a special syntax, you can join multiple tables so
-that a single set of output is returned, and the join associates the
+<p>The answer is to use a join. Simply put, a join is a mechanism used
+to associate, or join, tables within a SELECT statement (and thus the
+name join). By using a special syntax, you can join multiple tables so
+that a single set of output is returned, and the join associates the
 correct rows in each table on the fly.</p>
 <div class="note">
 <blockquote>
-<p><strong>Using Interactive DBMS Tools.</strong> Understand that a join
-is not a physical entity; in other words, it does not exist in the
-actual database tables. A join is created by the DBMS as needed, and it
-persists for the duration of the query execution. Many DBMSs provide
-graphical interfaces that can be used to define table relationships
-interactively. These tools can be invaluable in helping to maintain
-referential integrity. When you are using relational tables, it is
-important that only valid data is inserted into relational columns.
-Going back to the example, if an invalid artist_id is stored in the work
-table, those works would be inaccessible because they would not be
-related to any artist. To prevent this from occurring, you can instruct
-the database to only allow valid values (ones present in the artist
-table) in the artist_id column in the work table. Referential integrity
-means that the DBMS enforces data integrity rules. And these rules are
+<p><strong>Using Interactive DBMS Tools.</strong> Understand that a join
+is not a physical entity; in other words, it does not exist in the
+actual database tables. A join is created by the DBMS as needed, and it
+persists for the duration of the query execution. Many DBMSs provide
+graphical interfaces that can be used to define table relationships
+interactively. These tools can be invaluable in helping to maintain
+referential integrity. When you are using relational tables, it is
+important that only valid data is inserted into relational columns.
+Going back to the example, if an invalid artist_id is stored in the work
+table, those works would be inaccessible because they would not be
+related to any artist. To prevent this from occurring, you can instruct
+the database to only allow valid values (ones present in the artist
+table) in the artist_id column in the work table. Referential integrity
+means that the DBMS enforces data integrity rules. And these rules are
 often managed through DBMS provided interfaces.</p>
 </blockquote>
 </div>
 <h2 data-number="15.4" id="creating-a-join"><span class="header-section-number">15.4</span> Creating a Join</h2>
-<p>Creating a join is very simple. You must specify all the tables to be
-included and how they are related to each other. Suppose you want to
-list the full name of each artist along with the name and style of each
-of their works. You can use a chat with an AI assistant to create the
+<p>Creating a join is very simple. You must specify all the tables to be
+included and how they are related to each other. Suppose you want to
+list the full name of each artist along with the name and style of each
+of their works. You can use a chat with an AI assistant to create the
 SELECT statement that will do this:</p>
 <div class="ai-conversation" data-prompt="Write a SQL statement to list the full_name of each artist along with the name and style of each work they created. The artist table and the work table are related through artist_id.">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to list the full_name of each artist along with the name and style of each work they created. The artist table and the work table are related through artist_id.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To combine data from both tables, you list both tables in the FROM
-clause and use a WHERE clause to match the artist_id in each table.
-Here&#8217;s the SQL statement:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, name, style</span>
-<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">FROM</span> artist, <span class="kw">work</span></span>
+<p>To combine data from both tables, you list both tables in the FROM
+clause and use a WHERE clause to match the artist_id in each table.
+Here’s the SQL statement:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, name, style</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">FROM</span> artist, <span class="kw">work</span></span>
 <span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="kw">WHERE</span> artist.artist_id <span class="op">=</span> <span class="kw">work</span>.artist_id;</span></code></pre></div>
-<p>The FROM clause lists both the artist and work tables. The WHERE
-clause tells the DBMS to only pair rows where the artist_id in the
-artist table matches the artist_id in the work table &#8212; in other words,
+<p>The FROM clause lists both the artist and work tables. The WHERE
+clause tells the DBMS to only pair rows where the artist_id in the
+artist table matches the artist_id in the work table — in other words,
 to only pair each work with the artist who actually created it.</p>
 </blockquote>
 </div>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, name, style</span>
-<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">FROM</span> artist, <span class="kw">work</span></span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, name, style</span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">FROM</span> artist, <span class="kw">work</span></span>
 <span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a><span class="kw">WHERE</span> artist.artist_id <span class="op">=</span> <span class="kw">work</span>.artist_id;</span></code></pre></div>
-<p>Let&#8217;s take a look at the preceding code. The SELECT statement starts
-in the same way as all the statements you&#8217;ve looked at thus far, by
-specifying the columns to be retrieved. The big difference here is that
-one of the specified columns (full_name) is in one table, whereas the
+<p>Let’s take a look at the preceding code. The SELECT statement starts
+in the same way as all the statements you’ve looked at thus far, by
+specifying the columns to be retrieved. The big difference here is that
+one of the specified columns (full_name) is in one table, whereas the
 other two (name and style) are in another table.</p>
-<p>Now look at the FROM clause. Unlike all the prior SELECT statements,
-this one has two tables listed in the FROM clause, artist and work.
-These are the names of the two tables that are being joined in this
-SELECT statement. The tables are correctly joined with a WHERE clause
-that instructs the DBMS to match artist_id in the artist table with
+<p>Now look at the FROM clause. Unlike all the prior SELECT statements,
+this one has two tables listed in the FROM clause, artist and work.
+These are the names of the two tables that are being joined in this
+SELECT statement. The tables are correctly joined with a WHERE clause
+that instructs the DBMS to match artist_id in the artist table with
 artist_id in the work table.</p>
-<p>You&#8217;ll notice that the columns are specified as
-<code>artist.artist_id</code> and <code>work.artist_id</code>. This
-fully qualified column name is required here because if you just
-specified artist_id, the DBMS cannot tell which artist_id column you are
-referring to. (There are two of them, one in each table.) As you can
-see, a single SELECT statement returns data from two different
+<p>You’ll notice that the columns are specified as
+<code>artist.artist_id</code> and <code>work.artist_id</code>. This
+fully qualified column name is required here because if you just
+specified artist_id, the DBMS cannot tell which artist_id column you are
+referring to. (There are two of them, one in each table.) As you can
+see, a single SELECT statement returns data from two different
 tables.</p>
 <div class="caution">
 <blockquote>
-<p><strong>Fully Qualifying Column Names.</strong> As noted in the
-previous lesson, you must use the fully qualified column name (table and
-column separated by a period) whenever there is a possible ambiguity
-about which column you are referring to. Most DBMSs will return an error
-message if you refer to an ambiguous column name without fully
+<p><strong>Fully Qualifying Column Names.</strong> As noted in the
+previous lesson, you must use the fully qualified column name (table and
+column separated by a period) whenever there is a possible ambiguity
+about which column you are referring to. Most DBMSs will return an error
+message if you refer to an ambiguous column name without fully
 qualifying it with a table name.</p>
 </blockquote>
 </div>
-<h2 data-number="15.5" id="the-importance-of-the-where-clause"><span class="header-section-number">15.5</span> The Importance of the WHERE
+<h2 data-number="15.5" id="the-importance-of-the-where-clause"><span class="header-section-number">15.5</span> The Importance of the WHERE
 Clause</h2>
-<p>It might seem strange to use a WHERE clause to set the join
-relationship, but actually, there is a very good reason for this.
-Remember, when tables are joined in a SELECT statement, that
-relationship is constructed on the fly. There is nothing in the database
-table definitions that can instruct the DBMS how to join the tables. You
-have to do that yourself. When you join two tables, what you are
-actually doing is pairing every row in the first table with every row in
-the second table. The WHERE clause acts as a filter to only include rows
-that match the specified filter condition &#8212; the join condition, in this
-case. Without the WHERE clause, every row in the first table will be
-paired with every row in the second table, regardless of whether they
+<p>It might seem strange to use a WHERE clause to set the join
+relationship, but actually, there is a very good reason for this.
+Remember, when tables are joined in a SELECT statement, that
+relationship is constructed on the fly. There is nothing in the database
+table definitions that can instruct the DBMS how to join the tables. You
+have to do that yourself. When you join two tables, what you are
+actually doing is pairing every row in the first table with every row in
+the second table. The WHERE clause acts as a filter to only include rows
+that match the specified filter condition — the join condition, in this
+case. Without the WHERE clause, every row in the first table will be
+paired with every row in the second table, regardless of whether they
 logically go together or not.</p>
 <div class="term">
 <blockquote>
-<p><strong>Cartesian Product</strong> &#8212; The results returned by a table
-relationship without a join condition. The number of rows retrieved will
-be the number of rows in the first table multiplied by the number of
+<p><strong>Cartesian Product</strong> — The results returned by a table
+relationship without a join condition. The number of rows retrieved will
+be the number of rows in the first table multiplied by the number of
 rows in the second table.</p>
 </blockquote>
 </div>
 <p>To understand this, look at the following SELECT statement:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, name, style</span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, name, style</span>
 <span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">FROM</span> artist, <span class="kw">work</span>;</span></code></pre></div>
-<p>If the artist table has 421 rows and the work table has several
-thousand rows, the Cartesian product is seldom what you want. The data
-returned here has matched every work with every artist, including works
-with the incorrect artist (and even artists with no works at all
+<p>If the artist table has 421 rows and the work table has several
+thousand rows, the Cartesian product is seldom what you want. The data
+returned here has matched every work with every artist, including works
+with the incorrect artist (and even artists with no works at all
 recorded in this result).</p>
 <div class="caution">
 <blockquote>
-<p><strong>Don&#8217;t Forget the WHERE Clause.</strong> Make sure all your
-joins have WHERE clauses; otherwise, the DBMS will return far more data
-than you want. Similarly, make sure your WHERE clauses are correct. An
-incorrect filter condition will cause the DBMS to return incorrect
+<p><strong>Don’t Forget the WHERE Clause.</strong> Make sure all your
+joins have WHERE clauses; otherwise, the DBMS will return far more data
+than you want. Similarly, make sure your WHERE clauses are correct. An
+incorrect filter condition will cause the DBMS to return incorrect
 data.</p>
 </blockquote>
 </div>
 <div class="tip">
 <blockquote>
-<p><strong>Cross Joins.</strong> Sometimes you&#8217;ll hear the type of join
+<p><strong>Cross Joins.</strong> Sometimes you’ll hear the type of join
 that returns a Cartesian product referred to as a cross join.</p>
 </blockquote>
 </div>
 <h2 data-number="15.6" id="inner-joins"><span class="header-section-number">15.6</span> Inner Joins</h2>
-<p>The join you have been using so far is called an equijoin &#8212; a join
-based on the testing of equality between two tables. This kind of join
-is also called an inner join. In fact, you may use a slightly different
-syntax for these joins, specifying the type of join explicitly. The
-following SELECT statement returns the exact same data as an earlier
+<p>The join you have been using so far is called an equijoin — a join
+based on the testing of equality between two tables. This kind of join
+is also called an inner join. In fact, you may use a slightly different
+syntax for these joins, specifying the type of join explicitly. The
+following SELECT statement returns the exact same data as an earlier
 example:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, name, style</span>
-<span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, name, style</span>
+<span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
 <span id="cb4-3"><a aria-hidden="true" href="#cb4-3" tabindex="-1"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> <span class="kw">work</span> <span class="kw">ON</span> artist.artist_id <span class="op">=</span> <span class="kw">work</span>.artist_id;</span></code></pre></div>
-<p>The SELECT in the statement is the same as the preceding SELECT
-statement, but the FROM clause is different. Here the relationship
-between the two tables is part of the FROM clause specified as INNER
-JOIN. In this syntax, the join condition is specified using the special
-ON clause instead of a WHERE clause. The actual condition passed to ON
+<p>The SELECT in the statement is the same as the preceding SELECT
+statement, but the FROM clause is different. Here the relationship
+between the two tables is part of the FROM clause specified as INNER
+JOIN. In this syntax, the join condition is specified using the special
+ON clause instead of a WHERE clause. The actual condition passed to ON
 is the same as would be passed to WHERE.</p>
-<p>Refer to your DBMS documentation to see which syntax is
+<p>Refer to your DBMS documentation to see which syntax is
 preferred.</p>
 <div class="note">
 <blockquote>
-<p><strong>The &#8220;Right&#8221; Syntax.</strong> Per the ANSI SQL specification,
-use of the INNER JOIN syntax is preferred over the simple equijoin
-syntax used previously. Indeed, SQL purists tend to look upon the simple
-syntax with disdain. That being said, DBMSs do indeed support both the
-simpler and the standard formats, so the recommendation is that you take
-the time to understand both formats but use whichever you feel more
+<p><strong>The “Right” Syntax.</strong> Per the ANSI SQL specification,
+use of the INNER JOIN syntax is preferred over the simple equijoin
+syntax used previously. Indeed, SQL purists tend to look upon the simple
+syntax with disdain. That being said, DBMSs do indeed support both the
+simpler and the standard formats, so the recommendation is that you take
+the time to understand both formats but use whichever you feel more
 comfortable with.</p>
 </blockquote>
 </div>
 <h2 data-number="15.7" id="joining-multiple-tables"><span class="header-section-number">15.7</span> Joining Multiple Tables</h2>
-<p>SQL imposes no limit to the number of tables that may be joined in a
-SELECT statement. The basic rules for creating the join remain the same.
-First, list all the tables, and then define the relationship between
-each. Suppose you want to list the subject, artist name, work title, and
-style for the work with work_id 210. You can use a chat with an AI
+<p>SQL imposes no limit to the number of tables that may be joined in a
+SELECT statement. The basic rules for creating the join remain the same.
+First, list all the tables, and then define the relationship between
+each. Suppose you want to list the subject, artist name, work title, and
+style for the work with work_id 210. You can use a chat with an AI
 assistant to create the SELECT statement that will do this:</p>
 <div class="ai-conversation" data-prompt="Write a SQL statement to list the subject, artist full_name, work name, and style for the work with work_id 210. The subject table relates to the work table through work_id, and the work table relates to the artist table through artist_id.">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to list the subject, artist full_name, work name, and style for the work with work_id 210. The subject table relates to the work table through work_id, and the work table relates to the artist table through artist_id.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>This requires joining three tables: subject, work, and artist. Here&#8217;s
+<p>This requires joining three tables: subject, work, and artist. Here’s
 the SQL statement:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> subject.subject, full_name, name, style</span>
-<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="kw">FROM</span> subject, <span class="kw">work</span>, artist</span>
-<span id="cb5-3"><a aria-hidden="true" href="#cb5-3" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">work</span>.artist_id <span class="op">=</span> artist.artist_id</span>
-<span id="cb5-4"><a aria-hidden="true" href="#cb5-4" tabindex="-1"></a><span class="kw">AND</span> subject.work_id <span class="op">=</span> <span class="kw">work</span>.work_id</span>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> subject.subject, full_name, name, style</span>
+<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="kw">FROM</span> subject, <span class="kw">work</span>, artist</span>
+<span id="cb5-3"><a aria-hidden="true" href="#cb5-3" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">work</span>.artist_id <span class="op">=</span> artist.artist_id</span>
+<span id="cb5-4"><a aria-hidden="true" href="#cb5-4" tabindex="-1"></a><span class="kw">AND</span> subject.work_id <span class="op">=</span> <span class="kw">work</span>.work_id</span>
 <span id="cb5-5"><a aria-hidden="true" href="#cb5-5" tabindex="-1"></a><span class="kw">AND</span> subject.work_id <span class="op">=</span> <span class="dv">210</span>;</span></code></pre></div>
-<p>The FROM clause lists all three tables. The first two WHERE
-conditions join work to artist and subject to work, respectively. The
-third WHERE condition filters the result down to just the rows related
+<p>The FROM clause lists all three tables. The first two WHERE
+conditions join work to artist and subject to work, respectively. The
+third WHERE condition filters the result down to just the rows related
 to work_id 210.</p>
 </blockquote>
 </div>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> subject.subject, full_name, name, style</span>
-<span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a><span class="kw">FROM</span> subject, <span class="kw">work</span>, artist</span>
-<span id="cb6-3"><a aria-hidden="true" href="#cb6-3" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">work</span>.artist_id <span class="op">=</span> artist.artist_id</span>
-<span id="cb6-4"><a aria-hidden="true" href="#cb6-4" tabindex="-1"></a><span class="kw">AND</span> subject.work_id <span class="op">=</span> <span class="kw">work</span>.work_id</span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> subject.subject, full_name, name, style</span>
+<span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a><span class="kw">FROM</span> subject, <span class="kw">work</span>, artist</span>
+<span id="cb6-3"><a aria-hidden="true" href="#cb6-3" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">work</span>.artist_id <span class="op">=</span> artist.artist_id</span>
+<span id="cb6-4"><a aria-hidden="true" href="#cb6-4" tabindex="-1"></a><span class="kw">AND</span> subject.work_id <span class="op">=</span> <span class="kw">work</span>.work_id</span>
 <span id="cb6-5"><a aria-hidden="true" href="#cb6-5" tabindex="-1"></a><span class="kw">AND</span> subject.work_id <span class="op">=</span> <span class="dv">210</span>;</span></code></pre></div>
-<p>This example displays every subject recorded for the work with
-work_id 210, along with the artist&#8217;s name, the work&#8217;s title, and its
-style. Each subject is stored by its work_id, which refers to a work in
-the work table. The works are linked to the appropriate artist in the
-artist table by the artist_id, which is stored with each work record.
-The FROM clause here lists the three tables, and the WHERE clause
-defines both of those join conditions. An additional WHERE condition is
+<p>This example displays every subject recorded for the work with
+work_id 210, along with the artist’s name, the work’s title, and its
+style. Each subject is stored by its work_id, which refers to a work in
+the work table. The works are linked to the appropriate artist in the
+artist table by the artist_id, which is stored with each work record.
+The FROM clause here lists the three tables, and the WHERE clause
+defines both of those join conditions. An additional WHERE condition is
 then used to filter just the rows for work_id 210.</p>
 <div class="caution">
 <blockquote>
-<p><strong>Performance Considerations.</strong> DBMSs process joins at
-runtime, relating each table as specified. This process can become very
-resource intensive, so be careful not to join tables unnecessarily. The
+<p><strong>Performance Considerations.</strong> DBMSs process joins at
+runtime, relating each table as specified. This process can become very
+resource intensive, so be careful not to join tables unnecessarily. The
 more tables you join, the more performance will degrade.</p>
 </blockquote>
 </div>
 <div class="caution">
 <blockquote>
-<p><strong>Maximum Number of Tables in a Join.</strong> While it is true
-that SQL itself has no maximum number of tables per join restriction,
-many DBMSs do indeed have restrictions. Refer to your DBMS documentation
+<p><strong>Maximum Number of Tables in a Join.</strong> While it is true
+that SQL itself has no maximum number of tables per join restriction,
+many DBMSs do indeed have restrictions. Refer to your DBMS documentation
 to determine what restrictions there are, if any.</p>
 </blockquote>
 </div>
-<p>Now would be a good time to revisit the following example from the
-previous lesson, &#8220;Working with Subqueries.&#8221; As you will recall, this
-SELECT statement returns a list of artists who created a work with the
-subject &#8220;Portrait&#8221;:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality</span>
-<span id="cb7-2"><a aria-hidden="true" href="#cb7-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb7-3"><a aria-hidden="true" href="#cb7-3" tabindex="-1"></a><span class="kw">WHERE</span> artist_id <span class="kw">IN</span> (<span class="kw">SELECT</span> artist_id</span>
-<span id="cb7-4"><a aria-hidden="true" href="#cb7-4" tabindex="-1"></a>                    <span class="kw">FROM</span> <span class="kw">work</span></span>
-<span id="cb7-5"><a aria-hidden="true" href="#cb7-5" tabindex="-1"></a>                    <span class="kw">WHERE</span> work_id <span class="kw">IN</span> (<span class="kw">SELECT</span> work_id</span>
-<span id="cb7-6"><a aria-hidden="true" href="#cb7-6" tabindex="-1"></a>                                      <span class="kw">FROM</span> subject</span>
+<p>Now would be a good time to revisit the following example from the
+previous lesson, “Working with Subqueries.” As you will recall, this
+SELECT statement returns a list of artists who created a work with the
+subject “Portrait”:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality</span>
+<span id="cb7-2"><a aria-hidden="true" href="#cb7-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb7-3"><a aria-hidden="true" href="#cb7-3" tabindex="-1"></a><span class="kw">WHERE</span> artist_id <span class="kw">IN</span> (<span class="kw">SELECT</span> artist_id</span>
+<span id="cb7-4"><a aria-hidden="true" href="#cb7-4" tabindex="-1"></a>                    <span class="kw">FROM</span> <span class="kw">work</span></span>
+<span id="cb7-5"><a aria-hidden="true" href="#cb7-5" tabindex="-1"></a>                    <span class="kw">WHERE</span> work_id <span class="kw">IN</span> (<span class="kw">SELECT</span> work_id</span>
+<span id="cb7-6"><a aria-hidden="true" href="#cb7-6" tabindex="-1"></a>                                      <span class="kw">FROM</span> subject</span>
 <span id="cb7-7"><a aria-hidden="true" href="#cb7-7" tabindex="-1"></a>                                      <span class="kw">WHERE</span> subject <span class="op">=</span> <span class="st">'Portrait'</span>));</span></code></pre></div>
-<p>As mentioned in that lesson, subqueries are not always the most
-efficient way to perform complex SELECT operations, and so as promised,
+<p>As mentioned in that lesson, subqueries are not always the most
+efficient way to perform complex SELECT operations, and so as promised,
 here is the same query using joins:</p>
 <div class="ai-conversation" data-prompt='Rewrite this nested subquery as a join instead: find the full_name and nationality of every artist who created a work with the subject "Portrait."'>
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Rewrite this nested subquery as a join instead: find the full_name and nationality of every artist who created a work with the subject "Portrait."</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>Instead of nesting three subqueries, you can join the artist, work,
-and subject tables directly and filter on the subject in the WHERE
-clause. Here&#8217;s the SQL statement:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality</span>
-<span id="cb8-2"><a aria-hidden="true" href="#cb8-2" tabindex="-1"></a><span class="kw">FROM</span> artist, <span class="kw">work</span>, subject</span>
-<span id="cb8-3"><a aria-hidden="true" href="#cb8-3" tabindex="-1"></a><span class="kw">WHERE</span> artist.artist_id <span class="op">=</span> <span class="kw">work</span>.artist_id</span>
-<span id="cb8-4"><a aria-hidden="true" href="#cb8-4" tabindex="-1"></a><span class="kw">AND</span> subject.work_id <span class="op">=</span> <span class="kw">work</span>.work_id</span>
+<p>Instead of nesting three subqueries, you can join the artist, work,
+and subject tables directly and filter on the subject in the WHERE
+clause. Here’s the SQL statement:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality</span>
+<span id="cb8-2"><a aria-hidden="true" href="#cb8-2" tabindex="-1"></a><span class="kw">FROM</span> artist, <span class="kw">work</span>, subject</span>
+<span id="cb8-3"><a aria-hidden="true" href="#cb8-3" tabindex="-1"></a><span class="kw">WHERE</span> artist.artist_id <span class="op">=</span> <span class="kw">work</span>.artist_id</span>
+<span id="cb8-4"><a aria-hidden="true" href="#cb8-4" tabindex="-1"></a><span class="kw">AND</span> subject.work_id <span class="op">=</span> <span class="kw">work</span>.work_id</span>
 <span id="cb8-5"><a aria-hidden="true" href="#cb8-5" tabindex="-1"></a><span class="kw">AND</span> subject.subject <span class="op">=</span> <span class="st">'Portrait'</span>;</span></code></pre></div>
-<p>The two join conditions connect artist to work and work to subject.
-The third condition filters the joined rows down to those with the
-subject &#8220;Portrait.&#8221;</p>
+<p>The two join conditions connect artist to work and work to subject.
+The third condition filters the joined rows down to those with the
+subject “Portrait.”</p>
 </blockquote>
 </div>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality</span>
-<span id="cb9-2"><a aria-hidden="true" href="#cb9-2" tabindex="-1"></a><span class="kw">FROM</span> artist, <span class="kw">work</span>, subject</span>
-<span id="cb9-3"><a aria-hidden="true" href="#cb9-3" tabindex="-1"></a><span class="kw">WHERE</span> artist.artist_id <span class="op">=</span> <span class="kw">work</span>.artist_id</span>
-<span id="cb9-4"><a aria-hidden="true" href="#cb9-4" tabindex="-1"></a><span class="kw">AND</span> subject.work_id <span class="op">=</span> <span class="kw">work</span>.work_id</span>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality</span>
+<span id="cb9-2"><a aria-hidden="true" href="#cb9-2" tabindex="-1"></a><span class="kw">FROM</span> artist, <span class="kw">work</span>, subject</span>
+<span id="cb9-3"><a aria-hidden="true" href="#cb9-3" tabindex="-1"></a><span class="kw">WHERE</span> artist.artist_id <span class="op">=</span> <span class="kw">work</span>.artist_id</span>
+<span id="cb9-4"><a aria-hidden="true" href="#cb9-4" tabindex="-1"></a><span class="kw">AND</span> subject.work_id <span class="op">=</span> <span class="kw">work</span>.work_id</span>
 <span id="cb9-5"><a aria-hidden="true" href="#cb9-5" tabindex="-1"></a><span class="kw">AND</span> subject.subject <span class="op">=</span> <span class="st">'Portrait'</span>;</span></code></pre></div>
-<p>As explained in the previous lesson, returning the data needed in
-this query requires the use of three tables. But instead of using them
-within nested subqueries, here two joins are used to connect the tables.
-There are three WHERE clause conditions here. The first two connect the
-tables in the join, and the last one filters the data for the subject
-&#8220;Portrait.&#8221;</p>
+<p>As explained in the previous lesson, returning the data needed in
+this query requires the use of three tables. But instead of using them
+within nested subqueries, here two joins are used to connect the tables.
+There are three WHERE clause conditions here. The first two connect the
+tables in the join, and the last one filters the data for the subject
+“Portrait.”</p>
 <div class="tip">
 <blockquote>
-<p><strong>It Pays to Experiment.</strong> As you can see, there is
-often more than one way to perform any given SQL operation. And there is
-rarely a definitive right or wrong way. Performance can be affected by
-the type of operation, the DBMS being used, the amount of data in the
-tables, whether or not indexes and keys are present, and a whole slew of
-other criteria. Therefore, it is often worth experimenting with
-different selection mechanisms to find the one that works best for
+<p><strong>It Pays to Experiment.</strong> As you can see, there is
+often more than one way to perform any given SQL operation. And there is
+rarely a definitive right or wrong way. Performance can be affected by
+the type of operation, the DBMS being used, the amount of data in the
+tables, whether or not indexes and keys are present, and a whole slew of
+other criteria. Therefore, it is often worth experimenting with
+different selection mechanisms to find the one that works best for
 you.</p>
 </blockquote>
 </div>
 <div class="note">
 <blockquote>
-<p><strong>Joined Column Names.</strong> In all of the examples
-presented here, the columns being joined are named the same (artist_id
-in both artist and work, for example). Having identically named columns
-is not a requirement, and you&#8217;ll often encounter databases that use
-different naming conventions. The museum database was designed this way
+<p><strong>Joined Column Names.</strong> In all of the examples
+presented here, the columns being joined are named the same (artist_id
+in both artist and work, for example). Having identically named columns
+is not a requirement, and you’ll often encounter databases that use
+different naming conventions. The museum database was designed this way
 to make the examples simpler and clearer.</p>
 </blockquote>
 </div>
 <h2 data-number="15.8" id="summary"><span class="header-section-number">15.8</span> Summary</h2>
-<p>Joins are one of the most important and powerful features in SQL, and
-using them effectively requires a basic understanding of relational
-database design. In this lesson, you learned some of the basics of
-relational database design as an introduction to learning about joins.
-You also learned how to create an equijoin (also known as an inner
-join), which is the most commonly used form of join. In a later lesson,
-you&#8217;ll learn how to create other types of joins.</p>
+<p>Joins are one of the most important and powerful features in SQL, and
+using them effectively requires a basic understanding of relational
+database design. In this lesson, you learned some of the basics of
+relational database design as an introduction to learning about joins.
+You also learned how to create an equijoin (also known as an inner
+join), which is the most commonly used form of join. In a later lesson,
+you’ll learn how to create other types of joins.</p>
 <!--postEnd-->
               </div>
 </div>
@@ -510,8 +512,8 @@ you&#8217;ll learn how to create other types of joins.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZof4VrX8JDavJA56ZERT1V2:1785190033022';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/15.html','3986204447440040189');
-_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/15.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/15.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/2747303060912102402/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/9191fc3f3dc7f81d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '2747303060912102402', 'pageName': '15. Joining Tables', 'pageTitle': 'book1014 SQL: 15. Joining Tables'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '15. Joining Tables', 'description': 'websql  15  Joining Tables   Learning Objectives    :   Describe the basics of relational table design and why data is split\r across multipl...', 'url': 'https://book1014.blogspot.com/2000/02/15.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 2747303060912102402}}]);
+window['__wavt'] = 'AEUoTZqCjGnD4WE9J5KYdsDhIG9G:1785332719634';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//sql.availabooks.com/2000/02/15.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://sql.availabooks.com/2000/02/15.html', 'canonicalUrl': 'https://sql.availabooks.com/2000/02/15.html', 'homepageUrl': 'https://sql.availabooks.com/', 'searchUrl': 'https://sql.availabooks.com/search', 'canonicalHomepageUrl': 'https://sql.availabooks.com/', 'blogspotFaviconUrl': 'https://sql.availabooks.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': true, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://sql.availabooks.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://sql.availabooks.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://sql.availabooks.com/feeds/2747303060912102402/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/68dd02567aef746f', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '2747303060912102402', 'pageName': '15. Joining Tables', 'pageTitle': 'book1014 SQL: 15. Joining Tables'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '15. Joining Tables', 'description': 'websql  15  Joining Tables   Learning Objectives    :   Describe the basics of relational table design and why data is split\r across multipl...', 'url': 'https://sql.availabooks.com/2000/02/15.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 2747303060912102402}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>
 </body>

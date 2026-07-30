@@ -5,6 +5,8 @@
 <meta charset='UTF-8'/>
 <meta content='width=device-width, initial-scale=1' name='viewport'/>
 <title>book1014 SQL</title>
+<!--Favicon or serach results image-->
+<link href='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjwMmqtq5dRpmvlNLPmUDGnytksf0IkGol8E0LwUplx-c0T25cwV7F2QJU5c2NtbR02Gz89UwBFE8sRz3yai5Zo30Wi6Z1Tia1C5cxL3m9NRPJxL8I_vNgfFFp3h-dQ7R3FS-uk2_MsYuQM5UXC3ZzOKGDqh54XJNOdXsF8SkdUhyphenhyphenCgyX8h20hWC4C7kxdR/s1600/android-chrome-192x192.png' rel='icon'/>
 <!-- external libraries -->
 <!--script src='https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js'/-->
 <script src='https://unpkg.com/turndown/dist/turndown.js'></script>
@@ -24,14 +26,13 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 //]]>
 </script>
 <!-- ################################### Set the version of the system that this book uses by specifying the appropraite tag in the next line (dev, stable, etc.) ################################### -->
-<script id='cssScript' src='https://availabooks-system.blogspot.com/feeds/posts/default/-/dev/css?alt=json-in-script&max-results=1&callback=loadCss'></script>
+<script id='cssScript' src='https://system.availabooks.com/feeds/posts/default/-/dev/css?alt=json-in-script&max-results=1&callback=loadCss'></script>
 <!--If we ever get page loads showing before the css loads, we can put the current copy of the css here to be sure there is always soem css, but it seems to load fast enough relying on the call above that brings in css dynamically-->
 <style id='page-skin-1' type='text/css'><!--
 
 --></style>
 <script type='text/javascript'>
 //<![CDATA[
-    const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
 	async function initialize(){
 
       const kind = document.getElementById(`kind`).innerHTML
@@ -59,7 +60,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 
     function getSystemModule(moduleName="system"){
 		console.log(typeof location.hostname)
-		if(location.hostname.startsWith("127") || location.host.toLowerCase().startsWith("localhost")){
+		if(location.hostname==="local.availabooks.com"){
             // get files from localhost
 			fetch(`${location.origin}/tools/api/${moduleName}.js`).then(response => {
                 return response.text(); 
@@ -70,7 +71,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 		}else{
             //get files from blogger production server
       		const systemVersion=document.getElementById("cssScript").src.split("/")[7]
-      		loadCrossOrigin(`https://availabooks-system.blogspot.com/feeds/posts/default/-/${systemVersion}/${moduleName}?alt=json-in-script&max-results=1&callback=loadCode`);      
+      		loadCrossOrigin(`https://system.availabooks.com/feeds/posts/default/-/${systemVersion}/${moduleName}?alt=json-in-script&max-results=1&callback=loadCode`);      
 
        }
 
@@ -95,7 +96,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
     
 //]]>
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=7406691c-95ba-4329-bac1-d9aff7e8554e' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=7406691c-95ba-4329-bac1-d9aff7e8554e' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=5bb5ec5d-4faf-45aa-a658-fe48a34270d7' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=5bb5ec5d-4faf-45aa-a658-fe48a34270d7' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -113,8 +114,9 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 <div id='msg-galley'></div>
 <div class='hide' id='kind'>chapter</div>
 <div class='index-boxnbt'>
-<header class='entry-header'>
+<header class='entry-header' style='display:flex;align-items:center;justify-content:space-between;'>
 <h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>13. Working with Subqueries</span></h1>
+<span class='material-symbols-outlined menu-button login-button' onclick='handleLogin()' title='Log in'>person</span>
 </header>
 <div id='menu'></div>
 <div class='post-body entry-content' data-blog-id='3986204447440040189' data-post-id='2870105594309161672'>
@@ -130,241 +132,241 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 <p>:</p>
 <ol type="1">
 <li>Describe what a subquery is and how it is used.</li>
-<li>Use a subquery in a WHERE clause to filter a query based on the
+<li>Use a subquery in a WHERE clause to filter a query based on the
 results of another query.</li>
-<li>Use a subquery as a calculated field to summarize related data for
+<li>Use a subquery as a calculated field to summarize related data for
 each row of a query result.</li>
 </ol>
 </blockquote>
 </div>
 </div>
 <h2 data-number="13.1" id="understanding-subqueries"><span class="header-section-number">13.1</span> Understanding Subqueries</h2>
-<p>SELECT statements are SQL queries. All of the SELECT statements you
-have seen thus far in this book are simple queries &#8212; single statements
-retrieving data from an individual database table (or, in a few cases,
+<p>SELECT statements are SQL queries. All of the SELECT statements you
+have seen thus far in this book are simple queries — single statements
+retrieving data from an individual database table (or, in a few cases,
 using a WHERE clause with a hard-coded list of values).</p>
 <div class="term">
 <blockquote>
-<p><strong>Query</strong> &#8212; Any SQL statement. However, the term is
+<p><strong>Query</strong> — Any SQL statement. However, the term is
 usually used to refer to SELECT statements.</p>
 </blockquote>
 </div>
-<p>SQL also enables you to create subqueries &#8212; queries that are embedded
-into other queries. Why would you want to do this? The best way to
+<p>SQL also enables you to create subqueries — queries that are embedded
+into other queries. Why would you want to do this? The best way to
 understand this concept is to look at a couple of examples.</p>
 <h2 data-number="13.2" id="filtering-by-subquery"><span class="header-section-number">13.2</span> Filtering by Subquery</h2>
-<p>The museum database used throughout this book is a relational
-database. Works of art are stored in the work table. Each work is linked
-to the artist who created it (through artist_id) and the museum where it
-is displayed (through museum_id). The subject table stores one row for
-every subject depicted in a work, linked back to the work table through
-work_id. The work table does not store the artist&#8217;s name or nationality
-directly &#8212; it only stores an artist_id. The actual artist information is
+<p>The museum database used throughout this book is a relational
+database. Works of art are stored in the work table. Each work is linked
+to the artist who created it (through artist_id) and the museum where it
+is displayed (through museum_id). The subject table stores one row for
+every subject depicted in a work, linked back to the work table through
+work_id. The work table does not store the artist’s name or nationality
+directly — it only stores an artist_id. The actual artist information is
 stored in the artist table.</p>
-<p>Now suppose you wanted a list of all the artists who have created a
-work with the subject &#8220;Portrait.&#8221; What would you have to do to retrieve
+<p>Now suppose you wanted a list of all the artists who have created a
+work with the subject “Portrait.” What would you have to do to retrieve
 this information? Here are the steps:</p>
 <ol type="1">
-<li>Retrieve the work_id of all works with a subject of &#8220;Portrait.&#8221;</li>
-<li>Retrieve the artist_id of all the artists who created the works
+<li>Retrieve the work_id of all works with a subject of “Portrait.”</li>
+<li>Retrieve the artist_id of all the artists who created the works
 listed in the work_ids returned in the previous step.</li>
-<li>Retrieve the artist information for all the artist_ids returned in
+<li>Retrieve the artist information for all the artist_ids returned in
 the previous step.</li>
 </ol>
-<p>Each of these steps can be executed as a separate query. By doing so,
-you use the results returned by one SELECT statement to populate the
+<p>Each of these steps can be executed as a separate query. By doing so,
+you use the results returned by one SELECT statement to populate the
 WHERE clause of the next SELECT statement.</p>
-<p>You can also use subqueries to combine all three queries into one
+<p>You can also use subqueries to combine all three queries into one
 single statement.</p>
-<p>The first SELECT statement should be self-explanatory by now. It
-retrieves the work_id column for all subject entries with a subject of
-&#8220;Portrait.&#8221; The output lists the works containing this subject:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> work_id</span>
-<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">FROM</span> subject</span>
+<p>The first SELECT statement should be self-explanatory by now. It
+retrieves the work_id column for all subject entries with a subject of
+“Portrait.” The output lists the works containing this subject:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> work_id</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">FROM</span> subject</span>
 <span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="kw">WHERE</span> subject <span class="op">=</span> <span class="st">'Portrait'</span>;</span></code></pre></div>
-<p>Now that we know which works have the subject &#8220;Portrait,&#8221; the next
-step is to retrieve the artist IDs associated with those works, say
+<p>Now that we know which works have the subject “Portrait,” the next
+step is to retrieve the artist IDs associated with those works, say
 work_id 210 and 224. You can create a SELECT statement as follows:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> artist_id</span>
-<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> artist_id</span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
 <span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a><span class="kw">WHERE</span> work_id <span class="kw">IN</span> (<span class="dv">210</span>, <span class="dv">224</span>);</span></code></pre></div>
-<p>Now, combine the two queries by turning the first (the one that
-returned the work IDs) into a subquery. Look at the following SELECT
+<p>Now, combine the two queries by turning the first (the one that
+returned the work IDs) into a subquery. Look at the following SELECT
 statement:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> artist_id</span>
-<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
-<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a><span class="kw">WHERE</span> work_id <span class="kw">IN</span> (<span class="kw">SELECT</span> work_id</span>
-<span id="cb3-4"><a aria-hidden="true" href="#cb3-4" tabindex="-1"></a>                  <span class="kw">FROM</span> subject</span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> artist_id</span>
+<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
+<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a><span class="kw">WHERE</span> work_id <span class="kw">IN</span> (<span class="kw">SELECT</span> work_id</span>
+<span id="cb3-4"><a aria-hidden="true" href="#cb3-4" tabindex="-1"></a>                  <span class="kw">FROM</span> subject</span>
 <span id="cb3-5"><a aria-hidden="true" href="#cb3-5" tabindex="-1"></a>                  <span class="kw">WHERE</span> subject <span class="op">=</span> <span class="st">'Portrait'</span>);</span></code></pre></div>
-<p>Subqueries are always processed starting with the innermost SELECT
-statement and working outward. When the preceding SELECT statement is
+<p>Subqueries are always processed starting with the innermost SELECT
+statement and working outward. When the preceding SELECT statement is
 processed, the DBMS actually performs two operations.</p>
 <p>It first runs the following subquery:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> work_id <span class="kw">FROM</span> subject <span class="kw">WHERE</span> subject <span class="op">=</span> <span class="st">'Portrait'</span></span></code></pre></div>
-<p>That query returns the work IDs for every work with the subject
-&#8220;Portrait&#8221; (in this case, 210 and 224). Those values are then passed to
-the WHERE clause of the outer query in the comma-delimited format
+<p>That query returns the work IDs for every work with the subject
+“Portrait” (in this case, 210 and 224). Those values are then passed to
+the WHERE clause of the outer query in the comma-delimited format
 required by the IN operator. The outer query now becomes:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> artist_id <span class="kw">FROM</span> <span class="kw">work</span> <span class="kw">WHERE</span> work_id <span class="kw">IN</span> (<span class="dv">210</span>, <span class="dv">224</span>)</span></code></pre></div>
-<p>As you can see, the output is correct and exactly the same as the
+<p>As you can see, the output is correct and exactly the same as the
 output returned by the hard-coded WHERE clause above.</p>
 <div class="tip">
 <blockquote>
-<p><strong>Formatting Your SQL.</strong> SELECT statements containing
-subqueries can be difficult to read and debug, especially as they grow
-in complexity. Breaking up the queries over multiple lines and indenting
-the lines appropriately, as shown here, can greatly simplify working
+<p><strong>Formatting Your SQL.</strong> SELECT statements containing
+subqueries can be difficult to read and debug, especially as they grow
+in complexity. Breaking up the queries over multiple lines and indenting
+the lines appropriately, as shown here, can greatly simplify working
 with subqueries.</p>
 </blockquote>
 </div>
-<p>You now have the IDs of all the artists who created a work with the
-subject &#8220;Portrait.&#8221; The next step is to retrieve the artist information
-for each of those artist IDs. You can use a chat with an AI assistant to
+<p>You now have the IDs of all the artists who created a work with the
+subject “Portrait.” The next step is to retrieve the artist information
+for each of those artist IDs. You can use a chat with an AI assistant to
 write the full, combined SELECT statement:</p>
 <div class="ai-conversation" data-prompt='Write a SQL statement to list the full_name and nationality of every artist who has created a work of art with the subject "Portrait." Use a nested subquery rather than hard-coded IDs.'>
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to list the full_name and nationality of every artist who has created a work of art with the subject "Portrait." Use a nested subquery rather than hard-coded IDs.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To do this, you need three levels of query: one to find the work IDs
-with the subject &#8220;Portrait,&#8221; one to find the artist IDs for those works,
-and one to look up the artist information for those artist IDs. Here&#8217;s
+<p>To do this, you need three levels of query: one to find the work IDs
+with the subject “Portrait,” one to find the artist IDs for those works,
+and one to look up the artist information for those artist IDs. Here’s
 the SQL statement:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality</span>
-<span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb6-3"><a aria-hidden="true" href="#cb6-3" tabindex="-1"></a><span class="kw">WHERE</span> artist_id <span class="kw">IN</span> (<span class="kw">SELECT</span> artist_id</span>
-<span id="cb6-4"><a aria-hidden="true" href="#cb6-4" tabindex="-1"></a>                    <span class="kw">FROM</span> <span class="kw">work</span></span>
-<span id="cb6-5"><a aria-hidden="true" href="#cb6-5" tabindex="-1"></a>                    <span class="kw">WHERE</span> work_id <span class="kw">IN</span> (<span class="kw">SELECT</span> work_id</span>
-<span id="cb6-6"><a aria-hidden="true" href="#cb6-6" tabindex="-1"></a>                                      <span class="kw">FROM</span> subject</span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality</span>
+<span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb6-3"><a aria-hidden="true" href="#cb6-3" tabindex="-1"></a><span class="kw">WHERE</span> artist_id <span class="kw">IN</span> (<span class="kw">SELECT</span> artist_id</span>
+<span id="cb6-4"><a aria-hidden="true" href="#cb6-4" tabindex="-1"></a>                    <span class="kw">FROM</span> <span class="kw">work</span></span>
+<span id="cb6-5"><a aria-hidden="true" href="#cb6-5" tabindex="-1"></a>                    <span class="kw">WHERE</span> work_id <span class="kw">IN</span> (<span class="kw">SELECT</span> work_id</span>
+<span id="cb6-6"><a aria-hidden="true" href="#cb6-6" tabindex="-1"></a>                                      <span class="kw">FROM</span> subject</span>
 <span id="cb6-7"><a aria-hidden="true" href="#cb6-7" tabindex="-1"></a>                                      <span class="kw">WHERE</span> subject <span class="op">=</span> <span class="st">'Portrait'</span>));</span></code></pre></div>
-<p>The innermost subquery finds every work_id with the subject
-&#8220;Portrait.&#8221; The middle subquery uses those work IDs to find the
-artist_id of the artist who created each one. The outer query then looks
+<p>The innermost subquery finds every work_id with the subject
+“Portrait.” The middle subquery uses those work IDs to find the
+artist_id of the artist who created each one. The outer query then looks
 up the full_name and nationality of each of those artists.</p>
 </blockquote>
 </div>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality</span>
-<span id="cb7-2"><a aria-hidden="true" href="#cb7-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb7-3"><a aria-hidden="true" href="#cb7-3" tabindex="-1"></a><span class="kw">WHERE</span> artist_id <span class="kw">IN</span> (<span class="kw">SELECT</span> artist_id</span>
-<span id="cb7-4"><a aria-hidden="true" href="#cb7-4" tabindex="-1"></a>                    <span class="kw">FROM</span> <span class="kw">work</span></span>
-<span id="cb7-5"><a aria-hidden="true" href="#cb7-5" tabindex="-1"></a>                    <span class="kw">WHERE</span> work_id <span class="kw">IN</span> (<span class="kw">SELECT</span> work_id</span>
-<span id="cb7-6"><a aria-hidden="true" href="#cb7-6" tabindex="-1"></a>                                      <span class="kw">FROM</span> subject</span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, nationality</span>
+<span id="cb7-2"><a aria-hidden="true" href="#cb7-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb7-3"><a aria-hidden="true" href="#cb7-3" tabindex="-1"></a><span class="kw">WHERE</span> artist_id <span class="kw">IN</span> (<span class="kw">SELECT</span> artist_id</span>
+<span id="cb7-4"><a aria-hidden="true" href="#cb7-4" tabindex="-1"></a>                    <span class="kw">FROM</span> <span class="kw">work</span></span>
+<span id="cb7-5"><a aria-hidden="true" href="#cb7-5" tabindex="-1"></a>                    <span class="kw">WHERE</span> work_id <span class="kw">IN</span> (<span class="kw">SELECT</span> work_id</span>
+<span id="cb7-6"><a aria-hidden="true" href="#cb7-6" tabindex="-1"></a>                                      <span class="kw">FROM</span> subject</span>
 <span id="cb7-7"><a aria-hidden="true" href="#cb7-7" tabindex="-1"></a>                                      <span class="kw">WHERE</span> subject <span class="op">=</span> <span class="st">'Portrait'</span>));</span></code></pre></div>
-<p>To execute this SELECT statement, the DBMS had to actually perform
-three SELECT statements. The innermost subquery returned a list of work
-IDs that were then used as the WHERE clause for the subquery above it.
-That subquery returned a list of artist IDs that were used as the WHERE
-clause for the top-level query. The top-level query actually returned
+<p>To execute this SELECT statement, the DBMS had to actually perform
+three SELECT statements. The innermost subquery returned a list of work
+IDs that were then used as the WHERE clause for the subquery above it.
+That subquery returned a list of artist IDs that were used as the WHERE
+clause for the top-level query. The top-level query actually returned
 the desired data.</p>
-<p>As you can see, using subqueries in a WHERE clause enables you to
-write extremely powerful and flexible SQL statements. There is no limit
-imposed on the number of subqueries that can be nested, although in
-practice you will find that performance will tell you when you are
+<p>As you can see, using subqueries in a WHERE clause enables you to
+write extremely powerful and flexible SQL statements. There is no limit
+imposed on the number of subqueries that can be nested, although in
+practice you will find that performance will tell you when you are
 nesting too deeply.</p>
 <div class="caution">
 <blockquote>
-<p><strong>Single Column Only.</strong> Subquery SELECT statements can
-only retrieve a single column. Attempting to retrieve multiple columns
+<p><strong>Single Column Only.</strong> Subquery SELECT statements can
+only retrieve a single column. Attempting to retrieve multiple columns
 will return an error.</p>
 </blockquote>
 </div>
 <div class="caution">
 <blockquote>
-<p><strong>Subqueries and Performance.</strong> The code shown here
-works, and it achieves the desired result. However, using subqueries is
-not always the most efficient way to perform this type of data
-retrieval. More on this in a later lesson on joining tables, where you
+<p><strong>Subqueries and Performance.</strong> The code shown here
+works, and it achieves the desired result. However, using subqueries is
+not always the most efficient way to perform this type of data
+retrieval. More on this in a later lesson on joining tables, where you
 will revisit this same example.</p>
 </blockquote>
 </div>
-<h2 data-number="13.3" id="using-subqueries-as-calculated-fields"><span class="header-section-number">13.3</span> Using Subqueries as Calculated
+<h2 data-number="13.3" id="using-subqueries-as-calculated-fields"><span class="header-section-number">13.3</span> Using Subqueries as Calculated
 Fields</h2>
-<p>Another way to use subqueries is in creating calculated fields.
-Suppose you wanted to display the total number of works created by every
-artist in your artist table. Works of art are stored in the work table
+<p>Another way to use subqueries is in creating calculated fields.
+Suppose you wanted to display the total number of works created by every
+artist in your artist table. Works of art are stored in the work table
 along with the appropriate artist_id.</p>
 <p>To perform this operation, follow these steps:</p>
 <ol type="1">
 <li>Retrieve the list of artists from the artist table.</li>
-<li>For each artist retrieved, count the number of associated works in
+<li>For each artist retrieved, count the number of associated works in
 the work table.</li>
 </ol>
-<p>As you learned in previous lessons, you can use SELECT COUNT(*) to
-count rows in a table, and by providing a WHERE clause to filter a
-specific artist_id, you can count just that artist&#8217;s works. For example,
-the following code counts the number of works created by the artist
+<p>As you learned in previous lessons, you can use SELECT COUNT(*) to
+count rows in a table, and by providing a WHERE clause to filter a
+specific artist_id, you can count just that artist’s works. For example,
+the following code counts the number of works created by the artist
 Pierre-Auguste Renoir (artist_id 500):</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> number_of_works</span>
-<span id="cb8-2"><a aria-hidden="true" href="#cb8-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> number_of_works</span>
+<span id="cb8-2"><a aria-hidden="true" href="#cb8-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
 <span id="cb8-3"><a aria-hidden="true" href="#cb8-3" tabindex="-1"></a><span class="kw">WHERE</span> artist_id <span class="op">=</span> <span class="dv">500</span>;</span></code></pre></div>
-<p>To perform that COUNT(<em>) calculation for each artist, use
+<p>To perform that COUNT(<em>) calculation for each artist, use
 COUNT(</em>) as a subquery. Look at the following code:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name,</span>
-<span id="cb9-2"><a aria-hidden="true" href="#cb9-2" tabindex="-1"></a>       nationality,</span>
-<span id="cb9-3"><a aria-hidden="true" href="#cb9-3" tabindex="-1"></a>       (<span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>)</span>
-<span id="cb9-4"><a aria-hidden="true" href="#cb9-4" tabindex="-1"></a>        <span class="kw">FROM</span> <span class="kw">work</span></span>
-<span id="cb9-5"><a aria-hidden="true" href="#cb9-5" tabindex="-1"></a>        <span class="kw">WHERE</span> <span class="kw">work</span>.artist_id <span class="op">=</span> artist.artist_id) <span class="kw">AS</span> number_of_works</span>
-<span id="cb9-6"><a aria-hidden="true" href="#cb9-6" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name,</span>
+<span id="cb9-2"><a aria-hidden="true" href="#cb9-2" tabindex="-1"></a>       nationality,</span>
+<span id="cb9-3"><a aria-hidden="true" href="#cb9-3" tabindex="-1"></a>       (<span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>)</span>
+<span id="cb9-4"><a aria-hidden="true" href="#cb9-4" tabindex="-1"></a>        <span class="kw">FROM</span> <span class="kw">work</span></span>
+<span id="cb9-5"><a aria-hidden="true" href="#cb9-5" tabindex="-1"></a>        <span class="kw">WHERE</span> <span class="kw">work</span>.artist_id <span class="op">=</span> artist.artist_id) <span class="kw">AS</span> number_of_works</span>
+<span id="cb9-6"><a aria-hidden="true" href="#cb9-6" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
 <span id="cb9-7"><a aria-hidden="true" href="#cb9-7" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> full_name;</span></code></pre></div>
-<p>This SELECT statement returns three columns for every artist in the
-artist table: full_name, nationality, and number_of_works.
-number_of_works is a calculated field that is set by a subquery that is
-provided in parentheses. That subquery is executed once for every artist
-retrieved. If there are 421 artists in the artist table, the subquery is
+<p>This SELECT statement returns three columns for every artist in the
+artist table: full_name, nationality, and number_of_works.
+number_of_works is a calculated field that is set by a subquery that is
+provided in parentheses. That subquery is executed once for every artist
+retrieved. If there are 421 artists in the artist table, the subquery is
 executed 421 times.</p>
-<p>The WHERE clause in the subquery is a little different from the WHERE
-clauses used previously because it uses fully qualified column names;
-instead of just a column name (artist_id), it specifies the table and
-the column name (as <code>work.artist_id</code> and
-<code>artist.artist_id</code>). The following WHERE clause tells SQL to
-compare the artist_id in the work table to the one currently being
+<p>The WHERE clause in the subquery is a little different from the WHERE
+clauses used previously because it uses fully qualified column names;
+instead of just a column name (artist_id), it specifies the table and
+the column name (as <code>work.artist_id</code> and
+<code>artist.artist_id</code>). The following WHERE clause tells SQL to
+compare the artist_id in the work table to the one currently being
 retrieved from the artist table:</p>
 <pre><code>WHERE work.artist_id = artist.artist_id</code></pre>
-<p>This syntax &#8212; the table name and the column name separated by a
-period &#8212; must be used whenever there is possible ambiguity about column
-names. In this example, there are two artist_id columns, one in artist
-and one in work. Without fully qualifying the column names, the DBMS
-assumes you are comparing the artist_id in the work table to itself.
+<p>This syntax — the table name and the column name separated by a
+period — must be used whenever there is possible ambiguity about column
+names. In this example, there are two artist_id columns, one in artist
+and one in work. Without fully qualifying the column names, the DBMS
+assumes you are comparing the artist_id in the work table to itself.
 Because:</p>
 <pre><code>SELECT COUNT(*) FROM work WHERE artist_id = artist_id</code></pre>
-<p>will always return the total number of works in the work table (the
-condition is true for every row), the results will not be what you
+<p>will always return the total number of works in the work table (the
+condition is true for every row), the results will not be what you
 expected:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name,</span>
-<span id="cb12-2"><a aria-hidden="true" href="#cb12-2" tabindex="-1"></a>       nationality,</span>
-<span id="cb12-3"><a aria-hidden="true" href="#cb12-3" tabindex="-1"></a>       (<span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>)</span>
-<span id="cb12-4"><a aria-hidden="true" href="#cb12-4" tabindex="-1"></a>        <span class="kw">FROM</span> <span class="kw">work</span></span>
-<span id="cb12-5"><a aria-hidden="true" href="#cb12-5" tabindex="-1"></a>        <span class="kw">WHERE</span> artist_id <span class="op">=</span> artist_id) <span class="kw">AS</span> number_of_works</span>
-<span id="cb12-6"><a aria-hidden="true" href="#cb12-6" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name,</span>
+<span id="cb12-2"><a aria-hidden="true" href="#cb12-2" tabindex="-1"></a>       nationality,</span>
+<span id="cb12-3"><a aria-hidden="true" href="#cb12-3" tabindex="-1"></a>       (<span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>)</span>
+<span id="cb12-4"><a aria-hidden="true" href="#cb12-4" tabindex="-1"></a>        <span class="kw">FROM</span> <span class="kw">work</span></span>
+<span id="cb12-5"><a aria-hidden="true" href="#cb12-5" tabindex="-1"></a>        <span class="kw">WHERE</span> artist_id <span class="op">=</span> artist_id) <span class="kw">AS</span> number_of_works</span>
+<span id="cb12-6"><a aria-hidden="true" href="#cb12-6" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
 <span id="cb12-7"><a aria-hidden="true" href="#cb12-7" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> full_name;</span></code></pre></div>
-<p>Although subqueries are extremely useful in constructing this type of
-SELECT statement, care must be taken to properly qualify ambiguous
+<p>Although subqueries are extremely useful in constructing this type of
+SELECT statement, care must be taken to properly qualify ambiguous
 column names.</p>
 <div class="caution">
 <blockquote>
-<p><strong>Fully Qualified Column Names.</strong> You just saw a very
-important reason to use fully qualified column names. Without the extra
-specificity, the wrong results were returned because the DBMS
-misunderstood what you intended. Sometimes the ambiguity caused by the
-presence of conflicting column names will actually cause the DBMS to
-throw an error. For example, this might occur if your WHERE or ORDER BY
-clause specified a column name that was present in multiple tables. A
-good rule is that if you are ever working with more than one table in a
-SELECT statement, then use fully qualified column names to avoid any and
+<p><strong>Fully Qualified Column Names.</strong> You just saw a very
+important reason to use fully qualified column names. Without the extra
+specificity, the wrong results were returned because the DBMS
+misunderstood what you intended. Sometimes the ambiguity caused by the
+presence of conflicting column names will actually cause the DBMS to
+throw an error. For example, this might occur if your WHERE or ORDER BY
+clause specified a column name that was present in multiple tables. A
+good rule is that if you are ever working with more than one table in a
+SELECT statement, then use fully qualified column names to avoid any and
 all ambiguity.</p>
 </blockquote>
 </div>
 <div class="tip">
 <blockquote>
-<p><strong>Subqueries May Not Always Be the Best Option.</strong> As
-explained earlier in this lesson, although the sample code shown here
-works, it is often not the most efficient way to perform this type of
-data retrieval. You will revisit this example when you learn about JOINs
+<p><strong>Subqueries May Not Always Be the Best Option.</strong> As
+explained earlier in this lesson, although the sample code shown here
+works, it is often not the most efficient way to perform this type of
+data retrieval. You will revisit this example when you learn about JOINs
 in later lessons on joining tables.</p>
 </blockquote>
 </div>
 <h2 data-number="13.4" id="summary"><span class="header-section-number">13.4</span> Summary</h2>
-<p>In this lesson, you learned what subqueries are and how to use them.
-The most common uses for subqueries are in WHERE clause IN operators and
-for populating calculated columns. You saw examples of both of these
+<p>In this lesson, you learned what subqueries are and how to use them.
+The most common uses for subqueries are in WHERE clause IN operators and
+for populating calculated columns. You saw examples of both of these
 types of operations.</p>
 <!--postEnd-->
               </div>
@@ -388,8 +390,8 @@ types of operations.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZp2OXaVxd_RD6MB09KArqdS:1785190031194';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/13.html','3986204447440040189');
-_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/13.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/13.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/2870105594309161672/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/9191fc3f3dc7f81d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '2870105594309161672', 'pageName': '13. Working with Subqueries', 'pageTitle': 'book1014 SQL: 13. Working with Subqueries'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '13. Working with Subqueries', 'description': 'websql  13  Working with Subqueries   Learning Objectives    :   Describe what a subquery is and how it is used.  Use a subquery in a WHERE ...', 'url': 'https://book1014.blogspot.com/2000/02/13.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 2870105594309161672}}]);
+window['__wavt'] = 'AEUoTZrqMCxh5uGt5Zr6Bd-Sp1Oy:1785332716894';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//sql.availabooks.com/2000/02/13.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://sql.availabooks.com/2000/02/13.html', 'canonicalUrl': 'https://sql.availabooks.com/2000/02/13.html', 'homepageUrl': 'https://sql.availabooks.com/', 'searchUrl': 'https://sql.availabooks.com/search', 'canonicalHomepageUrl': 'https://sql.availabooks.com/', 'blogspotFaviconUrl': 'https://sql.availabooks.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': true, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://sql.availabooks.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://sql.availabooks.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://sql.availabooks.com/feeds/2870105594309161672/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/68dd02567aef746f', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '2870105594309161672', 'pageName': '13. Working with Subqueries', 'pageTitle': 'book1014 SQL: 13. Working with Subqueries'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '13. Working with Subqueries', 'description': 'websql  13  Working with Subqueries   Learning Objectives    :   Describe what a subquery is and how it is used.  Use a subquery in a WHERE ...', 'url': 'https://sql.availabooks.com/2000/02/13.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 2870105594309161672}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>
 </body>

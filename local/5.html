@@ -5,6 +5,8 @@
 <meta charset='UTF-8'/>
 <meta content='width=device-width, initial-scale=1' name='viewport'/>
 <title>book1014 SQL</title>
+<!--Favicon or serach results image-->
+<link href='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjwMmqtq5dRpmvlNLPmUDGnytksf0IkGol8E0LwUplx-c0T25cwV7F2QJU5c2NtbR02Gz89UwBFE8sRz3yai5Zo30Wi6Z1Tia1C5cxL3m9NRPJxL8I_vNgfFFp3h-dQ7R3FS-uk2_MsYuQM5UXC3ZzOKGDqh54XJNOdXsF8SkdUhyphenhyphenCgyX8h20hWC4C7kxdR/s1600/android-chrome-192x192.png' rel='icon'/>
 <!-- external libraries -->
 <!--script src='https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js'/-->
 <script src='https://unpkg.com/turndown/dist/turndown.js'></script>
@@ -24,14 +26,13 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 //]]>
 </script>
 <!-- ################################### Set the version of the system that this book uses by specifying the appropraite tag in the next line (dev, stable, etc.) ################################### -->
-<script id='cssScript' src='https://availabooks-system.blogspot.com/feeds/posts/default/-/dev/css?alt=json-in-script&max-results=1&callback=loadCss'></script>
+<script id='cssScript' src='https://system.availabooks.com/feeds/posts/default/-/dev/css?alt=json-in-script&max-results=1&callback=loadCss'></script>
 <!--If we ever get page loads showing before the css loads, we can put the current copy of the css here to be sure there is always soem css, but it seems to load fast enough relying on the call above that brings in css dynamically-->
 <style id='page-skin-1' type='text/css'><!--
 
 --></style>
 <script type='text/javascript'>
 //<![CDATA[
-    const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
 	async function initialize(){
 
       const kind = document.getElementById(`kind`).innerHTML
@@ -59,7 +60,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 
     function getSystemModule(moduleName="system"){
 		console.log(typeof location.hostname)
-		if(location.hostname.startsWith("127") || location.host.toLowerCase().startsWith("localhost")){
+		if(location.hostname==="local.availabooks.com"){
             // get files from localhost
 			fetch(`${location.origin}/tools/api/${moduleName}.js`).then(response => {
                 return response.text(); 
@@ -70,7 +71,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 		}else{
             //get files from blogger production server
       		const systemVersion=document.getElementById("cssScript").src.split("/")[7]
-      		loadCrossOrigin(`https://availabooks-system.blogspot.com/feeds/posts/default/-/${systemVersion}/${moduleName}?alt=json-in-script&max-results=1&callback=loadCode`);      
+      		loadCrossOrigin(`https://system.availabooks.com/feeds/posts/default/-/${systemVersion}/${moduleName}?alt=json-in-script&max-results=1&callback=loadCode`);      
 
        }
 
@@ -95,7 +96,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
     
 //]]>
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=7406691c-95ba-4329-bac1-d9aff7e8554e' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=7406691c-95ba-4329-bac1-d9aff7e8554e' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=5bb5ec5d-4faf-45aa-a658-fe48a34270d7' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=5bb5ec5d-4faf-45aa-a658-fe48a34270d7' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -113,8 +114,9 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 <div id='msg-galley'></div>
 <div class='hide' id='kind'>chapter</div>
 <div class='index-boxnbt'>
-<header class='entry-header'>
+<header class='entry-header' style='display:flex;align-items:center;justify-content:space-between;'>
 <h1 class='post-title entry-title' itemprop='headline'><span class='material-symbols-outlined menu-button' onclick='showMenu()'>menu</span><span id='title'>5. Sorting Retrieved Data</span></h1>
+<span class='material-symbols-outlined menu-button login-button' onclick='handleLogin()' title='Log in'>person</span>
 </header>
 <div id='menu'></div>
 <div class='post-body entry-content' data-blog-id='3986204447440040189' data-post-id='3727261968951015018'>
@@ -129,13 +131,13 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 <blockquote>
 <p>:</p>
 <ol type="1">
-<li>Use the ORDER BY clause of a SELECT statement to sort the rows in a
+<li>Use the ORDER BY clause of a SELECT statement to sort the rows in a
 query result.</li>
-<li>Sort the rows of a query result in both ascending and descending
+<li>Sort the rows of a query result in both ascending and descending
 order.</li>
-<li>Sort the rows of a query result by more than one column in the
+<li>Sort the rows of a query result by more than one column in the
 data.</li>
-<li>Use the keyword LIMIT to show a specified number of rows in a query
+<li>Use the keyword LIMIT to show a specified number of rows in a query
 result.</li>
 </ol>
 </blockquote>
@@ -143,443 +145,443 @@ result.</li>
 </div>
 <div class="tip">
 <blockquote>
-<p><strong>Improving the Accuracy of AI Responses.</strong> The examples
-in the last lesson used an AI assistant to help write SQL statements. At
-times, the assistant made guesses about elements of the database being
-queried, which caused some of the table and column names in the SQL
-statements to be not quite right. You can improve the accuracy of the
-SQL statements an AI assistant gives you by providing information about
-the database up front. One way to do this is to give the assistant the
-SQL statements used to create the tables. The chat below demonstrates
-this. You can copy and paste the initial prompt to start a chat of your
-own &#8212; you&#8217;ll learn how to write the SQL statements needed to create
+<p><strong>Improving the Accuracy of AI Responses.</strong> The examples
+in the last lesson used an AI assistant to help write SQL statements. At
+times, the assistant made guesses about elements of the database being
+queried, which caused some of the table and column names in the SQL
+statements to be not quite right. You can improve the accuracy of the
+SQL statements an AI assistant gives you by providing information about
+the database up front. One way to do this is to give the assistant the
+SQL statements used to create the tables. The chat below demonstrates
+this. You can copy and paste the initial prompt to start a chat of your
+own — you’ll learn how to write the SQL statements needed to create
 tables in a later lesson.</p>
 </blockquote>
 </div>
 <div class="ai-conversation" data-prompt="Consider the following table creation statements: ```sql CREATE TABLE artist ( artist_id INT PRIMARY KEY, full_name VARCHAR(50), first_name VARCHAR(25), middle_names VARCHAR(50), last_name VARCHAR(25), nationality VARCHAR(25), style VARCHAR(25), birth INT, death INT ); CREATE TABLE museum ( museum_id INT PRIMARY KEY, name VARCHAR(25), address VARCHAR(100), city VARCHAR(25), state VARCHAR(25), postal_code VARCHAR(10), country VARCHAR(25), phone CHAR(10), url VARCHAR(255) ); CREATE TABLE work ( work_id INT PRIMARY KEY, name VARCHAR(255), artist_id INT, style VARCHAR(25), museum_id INT, width INT, height INT, FOREIGN KEY (artist_id) REFERENCES artist(artist_id), FOREIGN KEY (museum_id) REFERENCES museum(museum_id) ); CREATE TABLE subject ( work_id INT NOT NULL, subject VARCHAR(100), FOREIGN KEY (work_id) REFERENCES work(work_id) ); CREATE TABLE museum_hours ( museum_id INT, day VARCHAR(255), open TIME, close TIME, FOREIGN KEY (museum_id) REFERENCES museum(museum_id) ); ```">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Consider the following table creation statements: ```sql CREATE TABLE artist ( artist_id INT PRIMARY KEY, full_name VARCHAR(50), first_name VARCHAR(25), middle_names VARCHAR(50), last_name VARCHAR(25), nationality VARCHAR(25), style VARCHAR(25), birth INT, death INT ); CREATE TABLE museum ( museum_id INT PRIMARY KEY, name VARCHAR(25), address VARCHAR(100), city VARCHAR(25), state VARCHAR(25), postal_code VARCHAR(10), country VARCHAR(25), phone CHAR(10), url VARCHAR(255) ); CREATE TABLE work ( work_id INT PRIMARY KEY, name VARCHAR(255), artist_id INT, style VARCHAR(25), museum_id INT, width INT, height INT, FOREIGN KEY (artist_id) REFERENCES artist(artist_id), FOREIGN KEY (museum_id) REFERENCES museum(museum_id) ); CREATE TABLE subject ( work_id INT NOT NULL, subject VARCHAR(100), FOREIGN KEY (work_id) REFERENCES work(work_id) ); CREATE TABLE museum_hours ( museum_id INT, day VARCHAR(255), open TIME, close TIME, FOREIGN KEY (museum_id) REFERENCES museum(museum_id) ); ```</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>These table creation statements define the structure of a relational
-database for managing information about artists, their works, subjects,
-and museums. These tables are interrelated through primary key and
-foreign key relationships to store and retrieve information about
+<p>These table creation statements define the structure of a relational
+database for managing information about artists, their works, subjects,
+and museums. These tables are interrelated through primary key and
+foreign key relationships to store and retrieve information about
 artists, their works, subjects, and associated museums.</p>
 </blockquote>
 </div>
 <h2 data-number="5.1" id="sorting-data"><span class="header-section-number">5.1</span> Sorting Data</h2>
-<p>In the last lesson, you used a chat with an AI assistant to create a
-SQL statement listing the names of the museums in the database. Now that
-the assistant has been given information about the database, the SQL
-statement it returns for that request already has the correct table and
+<p>In the last lesson, you used a chat with an AI assistant to create a
+SQL statement listing the names of the museums in the database. Now that
+the assistant has been given information about the database, the SQL
+statement it returns for that request already has the correct table and
 column names:</p>
 <div class="ai-conversation" data-prompt="Write a SQL statement to list the names of museums.">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to list the names of museums.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To list the names of museums from the &#8220;museum&#8221; table, you can use the
+<p>To list the names of museums from the “museum” table, you can use the
 following SQL statement:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> name</span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> name</span>
 <span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">FROM</span> museum;</span></code></pre></div>
-<p>This query selects the &#8220;name&#8221; column from the &#8220;museum&#8221; table,
+<p>This query selects the “name” column from the “museum” table,
 retrieving the names of all museums stored in the table.</p>
 </blockquote>
 </div>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> name</span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> name</span>
 <span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">FROM</span>   museum;</span></code></pre></div>
-<p>Notice that the museum names are displayed in what appears to be a
-random order. Generally, data is displayed in the order it is stored in
-the database table, which is often the order it was added to the table.
-However, once data is updated or deleted, the DBMS may store the rows in
-a different physical order. The only way to reliably predict the order
-in which rows are retrieved is to intentionally define how you want the
-data sorted as part of the SQL statement. This is done with the
+<p>Notice that the museum names are displayed in what appears to be a
+random order. Generally, data is displayed in the order it is stored in
+the database table, which is often the order it was added to the table.
+However, once data is updated or deleted, the DBMS may store the rows in
+a different physical order. The only way to reliably predict the order
+in which rows are retrieved is to intentionally define how you want the
+data sorted as part of the SQL statement. This is done with the
 <code>ORDER BY</code> clause of the SELECT statement.</p>
 <div class="term">
 <blockquote>
-<p><strong>Clause</strong> &#8212; An element of a SQL statement that defines
-a specific aspect of the statement. The SELECT statement has six
-clauses: <code>SELECT</code>, <code>FROM</code>, <code>WHERE</code>,
-<code>GROUP BY</code>, <code>HAVING</code>, and <code>ORDER BY</code>.
-Of these, only <code>SELECT</code> and <code>FROM</code> are required in
+<p><strong>Clause</strong> — An element of a SQL statement that defines
+a specific aspect of the statement. The SELECT statement has six
+clauses: <code>SELECT</code>, <code>FROM</code>, <code>WHERE</code>,
+<code>GROUP BY</code>, <code>HAVING</code>, and <code>ORDER BY</code>.
+Of these, only <code>SELECT</code> and <code>FROM</code> are required in
 every SELECT statement.</p>
 </blockquote>
 </div>
-<p>To define the sort order of the rows retrieved by a SELECT statement,
-you use the <code>ORDER BY</code> clause, which specifies one or more
+<p>To define the sort order of the rows retrieved by a SELECT statement,
+you use the <code>ORDER BY</code> clause, which specifies one or more
 columns to sort the returned data on.</p>
 <div class="term">
 <blockquote>
-<p><strong>ORDER BY</strong> &#8212; The clause used to define one or more
-columns on which the data returned by a SELECT statement will be
+<p><strong>ORDER BY</strong> — The clause used to define one or more
+columns on which the data returned by a SELECT statement will be
 sorted.</p>
 </blockquote>
 </div>
-<p>Say you want to take the last query and arrange the museum names
-alphabetically. You can use a chat with an AI assistant to adjust the
+<p>Say you want to take the last query and arrange the museum names
+alphabetically. You can use a chat with an AI assistant to adjust the
 SELECT statement:</p>
 <div class="ai-conversation" data-prompt="Write a SQL statement to list the names of museums in alphabetical order.">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to list the names of museums in alphabetical order.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To list the names of museums in alphabetical order, you can modify
-the previous SQL statement by adding an ORDER BY clause. Here&#8217;s the
+<p>To list the names of museums in alphabetical order, you can modify
+the previous SQL statement by adding an ORDER BY clause. Here’s the
 updated SQL statement:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> name</span>
-<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">FROM</span> museum</span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> name</span>
+<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">FROM</span> museum</span>
 <span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> name <span class="kw">ASC</span>;</span></code></pre></div>
-<p>This query selects the &#8220;name&#8221; column from the &#8220;museum&#8221; table and uses
-the ORDER BY clause to sort the results in ascending order (A-Z) based
-on the museum names. The result will be a list of museum names listed in
+<p>This query selects the “name” column from the “museum” table and uses
+the ORDER BY clause to sort the results in ascending order (A-Z) based
+on the museum names. The result will be a list of museum names listed in
 alphabetical order.</p>
 </blockquote>
 </div>
-<p>This query produces the correct result. It displays the
-<code>name</code> column from the <code>museum</code> table, and the
-<code>ORDER BY</code> clause sorts the rows in the query result. The
-keyword <code>ASC</code> sorts the rows in ascending order; since
-<code>name</code> is a text column, sorting it in ascending order
+<p>This query produces the correct result. It displays the
+<code>name</code> column from the <code>museum</code> table, and the
+<code>ORDER BY</code> clause sorts the rows in the query result. The
+keyword <code>ASC</code> sorts the rows in ascending order; since
+<code>name</code> is a text column, sorting it in ascending order
 returns an alphabetized list.</p>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span>   name</span>
-<span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a><span class="kw">FROM</span>     museum</span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span>   name</span>
+<span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a><span class="kw">FROM</span>     museum</span>
 <span id="cb4-3"><a aria-hidden="true" href="#cb4-3" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> name <span class="kw">ASC</span>;</span></code></pre></div>
 <div class="note">
 <blockquote>
-<p>This is one of the book&#8217;s interactive query boxes (tied to the
-<code>artist</code>/<code>work</code>/<code>museum</code> schema
-diagram, with a &#8220;Play&#8221; button and results panel) &#8212; shown here as a plain
+<p>This is one of the book’s interactive query boxes (tied to the
+<code>artist</code>/<code>work</code>/<code>museum</code> schema
+diagram, with a “Play” button and results panel) — shown here as a plain
 code block until that component is built on this platform.</p>
 </blockquote>
 </div>
 <div class="caution">
 <blockquote>
-<p><strong>Where to Place the ORDER BY Clause.</strong> When you use an
-<code>ORDER BY</code> clause in a SELECT statement, it must always come
-last. Placing <code>ORDER BY</code> before any of the other clauses
-(<code>SELECT</code>, <code>FROM</code>, <code>WHERE</code>,
-<code>GROUP BY</code>, or <code>HAVING</code>) will result in an
+<p><strong>Where to Place the ORDER BY Clause.</strong> When you use an
+<code>ORDER BY</code> clause in a SELECT statement, it must always come
+last. Placing <code>ORDER BY</code> before any of the other clauses
+(<code>SELECT</code>, <code>FROM</code>, <code>WHERE</code>,
+<code>GROUP BY</code>, or <code>HAVING</code>) will result in an
 error.</p>
 </blockquote>
 </div>
-<p>The default way to sort data in a column is ascending order, so it&#8217;s
-actually unnecessary to include the keyword <code>ASC</code>. In fact,
-<code>ASC</code> is omitted in most cases. It is just as correct, and
+<p>The default way to sort data in a column is ascending order, so it’s
+actually unnecessary to include the keyword <code>ASC</code>. In fact,
+<code>ASC</code> is omitted in most cases. It is just as correct, and
 more common, to write:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span>   name</span>
-<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="kw">FROM</span>     museum</span>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span>   name</span>
+<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="kw">FROM</span>     museum</span>
 <span id="cb5-3"><a aria-hidden="true" href="#cb5-3" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> name;</span></code></pre></div>
 <h2 data-number="5.2" id="setting-the-sort-direction"><span class="header-section-number">5.2</span> Setting the Sort Direction</h2>
-<p>When you sort a column that contains text, ascending order means the
-data is arranged alphabetically (A-Z). You can sort other kinds of data
-too. Sorting a column of numbers in ascending order arranges the values
-from smallest to largest, and sorting a column of dates in ascending
+<p>When you sort a column that contains text, ascending order means the
+data is arranged alphabetically (A-Z). You can sort other kinds of data
+too. Sorting a column of numbers in ascending order arranges the values
+from smallest to largest, and sorting a column of dates in ascending
 order arranges them from oldest to newest.</p>
 <div class="term">
 <blockquote>
-<p><strong>Ascending (ASC)</strong> &#8212; When data is sorted in ascending
-order, it is arranged alphabetically for text, smallest to largest for
+<p><strong>Ascending (ASC)</strong> — When data is sorted in ascending
+order, it is arranged alphabetically for text, smallest to largest for
 numbers, and least to most recent for dates.</p>
 </blockquote>
 </div>
-<p>You can also reverse the sort order of a column by sorting it in
-descending order, using the keyword <code>DESC</code>. Since descending
-is not the default, you must always include <code>DESC</code> in the
+<p>You can also reverse the sort order of a column by sorting it in
+descending order, using the keyword <code>DESC</code>. Since descending
+is not the default, you must always include <code>DESC</code> in the
 <code>ORDER BY</code> clause to reverse the sort.</p>
-<p>Sorting text in descending order arranges it in reverse alphabetical
-order (Z-A). Sorting numbers in descending order arranges them from
-largest to smallest, and sorting dates in descending order puts the most
+<p>Sorting text in descending order arranges it in reverse alphabetical
+order (Z-A). Sorting numbers in descending order arranges them from
+largest to smallest, and sorting dates in descending order puts the most
 recent date first and the least recent date last.</p>
 <div class="term">
 <blockquote>
-<p><strong>Descending (DESC)</strong> &#8212; When data is sorted in
-descending order, it is arranged in reverse alphabetical order for text,
+<p><strong>Descending (DESC)</strong> — When data is sorted in
+descending order, it is arranged in reverse alphabetical order for text,
 largest to smallest for numbers, and most to least recent for dates.</p>
 </blockquote>
 </div>
-<p>Say you want to arrange and display the museum names in reverse
-alphabetical order. You can use a chat with an AI assistant to adjust
+<p>Say you want to arrange and display the museum names in reverse
+alphabetical order. You can use a chat with an AI assistant to adjust
 the SELECT statement:</p>
 <div class="ai-conversation" data-prompt="Adjust the SQL statement to list the museum names in reverse alphabetical order.">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Adjust the SQL statement to list the museum names in reverse alphabetical order.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To list the museum names in reverse alphabetical order (Z-A), you can
-modify the SQL statement by using the DESC keyword in the ORDER BY
-clause. Here&#8217;s the adjusted SQL statement:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> name</span>
-<span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a><span class="kw">FROM</span> museum</span>
+<p>To list the museum names in reverse alphabetical order (Z-A), you can
+modify the SQL statement by using the DESC keyword in the ORDER BY
+clause. Here’s the adjusted SQL statement:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> name</span>
+<span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a><span class="kw">FROM</span> museum</span>
 <span id="cb6-3"><a aria-hidden="true" href="#cb6-3" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> name <span class="kw">DESC</span>;</span></code></pre></div>
-<p>This query selects the &#8220;name&#8221; column from the &#8220;museum&#8221; table and uses
-the ORDER BY clause to sort the results in descending order (Z-A) based
-on the museum names. The result will be a list of museum names listed in
+<p>This query selects the “name” column from the “museum” table and uses
+the ORDER BY clause to sort the results in descending order (Z-A) based
+on the museum names. The result will be a list of museum names listed in
 reverse alphabetical order.</p>
 </blockquote>
 </div>
-<p>This query produces the correct result. It displays the museum names
-from the <code>museum</code> table, and the keyword <code>DESC</code>
+<p>This query produces the correct result. It displays the museum names
+from the <code>museum</code> table, and the keyword <code>DESC</code>
 ensures the results are sorted in reverse alphabetical order.</p>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span>   name</span>
-<span id="cb7-2"><a aria-hidden="true" href="#cb7-2" tabindex="-1"></a><span class="kw">FROM</span>     museum</span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span>   name</span>
+<span id="cb7-2"><a aria-hidden="true" href="#cb7-2" tabindex="-1"></a><span class="kw">FROM</span>     museum</span>
 <span id="cb7-3"><a aria-hidden="true" href="#cb7-3" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> name <span class="kw">DESC</span>;</span></code></pre></div>
 <div class="caution">
 <blockquote>
-<p><strong>Sorting Text and Case Sensitivity.</strong> When sorting
-text, capitalization can be problematic. It&#8217;s possible for an upper-case
-A to not be treated the same as a lower-case a &#8212; in which case, would
-the letter &#8220;a&#8221; sort before or after the letter &#8220;Z&#8221;? PostgreSQL&#8217;s default
-collation generally treats upper- and lower-case letters as equivalent
-for sorting purposes, ordering primarily by letter and only using case
-to break ties. However, a database can be configured with a different
-collation that sorts case differently. When this is the case, sorting
-text may give you unexpected results that a simple <code>ORDER BY</code>
-clause can&#8217;t fix.</p>
+<p><strong>Sorting Text and Case Sensitivity.</strong> When sorting
+text, capitalization can be problematic. It’s possible for an upper-case
+A to not be treated the same as a lower-case a — in which case, would
+the letter “a” sort before or after the letter “Z”? PostgreSQL’s default
+collation generally treats upper- and lower-case letters as equivalent
+for sorting purposes, ordering primarily by letter and only using case
+to break ties. However, a database can be configured with a different
+collation that sorts case differently. When this is the case, sorting
+text may give you unexpected results that a simple <code>ORDER BY</code>
+clause can’t fix.</p>
 </blockquote>
 </div>
-<h2 data-number="5.3" id="sorting-by-multiple-columns"><span class="header-section-number">5.3</span> Sorting by Multiple
+<h2 data-number="5.3" id="sorting-by-multiple-columns"><span class="header-section-number">5.3</span> Sorting by Multiple
 Columns</h2>
-<p>Most queries include more than one column, and you can still sort the
-results of such a query. For example, say you want to see the city and
-country for each museum alongside the alphabetized list of museum names.
-You can use a chat with an AI assistant to create the SELECT statement
+<p>Most queries include more than one column, and you can still sort the
+results of such a query. For example, say you want to see the city and
+country for each museum alongside the alphabetized list of museum names.
+You can use a chat with an AI assistant to create the SELECT statement
 for this query:</p>
 <div class="ai-conversation" data-prompt="Write a SQL statement to show an alphabetized list of names, cities, and countries of museums.">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to show an alphabetized list of names, cities, and countries of museums.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To display an alphabetized list of names, cities, and countries of
-museums from the &#8220;museum&#8221; table, you can use the following SQL
+<p>To display an alphabetized list of names, cities, and countries of
+museums from the “museum” table, you can use the following SQL
 statement:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="kw">SELECT</span> name, city, country</span>
-<span id="cb8-2"><a aria-hidden="true" href="#cb8-2" tabindex="-1"></a><span class="kw">FROM</span> museum</span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="kw">SELECT</span> name, city, country</span>
+<span id="cb8-2"><a aria-hidden="true" href="#cb8-2" tabindex="-1"></a><span class="kw">FROM</span> museum</span>
 <span id="cb8-3"><a aria-hidden="true" href="#cb8-3" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> name <span class="kw">ASC</span>;</span></code></pre></div>
-<p>This query selects the &#8220;name&#8221;, &#8220;city&#8221;, and &#8220;country&#8221; columns from the
-&#8220;museum&#8221; table. The ORDER BY clause is used to sort the results in
-ascending order based on the museum names. The result will be an
-alphabetized list of museum names, along with their corresponding cities
+<p>This query selects the “name”, “city”, and “country” columns from the
+“museum” table. The ORDER BY clause is used to sort the results in
+ascending order based on the museum names. The result will be an
+alphabetized list of museum names, along with their corresponding cities
 and countries.</p>
 </blockquote>
 </div>
-<p>This query produces the correct result. It lists the
-<code>name</code>, <code>city</code>, and <code>country</code> columns
-from the <code>museum</code> table, with the rows sorted in ascending
+<p>This query produces the correct result. It lists the
+<code>name</code>, <code>city</code>, and <code>country</code> columns
+from the <code>museum</code> table, with the rows sorted in ascending
 order by museum name.</p>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="kw">SELECT</span>   name, city, country</span>
-<span id="cb9-2"><a aria-hidden="true" href="#cb9-2" tabindex="-1"></a><span class="kw">FROM</span>     museum</span>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="kw">SELECT</span>   name, city, country</span>
+<span id="cb9-2"><a aria-hidden="true" href="#cb9-2" tabindex="-1"></a><span class="kw">FROM</span>     museum</span>
 <span id="cb9-3"><a aria-hidden="true" href="#cb9-3" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> name;</span></code></pre></div>
-<p>Recall that each row of a database table contains all of the
-information stored about a single instance of that table. For example,
-the first row of the query above contains information about the Army
-Museum, which is in Paris, France. If the data were instead sorted in
-reverse alphabetical order by name, the Army Museum would move to the
-last row of the result &#8212; and Paris and France would move right along
-with it. In other words, the data on a row is rearranged together, even
+<p>Recall that each row of a database table contains all of the
+information stored about a single instance of that table. For example,
+the first row of the query above contains information about the Army
+Museum, which is in Paris, France. If the data were instead sorted in
+reverse alphabetical order by name, the Army Museum would move to the
+last row of the result — and Paris and France would move right along
+with it. In other words, the data on a row is rearranged together, even
 when the query is only sorted on one of its columns.</p>
-<p>It&#8217;s also possible to sort by more than one column. For example, say
-you want to see the list of museums arranged by country and then by city
-within each country, giving the result a geographical arrangement. You
-can use a chat with an AI assistant to create the SELECT statement for
+<p>It’s also possible to sort by more than one column. For example, say
+you want to see the list of museums arranged by country and then by city
+within each country, giving the result a geographical arrangement. You
+can use a chat with an AI assistant to create the SELECT statement for
 this query:</p>
 <div class="ai-conversation" data-prompt="Write a SQL statement to show a list of names, cities, and countries of museums. Sort the results first by country and then by city.">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to show a list of names, cities, and countries of museums. Sort the results first by country and then by city.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To display a list of names, cities, and countries of museums from the
-&#8220;museum&#8221; table, sorted first by country and then by city, you can use
+<p>To display a list of names, cities, and countries of museums from the
+“museum” table, sorted first by country and then by city, you can use
 the following SQL statement:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a aria-hidden="true" href="#cb10-1" tabindex="-1"></a><span class="kw">SELECT</span> name, city, country</span>
-<span id="cb10-2"><a aria-hidden="true" href="#cb10-2" tabindex="-1"></a><span class="kw">FROM</span> museum</span>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a aria-hidden="true" href="#cb10-1" tabindex="-1"></a><span class="kw">SELECT</span> name, city, country</span>
+<span id="cb10-2"><a aria-hidden="true" href="#cb10-2" tabindex="-1"></a><span class="kw">FROM</span> museum</span>
 <span id="cb10-3"><a aria-hidden="true" href="#cb10-3" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> country <span class="kw">ASC</span>, city <span class="kw">ASC</span>;</span></code></pre></div>
-<p>This query selects the &#8220;name&#8221;, &#8220;city&#8221;, and &#8220;country&#8221; columns from the
-&#8220;museum&#8221; table. The ORDER BY clause is used to sort the results first in
-ascending order based on the country column and then in ascending order
-based on the city column. The result will be a list of museum names,
+<p>This query selects the “name”, “city”, and “country” columns from the
+“museum” table. The ORDER BY clause is used to sort the results first in
+ascending order based on the country column and then in ascending order
+based on the city column. The result will be a list of museum names,
 cities, and countries, sorted first by country and then by city.</p>
 </blockquote>
 </div>
-<p>This query produces the correct result. It lists the
-<code>name</code>, <code>city</code>, and <code>country</code> columns
-from the <code>museum</code> table. The results are first sorted by
-<code>country</code>, then by <code>city</code>, with both columns
+<p>This query produces the correct result. It lists the
+<code>name</code>, <code>city</code>, and <code>country</code> columns
+from the <code>museum</code> table. The results are first sorted by
+<code>country</code>, then by <code>city</code>, with both columns
 sorted in alphabetical (ascending) order.</p>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb11-1"><a aria-hidden="true" href="#cb11-1" tabindex="-1"></a><span class="kw">SELECT</span>   name, city, country</span>
-<span id="cb11-2"><a aria-hidden="true" href="#cb11-2" tabindex="-1"></a><span class="kw">FROM</span>     museum</span>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb11-1"><a aria-hidden="true" href="#cb11-1" tabindex="-1"></a><span class="kw">SELECT</span>   name, city, country</span>
+<span id="cb11-2"><a aria-hidden="true" href="#cb11-2" tabindex="-1"></a><span class="kw">FROM</span>     museum</span>
 <span id="cb11-3"><a aria-hidden="true" href="#cb11-3" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> country, city;</span></code></pre></div>
-<p>The order of the columns listed in the <code>ORDER BY</code> clause
-matters. Data is sorted first by the first column listed, and then by
-each successive column. Sorting by country first and then city produces
-a very different arrangement than sorting by city first and then
-country. Notice that sorting by country and then city arranges the
-museums by country, and when there is more than one museum in a country,
-those museums are then arranged alphabetically by city within that
+<p>The order of the columns listed in the <code>ORDER BY</code> clause
+matters. Data is sorted first by the first column listed, and then by
+each successive column. Sorting by country first and then city produces
+a very different arrangement than sorting by city first and then
+country. Notice that sorting by country and then city arranges the
+museums by country, and when there is more than one museum in a country,
+those museums are then arranged alphabetically by city within that
 country.</p>
-<p>If you want to sort more than one column in descending order, each of
-those columns must include the <code>DESC</code> keyword &#8212;
-<code>DESC</code> only affects the column that comes directly before it
-in the <code>ORDER BY</code> clause. Say you want to list the name,
-city, and country from the <code>museum</code> table, ordering the rows
-in reverse alphabetical order by country and then alphabetically by
-city. You can use a chat with an AI assistant to write the SELECT
+<p>If you want to sort more than one column in descending order, each of
+those columns must include the <code>DESC</code> keyword —
+<code>DESC</code> only affects the column that comes directly before it
+in the <code>ORDER BY</code> clause. Say you want to list the name,
+city, and country from the <code>museum</code> table, ordering the rows
+in reverse alphabetical order by country and then alphabetically by
+city. You can use a chat with an AI assistant to write the SELECT
 statement:</p>
 <div class="ai-conversation" data-prompt="Write a SQL statement to show a list of names, cities, and countries of museums. Sort the results first by country in reverse alphabetical order and then alphabetically by city.">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to show a list of names, cities, and countries of museums. Sort the results first by country in reverse alphabetical order and then alphabetically by city.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To display a list of names, cities, and countries of museums from the
-&#8220;museum&#8221; table, sorted first by country in reverse alphabetical order
-and then alphabetically by city, you can use the following SQL
+<p>To display a list of names, cities, and countries of museums from the
+“museum” table, sorted first by country in reverse alphabetical order
+and then alphabetically by city, you can use the following SQL
 statement:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a><span class="kw">SELECT</span> name, city, country</span>
-<span id="cb12-2"><a aria-hidden="true" href="#cb12-2" tabindex="-1"></a><span class="kw">FROM</span> museum</span>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a><span class="kw">SELECT</span> name, city, country</span>
+<span id="cb12-2"><a aria-hidden="true" href="#cb12-2" tabindex="-1"></a><span class="kw">FROM</span> museum</span>
 <span id="cb12-3"><a aria-hidden="true" href="#cb12-3" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> country <span class="kw">DESC</span>, city <span class="kw">ASC</span>;</span></code></pre></div>
-<p>This query selects the &#8220;name&#8221;, &#8220;city&#8221;, and &#8220;country&#8221; columns from the
-&#8220;museum&#8221; table. The ORDER BY clause is used to sort the results first in
-descending order (reverse alphabetical) based on the country column and
-then in ascending order (alphabetically) based on the city column. The
-result will be a list of museum names, cities, and countries, sorted
-first by country in reverse alphabetical order and then alphabetically
+<p>This query selects the “name”, “city”, and “country” columns from the
+“museum” table. The ORDER BY clause is used to sort the results first in
+descending order (reverse alphabetical) based on the country column and
+then in ascending order (alphabetically) based on the city column. The
+result will be a list of museum names, cities, and countries, sorted
+first by country in reverse alphabetical order and then alphabetically
 by city.</p>
 </blockquote>
 </div>
-<p>The query syntax is correct. It lists the <code>name</code>,
-<code>city</code>, and <code>country</code> columns from the
-<code>museum</code> table, and the <code>ORDER BY</code> clause
-correctly specifies that the rows will first be sorted by country in
+<p>The query syntax is correct. It lists the <code>name</code>,
+<code>city</code>, and <code>country</code> columns from the
+<code>museum</code> table, and the <code>ORDER BY</code> clause
+correctly specifies that the rows will first be sorted by country in
 reverse alphabetical order and then by city in alphabetical order.</p>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb13-1"><a aria-hidden="true" href="#cb13-1" tabindex="-1"></a><span class="kw">SELECT</span>   name, city, country</span>
-<span id="cb13-2"><a aria-hidden="true" href="#cb13-2" tabindex="-1"></a><span class="kw">FROM</span>     museum</span>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb13-1"><a aria-hidden="true" href="#cb13-1" tabindex="-1"></a><span class="kw">SELECT</span>   name, city, country</span>
+<span id="cb13-2"><a aria-hidden="true" href="#cb13-2" tabindex="-1"></a><span class="kw">FROM</span>     museum</span>
 <span id="cb13-3"><a aria-hidden="true" href="#cb13-3" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> country <span class="kw">DESC</span>, city;</span></code></pre></div>
-<p>Notice that the museums in the USA are arranged at the top of the
-query result, because USA is the last country alphabetically on the
-<code>museum</code> table, and the cities within the USA are arranged
-alphabetically. This happens because the keyword <code>DESC</code> only
-applies to the column directly before it in the <code>ORDER BY</code>
-clause &#8212; in this case, <code>country</code>. <code>city</code> is not
-affected by <code>DESC</code>, so it is sorted in ascending,
+<p>Notice that the museums in the USA are arranged at the top of the
+query result, because USA is the last country alphabetically on the
+<code>museum</code> table, and the cities within the USA are arranged
+alphabetically. This happens because the keyword <code>DESC</code> only
+applies to the column directly before it in the <code>ORDER BY</code>
+clause — in this case, <code>country</code>. <code>city</code> is not
+affected by <code>DESC</code>, so it is sorted in ascending,
 alphabetical order.</p>
 <div class="caution">
 <blockquote>
-<p><strong>Sorting Multiple Columns in Descending Order.</strong> Be
-sure to include the keyword <code>DESC</code> after each column you want
-sorted in descending order. Columns without <code>DESC</code> will be
+<p><strong>Sorting Multiple Columns in Descending Order.</strong> Be
+sure to include the keyword <code>DESC</code> after each column you want
+sorted in descending order. Columns without <code>DESC</code> will be
 sorted in ascending order.</p>
 </blockquote>
 </div>
 <div class="note">
 <blockquote>
-<p><strong>Sorting by Columns Not in the SELECT Clause.</strong>
-Generally, the columns you use in the <code>ORDER BY</code> clause will
-also be listed in the <code>SELECT</code> clause so they appear in the
-query result. This isn&#8217;t required, however &#8212; you can sort by any column
-on the table, whether or not that column is displayed in the query
+<p><strong>Sorting by Columns Not in the SELECT Clause.</strong>
+Generally, the columns you use in the <code>ORDER BY</code> clause will
+also be listed in the <code>SELECT</code> clause so they appear in the
+query result. This isn’t required, however — you can sort by any column
+on the table, whether or not that column is displayed in the query
 result.</p>
 </blockquote>
 </div>
 <h2 data-number="5.4" id="sorting-by-column-position"><span class="header-section-number">5.4</span> Sorting by Column Position</h2>
-<p>Every example of the <code>ORDER BY</code> clause so far has used
-column names for sorting, but <code>ORDER BY</code> will also accept the
-position number of a column in the <code>SELECT</code> clause in place
-of its name. Recall the earlier example that selected the name, city,
-and country of the museums, arranged by country and then city, both in
+<p>Every example of the <code>ORDER BY</code> clause so far has used
+column names for sorting, but <code>ORDER BY</code> will also accept the
+position number of a column in the <code>SELECT</code> clause in place
+of its name. Recall the earlier example that selected the name, city,
+and country of the museums, arranged by country and then city, both in
 ascending order:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb14-1"><a aria-hidden="true" href="#cb14-1" tabindex="-1"></a><span class="kw">SELECT</span>   name</span>
-<span id="cb14-2"><a aria-hidden="true" href="#cb14-2" tabindex="-1"></a>        ,city</span>
-<span id="cb14-3"><a aria-hidden="true" href="#cb14-3" tabindex="-1"></a>        ,country</span>
-<span id="cb14-4"><a aria-hidden="true" href="#cb14-4" tabindex="-1"></a><span class="kw">FROM</span>     museum</span>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb14-1"><a aria-hidden="true" href="#cb14-1" tabindex="-1"></a><span class="kw">SELECT</span>   name</span>
+<span id="cb14-2"><a aria-hidden="true" href="#cb14-2" tabindex="-1"></a>        ,city</span>
+<span id="cb14-3"><a aria-hidden="true" href="#cb14-3" tabindex="-1"></a>        ,country</span>
+<span id="cb14-4"><a aria-hidden="true" href="#cb14-4" tabindex="-1"></a><span class="kw">FROM</span>     museum</span>
 <span id="cb14-5"><a aria-hidden="true" href="#cb14-5" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> country, city;</span></code></pre></div>
-<p>This can be rewritten to refer to column numbers in the
+<p>This can be rewritten to refer to column numbers in the
 <code>ORDER BY</code> clause instead of column names:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb15-1"><a aria-hidden="true" href="#cb15-1" tabindex="-1"></a><span class="kw">SELECT</span>   name</span>
-<span id="cb15-2"><a aria-hidden="true" href="#cb15-2" tabindex="-1"></a>        ,city</span>
-<span id="cb15-3"><a aria-hidden="true" href="#cb15-3" tabindex="-1"></a>        ,country</span>
-<span id="cb15-4"><a aria-hidden="true" href="#cb15-4" tabindex="-1"></a><span class="kw">FROM</span>     museum</span>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb15-1"><a aria-hidden="true" href="#cb15-1" tabindex="-1"></a><span class="kw">SELECT</span>   name</span>
+<span id="cb15-2"><a aria-hidden="true" href="#cb15-2" tabindex="-1"></a>        ,city</span>
+<span id="cb15-3"><a aria-hidden="true" href="#cb15-3" tabindex="-1"></a>        ,country</span>
+<span id="cb15-4"><a aria-hidden="true" href="#cb15-4" tabindex="-1"></a><span class="kw">FROM</span>     museum</span>
 <span id="cb15-5"><a aria-hidden="true" href="#cb15-5" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dv">3</span>, <span class="dv">2</span>;</span></code></pre></div>
-<p>Both queries sort the data identically &#8212; first by country and then by
-city. Notice the position of the columns in the <code>SELECT</code>
-clause: <code>name</code> is listed first, <code>city</code> second, and
-<code>country</code> third. In the rewritten query,
-<code>ORDER BY 3, 2</code> sorts by column 3 (<code>country</code>) and
+<p>Both queries sort the data identically — first by country and then by
+city. Notice the position of the columns in the <code>SELECT</code>
+clause: <code>name</code> is listed first, <code>city</code> second, and
+<code>country</code> third. In the rewritten query,
+<code>ORDER BY 3, 2</code> sorts by column 3 (<code>country</code>) and
 then column 2 (<code>city</code>).</p>
-<p>Using column position instead of column names in the
-<code>ORDER BY</code> clause has one main advantage and several
-disadvantages. The advantage is that you don&#8217;t have to retype the column
-names in the <code>ORDER BY</code> clause after already typing them in
-the <code>SELECT</code> clause. Unfortunately, this approach makes it
-easier to sort by the wrong column, and if you later change the order of
-the columns in the <code>SELECT</code> clause, you might forget to
-update the numbers in the <code>ORDER BY</code> clause. It also makes
-the statement a little harder to read, and you can&#8217;t use a column
-position to sort by a column that isn&#8217;t listed in the
+<p>Using column position instead of column names in the
+<code>ORDER BY</code> clause has one main advantage and several
+disadvantages. The advantage is that you don’t have to retype the column
+names in the <code>ORDER BY</code> clause after already typing them in
+the <code>SELECT</code> clause. Unfortunately, this approach makes it
+easier to sort by the wrong column, and if you later change the order of
+the columns in the <code>SELECT</code> clause, you might forget to
+update the numbers in the <code>ORDER BY</code> clause. It also makes
+the statement a little harder to read, and you can’t use a column
+position to sort by a column that isn’t listed in the
 <code>SELECT</code> clause.</p>
 <div class="tip">
 <blockquote>
-<p><strong>Sorting by Column Names and Column Numbers.</strong> You can
-use a combination of column names and column numbers in the same
+<p><strong>Sorting by Column Names and Column Numbers.</strong> You can
+use a combination of column names and column numbers in the same
 <code>ORDER BY</code> clause.</p>
 </blockquote>
 </div>
 <h2 data-number="5.5" id="limiting-results"><span class="header-section-number">5.5</span> Limiting Results</h2>
-<p>There are times when you want to retrieve only the first row, or
-first set of rows, from a table. In PostgreSQL, this is done with the
+<p>There are times when you want to retrieve only the first row, or
+first set of rows, from a table. In PostgreSQL, this is done with the
 keyword <code>LIMIT</code>.</p>
 <div class="note">
 <blockquote>
-<p><strong>LIMIT.</strong> The keyword <code>LIMIT</code> always appears
-as the last clause of a SELECT statement &#8212; after <code>ORDER BY</code>,
+<p><strong>LIMIT.</strong> The keyword <code>LIMIT</code> always appears
+as the last clause of a SELECT statement — after <code>ORDER BY</code>,
 if one is present.</p>
 </blockquote>
 </div>
-<p>Say you want to retrieve the first five rows of the
+<p>Say you want to retrieve the first five rows of the
 <code>museum</code> table. The SQL statement used to do this is:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb16-1"><a aria-hidden="true" href="#cb16-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
-<span id="cb16-2"><a aria-hidden="true" href="#cb16-2" tabindex="-1"></a><span class="kw">FROM</span> museum</span>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb16-1"><a aria-hidden="true" href="#cb16-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
+<span id="cb16-2"><a aria-hidden="true" href="#cb16-2" tabindex="-1"></a><span class="kw">FROM</span> museum</span>
 <span id="cb16-3"><a aria-hidden="true" href="#cb16-3" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code></pre></div>
-<p>All columns are retrieved from the <code>museum</code> table, and
-<code>LIMIT 5</code> ensures that only the first five rows of the result
+<p>All columns are retrieved from the <code>museum</code> table, and
+<code>LIMIT 5</code> ensures that only the first five rows of the result
 are displayed.</p>
-<p>Since no sort order is specified for this query, there&#8217;s no way to
-know in advance which five rows will be returned. For this reason,
-<code>LIMIT</code> is almost always applied to a query that is also
-sorted. When <code>LIMIT</code> and <code>ORDER BY</code> are used
-together, the query displays the rows with either the top (largest) or
-bottom (smallest) values for a column. For example, say you want to
-retrieve all of the information for the five artists who were born most
-recently. You can use a chat with an AI assistant to write the SELECT
+<p>Since no sort order is specified for this query, there’s no way to
+know in advance which five rows will be returned. For this reason,
+<code>LIMIT</code> is almost always applied to a query that is also
+sorted. When <code>LIMIT</code> and <code>ORDER BY</code> are used
+together, the query displays the rows with either the top (largest) or
+bottom (smallest) values for a column. For example, say you want to
+retrieve all of the information for the five artists who were born most
+recently. You can use a chat with an AI assistant to write the SELECT
 statement for this query:</p>
 <div class="ai-conversation" data-prompt="Write a SQL statement to show all of the columns from the artist table for the five artists who were born most recently.">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to show all of the columns from the artist table for the five artists who were born most recently.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To retrieve all columns from the artist table for the five artists
-who were born most recently, you can use the ORDER BY clause with the
-DESC (descending) option to sort the results by birth year in reverse
-order, and then limit the result set to the top five rows using the
-LIMIT clause. Here&#8217;s the SQL query to achieve that:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb17-1"><a aria-hidden="true" href="#cb17-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
-<span id="cb17-2"><a aria-hidden="true" href="#cb17-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb17-3"><a aria-hidden="true" href="#cb17-3" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> birth <span class="kw">DESC</span></span>
+<p>To retrieve all columns from the artist table for the five artists
+who were born most recently, you can use the ORDER BY clause with the
+DESC (descending) option to sort the results by birth year in reverse
+order, and then limit the result set to the top five rows using the
+LIMIT clause. Here’s the SQL query to achieve that:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb17-1"><a aria-hidden="true" href="#cb17-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
+<span id="cb17-2"><a aria-hidden="true" href="#cb17-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb17-3"><a aria-hidden="true" href="#cb17-3" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> birth <span class="kw">DESC</span></span>
 <span id="cb17-4"><a aria-hidden="true" href="#cb17-4" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code></pre></div>
-<p>This query selects all columns from the artist table, orders the
-result set by birth year in descending order (most recent first), and
+<p>This query selects all columns from the artist table, orders the
+result set by birth year in descending order (most recent first), and
 then limits the output to the top five rows using LIMIT 5.</p>
 </blockquote>
 </div>
-<p>This query produces the correct result. All columns are retrieved
-from the <code>artist</code> table, sorted by <code>birth</code> in
-descending order so the most recently born artists come first, and
-<code>LIMIT 5</code> ensures that only those first five rows are
+<p>This query produces the correct result. All columns are retrieved
+from the <code>artist</code> table, sorted by <code>birth</code> in
+descending order so the most recently born artists come first, and
+<code>LIMIT 5</code> ensures that only those first five rows are
 displayed.</p>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb18-1"><a aria-hidden="true" href="#cb18-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
-<span id="cb18-2"><a aria-hidden="true" href="#cb18-2" tabindex="-1"></a><span class="kw">FROM</span>   artist</span>
-<span id="cb18-3"><a aria-hidden="true" href="#cb18-3" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> birth <span class="kw">DESC</span></span>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb18-1"><a aria-hidden="true" href="#cb18-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
+<span id="cb18-2"><a aria-hidden="true" href="#cb18-2" tabindex="-1"></a><span class="kw">FROM</span>   artist</span>
+<span id="cb18-3"><a aria-hidden="true" href="#cb18-3" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> birth <span class="kw">DESC</span></span>
 <span id="cb18-4"><a aria-hidden="true" href="#cb18-4" tabindex="-1"></a><span class="kw">LIMIT</span>  <span class="dv">5</span>;</span></code></pre></div>
 <div class="tip">
 <blockquote>
-<p><strong>The Standard SQL Alternative.</strong> PostgreSQL also
-supports the SQL-standard syntax <code>FETCH FIRST n ROWS ONLY</code> as
-an alternative to <code>LIMIT</code>. The two are interchangeable &#8212;
-<code>SELECT * FROM museum FETCH FIRST 5 ROWS ONLY;</code> returns the
-same result as <code>SELECT * FROM museum LIMIT 5;</code>.
-<code>LIMIT</code> is the more common and idiomatic choice in
-PostgreSQL, so it&#8217;s the syntax used throughout this book.</p>
+<p><strong>The Standard SQL Alternative.</strong> PostgreSQL also
+supports the SQL-standard syntax <code>FETCH FIRST n ROWS ONLY</code> as
+an alternative to <code>LIMIT</code>. The two are interchangeable —
+<code>SELECT * FROM museum FETCH FIRST 5 ROWS ONLY;</code> returns the
+same result as <code>SELECT * FROM museum LIMIT 5;</code>.
+<code>LIMIT</code> is the more common and idiomatic choice in
+PostgreSQL, so it’s the syntax used throughout this book.</p>
 </blockquote>
 </div>
 <h2 data-number="5.6" id="summary"><span class="header-section-number">5.6</span> Summary</h2>
-<p>In this lesson, you learned how to use the <code>ORDER BY</code>
-clause in the SELECT statement to arrange the rows in a query result.
-Data can be sorted in ascending or descending order, and on multiple
-columns at once. Finally, you learned how to use the keyword
-<code>LIMIT</code> to display only a specified number of rows in a query
+<p>In this lesson, you learned how to use the <code>ORDER BY</code>
+clause in the SELECT statement to arrange the rows in a query result.
+Data can be sorted in ascending or descending order, and on multiple
+columns at once. Finally, you learned how to use the keyword
+<code>LIMIT</code> to display only a specified number of rows in a query
 result.</p>
 <!--postEnd-->
               </div>
@@ -603,8 +605,8 @@ result.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZonxDZvAxOg3sNM0YWtSMv8:1785190024486';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//book1014.blogspot.com/2000/02/5.html','3986204447440040189');
-_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://book1014.blogspot.com/2000/02/5.html', 'canonicalUrl': 'https://book1014.blogspot.com/2000/02/5.html', 'homepageUrl': 'https://book1014.blogspot.com/', 'searchUrl': 'https://book1014.blogspot.com/search', 'canonicalHomepageUrl': 'https://book1014.blogspot.com/', 'blogspotFaviconUrl': 'https://book1014.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://book1014.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://book1014.blogspot.com/feeds/3727261968951015018/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/9191fc3f3dc7f81d', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '3727261968951015018', 'pageName': '5. Sorting Retrieved Data', 'pageTitle': 'book1014 SQL: 5. Sorting Retrieved Data'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '5. Sorting Retrieved Data', 'description': 'websql  5  Sorting Retrieved Data   Learning Objectives    :   Use the ORDER BY clause of a SELECT statement to sort the rows in a\r query re...', 'url': 'https://book1014.blogspot.com/2000/02/5.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 3727261968951015018}}]);
+window['__wavt'] = 'AEUoTZpol1TRZi3eQtj1yElmpXCx:1785332709552';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//sql.availabooks.com/2000/02/5.html','3986204447440040189');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://sql.availabooks.com/2000/02/5.html', 'canonicalUrl': 'https://sql.availabooks.com/2000/02/5.html', 'homepageUrl': 'https://sql.availabooks.com/', 'searchUrl': 'https://sql.availabooks.com/search', 'canonicalHomepageUrl': 'https://sql.availabooks.com/', 'blogspotFaviconUrl': 'https://sql.availabooks.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': true, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://sql.availabooks.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://sql.availabooks.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://sql.availabooks.com/feeds/3727261968951015018/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/68dd02567aef746f', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '3727261968951015018', 'pageName': '5. Sorting Retrieved Data', 'pageTitle': 'book1014 SQL: 5. Sorting Retrieved Data'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '5. Sorting Retrieved Data', 'description': 'websql  5  Sorting Retrieved Data   Learning Objectives    :   Use the ORDER BY clause of a SELECT statement to sort the rows in a\r query re...', 'url': 'https://sql.availabooks.com/2000/02/5.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 3727261968951015018}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>
 </body>
