@@ -33,6 +33,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 --></style>
 <script type='text/javascript'>
 //<![CDATA[
+    //const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
 	async function initialize(){
 
       const kind = document.getElementById(`kind`).innerHTML
@@ -60,7 +61,8 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 
     function getSystemModule(moduleName="system"){
 		console.log(typeof location.hostname)
-		if(location.hostname==="local.availabooks.com"){
+		if(location.hostname.startsWith("local.availabooks.com")){
+            console.log("=======> looks like local dev")
             // get files from localhost
 			fetch(`${location.origin}/tools/api/${moduleName}.js`).then(response => {
                 return response.text(); 
@@ -70,6 +72,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
               })		
 		}else{
             //get files from blogger production server
+            console.log("=======> looks like production from server")
       		const systemVersion=document.getElementById("cssScript").src.split("/")[7]
       		loadCrossOrigin(`https://system.availabooks.com/feeds/posts/default/-/${systemVersion}/${moduleName}?alt=json-in-script&max-results=1&callback=loadCode`);      
 
@@ -96,7 +99,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
     
 //]]>
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=5bb5ec5d-4faf-45aa-a658-fe48a34270d7' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=5bb5ec5d-4faf-45aa-a658-fe48a34270d7' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=350edb71-14db-4960-9a7a-4ffca2c625a9' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=350edb71-14db-4960-9a7a-4ffca2c625a9' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -125,425 +128,425 @@ Tables</span></h1>
 <button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
               
               <!--postBegin--><div class="module">websql</div>
-<h1 data-number="18" id="creating-and-manipulating-tables"><span
-class="header-section-number">18</span> Creating and Manipulating
-Tables</h1>
-<div class="learning">
-<p>Learning Objectives</p>
-<div class="objectives">
-<blockquote>
-<p>:</p>
-<ol type="1">
-<li>Create database tables.</li>
-<li>Make changes to database tables.</li>
-<li>Remove tables from a database.</li>
-</ol>
-</blockquote>
-</div>
-</div>
-<p>You can use structured query language to do more than retrieve and
-manipulate the data stored in database tables — it can also be used to
-perform database and table maintenance tasks, including creating,
-editing, and deleting database tables. Most DBMSs have interactive tools
-for completing these tasks, but it is helpful to have some basic
-understanding of the SQL statements that perform them, because the
-syntax highlights some important database concepts. This lesson
-describes how to create, edit, and delete database tables.</p>
-<h2 data-number="18.1" id="creating-tables"><span
-class="header-section-number">18.1</span> Creating Tables</h2>
-<p>As with all of the SQL statements covered in this resource, creating
-database tables involves using SQL keywords. The statement for creating
-a database table starts with the keywords <code>CREATE</code> and
-<code>TABLE</code>. The keyword <code>CREATE</code> is used whenever you
-want to add a new object to the database. A table is a database object,
-which is why the keyword <code>TABLE</code> follows <code>CREATE</code>
-— together they tell the DBMS that a new table object is being added to
-the database.</p>
-<div class="term">
-<blockquote>
-<p><strong>CREATE</strong> — The SQL keyword used to add a new object to
-the database.</p>
-</blockquote>
-</div>
-<div class="term">
-<blockquote>
-<p><strong>TABLE</strong> — The SQL keyword that, when used with
-<code>CREATE</code>, specifies that the new object being added to the
-database is a table.</p>
-</blockquote>
-</div>
-<p>When you add a table to the database, you provide the DBMS with the
-details of the table. These details include:</p>
-<ol type="1">
-<li>The name of the table.</li>
-<li>The list of columns that will be stored on the table, including the
-details of each column.</li>
-<li>The columns that will act as the primary and foreign keys of the
-table.</li>
-</ol>
-<p>The generic syntax for adding a table to the database is:</p>
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> tablename (</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    column1_name column1_details,</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    column2_name column2_details,</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    optional_table_details</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
-<p>The table name is specified after the keywords
-<code>CREATE TABLE</code>. The individual columns of the table are
-detailed as a comma-separated list in parentheses after the table name.
-Primary and foreign keys are defined either as part of a column’s
-details or as optional table-level details listed after the columns.</p>
-<h3 data-number="18.1.1" id="table-names"><span
-class="header-section-number">18.1.1</span> Table Names</h3>
-<p>Table names must be unique within a database — two tables in the same
-database can’t have the same name. Additionally, a table name cannot be
-a reserved word; you can’t name a table <code>select</code>. While these
-are the only hard rules for naming database tables, there are a few
-suggestions worth keeping in mind:</p>
-<ol type="1">
-<li><strong>Table names should be descriptive.</strong> A table name
-should convey what is stored in the table clearly enough that users
-don’t have to guess. If the table names in a database are too ambiguous,
-the database becomes difficult to use.</li>
-<li><strong>Table names should be brief.</strong> Writing SQL statements
-can already feel tedious; overly verbose table names only make it
-worse.</li>
-<li><strong>Table names may include most characters typically allowed in
-a filename</strong> (though not <code>/</code>, <code>\</code>, or
-<code>.</code>), but it’s best to avoid spaces in table names.</li>
-<li><strong>Use a consistent naming convention for all table names in a
-database.</strong> Table names should all look alike — for example, if
-one table name is singular (<code>customer</code> rather than
-<code>customers</code>), all of them should be. Naming conventions make
-a database easier to use, because its elements become predictable. If
-some tables are named in the singular and others in the plural, users
-have to keep checking the schema diagram to know which form to use.</li>
-</ol>
-<p>The next suggestion is somewhat debated among database experts, but
-it’s practical advice for avoiding a common problem:</p>
-<ol start="5" type="1">
-<li><strong>Use snake_case for table names.</strong> Snake case replaces
-all the spaces in a name with underscore characters — for example, a
-table that stores museum hours would be named <code>museum_hours</code>.
-Snake case is generally easier to read than other naming conventions,
-such as CamelCase (capitalizing the first letter of each word in a name
-with no spaces), and it reduces the potential for ambiguity in table
-names.</li>
-</ol>
-<p>An example of the syntax used to add a table named
-<code>vendor</code> to the database is:</p>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> vendor ( <span class="op">..</span>. );</span></code></pre></div>
-<h3 data-number="18.1.2" id="defining-table-columns"><span
-class="header-section-number">18.1.2</span> Defining Table Columns</h3>
-<p>Columns are defined as a comma-separated list. Each column definition
-specifies a column name, the type of data that will be stored in the
-column, and — optionally — any constraints on how data can be stored in
-that column. A name and data type are required for every column;
-additional constraints are optional.</p>
-<h4 data-number="18.1.2.1" id="column-names"><span
-class="header-section-number">18.1.2.1</span> Column Names</h4>
-<p>Column names must be unique within a table. The same naming
-suggestions that apply to table names apply to column names.
-Additionally, it’s a good idea to begin each primary key column name
-with the name of its table — for example, the primary key of the
-<code>museum</code> table should be named <code>museum_id</code> rather
-than just <code>id</code>.</p>
-<h4 data-number="18.1.2.2" id="data-types"><span
-class="header-section-number">18.1.2.2</span> Data Types</h4>
-<p>You must also define the type of data that will be stored in each
-column. PostgreSQL supports a wide range of data types, but the ones
-you’ll use most often store text, integer numbers, decimal numbers,
-dates and times, and boolean (true/false) values.</p>
-<div class="table">
-<table>
-<colgroup>
-<col style="width: 62%" />
-<col style="width: 37%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: center;">Data Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center;"><code>INTEGER</code></td>
-<td>Whole numbers</td>
-</tr>
-<tr>
-<td style="text-align: center;"><code>NUMERIC(p, s)</code></td>
-<td>Exact decimal numbers, with <code>p</code> total digits and
-<code>s</code> digits after the decimal point</td>
-</tr>
-<tr>
-<td style="text-align: center;"><code>VARCHAR(n)</code></td>
-<td>A string of text up to <code>n</code> characters</td>
-</tr>
-<tr>
-<td style="text-align: center;"><code>TEXT</code></td>
-<td>A string of text of unlimited length</td>
-</tr>
-<tr>
-<td style="text-align: center;"><code>DATE</code></td>
-<td>A calendar date, with no time component</td>
-</tr>
-<tr>
-<td style="text-align: center;"><code>BOOLEAN</code></td>
-<td>A true/false value</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="note">
-<blockquote>
-<p><strong>PostgreSQL’s Full Data Type Catalog.</strong> PostgreSQL
-supports many more data types than are listed here — including several,
-like <code>JSONB</code> and array types, that are unique to PostgreSQL.
-Consult the PostgreSQL documentation for the complete list.</p>
-</blockquote>
-</div>
-<p>An example of the syntax used to define the <code>name</code> column
-on the <code>vendor</code> table with a data type of <code>TEXT</code>
-is:</p>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> vendor (</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    name TEXT</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
-<h4 data-number="18.1.2.3" id="column-constraints"><span
-class="header-section-number">18.1.2.3</span> Column Constraints</h4>
-<p>You can also add constraints on the values that can be stored in a
-column. These constraints are enforced by the DBMS — when a user tries
-to add a row that violates one of them, the DBMS rejects the row rather
-than saving it to the table.</p>
-<p>The first constraint you can add to a column is the unique
-constraint, applied with the keyword <code>UNIQUE</code>. It ensures
-that every value stored in that column is different from every other
-value already in the column. If a user tries to add a row with a value
-that duplicates an existing one, the DBMS will reject the new row.</p>
-<div class="term">
-<blockquote>
-<p><strong>UNIQUE</strong> — A constraint added to a column that ensures
-every value in that column is different from every other value in that
-column.</p>
-</blockquote>
-</div>
-<p>You can also add a constraint that ensures a column has a value
-whenever a new row is added to the table. This is done using the
-keywords <code>NOT NULL</code>, which essentially makes a value required
-in that column for every row.</p>
-<div class="term">
-<blockquote>
-<p><strong>NOT NULL</strong> — A constraint added to a column that
-ensures the column has a value whenever a new row is added to the
-table.</p>
-</blockquote>
-</div>
-<p>A column can also be designated as the primary key using a column
-constraint, with the keywords <code>PRIMARY KEY</code>. Recall that the
-values in a primary key column must be both unique and not null —
-<code>PRIMARY KEY</code> combines the <code>UNIQUE</code> and
-<code>NOT NULL</code> constraints on a single column. PostgreSQL will
-also add an index on the column automatically to keep primary-key
-lookups fast.</p>
-<div class="term">
-<blockquote>
-<p><strong>PRIMARY KEY constraint</strong> — Constrains the values in a
-column to be both unique and not null. PostgreSQL also adds an index to
-a primary key column automatically.</p>
-</blockquote>
-</div>
-<p>An example of the syntax used to define the <code>vendor</code>
-table, with <code>vendor_id</code> as an integer primary key and the
-<code>name</code> column as a required (<code>NOT NULL</code>) piece of
-text, is:</p>
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> vendor (</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    vendor_id <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    name      TEXT <span class="kw">NOT</span> <span class="kw">NULL</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
-<p>You can also add custom constraints to the columns of a table using
-the keyword <code>CHECK</code>. A <code>CHECK</code> constraint defines
-a logical test that the values for a column must satisfy before a new
-row can be added to the table. For example, you could add a check
-constraint to ensure that a new employee’s salary falls within an
-appropriate range.</p>
-<div class="term">
-<blockquote>
-<p><strong>CHECK</strong> — A custom constraint that ensures the values
-for a column satisfy a logical test before a new row can be added to a
-table.</p>
-</blockquote>
-</div>
-<h3 data-number="18.1.3" id="defining-table-level-options"><span
-class="header-section-number">18.1.3</span> Defining Table-Level
-Options</h3>
-<p>After the columns have been defined in a <code>CREATE TABLE</code>
-statement, table-level constraints can be added. The two most common
-table-level constraints are primary and foreign keys. Generally, a
-primary key is designated as part of a single column’s definition. If
-multiple columns are used together as a composite primary key, though,
-the primary key must instead be added as a table-level constraint, using
-the keywords <code>PRIMARY KEY</code> followed by a comma-separated list
-of the columns that make up the composite key, in parentheses. An
-example of the syntax used to define a composite primary key made up of
-the <code>product_id</code>, <code>sale_id</code>, and
-<code>product_size</code> columns is:</p>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">PRIMARY</span> <span class="kw">KEY</span> (product_id, sale_id, product_size)</span></code></pre></div>
-<p>Foreign keys are also added as table-level constraints, and a foreign
-key constraint has three parts. First, the column to be used as the
-foreign key is identified — this column must already exist on the table.
-Second, the table (and, implicitly, its primary key) that the foreign
-key references is specified. Third, the constraint designates what
-should happen if the referenced row on the related table is deleted. The
-following syntax demonstrates how <code>museum_id</code> would be
-defined as a foreign key on the <code>vendor</code> table, referencing
-the <code>museum</code> table:</p>
-<div class="sourceCode" id="cb6"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> vendor (</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    vendor_id <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">..</span>.</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    museum_id <span class="dt">INTEGER</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (museum_id) <span class="kw">REFERENCES</span> museum (museum_id) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">SET</span> <span class="kw">NULL</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
-<p>Notice the set of keywords in the foreign key constraint.
-<code>FOREIGN KEY</code> designates the column that will act as the
-foreign key. <code>REFERENCES</code> specifies the table — and, in
-parentheses, the column on that table — that the foreign key relates to.
-<code>ON DELETE SET NULL</code> ensures that if a museum is deleted from
-the <code>museum</code> table, the corresponding <code>museum_id</code>
-values on the <code>vendor</code> table are set to <code>NULL</code>, so
-the <code>vendor</code> table never references a museum that no longer
-exists.</p>
-<p>Putting all of these pieces together produces a complete table
-creation statement. A statement to create the <code>vendor</code> table
-in the museum database would be:</p>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> vendor (</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    vendor_id <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    name      TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    country   TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    museum_id <span class="dt">INTEGER</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (museum_id) <span class="kw">REFERENCES</span> museum (museum_id) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">SET</span> <span class="kw">NULL</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
-<div class="note">
-<blockquote>
-<p>This is one of the book’s interactive query boxes (tied to the
-<code>artist</code>/<code>work</code>/<code>museum</code> schema
-diagram, with a “Play” button and results panel) — shown here as a plain
-code block until that component is built on this platform.</p>
-</blockquote>
-</div>
-<p>If the statement executes without errors, PostgreSQL responds that
-the table was created, and the (still empty) table is added to the
-database. The SQL statements used to add data to a table are discussed
-in the lesson on inserting data. If an error occurs while the statement
-is executing, PostgreSQL responds with an error message describing the
-problem instead.</p>
-<h2 data-number="18.2" id="deleting-tables"><span
-class="header-section-number">18.2</span> Deleting Tables</h2>
-<p>A common error occurs when you try to add a table that already exists
-in the database — if you want to replace an existing table, you must
-remove it first. To remove a table from the database, you use the
-keywords <code>DROP TABLE</code>. <code>DROP</code> is the keyword used
-to remove objects from the database, and <code>TABLE</code> designates
-that the object being removed is a table.</p>
-<div class="term">
-<blockquote>
-<p><strong>DROP</strong> — The keyword used in a SQL statement to remove
-an object from the database.</p>
-</blockquote>
-</div>
-<p>When a table is dropped from the database, it is completely removed,
-along with all of the data stored on it. The syntax used to remove the
-<code>vendor</code> table you just created is:</p>
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> vendor;</span></code></pre></div>
-<div class="caution">
-<blockquote>
-<p><strong>Removing Database Tables.</strong> The SQL statement used to
-remove a table from a database is simple, and there is no command to
-undo it. Take care when dropping tables to avoid accidental deletion and
-data loss.</p>
-</blockquote>
-</div>
-<h2 data-number="18.3" id="editing-tables"><span
-class="header-section-number">18.3</span> Editing Tables</h2>
-<p>From time to time, you will need to make changes to an existing
-database table. The keywords used to change a table are
-<code>ALTER TABLE</code>; <code>ALTER</code> is the keyword used to
-change a database object. The syntax for changing a database table
-is:</p>
-<div class="term">
-<blockquote>
-<p><strong>ALTER</strong> — The keyword used in a SQL statement to
-change an object in the database.</p>
-</blockquote>
-</div>
-<div class="sourceCode" id="cb9"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> tablename</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>statements_that_define_the_changes;</span></code></pre></div>
-<p>For example, you can add a column to, or remove a column from, an
-existing table. The syntax used to add a column named
-<code>vendor_phone</code> to the existing <code>vendor</code> table
-is:</p>
-<div class="sourceCode" id="cb10"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> vendor</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">ADD</span> <span class="kw">COLUMN</span> vendor_phone TEXT;</span></code></pre></div>
-<p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb11"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> vendor (</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    vendor_id <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    name      TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    country   TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    museum_id <span class="dt">INTEGER</span>,</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (museum_id) <span class="kw">REFERENCES</span> museum (museum_id) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">SET</span> <span class="kw">NULL</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>);</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> vendor</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="kw">ADD</span> <span class="kw">COLUMN</span> vendor_phone TEXT;</span></code></pre></div>
-<p>Note that if you ran the <code>DROP TABLE</code> statement in the
-last section, your copy of the <code>vendor</code> table was deleted
-from the database, which is why this example re-creates the
-<code>vendor</code> table first. If you didn’t drop the table, you’ll
-get an error when this example tries to create it again.</p>
-<p>Similarly, the syntax used to alter the table and remove the
-<code>vendor_phone</code> column is:</p>
-<div class="sourceCode" id="cb12"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> vendor</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">COLUMN</span> vendor_phone;</span></code></pre></div>
-<p>Tables can also be altered to add primary and foreign keys after the
-table has already been created, using <code>ADD CONSTRAINT</code>. For
-example, the following statement adds a foreign key to the
-<code>vendor</code> table’s <code>museum_id</code> column after the
-fact:</p>
-<div class="sourceCode" id="cb13"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> vendor</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">ADD</span> <span class="kw">CONSTRAINT</span> vendor_museum_fk</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FOREIGN</span> <span class="kw">KEY</span> (museum_id) <span class="kw">REFERENCES</span> museum (museum_id) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">SET</span> <span class="kw">NULL</span>;</span></code></pre></div>
-<p>Finally, <code>ALTER TABLE</code> can also be used to rename a table,
-with the <code>RENAME TO</code> clause:</p>
-<div class="sourceCode" id="cb14"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> vendor</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">RENAME</span> <span class="kw">TO</span> supplier;</span></code></pre></div>
-<div class="tip">
-<blockquote>
-<p><strong>Renaming and Retyping Columns.</strong>
-<code>ALTER TABLE</code> also supports
-<code>RENAME COLUMN old_name TO new_name</code> and
-<code>ALTER COLUMN column_name TYPE new_type</code>, letting you rename
-a column or change its data type without dropping and recreating it.</p>
-</blockquote>
-</div>
-<h2 data-number="18.4" id="summary"><span
-class="header-section-number">18.4</span> Summary</h2>
-<p>This lesson described how to write SQL statements to manipulate
-database tables. Specifically, it described how to add database tables
-using the <code>CREATE TABLE</code> keywords, including how to define
-table columns and table-level constraints. It also described how to
-remove tables from a database and how to edit existing tables.</p>
+<h1 data-number="18" id="creating-and-manipulating-tables"><span
+class="header-section-number">18</span> Creating and Manipulating
+Tables</h1>
+<div class="learning">
+<p>Learning Objectives</p>
+<div class="objectives">
+<blockquote>
+<p>:</p>
+<ol type="1">
+<li>Create database tables.</li>
+<li>Make changes to database tables.</li>
+<li>Remove tables from a database.</li>
+</ol>
+</blockquote>
+</div>
+</div>
+<p>You can use structured query language to do more than retrieve and
+manipulate the data stored in database tables &#8212; it can also be used to
+perform database and table maintenance tasks, including creating,
+editing, and deleting database tables. Most DBMSs have interactive tools
+for completing these tasks, but it is helpful to have some basic
+understanding of the SQL statements that perform them, because the
+syntax highlights some important database concepts. This lesson
+describes how to create, edit, and delete database tables.</p>
+<h2 data-number="18.1" id="creating-tables"><span
+class="header-section-number">18.1</span> Creating Tables</h2>
+<p>As with all of the SQL statements covered in this resource, creating
+database tables involves using SQL keywords. The statement for creating
+a database table starts with the keywords <code>CREATE</code> and
+<code>TABLE</code>. The keyword <code>CREATE</code> is used whenever you
+want to add a new object to the database. A table is a database object,
+which is why the keyword <code>TABLE</code> follows <code>CREATE</code>
+&#8212; together they tell the DBMS that a new table object is being added to
+the database.</p>
+<div class="term">
+<blockquote>
+<p><strong>CREATE</strong> &#8212; The SQL keyword used to add a new object to
+the database.</p>
+</blockquote>
+</div>
+<div class="term">
+<blockquote>
+<p><strong>TABLE</strong> &#8212; The SQL keyword that, when used with
+<code>CREATE</code>, specifies that the new object being added to the
+database is a table.</p>
+</blockquote>
+</div>
+<p>When you add a table to the database, you provide the DBMS with the
+details of the table. These details include:</p>
+<ol type="1">
+<li>The name of the table.</li>
+<li>The list of columns that will be stored on the table, including the
+details of each column.</li>
+<li>The columns that will act as the primary and foreign keys of the
+table.</li>
+</ol>
+<p>The generic syntax for adding a table to the database is:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> tablename (</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a>    column1_name column1_details,</span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a>    column2_name column2_details,</span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a>    optional_table_details</span>
+<span id="cb1-5"><a aria-hidden="true" href="#cb1-5" tabindex="-1"></a>);</span></code></pre></div>
+<p>The table name is specified after the keywords
+<code>CREATE TABLE</code>. The individual columns of the table are
+detailed as a comma-separated list in parentheses after the table name.
+Primary and foreign keys are defined either as part of a column&#8217;s
+details or as optional table-level details listed after the columns.</p>
+<h3 data-number="18.1.1" id="table-names"><span
+class="header-section-number">18.1.1</span> Table Names</h3>
+<p>Table names must be unique within a database &#8212; two tables in the same
+database can&#8217;t have the same name. Additionally, a table name cannot be
+a reserved word; you can&#8217;t name a table <code>select</code>. While these
+are the only hard rules for naming database tables, there are a few
+suggestions worth keeping in mind:</p>
+<ol type="1">
+<li><strong>Table names should be descriptive.</strong> A table name
+should convey what is stored in the table clearly enough that users
+don&#8217;t have to guess. If the table names in a database are too ambiguous,
+the database becomes difficult to use.</li>
+<li><strong>Table names should be brief.</strong> Writing SQL statements
+can already feel tedious; overly verbose table names only make it
+worse.</li>
+<li><strong>Table names may include most characters typically allowed in
+a filename</strong> (though not <code>/</code>, <code>\</code>, or
+<code>.</code>), but it&#8217;s best to avoid spaces in table names.</li>
+<li><strong>Use a consistent naming convention for all table names in a
+database.</strong> Table names should all look alike &#8212; for example, if
+one table name is singular (<code>customer</code> rather than
+<code>customers</code>), all of them should be. Naming conventions make
+a database easier to use, because its elements become predictable. If
+some tables are named in the singular and others in the plural, users
+have to keep checking the schema diagram to know which form to use.</li>
+</ol>
+<p>The next suggestion is somewhat debated among database experts, but
+it&#8217;s practical advice for avoiding a common problem:</p>
+<ol start="5" type="1">
+<li><strong>Use snake_case for table names.</strong> Snake case replaces
+all the spaces in a name with underscore characters &#8212; for example, a
+table that stores museum hours would be named <code>museum_hours</code>.
+Snake case is generally easier to read than other naming conventions,
+such as CamelCase (capitalizing the first letter of each word in a name
+with no spaces), and it reduces the potential for ambiguity in table
+names.</li>
+</ol>
+<p>An example of the syntax used to add a table named
+<code>vendor</code> to the database is:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> vendor ( <span class="op">..</span>. );</span></code></pre></div>
+<h3 data-number="18.1.2" id="defining-table-columns"><span
+class="header-section-number">18.1.2</span> Defining Table Columns</h3>
+<p>Columns are defined as a comma-separated list. Each column definition
+specifies a column name, the type of data that will be stored in the
+column, and &#8212; optionally &#8212; any constraints on how data can be stored in
+that column. A name and data type are required for every column;
+additional constraints are optional.</p>
+<h4 data-number="18.1.2.1" id="column-names"><span
+class="header-section-number">18.1.2.1</span> Column Names</h4>
+<p>Column names must be unique within a table. The same naming
+suggestions that apply to table names apply to column names.
+Additionally, it&#8217;s a good idea to begin each primary key column name
+with the name of its table &#8212; for example, the primary key of the
+<code>museum</code> table should be named <code>museum_id</code> rather
+than just <code>id</code>.</p>
+<h4 data-number="18.1.2.2" id="data-types"><span
+class="header-section-number">18.1.2.2</span> Data Types</h4>
+<p>You must also define the type of data that will be stored in each
+column. PostgreSQL supports a wide range of data types, but the ones
+you&#8217;ll use most often store text, integer numbers, decimal numbers,
+dates and times, and boolean (true/false) values.</p>
+<div class="table">
+<table>
+<colgroup>
+<col style="width: 62%" />
+<col style="width: 37%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;">Data Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><code>INTEGER</code></td>
+<td>Whole numbers</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>NUMERIC(p, s)</code></td>
+<td>Exact decimal numbers, with <code>p</code> total digits and
+<code>s</code> digits after the decimal point</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>VARCHAR(n)</code></td>
+<td>A string of text up to <code>n</code> characters</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>TEXT</code></td>
+<td>A string of text of unlimited length</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>DATE</code></td>
+<td>A calendar date, with no time component</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>BOOLEAN</code></td>
+<td>A true/false value</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="note">
+<blockquote>
+<p><strong>PostgreSQL&#8217;s Full Data Type Catalog.</strong> PostgreSQL
+supports many more data types than are listed here &#8212; including several,
+like <code>JSONB</code> and array types, that are unique to PostgreSQL.
+Consult the PostgreSQL documentation for the complete list.</p>
+</blockquote>
+</div>
+<p>An example of the syntax used to define the <code>name</code> column
+on the <code>vendor</code> table with a data type of <code>TEXT</code>
+is:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> vendor (</span>
+<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a>    name TEXT</span>
+<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a>);</span></code></pre></div>
+<h4 data-number="18.1.2.3" id="column-constraints"><span
+class="header-section-number">18.1.2.3</span> Column Constraints</h4>
+<p>You can also add constraints on the values that can be stored in a
+column. These constraints are enforced by the DBMS &#8212; when a user tries
+to add a row that violates one of them, the DBMS rejects the row rather
+than saving it to the table.</p>
+<p>The first constraint you can add to a column is the unique
+constraint, applied with the keyword <code>UNIQUE</code>. It ensures
+that every value stored in that column is different from every other
+value already in the column. If a user tries to add a row with a value
+that duplicates an existing one, the DBMS will reject the new row.</p>
+<div class="term">
+<blockquote>
+<p><strong>UNIQUE</strong> &#8212; A constraint added to a column that ensures
+every value in that column is different from every other value in that
+column.</p>
+</blockquote>
+</div>
+<p>You can also add a constraint that ensures a column has a value
+whenever a new row is added to the table. This is done using the
+keywords <code>NOT NULL</code>, which essentially makes a value required
+in that column for every row.</p>
+<div class="term">
+<blockquote>
+<p><strong>NOT NULL</strong> &#8212; A constraint added to a column that
+ensures the column has a value whenever a new row is added to the
+table.</p>
+</blockquote>
+</div>
+<p>A column can also be designated as the primary key using a column
+constraint, with the keywords <code>PRIMARY KEY</code>. Recall that the
+values in a primary key column must be both unique and not null &#8212;
+<code>PRIMARY KEY</code> combines the <code>UNIQUE</code> and
+<code>NOT NULL</code> constraints on a single column. PostgreSQL will
+also add an index on the column automatically to keep primary-key
+lookups fast.</p>
+<div class="term">
+<blockquote>
+<p><strong>PRIMARY KEY constraint</strong> &#8212; Constrains the values in a
+column to be both unique and not null. PostgreSQL also adds an index to
+a primary key column automatically.</p>
+</blockquote>
+</div>
+<p>An example of the syntax used to define the <code>vendor</code>
+table, with <code>vendor_id</code> as an integer primary key and the
+<code>name</code> column as a required (<code>NOT NULL</code>) piece of
+text, is:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> vendor (</span>
+<span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a>    vendor_id <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb4-3"><a aria-hidden="true" href="#cb4-3" tabindex="-1"></a>    name      TEXT <span class="kw">NOT</span> <span class="kw">NULL</span></span>
+<span id="cb4-4"><a aria-hidden="true" href="#cb4-4" tabindex="-1"></a>);</span></code></pre></div>
+<p>You can also add custom constraints to the columns of a table using
+the keyword <code>CHECK</code>. A <code>CHECK</code> constraint defines
+a logical test that the values for a column must satisfy before a new
+row can be added to the table. For example, you could add a check
+constraint to ensure that a new employee&#8217;s salary falls within an
+appropriate range.</p>
+<div class="term">
+<blockquote>
+<p><strong>CHECK</strong> &#8212; A custom constraint that ensures the values
+for a column satisfy a logical test before a new row can be added to a
+table.</p>
+</blockquote>
+</div>
+<h3 data-number="18.1.3" id="defining-table-level-options"><span
+class="header-section-number">18.1.3</span> Defining Table-Level
+Options</h3>
+<p>After the columns have been defined in a <code>CREATE TABLE</code>
+statement, table-level constraints can be added. The two most common
+table-level constraints are primary and foreign keys. Generally, a
+primary key is designated as part of a single column&#8217;s definition. If
+multiple columns are used together as a composite primary key, though,
+the primary key must instead be added as a table-level constraint, using
+the keywords <code>PRIMARY KEY</code> followed by a comma-separated list
+of the columns that make up the composite key, in parentheses. An
+example of the syntax used to define a composite primary key made up of
+the <code>product_id</code>, <code>sale_id</code>, and
+<code>product_size</code> columns is:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">PRIMARY</span> <span class="kw">KEY</span> (product_id, sale_id, product_size)</span></code></pre></div>
+<p>Foreign keys are also added as table-level constraints, and a foreign
+key constraint has three parts. First, the column to be used as the
+foreign key is identified &#8212; this column must already exist on the table.
+Second, the table (and, implicitly, its primary key) that the foreign
+key references is specified. Third, the constraint designates what
+should happen if the referenced row on the related table is deleted. The
+following syntax demonstrates how <code>museum_id</code> would be
+defined as a foreign key on the <code>vendor</code> table, referencing
+the <code>museum</code> table:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> vendor (</span>
+<span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a>    vendor_id <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb6-3"><a aria-hidden="true" href="#cb6-3" tabindex="-1"></a>    <span class="op">..</span>.</span>
+<span id="cb6-4"><a aria-hidden="true" href="#cb6-4" tabindex="-1"></a>    museum_id <span class="dt">INTEGER</span>,</span>
+<span id="cb6-5"><a aria-hidden="true" href="#cb6-5" tabindex="-1"></a>    <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (museum_id) <span class="kw">REFERENCES</span> museum (museum_id) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">SET</span> <span class="kw">NULL</span></span>
+<span id="cb6-6"><a aria-hidden="true" href="#cb6-6" tabindex="-1"></a>);</span></code></pre></div>
+<p>Notice the set of keywords in the foreign key constraint.
+<code>FOREIGN KEY</code> designates the column that will act as the
+foreign key. <code>REFERENCES</code> specifies the table &#8212; and, in
+parentheses, the column on that table &#8212; that the foreign key relates to.
+<code>ON DELETE SET NULL</code> ensures that if a museum is deleted from
+the <code>museum</code> table, the corresponding <code>museum_id</code>
+values on the <code>vendor</code> table are set to <code>NULL</code>, so
+the <code>vendor</code> table never references a museum that no longer
+exists.</p>
+<p>Putting all of these pieces together produces a complete table
+creation statement. A statement to create the <code>vendor</code> table
+in the museum database would be:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> vendor (</span>
+<span id="cb7-2"><a aria-hidden="true" href="#cb7-2" tabindex="-1"></a>    vendor_id <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb7-3"><a aria-hidden="true" href="#cb7-3" tabindex="-1"></a>    name      TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb7-4"><a aria-hidden="true" href="#cb7-4" tabindex="-1"></a>    country   TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb7-5"><a aria-hidden="true" href="#cb7-5" tabindex="-1"></a>    museum_id <span class="dt">INTEGER</span>,</span>
+<span id="cb7-6"><a aria-hidden="true" href="#cb7-6" tabindex="-1"></a>    <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (museum_id) <span class="kw">REFERENCES</span> museum (museum_id) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">SET</span> <span class="kw">NULL</span></span>
+<span id="cb7-7"><a aria-hidden="true" href="#cb7-7" tabindex="-1"></a>);</span></code></pre></div>
+<div class="note">
+<blockquote>
+<p>This is one of the book&#8217;s interactive query boxes (tied to the
+<code>artist</code>/<code>work</code>/<code>museum</code> schema
+diagram, with a &#8220;Play&#8221; button and results panel) &#8212; shown here as a plain
+code block until that component is built on this platform.</p>
+</blockquote>
+</div>
+<p>If the statement executes without errors, PostgreSQL responds that
+the table was created, and the (still empty) table is added to the
+database. The SQL statements used to add data to a table are discussed
+in the lesson on inserting data. If an error occurs while the statement
+is executing, PostgreSQL responds with an error message describing the
+problem instead.</p>
+<h2 data-number="18.2" id="deleting-tables"><span
+class="header-section-number">18.2</span> Deleting Tables</h2>
+<p>A common error occurs when you try to add a table that already exists
+in the database &#8212; if you want to replace an existing table, you must
+remove it first. To remove a table from the database, you use the
+keywords <code>DROP TABLE</code>. <code>DROP</code> is the keyword used
+to remove objects from the database, and <code>TABLE</code> designates
+that the object being removed is a table.</p>
+<div class="term">
+<blockquote>
+<p><strong>DROP</strong> &#8212; The keyword used in a SQL statement to remove
+an object from the database.</p>
+</blockquote>
+</div>
+<p>When a table is dropped from the database, it is completely removed,
+along with all of the data stored on it. The syntax used to remove the
+<code>vendor</code> table you just created is:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> vendor;</span></code></pre></div>
+<div class="caution">
+<blockquote>
+<p><strong>Removing Database Tables.</strong> The SQL statement used to
+remove a table from a database is simple, and there is no command to
+undo it. Take care when dropping tables to avoid accidental deletion and
+data loss.</p>
+</blockquote>
+</div>
+<h2 data-number="18.3" id="editing-tables"><span
+class="header-section-number">18.3</span> Editing Tables</h2>
+<p>From time to time, you will need to make changes to an existing
+database table. The keywords used to change a table are
+<code>ALTER TABLE</code>; <code>ALTER</code> is the keyword used to
+change a database object. The syntax for changing a database table
+is:</p>
+<div class="term">
+<blockquote>
+<p><strong>ALTER</strong> &#8212; The keyword used in a SQL statement to
+change an object in the database.</p>
+</blockquote>
+</div>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> tablename</span>
+<span id="cb9-2"><a aria-hidden="true" href="#cb9-2" tabindex="-1"></a>statements_that_define_the_changes;</span></code></pre></div>
+<p>For example, you can add a column to, or remove a column from, an
+existing table. The syntax used to add a column named
+<code>vendor_phone</code> to the existing <code>vendor</code> table
+is:</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb10-1"><a aria-hidden="true" href="#cb10-1" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> vendor</span>
+<span id="cb10-2"><a aria-hidden="true" href="#cb10-2" tabindex="-1"></a><span class="kw">ADD</span> <span class="kw">COLUMN</span> vendor_phone TEXT;</span></code></pre></div>
+<p><strong>Try the SQL statement.</strong></p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb11-1"><a aria-hidden="true" href="#cb11-1" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> vendor (</span>
+<span id="cb11-2"><a aria-hidden="true" href="#cb11-2" tabindex="-1"></a>    vendor_id <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb11-3"><a aria-hidden="true" href="#cb11-3" tabindex="-1"></a>    name      TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb11-4"><a aria-hidden="true" href="#cb11-4" tabindex="-1"></a>    country   TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb11-5"><a aria-hidden="true" href="#cb11-5" tabindex="-1"></a>    museum_id <span class="dt">INTEGER</span>,</span>
+<span id="cb11-6"><a aria-hidden="true" href="#cb11-6" tabindex="-1"></a>    <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (museum_id) <span class="kw">REFERENCES</span> museum (museum_id) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">SET</span> <span class="kw">NULL</span></span>
+<span id="cb11-7"><a aria-hidden="true" href="#cb11-7" tabindex="-1"></a>);</span>
+<span id="cb11-8"><a aria-hidden="true" href="#cb11-8" tabindex="-1"></a></span>
+<span id="cb11-9"><a aria-hidden="true" href="#cb11-9" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> vendor</span>
+<span id="cb11-10"><a aria-hidden="true" href="#cb11-10" tabindex="-1"></a><span class="kw">ADD</span> <span class="kw">COLUMN</span> vendor_phone TEXT;</span></code></pre></div>
+<p>Note that if you ran the <code>DROP TABLE</code> statement in the
+last section, your copy of the <code>vendor</code> table was deleted
+from the database, which is why this example re-creates the
+<code>vendor</code> table first. If you didn&#8217;t drop the table, you&#8217;ll
+get an error when this example tries to create it again.</p>
+<p>Similarly, the syntax used to alter the table and remove the
+<code>vendor_phone</code> column is:</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> vendor</span>
+<span id="cb12-2"><a aria-hidden="true" href="#cb12-2" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">COLUMN</span> vendor_phone;</span></code></pre></div>
+<p>Tables can also be altered to add primary and foreign keys after the
+table has already been created, using <code>ADD CONSTRAINT</code>. For
+example, the following statement adds a foreign key to the
+<code>vendor</code> table&#8217;s <code>museum_id</code> column after the
+fact:</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb13-1"><a aria-hidden="true" href="#cb13-1" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> vendor</span>
+<span id="cb13-2"><a aria-hidden="true" href="#cb13-2" tabindex="-1"></a><span class="kw">ADD</span> <span class="kw">CONSTRAINT</span> vendor_museum_fk</span>
+<span id="cb13-3"><a aria-hidden="true" href="#cb13-3" tabindex="-1"></a><span class="kw">FOREIGN</span> <span class="kw">KEY</span> (museum_id) <span class="kw">REFERENCES</span> museum (museum_id) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">SET</span> <span class="kw">NULL</span>;</span></code></pre></div>
+<p>Finally, <code>ALTER TABLE</code> can also be used to rename a table,
+with the <code>RENAME TO</code> clause:</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb14-1"><a aria-hidden="true" href="#cb14-1" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> vendor</span>
+<span id="cb14-2"><a aria-hidden="true" href="#cb14-2" tabindex="-1"></a><span class="kw">RENAME</span> <span class="kw">TO</span> supplier;</span></code></pre></div>
+<div class="tip">
+<blockquote>
+<p><strong>Renaming and Retyping Columns.</strong>
+<code>ALTER TABLE</code> also supports
+<code>RENAME COLUMN old_name TO new_name</code> and
+<code>ALTER COLUMN column_name TYPE new_type</code>, letting you rename
+a column or change its data type without dropping and recreating it.</p>
+</blockquote>
+</div>
+<h2 data-number="18.4" id="summary"><span
+class="header-section-number">18.4</span> Summary</h2>
+<p>This lesson described how to write SQL statements to manipulate
+database tables. Specifically, it described how to add database tables
+using the <code>CREATE TABLE</code> keywords, including how to define
+table columns and table-level constraints. It also described how to
+remove tables from a database and how to edit existing tables.</p>
 <!--postEnd-->
               </div>
 </div>
@@ -566,7 +569,7 @@ remove tables from a database and how to edit existing tables.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZrsd8AXfE5c6IJxF-XCQQNG:1785332722889';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//sql.availabooks.com/2000/02/18.html','3986204447440040189');
+window['__wavt'] = 'ACvIOeBagEKxDokouSKXK3cd812B:1785432999498';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//sql.availabooks.com/2000/02/18.html','3986204447440040189');
 _WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://sql.availabooks.com/2000/02/18.html', 'canonicalUrl': 'https://sql.availabooks.com/2000/02/18.html', 'homepageUrl': 'https://sql.availabooks.com/', 'searchUrl': 'https://sql.availabooks.com/search', 'canonicalHomepageUrl': 'https://sql.availabooks.com/', 'blogspotFaviconUrl': 'https://sql.availabooks.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': true, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://sql.availabooks.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://sql.availabooks.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://sql.availabooks.com/feeds/607263837006155585/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/68dd02567aef746f', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '607263837006155585', 'pageName': '18. Creating and Manipulating\nTables', 'pageTitle': 'book1014 SQL: 18. Creating and Manipulating\nTables'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '18. Creating and Manipulating\nTables', 'description': 'websql  18  Creating and Manipulating\r Tables \r \r Learning Objectives \r \r \r : \r \r Create database tables. \r Make changes to database tables....', 'url': 'https://sql.availabooks.com/2000/02/18.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 607263837006155585}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>

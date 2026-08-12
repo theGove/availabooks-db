@@ -33,6 +33,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 --></style>
 <script type='text/javascript'>
 //<![CDATA[
+    //const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
 	async function initialize(){
 
       const kind = document.getElementById(`kind`).innerHTML
@@ -60,7 +61,8 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 
     function getSystemModule(moduleName="system"){
 		console.log(typeof location.hostname)
-		if(location.hostname==="local.availabooks.com"){
+		if(location.hostname.startsWith("local.availabooks.com")){
+            console.log("=======> looks like local dev")
             // get files from localhost
 			fetch(`${location.origin}/tools/api/${moduleName}.js`).then(response => {
                 return response.text(); 
@@ -70,6 +72,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
               })		
 		}else{
             //get files from blogger production server
+            console.log("=======> looks like production from server")
       		const systemVersion=document.getElementById("cssScript").src.split("/")[7]
       		loadCrossOrigin(`https://system.availabooks.com/feeds/posts/default/-/${systemVersion}/${moduleName}?alt=json-in-script&max-results=1&callback=loadCode`);      
 
@@ -96,7 +99,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
     
 //]]>
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=5bb5ec5d-4faf-45aa-a658-fe48a34270d7' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=5bb5ec5d-4faf-45aa-a658-fe48a34270d7' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=350edb71-14db-4960-9a7a-4ffca2c625a9' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=350edb71-14db-4960-9a7a-4ffca2c625a9' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -124,509 +127,441 @@ Cardinality</span></h1>
 <button class='nav' id='prior-button' onclick='navigate(&#39;prior&#39;)'><span class='material-symbols-outlined'>arrow_back</span></button>
 <button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
               
-              <!--postBegin--><h1 data-number="14" id="table-relationships-and-cardinality"><span
-class="header-section-number">14</span> Table Relationships and
-Cardinality</h1>
-<div class="learning">
-<p>Learning Objectives</p>
-<div class="objectives">
-<blockquote>
-<p>:</p>
-<ol type="1">
-<li>Discuss how database tables are related.</li>
-<li>Describe minimum and maximum cardinality.</li>
-<li>Explain how cardinality impacts the use of foreign keys.</li>
-<li>Complete a business model of a database with details about
-relationships.</li>
-</ol>
-</blockquote>
-</div>
-</div>
-<p>The lesson on designing database tables described how database tables
-are designed. In this lesson, you will learn how to design the
-relationships among database tables. Understanding relationships between
-tables is important for writing effective queries that combine data from
-multiple tables.</p>
-<h2 data-number="14.1"
-id="review-the-business-model-of-a-database"><span
-class="header-section-number">14.1</span> Review: The Business Model of
-a Database</h2>
-<p>Recall that tables are designed to store data about different themes
-— all of the data about a particular theme is stored on a single table.
-For example, the tables in Figure 1 reflect the simple business model of
-the museum data developed in the lesson on designing database tables.
-All of the information about artists is stored on the artist table;
-notice that the artist table does not contain information about works of
-art or museums. Likewise, the work and museum tables contain data
-exclusive to works of art and museums, respectively.</p>
-<p><img
-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhLnXCAz5bh8hDTbNAD4wXO3JOXRb4VXXMTBDj7VmC4Hfj87NnRlcqQRy0XgEMLeZc4FEp2zxHyvs58eQZBSqLI_kjqdQb0lWGpgtgUBj3fjq8tkAtTex-wQ9sGR7LiHhffmb-bl4zuNQZY2DBzZhyphenhyphenLXtElKY26dp4xIiptWStQO9DZ1dVqfOQ5rP_APh85/s2394/MuseumBusinessModelKeys.png" /></p>
-<p><em>Figure 1: Business Model of Museum Database</em></p>
-<p>Organizing data into separate tables based on theme has some
-important advantages, described in detail in a later lesson on database
-normalization. However, important connections exist between data from
-different themes — for example, artists create works of art, and works
-of art are exhibited in museums.</p>
-<h2 data-number="14.2" id="relationships-between-tables"><span
-class="header-section-number">14.2</span> Relationships Between
-Tables</h2>
-<p>The next step in completing a business model for a database is to
-model relationships. Relationships are the naturally occurring
-associations among the data in different tables. Relationships are most
-easily conceptualized between two tables at a time.</p>
-<div class="term">
-<blockquote>
-<p><strong>Relationship</strong> — The naturally occurring associations
-among the data in different tables.</p>
-</blockquote>
-</div>
-<p>Consider the two relationships modeled in Figure 1. There is a
-relationship between the artist and work tables, and a relationship
-between the work and museum tables. The relationship between the artist
-and work tables implies that it is possible to identify the specific
-artist who created each work of art. The relationship between the work
-and museum tables likewise implies that it is possible to identify which
-works of art are exhibited in each museum. Using both relationships
-together, it is possible to identify which artists have works of art in
-each museum: first you would identify the works of art associated with a
-specific artist, then identify the museums that exhibit those works of
-art.</p>
-<p>It is possible to associate specific rows from one table with rows on
-a related table by using foreign keys. A foreign key is a column on one
-table (generally the primary key of that table) that is included on a
-related table to connect the rows of the two tables together. The
-primary key of the artist table is <code>artist_id</code>. That same
-<code>artist_id</code> can be added to the work table to identify the
-artist who created each work of art. Similarly, the primary key of the
-museum table, <code>museum_id</code>, could be added to the work table
-to identify the museum that exhibits each work of art.</p>
-<p>You might be tempted to instead use the primary key from the work
-table, <code>work_id</code>, on the artist table as a foreign key. This
-would not work well, though, because an artist can create more than one
-work of art, which would mean more than one <code>work_id</code> would
-need to be stored for a single artist. This would violate proper table
-design (see the lesson on designing database tables). To determine how
-best to designate foreign keys to link tables, you need to understand
-cardinality.</p>
-<h2 data-number="14.3" id="cardinality"><span
-class="header-section-number">14.3</span> Cardinality</h2>
-<p>Cardinality refers to the nature of the relationship between two
-tables. It is always defined in terms of how the individual rows on the
-tables relate to each other, and it can be described in terms of minimum
-cardinality and maximum cardinality. Minimum cardinality describes
-whether a relationship is optional or mandatory.</p>
-<div class="term">
-<blockquote>
-<p><strong>Cardinality</strong> — The nature of the relationship between
-two tables.</p>
-</blockquote>
-</div>
-<div class="term">
-<blockquote>
-<p><strong>Minimum Cardinality</strong> — Describes whether a
-relationship is optional or mandatory.</p>
-</blockquote>
-</div>
-<p>Consider the relationship between the artist and work tables. Minimum
-cardinality would establish two things:</p>
-<ol type="1">
-<li>Whether an artist can exist in the database without having created
-any works of art.</li>
-<li>Whether a work of art can exist in the database without an
-associated artist.</li>
-</ol>
-<p>Answering these questions informs how the artist and work tables will
-be built. This lesson returns to these two questions later, in the
-Minimum Cardinality Types section, after maximum cardinality has been
-explored in more depth.</p>
-<p>Maximum cardinality identifies how many rows from one table can be
-associated with rows from the related table. This is best understood by
-looking at an example. Consider the relationship between the museum and
-work tables. Maximum cardinality determines: (1) how many museums can
-exhibit a given work of art, and (2) how many works of art can be
-exhibited in a given museum.</p>
-<div class="term">
-<blockquote>
-<p><strong>Maximum Cardinality</strong> — Identifies how many rows from
-one table can be associated with rows from the related table.</p>
-</blockquote>
-</div>
-<p>A given work of art can only be exhibited in one museum at a time, so
-the maximum cardinality moving from work to museum is 1. A given museum,
-on the other hand, can exhibit more than one work of art, so the maximum
-cardinality moving from museum to work is many. (Note that any number
-greater than 1 is classified as many.) Taken together, this
-relationship’s maximum cardinality is said to be one to many (1:M).</p>
-<p>Just as minimum cardinality informs the design of database tables,
-maximum cardinality determines how foreign keys are used to link the
-rows of different tables together. Maximum cardinality is discussed
-first, since it has the biggest impact on how tables are linked
-together; minimum cardinality is revisited afterward, in the Minimum
-Cardinality Types section.</p>
-<h3 data-number="14.3.1" id="business-rules"><span
-class="header-section-number">14.3.1</span> Business Rules</h3>
-<p>Often there are logical constraints placed on a relationship based on
-how an organization conducts business. These constraints are called
-business rules. For example, a database used to track books and patrons
-for a library would likely have a relationship between a patron table
-(storing data about library patrons) and a book table (storing data
-about the library’s books).</p>
-<div class="term">
-<blockquote>
-<p><strong>Business Rules</strong> — Constraints placed on a
-relationship based on how an organization conducts business.</p>
-</blockquote>
-</div>
-<p>A patron could check out any number of books at a time, but the
-library will probably have a policy limiting how many — say, no more
-than five books at once. This is a business rule, and it places a
-cardinality constraint on the relationship between the patron and book
-tables.</p>
-<div class="term">
-<blockquote>
-<p><strong>Cardinality Constraint</strong> — A business rule that places
-a specific numeric limit on a relationship, beyond what the
-relationship’s cardinality alone would require.</p>
-</blockquote>
-</div>
-<p>A cardinality constraint does not change how a relationship is
-classified. The patron-book relationship is still one to many — a book
-can only be checked out by one patron at a time, but a patron can check
-out more than one book. The cardinality constraint simply adds a
-business-specific limit on top of that classification: instead of
-“many,” a patron is limited to at most five books at once. Enforcing a
-cardinality constraint like this one usually requires application logic,
-since a foreign key alone cannot guarantee it.</p>
-<h2 data-number="14.4" id="maximum-cardinality-types"><span
-class="header-section-number">14.4</span> Maximum Cardinality Types</h2>
-<p>There are three ways to describe relationships between tables in
-terms of maximum cardinality: one to one (1:1), one to many (1:M), and
-many to many (M:M). Each type of relationship calls for a different way
-of using foreign keys, discussed below.</p>
-<h3 data-number="14.4.1" id="one-to-one"><span
-class="header-section-number">14.4.1</span> One to One</h3>
-<p>A one-to-one relationship occurs when, in both directions, an
-instance on one table is associated with only one instance on the other
-table. Suppose a database contains a table with information about
-countries and a table with information about capital cities (see Figure
-2). Each country has only one capital city, and each capital city is the
-capital of only one country — this relationship is one to one (1:1).</p>
-<p><img
-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg7JRbP-Ds5ln0YXmQyj-jzyjaojocsdNUlb8FpO04HwPWJdQrofWokxgPsE7fHb8SCZl3BpDBqvGkD7VSGddP1TF2-wGfT-Ce0jCTxp6XggWdceklR6IjYNLQw29-YSJElEwspNuMvdJqGt4acTRP7ffVUs3kSdPLLhFLLx5rePULhpe3BLUbe4jAlu-Zc/w640-h188/OneToOneRelationship.png" /></p>
-<p><em>Figure 2: Countries and Capitals</em></p>
-<p>Notice the “1” on both ends of the line connecting these tables,
-denoting that the relationship between them is one to one (1:1). Also
-notice that the primary key of the country table is included as a column
-that acts as the foreign key for the capital table. With a one-to-one
-relationship, it doesn’t matter which table’s primary key is included on
-the other table as a foreign key — only one foreign key (between the two
-tables) is needed to link them together. Figure 3 shows how primary and
-foreign key values are used to link the rows from the country table with
-the rows on the capital city table.</p>
-<p><img
-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg5W2OZPk3KZsaLIkjRDPu3Pyjq_POj3-0nfX5koQBSY4AsyqHnHERpSbR65nrfb3c3OPWR8yEZH3_HM9YIPQXI5vxwE_POHdEJlqR86puZUmj4hPRLmz5Zk4ZTQUZwQ_G1ogfy0PhY45T6xdOrPQKD9quarBY16_GfocMeWBlbN9Wev0kvoqNIrW5Hwk91/w640-h108/OneToOneForeignKey.png" /></p>
-<p><em>Figure 3: Linking Countries and Capitals Using a Foreign
-Key</em></p>
-<div class="note">
-<blockquote>
-<p><strong>One to One (1:1) Relationships.</strong> With a one-to-one
-relationship, select a primary key from either table and add it as a
-foreign key on the other table. Only one of the two tables needs a
-foreign key.</p>
-</blockquote>
-</div>
-<h3 data-number="14.4.2" id="one-to-many"><span
-class="header-section-number">14.4.2</span> One to Many</h3>
-<p>A one-to-many relationship occurs when, moving in one direction, a
-row on one table is associated with more than one row on the related
-table, but moving in the other direction, a row is associated with only
-one row of the related table. Suppose that instead of a country and
-capital table, a database includes a table for countries and a table for
-cities. Each city is located in only one country, but a country can have
-more than one city (see Figure 4).</p>
-<p><img
-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgJLvdj2wA5RSzHlQj5AiBZttmO2qFXsBZDH2oe4iLlQ_9Qn3esHe6z5907YsDl8Gm7Y-2-QXKtcCa7p8Xai22x2oiVh1pXjljFZVHaX3jHbgis1L0plHR5fpkiRMhwwikj7co0SqRjCGxb_voM9f6AF_qOhtg9YQYZ1wwXFnyEaM0VETA43X9cUdpOW0pr/w640-h186/OneToManyRelationship.png" /></p>
-<p><em>Figure 4: Countries and Cities</em></p>
-<p>Notice the “1” near the country end of the relationship line and the
-“M” near the city end, indicating that the relationship is one to many
-(1:M) — a city is associated with only one country, but a country can be
-associated with more than one city. Also notice that
-<code>country_id</code> is included as a foreign key on the city table.
-Recall that in a one-to-one relationship, it doesn’t matter which table
-includes the foreign key. In a one-to-many relationship, however, the
-primary key from the table on the “1” side of the relationship must be
-included as the foreign key on the “many” side of the relationship.</p>
-<p>Figure 5 shows how primary and foreign key values are used to link
-the rows from the country table with the rows on the city table. You may
-be surprised to see <code>country_id</code> repeated on the city table,
-but this makes sense, since a country can have more than one city.
-Unlike primary keys, which must always be unique, foreign key values can
-repeat. The <code>country_id</code> column acts as the primary key on
-the country table, but it is a foreign key on the city table.</p>
-<p><img
-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiew9oAS6mpp1m2zF8RlsaaqUitcpDSsVQz5fHwSsE0XZy-riE1Ijlb1DprwO3W2y93QE6uTS-fso1qh1xpz_LVWK5FdfHW5Mg6CE85y1CPauVz8hkyRuOXsIIBIEKfmPCcRDeSMcBC1bkSyMyv67j6UMuW19DD0N2uXbcxDGYE0rKuP2K-JTnl7H_uO14Z/w640-h108/OneToManyForeignKey.png" /></p>
-<p><em>Figure 5: Countries and Cities Linked with a Foreign Key</em></p>
-<p>You might be curious why you can’t instead include
-<code>city_id</code> on the country table as a foreign key. The next few
-figures demonstrate why this doesn’t work. The first attempt (Figure 6)
-places the <code>city_id</code> values for each country’s cities into a
-single column on the country table. While this may look like an
-attractive solution, it violates an important principle of table design:
-atomicity. Atomicity means that the values in a column are decomposed to
-their simplest form, and in this case the <code>city_id</code> value for
-the USA row would contain two values, so it is not in its simplest
-form.</p>
-<p><img
-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZhiI8ffxl6EADL4KIx7QpLzG1pQMfYdJv3S4ruJUen6WB_BAUvP7e9BHOk5YY-Dkc8BemBwC5ZYxAKqTyOwvUnufqmZawmoFtCPYNwAoIsolQscZX2vQW5LgJP9H1oUduGIIghbS8CBbHmbmvCid_X0Tq-uhRcEL46JTPA6uzAw0yMcCBi83kCAkgpDKm/s16000/OneToManyForeignKeyAttempt1.png" /></p>
-<p><em>Figure 6: City_id as Foreign Key — Attempt 1</em></p>
-<p>A second attempt (Figure 7) adds multiple <code>city_id</code>
-columns to accommodate multiple cities in the same country. This may
-also seem attractive, but it would make it very difficult to write a
-query that effectively connects countries to cities. It would also be
-difficult to know how many <code>city_id</code> columns to include on
-the country table to account for all of the current and future cities
-you want to store, and notice the null value for <code>city_id2</code>
-on the France row — as a database designer, you want to avoid null
-values when you can. All three of these issues make this approach much
-less desirable than placing <code>country_id</code> as a foreign key on
-the city table.</p>
-<p><img
-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgvEAdJZFBhofek8NX9EHiIKqFEEbdtUh9Wj_Hw5FJkIapdbzqoOeGtYXkzOVTeLX6SYqT18ne0_Ni4zCctKKE8zpVgJQkk0ALub8zAtMuzdpN_wOPEeTAsfNl8j7qpoWNa4febNp2mxk34vMpHWIHl7krZrRVVxDgNA3X9HSqZzCfzOhpmrFe0tlyH4t9r/w640-h107/OneToManyForeignKeyAttempt2.png" /></p>
-<p><em>Figure 7: City_id as Foreign Key — Attempt 2</em></p>
-<p>A final attempt to use <code>city_id</code> on the country table as a
-foreign key is shown in Figure 8. Here, a new row for the USA is added,
-which raises the question of what to use as the primary key for that
-second USA row. You can’t reuse the original primary key value of 1,
-because every value in a primary key column must be unique. If you
-instead assign a primary key of 3 to the new USA row, you are
-technically adding a new country to the table — one that just happens to
-have the same name as the first USA entry. Either way, there is no way
-to appropriately assign a primary key value to the new row, so this
-approach doesn’t work either.</p>
-<p><img
-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj6EmcdCwzEaqOpNogkwvv0afLnj0PDjgc2VPrDWgBZzgzJGTGHWBfYMlC4rvo8ROMAYoK7lP8hhKP40vgQwtVk3Ohd0tIK_4ZAjy3fLGny-bm-7Cn0HVQGEy0_L5MVKGoyImGhf1M5P1rZnZe75tRol00kEqHHYIzFzGJ6GsUgj1H28HfaLizzEuRLxIwA/w640-h118/OneToManyForeignKeyAttempt3.png" /></p>
-<p><em>Figure 8: City_id as Foreign Key — Attempt 3</em></p>
-<p>The only way to create a foreign key that links the country and city
-tables is to add <code>country_id</code> to the city table — placing the
-primary key from the table on the “one” side of the relationship as a
-foreign key on the table on the “many” side. This will always be the
-case for one-to-many (1:M) relationships.</p>
-<div class="note">
-<blockquote>
-<p><strong>One to Many (1:M) Relationships.</strong> With a one-to-many
-relationship, take the primary key from the table on the “one” side of
-the relationship and add it as a foreign key column in the table on the
-“many” side of the relationship.</p>
-</blockquote>
-</div>
-<h3 data-number="14.4.3" id="many-to-many"><span
-class="header-section-number">14.4.3</span> Many to Many</h3>
-<p>A many-to-many (M:M) relationship happens when, moving in both
-directions, a single row on one table could correspond with more than
-one row on the other table. Suppose a database includes a country table
-and a table that stores data about citizens. An individual country can
-have more than one citizen, and an individual person can have dual
-citizenship — that is, be a citizen of more than one country. Figure 9
-shows this relationship.</p>
-<p><img
-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjNouyS-81v3D4-XkH61UirShyphenhyphenqkmd_M5wUAJnQhDrlejyVnkGCaX4Bwa7FVq0H98-nLOz17eEK1YYXTP6pWc4K06cSqTjry6SXYNX7M1DPxjfqL6HYRvr9maur8DrgMJOKcDwxJKYdM9NejQd0sNl6qAgId_GFZSMBZ92CCDGv-vJTeJVQj31hFHKCwQ7u/w640-h186/ManyToManyRelationship.png" /></p>
-<p><em>Figure 9: Countries and Citizens</em></p>
-<p>The last section described why you cannot take the primary key from a
-table on the “many” side of a relationship and include it on the other
-table as a foreign key. Unfortunately, the same issue applies to a
-many-to-many (M:M) relationship — and here it presents an interesting
-quandary, since both tables are on the “many” side of the
-relationship.</p>
-<p>To solve this dilemma, you add a third table to the database, between
-the country and citizen tables. This new table is called a linking table
-or a relationship table, and its name is often a combination of the
-names of the original two tables — in this case, it might be named
-<code>country_citizen</code>.</p>
-<p>The purpose of this table is to create a link between two tables that
-have a many-to-many (M:M) relationship. The relationship between each of
-the original tables and the new linking table will always be one to many
-(1:M), so the primary keys from the original tables are included on the
-linking table as foreign keys. Figure 10 shows how this linking table
-would work.</p>
-<p><img
-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjUSN9FnQ9TytIz8IBkHuIS5VjGTU2u_W_oTR3gFcpLiWWR0Q9FRl2VFZ7xci88HpMbAcoZR6cB_qsryqWqShJMYpx4BRbx6aTOZbUFbo516bbHL00czmFNvWNyDe9-vXhtjABnQl8-tXmcg5_pxquE6HYwwcKu_1rPqQm4d8e5abURpUP-6QZn0cq10_6d/w640-h128/ManyToManyRelationshipResolved.png" /></p>
-<p><em>Figure 10: Countries and Citizens Relationship Resolved</em></p>
-<p>Figure 11 shows how countries and citizens would be linked using the
-<code>country_citizen</code> table. The first row of the
-<code>country_citizen</code> table links citizen 2 (June Day) with
-country 1 (USA). Rows 2 and 3 designate Frank Bass (citizen 3) as a
-citizen of both the USA (country 1) and France (country 2). The last row
-links citizen 1 (Liv Jones) with country 2 (France).</p>
-<p><img
-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj48QwKKzHBo-FRU7S_aHaCcQa7JFC3CLRodrnraQD3MFpbcwN2wC76bqz9mMpCXUn1nKzxD5imbxk3zwB8CyF4KNmfl5t7jm73ZG7tpe5X4hJi0BescMwfBpHAKIW9fCWb3HAjPSRIlIpClh3z_R-jysgimz6rWmEov6GO1f60LwpVS8Ny_od4Y4JlFuRd/w640-h128/ManyToManyRelationshipResolvedFK.png" /></p>
-<p><em>Figure 11: Countries and Citizens Linked with Foreign
-Keys</em></p>
-<div class="note">
-<blockquote>
-<p><strong>Many to Many (M:M) Relationships.</strong> With a
-many-to-many relationship, create a linking table. The original tables
-will each have a one-to-many (1:M) relationship with the linking
-table.</p>
-</blockquote>
-</div>
-<h2 data-number="14.5" id="minimum-cardinality-types"><span
-class="header-section-number">14.5</span> Minimum Cardinality Types</h2>
-<p>Just as maximum cardinality is described using the labels 1 and M,
-minimum cardinality is described using the labels 0 and 1. A minimum
-cardinality of 0 means the relationship is optional in that direction —
-a row in one table is not required to have a matching row in the related
-table. A minimum cardinality of 1 means the relationship is mandatory in
-that direction — a row in one table must have a matching row in the
-related table.</p>
-<p>Like maximum cardinality, minimum cardinality is evaluated separately
-for each direction of a relationship, and the two directions do not have
-to match.</p>
-<h3 data-number="14.5.1"
-id="revisiting-the-artist-and-work-tables"><span
-class="header-section-number">14.5.1</span> Revisiting the Artist and
-Work Tables</h3>
-<p>Recall the two questions posed earlier about the artist and work
-tables:</p>
-<ol type="1">
-<li>Can an artist exist in the database without having created any works
-of art?</li>
-<li>Can a work of art exist in the database without an associated
-artist?</li>
-</ol>
-<p>Suppose the museum keeps records on artists it is considering for a
-future acquisition, even before it owns any of their work. In that case,
-the answer to the first question is yes, so the minimum cardinality
-moving from artist to work is 0 — the relationship is optional in that
-direction. Now suppose that every work of art in the database must have
-a known, recorded artist. In that case, the answer to the second
-question is no, so the minimum cardinality moving from work to artist is
-1 — the relationship is mandatory in that direction.</p>
-<p>Combined with the maximum cardinality established earlier in this
-lesson (one to many, moving from artist to work), the full description
-of this relationship is: an artist is optionally related to many works
-of art, and a work of art is mandatorily related to exactly one
-artist.</p>
-<p>A relationship diagram can show minimum and maximum cardinality
-together by placing both values, as a pair, at each end of the
-relationship line: the minimum cardinality (0 or 1) followed by the
-maximum cardinality (1 or M).</p>
-<div class="note">
-<blockquote>
-<p><strong>Graphic Needed — Figure 12: Artist and Work Relationship with
-Minimum and Maximum Cardinality.</strong> Two boxes, one labeled
-“artist” and one labeled “work,” connected by a line, in the same style
-as Figure 4 (Countries and Cities). Near the <strong>work</strong> end
-of the line, label the pair <strong>(0, M)</strong> — minimum 0, maximum
-M — since an artist may exist without having any works recorded, but can
-have many. Near the <strong>artist</strong> end of the line, label the
-pair <strong>(1, 1)</strong> — minimum 1, maximum 1 — since every work
-of art must be linked to exactly one artist.</p>
-</blockquote>
-</div>
-<div class="tip">
-<blockquote>
-<p><strong>Reading a Combined Cardinality Label.</strong> A label like
-(0, M) combines minimum and maximum cardinality for one end of a
-relationship: the first value is minimum cardinality (0 for optional, 1
-for mandatory), and the second value is maximum cardinality (1, or M for
-“many”).</p>
-</blockquote>
-</div>
-<h3 data-number="14.5.2" id="minimum-cardinality-and-foreign-keys"><span
-class="header-section-number">14.5.2</span> Minimum Cardinality and
-Foreign Keys</h3>
-<p>Minimum cardinality has a direct effect on how a foreign key column
-is defined. If the minimum cardinality on the “many” side of a
-relationship is mandatory (1), the foreign key column cannot contain a
-null value, since every row is required to reference a matching row on
-the related table. If the minimum cardinality is optional (0), the
-foreign key column is allowed to contain null values, since a matching
-row isn’t required.</p>
-<p>In the museum database, the work table has two foreign key columns:
-<code>artist_id</code> and <code>museum_id</code>. Given the example
-above, <code>artist_id</code> would be defined so that it cannot be
-null, since every work of art must reference an artist. If a work of art
-could be added to the database before it is assigned to a museum,
-however, <code>museum_id</code> could be permitted to be null.</p>
-<div class="tip">
-<blockquote>
-<p><strong>Minimum Cardinality and Null Values.</strong> A mandatory
-minimum cardinality (1) on the “many” side of a relationship means the
-foreign key column cannot be null. An optional minimum cardinality (0)
-means the foreign key column can be null.</p>
-</blockquote>
-</div>
-<h2 data-number="14.6"
-id="relationships-in-the-museum-business-model"><span
-class="header-section-number">14.6</span> Relationships in the Museum
-Business Model</h2>
-<p>With an understanding of cardinality and its impact on foreign keys,
-you can complete the business model for the museum database. Figure 13
-shows the current business model.</p>
-<p><img
-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi0PSKX0Lp0lRXwgEeAIfxUUTRKRra4kHf6w40RlYuOjZyJ5DJA0tmUa_fZHHH5WKcN94WT6byiNE5NlP9O3FU2YqQm6DTvlMIRDu2pk2SJLBQN6DBtKVUZqxqGvx-59BB9M4TXymMtqURM_6OBy9o6pi3Jit258wwOPIrW1MRwF4Bn0js33YaJak70HeFF/s2692/BusinessModelMuseumDB.png" /></p>
-<p><em>Figure 13: Business Model of Museum Database</em></p>
-<p>Consider the relationship between artist and work. The likely
-cardinality for this relationship is one to many (1:M): an artist can
-create more than one work of art, but a work of art likely has a single
-creating artist. This means the primary key from the artist table,
-<code>artist_id</code>, will be included as a foreign key column on the
-work table.</p>
-<p>The relationship between museum and work will also be one to many
-(1:M). A museum can exhibit more than one work of art, but a work of art
-can only be exhibited in one museum at a time, so <code>museum_id</code>
-will be included as a foreign key column on the work table.</p>
-<p>Minimum cardinality should be decided for each relationship as well.
-As discussed earlier, a work of art must reference a known artist, so
-the relationship is mandatory moving from work to artist, and the
-<code>artist_id</code> foreign key column on the work table cannot be
-null. An artist, however, can be entered into the database before any of
-their work is recorded, so the relationship is optional moving from
-artist to work. The museum relationship involves its own decision: if a
-work of art can be catalogued before it is assigned to a museum, the
-relationship is optional moving from work to museum, and
-<code>museum_id</code> is allowed to be null; if every work of art must
-be assigned to a museum as soon as it is added to the database, the
-relationship is mandatory instead, and <code>museum_id</code> cannot be
-null.</p>
-<p>Figure 14 shows the completed business model for the museum database.
-Notice that the work table has more than one foreign key column — this
-is not only allowable, it is common. Also notice that both relationships
-have a cardinality of one to many (1:M), which is also common. Most
-table relationships turn out to be one to many (1:M).</p>
-<div class="tip">
-<blockquote>
-<p><strong>Tables Can Have Multiple Foreign Key Columns.</strong>
-Although it may seem counterintuitive, a table can have more than one
-foreign key column. In fact, this is not uncommon.</p>
-</blockquote>
-</div>
-<p><img
-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhR0v1TMLVUXIh5msEZoZIKgBvGLxfNTp6Hnyy1pt4xK5QDgyLxx4sYh83jG4b5Gy9qfz3NMerhaFUyOsmFmtR9efcCaKijpBBOALHIsRmmT1upjqTa1ZusdtuEXgo46E6BS40GJPMaRwTrh14dWE3GoQLmbdzTKwEa8IMLM0TUlbIfh6SXvmzYWCVdp2jd/w640-h262/BusinessModelMuseumDBComplete.png" /></p>
-<p><em>Figure 14: Complete Business Model of Museum Database</em></p>
-<div class="note">
-<blockquote>
-<p><strong>Graphic Needed — Figure 15: Complete Business Model with
-Minimum and Maximum Cardinality.</strong> The same three boxes as Figure
-14 (artist, work, museum), connected by the same two relationship lines,
-but with combined (minimum, maximum) labels at each end, using the
-notation introduced earlier in this lesson: near the artist end of the
-artist-work line, <strong>(1, 1)</strong>; near the work end,
-<strong>(0, M)</strong>. Near the museum end of the museum-work line,
-<strong>(1, 1)</strong>; near the work end, <strong>(0, M)</strong>,
-reflecting the assumption that a work of art can be catalogued before it
-is assigned to a museum.</p>
-</blockquote>
-</div>
-<h2 data-number="14.7" id="summary"><span
-class="header-section-number">14.7</span> Summary</h2>
-<p>This lesson described relationships between tables. It also discussed
-cardinality — both maximum cardinality (one to one, one to many, and
-many to many) and minimum cardinality (optional and mandatory) — and the
-implications of each on how foreign keys are used. Finally, it
-demonstrated how relationships are noted in a business model of a
-database and how foreign key values link rows from different database
-tables together.</p>
+              <!--postBegin--><h1 data-number="14" id="table-relationships-and-cardinality"><span
+class="header-section-number">14</span> Table Relationships and
+Cardinality</h1>
+<div class="learning">
+<p>Learning Objectives</p>
+<div class="objectives">
+<blockquote>
+<p>:</p>
+<ol type="1">
+<li>Discuss how database tables are related.</li>
+<li>Describe relationship cardinality.</li>
+<li>Explain how cardinality impacts the use of foreign keys.</li>
+<li>Complete a business model of a database with details about
+relationships.</li>
+</ol>
+</blockquote>
+</div>
+</div>
+<p>The lesson on designing database tables described how database tables
+are designed. In this lesson, you will learn how to design the
+relationships among database tables. Understanding relationships between
+tables is important for writing effective queries that combine data from
+multiple tables.</p>
+<h2 data-number="14.1"
+id="review-the-business-model-of-a-database"><span
+class="header-section-number">14.1</span> Review: The Business Model of
+a Database</h2>
+<p>Recall that tables are designed to store data about different themes
+&#8212; all of the data about a particular theme is stored on a single table.
+For example, the tables in Figure 1 reflect the simple business model of
+the museum data developed in the lesson on designing database tables.
+All of the information about artists is stored on the artist table;
+notice that the artist table does not contain information about works of
+art or museums. Likewise, the work and museum tables contain data
+exclusive to works of art and museums, respectively.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhLnXCAz5bh8hDTbNAD4wXO3JOXRb4VXXMTBDj7VmC4Hfj87NnRlcqQRy0XgEMLeZc4FEp2zxHyvs58eQZBSqLI_kjqdQb0lWGpgtgUBj3fjq8tkAtTex-wQ9sGR7LiHhffmb-bl4zuNQZY2DBzZhyphenhyphenLXtElKY26dp4xIiptWStQO9DZ1dVqfOQ5rP_APh85/s2394/MuseumBusinessModelKeys.png" /></p>
+<p><em>Figure 1: Business Model of Museum Database</em></p>
+<p>Organizing data into separate tables based on theme has some
+important advantages, described in detail in a later lesson on database
+normalization. However, important connections exist between data from
+different themes &#8212; for example, artists create works of art, and works
+of art are exhibited in museums.</p>
+<h2 data-number="14.2" id="relationships-between-tables"><span
+class="header-section-number">14.2</span> Relationships Between
+Tables</h2>
+<p>The next step in completing a business model for a database is to
+model relationships. Relationships are the naturally occurring
+associations among the data in different tables. Relationships are most
+easily conceptualized between two tables at a time.</p>
+<div class="term">
+<blockquote>
+<p><strong>Relationship</strong> &#8212; The naturally occurring associations
+among the data in different tables.</p>
+</blockquote>
+</div>
+<p>Consider the two relationships modeled in Figure 1. There is a
+relationship between the artist and work tables, and a relationship
+between the work and museum tables. The relationship between the artist
+and work tables implies that it is possible to identify the specific
+artist who created each work of art. The relationship between the work
+and museum tables likewise implies that it is possible to identify which
+works of art are exhibited in each museum. Using both relationships
+together, it is possible to identify which artists have works of art in
+each museum: first you would identify the works of art associated with a
+specific artist, then identify the museums that exhibit those works of
+art.</p>
+<p>It is possible to associate specific rows from one table with rows on
+a related table by using foreign keys. A foreign key is a column on one
+table (generally the primary key of that table) that is included on a
+related table to connect the rows of the two tables together. The
+primary key of the artist table is <code>artist_id</code>. That same
+<code>artist_id</code> can be added to the work table to identify the
+artist who created each work of art. Similarly, the primary key of the
+museum table, <code>museum_id</code>, could be added to the work table
+to identify the museum that exhibits each work of art.</p>
+<p>You might be tempted to instead use the primary key from the work
+table, <code>work_id</code>, on the artist table as a foreign key. This
+would not work well, though, because an artist can create more than one
+work of art, which would mean more than one <code>work_id</code> would
+need to be stored for a single artist. This would violate proper table
+design (see the lesson on designing database tables). To determine how
+best to designate foreign keys to link tables, you need to understand
+cardinality.</p>
+<h2 data-number="14.3" id="cardinality"><span
+class="header-section-number">14.3</span> Cardinality</h2>
+<p>Cardinality refers to the nature of the relationship between two
+tables. It is always defined in terms of how the individual rows on the
+tables relate to each other, and it can be described in terms of minimum
+cardinality and maximum cardinality. Minimum cardinality describes
+whether a relationship is optional or mandatory.</p>
+<div class="term">
+<blockquote>
+<p><strong>Cardinality</strong> &#8212; The nature of the relationship between
+two tables.</p>
+</blockquote>
+</div>
+<div class="term">
+<blockquote>
+<p><strong>Minimum Cardinality</strong> &#8212; Describes whether a
+relationship is optional or mandatory.</p>
+</blockquote>
+</div>
+<p>Consider the relationship between the artist and work tables. Minimum
+cardinality would establish two things:</p>
+<ol type="1">
+<li>Whether an artist can exist in the database without having created
+any works of art.</li>
+<li>Whether a work of art can exist in the database without an
+associated artist.</li>
+</ol>
+<p>Answering these questions informs how the artist and work tables will
+be built.</p>
+<p>Maximum cardinality identifies how many rows from one table can be
+associated with rows from the related table. This is best understood by
+looking at an example. Consider the relationship between the museum and
+work tables. Maximum cardinality determines: (1) how many museums can
+exhibit a given work of art, and (2) how many works of art can be
+exhibited in a given museum.</p>
+<div class="term">
+<blockquote>
+<p><strong>Maximum Cardinality</strong> &#8212; Identifies how many rows from
+one table can be associated with rows from the related table.</p>
+</blockquote>
+</div>
+<p>A given work of art can only be exhibited in one museum at a time, so
+the maximum cardinality moving from work to museum is 1. A given museum,
+on the other hand, can exhibit more than one work of art, so the maximum
+cardinality moving from museum to work is many. (Note that any number
+greater than 1 is classified as many.) Taken together, this
+relationship&#8217;s maximum cardinality is said to be one to many (1:M).</p>
+<p>Just as minimum cardinality informs the design of database tables,
+maximum cardinality determines how foreign keys are used to link the
+rows of different tables together. Although minimum cardinality provides
+helpful information, the rest of this lesson focuses on how maximum
+cardinality helps you understand the nature of relationships between
+tables.</p>
+<h3 data-number="14.3.1" id="business-rules"><span
+class="header-section-number">14.3.1</span> Business Rules</h3>
+<p>Often there are logical constraints placed on a relationship based on
+how an organization conducts business. These constraints are called
+business rules. For example, a database used to track books and patrons
+for a library would likely have a relationship between a patron table
+(storing data about library patrons) and a book table (storing data
+about the library&#8217;s books).</p>
+<div class="term">
+<blockquote>
+<p><strong>Business Rules</strong> &#8212; Constraints placed on a
+relationship based on how an organization conducts business.</p>
+</blockquote>
+</div>
+<p>A patron could check out any number of books at a time, but the
+library will probably have a policy limiting how many &#8212; say, no more
+than five books at once. This is a business rule, and it places a
+cardinality constraint on the relationship between the patron and book
+tables.</p>
+<div class="term">
+<blockquote>
+<p><strong>Cardinality Constraint</strong> &#8212; A business rule that places
+a specific numeric limit on a relationship, beyond what the
+relationship&#8217;s cardinality alone would require.</p>
+</blockquote>
+</div>
+<p>A cardinality constraint does not change how a relationship is
+classified. The patron-book relationship is still one to many &#8212; a book
+can only be checked out by one patron at a time, but a patron can check
+out more than one book. The cardinality constraint simply adds a
+business-specific limit on top of that classification: instead of
+&#8220;many,&#8221; a patron is limited to at most five books at once. Enforcing a
+cardinality constraint like this one usually requires application logic,
+since a foreign key alone cannot guarantee it.</p>
+<h2 data-number="14.4" id="maximum-cardinality-types"><span
+class="header-section-number">14.4</span> Maximum Cardinality Types</h2>
+<p>There are three ways to describe relationships between tables in
+terms of maximum cardinality: one to one (1:1), one to many (1:M), and
+many to many (M:M). Each type of relationship calls for a different way
+of using foreign keys, discussed below.</p>
+<h3 data-number="14.4.1" id="one-to-one"><span
+class="header-section-number">14.4.1</span> One to One</h3>
+<p>A one-to-one relationship occurs when, in both directions, an
+instance on one table is associated with only one instance on the other
+table. Suppose a database contains a table with information about
+countries and a table with information about capital cities (see Figure
+2). Each country has only one capital city, and each capital city is the
+capital of only one country &#8212; this relationship is one to one (1:1).</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg7JRbP-Ds5ln0YXmQyj-jzyjaojocsdNUlb8FpO04HwPWJdQrofWokxgPsE7fHb8SCZl3BpDBqvGkD7VSGddP1TF2-wGfT-Ce0jCTxp6XggWdceklR6IjYNLQw29-YSJElEwspNuMvdJqGt4acTRP7ffVUs3kSdPLLhFLLx5rePULhpe3BLUbe4jAlu-Zc/w640-h188/OneToOneRelationship.png" /></p>
+<p><em>Figure 2: Countries and Capitals</em></p>
+<p>Notice the &#8220;1&#8221; on both ends of the line connecting these tables,
+denoting that the relationship between them is one to one (1:1). Also
+notice that the primary key of the country table is included as a column
+that acts as the foreign key for the capital table. With a one-to-one
+relationship, it doesn&#8217;t matter which table&#8217;s primary key is included on
+the other table as a foreign key &#8212; only one foreign key (between the two
+tables) is needed to link them together. Figure 3 shows how primary and
+foreign key values are used to link the rows from the country table with
+the rows on the capital city table.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg5W2OZPk3KZsaLIkjRDPu3Pyjq_POj3-0nfX5koQBSY4AsyqHnHERpSbR65nrfb3c3OPWR8yEZH3_HM9YIPQXI5vxwE_POHdEJlqR86puZUmj4hPRLmz5Zk4ZTQUZwQ_G1ogfy0PhY45T6xdOrPQKD9quarBY16_GfocMeWBlbN9Wev0kvoqNIrW5Hwk91/w640-h108/OneToOneForeignKey.png" /></p>
+<p><em>Figure 3: Linking Countries and Capitals Using a Foreign
+Key</em></p>
+<div class="note">
+<blockquote>
+<p><strong>One to One (1:1) Relationships.</strong> With a one-to-one
+relationship, select a primary key from either table and add it as a
+foreign key on the other table. Only one of the two tables needs a
+foreign key.</p>
+</blockquote>
+</div>
+<h3 data-number="14.4.2" id="one-to-many"><span
+class="header-section-number">14.4.2</span> One to Many</h3>
+<p>A one-to-many relationship occurs when, moving in one direction, a
+row on one table is associated with more than one row on the related
+table, but moving in the other direction, a row is associated with only
+one row of the related table. Suppose that instead of a country and
+capital table, a database includes a table for countries and a table for
+cities. Each city is located in only one country, but a country can have
+more than one city (see Figure 4).</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgJLvdj2wA5RSzHlQj5AiBZttmO2qFXsBZDH2oe4iLlQ_9Qn3esHe6z5907YsDl8Gm7Y-2-QXKtcCa7p8Xai22x2oiVh1pXjljFZVHaX3jHbgis1L0plHR5fpkiRMhwwikj7co0SqRjCGxb_voM9f6AF_qOhtg9YQYZ1wwXFnyEaM0VETA43X9cUdpOW0pr/w640-h186/OneToManyRelationship.png" /></p>
+<p><em>Figure 4: Countries and Cities</em></p>
+<p>Notice the &#8220;1&#8221; near the country end of the relationship line and the
+&#8220;M&#8221; near the city end, indicating that the relationship is one to many
+(1:M) &#8212; a city is associated with only one country, but a country can be
+associated with more than one city. Also notice that
+<code>country_id</code> is included as a foreign key on the city table.
+Recall that in a one-to-one relationship, it doesn&#8217;t matter which table
+includes the foreign key. In a one-to-many relationship, however, the
+primary key from the table on the &#8220;1&#8221; side of the relationship must be
+included as the foreign key on the &#8220;many&#8221; side of the relationship.</p>
+<p>Figure 5 shows how primary and foreign key values are used to link
+the rows from the country table with the rows on the city table. You may
+be surprised to see <code>country_id</code> repeated on the city table,
+but this makes sense, since a country can have more than one city.
+Unlike primary keys, which must always be unique, foreign key values can
+repeat. The <code>country_id</code> column acts as the primary key on
+the country table, but it is a foreign key on the city table.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiew9oAS6mpp1m2zF8RlsaaqUitcpDSsVQz5fHwSsE0XZy-riE1Ijlb1DprwO3W2y93QE6uTS-fso1qh1xpz_LVWK5FdfHW5Mg6CE85y1CPauVz8hkyRuOXsIIBIEKfmPCcRDeSMcBC1bkSyMyv67j6UMuW19DD0N2uXbcxDGYE0rKuP2K-JTnl7H_uO14Z/w640-h108/OneToManyForeignKey.png" /></p>
+<p><em>Figure 5: Countries and Cities Linked with a Foreign Key</em></p>
+<p>You might be curious why you can&#8217;t instead include
+<code>city_id</code> on the country table as a foreign key. The next few
+figures demonstrate why this doesn&#8217;t work. The first attempt (Figure 6)
+places the <code>city_id</code> values for each country&#8217;s cities into a
+single column on the country table. While this may look like an
+attractive solution, it violates an important principle of table design:
+atomicity. Atomicity means that the values in a column are decomposed to
+their simplest form, and in this case the <code>city_id</code> value for
+the USA row would contain two values, so it is not in its simplest
+form.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZhiI8ffxl6EADL4KIx7QpLzG1pQMfYdJv3S4ruJUen6WB_BAUvP7e9BHOk5YY-Dkc8BemBwC5ZYxAKqTyOwvUnufqmZawmoFtCPYNwAoIsolQscZX2vQW5LgJP9H1oUduGIIghbS8CBbHmbmvCid_X0Tq-uhRcEL46JTPA6uzAw0yMcCBi83kCAkgpDKm/s16000/OneToManyForeignKeyAttempt1.png" /></p>
+<p><em>Figure 6: City_id as Foreign Key &#8212; Attempt 1</em></p>
+<p>A second attempt (Figure 7) adds multiple <code>city_id</code>
+columns to accommodate multiple cities in the same country. This may
+also seem attractive, but it would make it very difficult to write a
+query that effectively connects countries to cities. It would also be
+difficult to know how many <code>city_id</code> columns to include on
+the country table to account for all of the current and future cities
+you want to store, and notice the null value for <code>city_id2</code>
+on the France row &#8212; as a database designer, you want to avoid null
+values when you can. All three of these issues make this approach much
+less desirable than placing <code>country_id</code> as a foreign key on
+the city table.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgvEAdJZFBhofek8NX9EHiIKqFEEbdtUh9Wj_Hw5FJkIapdbzqoOeGtYXkzOVTeLX6SYqT18ne0_Ni4zCctKKE8zpVgJQkk0ALub8zAtMuzdpN_wOPEeTAsfNl8j7qpoWNa4febNp2mxk34vMpHWIHl7krZrRVVxDgNA3X9HSqZzCfzOhpmrFe0tlyH4t9r/w640-h107/OneToManyForeignKeyAttempt2.png" /></p>
+<p><em>Figure 7: City_id as Foreign Key &#8212; Attempt 2</em></p>
+<p>A final attempt to use <code>city_id</code> on the country table as a
+foreign key is shown in Figure 8. Here, a new row for the USA is added,
+which raises the question of what to use as the primary key for that
+second USA row. You can&#8217;t reuse the original primary key value of 1,
+because every value in a primary key column must be unique. If you
+instead assign a primary key of 3 to the new USA row, you are
+technically adding a new country to the table &#8212; one that just happens to
+have the same name as the first USA entry. Either way, there is no way
+to appropriately assign a primary key value to the new row, so this
+approach doesn&#8217;t work either.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj6EmcdCwzEaqOpNogkwvv0afLnj0PDjgc2VPrDWgBZzgzJGTGHWBfYMlC4rvo8ROMAYoK7lP8hhKP40vgQwtVk3Ohd0tIK_4ZAjy3fLGny-bm-7Cn0HVQGEy0_L5MVKGoyImGhf1M5P1rZnZe75tRol00kEqHHYIzFzGJ6GsUgj1H28HfaLizzEuRLxIwA/w640-h118/OneToManyForeignKeyAttempt3.png" /></p>
+<p><em>Figure 8: City_id as Foreign Key &#8212; Attempt 3</em></p>
+<p>The only way to create a foreign key that links the country and city
+tables is to add <code>country_id</code> to the city table &#8212; placing the
+primary key from the table on the &#8220;one&#8221; side of the relationship as a
+foreign key on the table on the &#8220;many&#8221; side. This will always be the
+case for one-to-many (1:M) relationships.</p>
+<div class="note">
+<blockquote>
+<p><strong>One to Many (1:M) Relationships.</strong> With a one-to-many
+relationship, take the primary key from the table on the &#8220;one&#8221; side of
+the relationship and add it as a foreign key column in the table on the
+&#8220;many&#8221; side of the relationship.</p>
+</blockquote>
+</div>
+<h3 data-number="14.4.3" id="many-to-many"><span
+class="header-section-number">14.4.3</span> Many to Many</h3>
+<p>A many-to-many (M:M) relationship happens when, moving in both
+directions, a single row on one table could correspond with more than
+one row on the other table. Suppose a database includes a country table
+and a table that stores data about citizens. An individual country can
+have more than one citizen, and an individual person can have dual
+citizenship &#8212; that is, be a citizen of more than one country. Figure 9
+shows this relationship.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjNouyS-81v3D4-XkH61UirShyphenhyphenqkmd_M5wUAJnQhDrlejyVnkGCaX4Bwa7FVq0H98-nLOz17eEK1YYXTP6pWc4K06cSqTjry6SXYNX7M1DPxjfqL6HYRvr9maur8DrgMJOKcDwxJKYdM9NejQd0sNl6qAgId_GFZSMBZ92CCDGv-vJTeJVQj31hFHKCwQ7u/w640-h186/ManyToManyRelationship.png" /></p>
+<p><em>Figure 9: Countries and Citizens</em></p>
+<p>The last section described why you cannot take the primary key from a
+table on the &#8220;many&#8221; side of a relationship and include it on the other
+table as a foreign key. Unfortunately, the same issue applies to a
+many-to-many (M:M) relationship &#8212; and here it presents an interesting
+quandary, since both tables are on the &#8220;many&#8221; side of the
+relationship.</p>
+<p>To solve this dilemma, you add a third table to the database, between
+the country and citizen tables. This new table is called a linking table
+or a relationship table, and its name is often a combination of the
+names of the original two tables &#8212; in this case, it might be named
+<code>country_citizen</code>.</p>
+<p>The purpose of this table is to create a link between two tables that
+have a many-to-many (M:M) relationship. The relationship between each of
+the original tables and the new linking table will always be one to many
+(1:M), so the primary keys from the original tables are included on the
+linking table as foreign keys. Figure 10 shows how this linking table
+would work.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjUSN9FnQ9TytIz8IBkHuIS5VjGTU2u_W_oTR3gFcpLiWWR0Q9FRl2VFZ7xci88HpMbAcoZR6cB_qsryqWqShJMYpx4BRbx6aTOZbUFbo516bbHL00czmFNvWNyDe9-vXhtjABnQl8-tXmcg5_pxquE6HYwwcKu_1rPqQm4d8e5abURpUP-6QZn0cq10_6d/w640-h128/ManyToManyRelationshipResolved.png" /></p>
+<p><em>Figure 10: Countries and Citizens Relationship Resolved</em></p>
+<p>Figure 11 shows how countries and citizens would be linked using the
+<code>country_citizen</code> table. The first row of the
+<code>country_citizen</code> table links citizen 2 (June Day) with
+country 1 (USA). Rows 2 and 3 designate Frank Bass (citizen 3) as a
+citizen of both the USA (country 1) and France (country 2). The last row
+links citizen 1 (Liv Jones) with country 2 (France).</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj48QwKKzHBo-FRU7S_aHaCcQa7JFC3CLRodrnraQD3MFpbcwN2wC76bqz9mMpCXUn1nKzxD5imbxk3zwB8CyF4KNmfl5t7jm73ZG7tpe5X4hJi0BescMwfBpHAKIW9fCWb3HAjPSRIlIpClh3z_R-jysgimz6rWmEov6GO1f60LwpVS8Ny_od4Y4JlFuRd/w640-h128/ManyToManyRelationshipResolvedFK.png" /></p>
+<p><em>Figure 11: Countries and Citizens Linked with Foreign
+Keys</em></p>
+<div class="note">
+<blockquote>
+<p><strong>Many to Many (M:M) Relationships.</strong> With a
+many-to-many relationship, create a linking table. The original tables
+will each have a one-to-many (1:M) relationship with the linking
+table.</p>
+</blockquote>
+</div>
+<h2 data-number="14.5" id="minimum-cardinality-types"><span
+class="header-section-number">14.5</span> Minimum Cardinality Types</h2>
+<p>Just as maximum cardinality is described using the labels 1 and M,
+minimum cardinality is described using the labels 0 and 1. A minimum
+cardinality of 0 means the relationship is optional in that direction &#8212;
+a row in one table is not required to have a matching row in the related
+table. A minimum cardinality of 1 means the relationship is mandatory in
+that direction &#8212; a row in one table must have a matching row in the
+related table.</p>
+<p>Like maximum cardinality, minimum cardinality is evaluated separately
+for each direction of a relationship, and the two directions do not have
+to match.</p>
+<h3 data-number="14.5.1"
+id="revisiting-the-artist-and-work-tables"><span
+class="header-section-number">14.5.1</span> Revisiting the Artist and
+Work Tables</h3>
+<p>Recall the two questions posed earlier about the artist and work
+tables:</p>
+<ol type="1">
+<li>Can an artist exist in the database without having created any works
+of art?</li>
+<li>Can a work of art exist in the database without an associated
+artist?</li>
+</ol>
+<p>Suppose the museum keeps records on artists it is considering for a
+future acquisition, even before it owns any of their work. In that case,
+the answer to the first question is yes, so the minimum cardinality
+moving from artist to work is 0 &#8212; the relationship is optional in that
+direction. Now suppose that every work of art in the database must have
+a known, recorded artist. In that case, the answer to the second
+question is no, so the minimum cardinality moving from work to artist is
+1 &#8212; the relationship is mandatory in that direction.</p>
+<p>Combined with the maximum cardinality established earlier in this
+lesson (one to many, moving from artist to work), the full description
+of this relationship is: an artist is optionally related to many works
+of art, and a work of art is mandatorily related to exactly one
+artist.</p>
+<h3 data-number="14.5.2" id="minimum-cardinality-and-foreign-keys"><span
+class="header-section-number">14.5.2</span> Minimum Cardinality and
+Foreign Keys</h3>
+<p>Minimum cardinality has a direct effect on how a foreign key column
+is defined. If the minimum cardinality on the &#8220;many&#8221; side of a
+relationship is mandatory (1), the foreign key column cannot contain a
+null value, since every row is required to reference a matching row on
+the related table. If the minimum cardinality is optional (0), the
+foreign key column is allowed to contain null values, since a matching
+row isn&#8217;t required.</p>
+<p>In the museum database, the work table has two foreign key columns:
+<code>artist_id</code> and <code>museum_id</code>. Given the example
+above, <code>artist_id</code> would be defined so that it cannot be
+null, since every work of art must reference an artist. If a work of art
+could be added to the database before it is assigned to a museum,
+however, <code>museum_id</code> could be permitted to be null.</p>
+<div class="tip">
+<blockquote>
+<p><strong>Minimum Cardinality and Null Values.</strong> A mandatory
+minimum cardinality (1) on the &#8220;many&#8221; side of a relationship means the
+foreign key column cannot be null. An optional minimum cardinality (0)
+means the foreign key column can be null.</p>
+</blockquote>
+</div>
+<h2 data-number="14.6"
+id="relationships-in-the-museum-business-model"><span
+class="header-section-number">14.6</span> Relationships in the Museum
+Business Model</h2>
+<p>With an understanding of cardinality and its impact on foreign keys,
+you can complete the business model for the museum database. Figure 12
+shows the current business model.</p>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi0PSKX0Lp0lRXwgEeAIfxUUTRKRra4kHf6w40RlYuOjZyJ5DJA0tmUa_fZHHH5WKcN94WT6byiNE5NlP9O3FU2YqQm6DTvlMIRDu2pk2SJLBQN6DBtKVUZqxqGvx-59BB9M4TXymMtqURM_6OBy9o6pi3Jit258wwOPIrW1MRwF4Bn0js33YaJak70HeFF/s2692/BusinessModelMuseumDB.png" /></p>
+<p><em>Figure 12: Business Model of Museum Database</em></p>
+<p>Consider the relationship between artist and work. The likely
+cardinality for this relationship is one to many (1:M): an artist can
+create more than one work of art, but a work of art likely has a single
+creating artist. This means the primary key from the artist table,
+<code>artist_id</code>, will be included as a foreign key column on the
+work table.</p>
+<p>The relationship between museum and work will also be one to many
+(1:M). A museum can exhibit more than one work of art, but a work of art
+can only be exhibited in one museum at a time, so <code>museum_id</code>
+will be included as a foreign key column on the work table.</p>
+<p>Figure 13 shows the completed business model for the museum database.
+Notice that the work table has more than one foreign key column &#8212; this
+is not only allowable, it is common. Also notice that both relationships
+have a cardinality of one to many (1:M), which is also common. Most
+table relationships turn out to be one to many (1:M).</p>
+<div class="tip">
+<blockquote>
+<p><strong>Tables Can Have Multiple Foreign Key Columns.</strong>
+Although it may seem counterintuitive, a table can have more than one
+foreign key column. In fact, this is not uncommon.</p>
+</blockquote>
+</div>
+<p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhR0v1TMLVUXIh5msEZoZIKgBvGLxfNTp6Hnyy1pt4xK5QDgyLxx4sYh83jG4b5Gy9qfz3NMerhaFUyOsmFmtR9efcCaKijpBBOALHIsRmmT1upjqTa1ZusdtuEXgo46E6BS40GJPMaRwTrh14dWE3GoQLmbdzTKwEa8IMLM0TUlbIfh6SXvmzYWCVdp2jd/w640-h262/BusinessModelMuseumDBComplete.png" /></p>
+<p><em>Figure 13: Complete Business Model of Museum Database</em></p>
+<h2 data-number="14.7" id="summary"><span
+class="header-section-number">14.7</span> Summary</h2>
+<p>This lesson described relationships between tables. It also discussed
+cardinality &#8212; both maximum cardinality (one to one, one to many, and
+many to many) and minimum cardinality (optional and mandatory) &#8212; and the
+implications of each on how foreign keys are used. Finally, it
+demonstrated how relationships are noted in a business model of a
+database and how foreign key values link rows from different database
+tables together.</p>
 <!--postEnd-->
               </div>
 </div>
@@ -649,7 +584,7 @@ tables together.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZoQ7vDjdrzpv-iUslXLYwz9:1785332718792';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//sql.availabooks.com/2000/02/14.html','3986204447440040189');
+window['__wavt'] = 'ACvIOeC9ugxc-YdbSqvyNG8W6_98:1785432995616';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//sql.availabooks.com/2000/02/14.html','3986204447440040189');
 _WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://sql.availabooks.com/2000/02/14.html', 'canonicalUrl': 'https://sql.availabooks.com/2000/02/14.html', 'homepageUrl': 'https://sql.availabooks.com/', 'searchUrl': 'https://sql.availabooks.com/search', 'canonicalHomepageUrl': 'https://sql.availabooks.com/', 'blogspotFaviconUrl': 'https://sql.availabooks.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': true, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://sql.availabooks.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://sql.availabooks.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://sql.availabooks.com/feeds/7078407679928297234/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/68dd02567aef746f', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '7078407679928297234', 'postImageThumbnailUrl': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhLnXCAz5bh8hDTbNAD4wXO3JOXRb4VXXMTBDj7VmC4Hfj87NnRlcqQRy0XgEMLeZc4FEp2zxHyvs58eQZBSqLI_kjqdQb0lWGpgtgUBj3fjq8tkAtTex-wQ9sGR7LiHhffmb-bl4zuNQZY2DBzZhyphenhyphenLXtElKY26dp4xIiptWStQO9DZ1dVqfOQ5rP_APh85/s72-c/MuseumBusinessModelKeys.png', 'postImageUrl': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhLnXCAz5bh8hDTbNAD4wXO3JOXRb4VXXMTBDj7VmC4Hfj87NnRlcqQRy0XgEMLeZc4FEp2zxHyvs58eQZBSqLI_kjqdQb0lWGpgtgUBj3fjq8tkAtTex-wQ9sGR7LiHhffmb-bl4zuNQZY2DBzZhyphenhyphenLXtElKY26dp4xIiptWStQO9DZ1dVqfOQ5rP_APh85/s2394/MuseumBusinessModelKeys.png', 'pageName': '14. Table Relationships and\nCardinality', 'pageTitle': 'book1014 SQL: 14. Table Relationships and\nCardinality'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '14. Table Relationships and\nCardinality', 'description': '14  Table Relationships and\r Cardinality \r \r Learning Objectives \r \r \r : \r \r Discuss how database tables are related. \r Describe relationshi...', 'featuredImage': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhLnXCAz5bh8hDTbNAD4wXO3JOXRb4VXXMTBDj7VmC4Hfj87NnRlcqQRy0XgEMLeZc4FEp2zxHyvs58eQZBSqLI_kjqdQb0lWGpgtgUBj3fjq8tkAtTex-wQ9sGR7LiHhffmb-bl4zuNQZY2DBzZhyphenhyphenLXtElKY26dp4xIiptWStQO9DZ1dVqfOQ5rP_APh85/s2394/MuseumBusinessModelKeys.png', 'url': 'https://sql.availabooks.com/2000/02/14.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 7078407679928297234}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>

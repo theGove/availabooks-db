@@ -33,6 +33,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 --></style>
 <script type='text/javascript'>
 //<![CDATA[
+    //const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
 	async function initialize(){
 
       const kind = document.getElementById(`kind`).innerHTML
@@ -60,7 +61,8 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 
     function getSystemModule(moduleName="system"){
 		console.log(typeof location.hostname)
-		if(location.hostname==="local.availabooks.com"){
+		if(location.hostname.startsWith("local.availabooks.com")){
+            console.log("=======> looks like local dev")
             // get files from localhost
 			fetch(`${location.origin}/tools/api/${moduleName}.js`).then(response => {
                 return response.text(); 
@@ -70,6 +72,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
               })		
 		}else{
             //get files from blogger production server
+            console.log("=======> looks like production from server")
       		const systemVersion=document.getElementById("cssScript").src.split("/")[7]
       		loadCrossOrigin(`https://system.availabooks.com/feeds/posts/default/-/${systemVersion}/${moduleName}?alt=json-in-script&max-results=1&callback=loadCode`);      
 
@@ -96,7 +99,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
     
 //]]>
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=5bb5ec5d-4faf-45aa-a658-fe48a34270d7' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=5bb5ec5d-4faf-45aa-a658-fe48a34270d7' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=350edb71-14db-4960-9a7a-4ffca2c625a9' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=350edb71-14db-4960-9a7a-4ffca2c625a9' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -131,398 +134,398 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 <blockquote>
 <p>:</p>
 <ol type="1">
-<li>Use the GROUP BY clause of the SELECT statement to create summary
+<li>Use the GROUP BY clause of the SELECT statement to create summary
 categories for an aggregate calculation.</li>
-<li>Use the HAVING clause of the SELECT statement to create filters on
+<li>Use the HAVING clause of the SELECT statement to create filters on
 the summary categories you create.</li>
 </ol>
 </blockquote>
 </div>
 </div>
-<h2 data-number="12.1" id="understanding-data-grouping"><span class="header-section-number">12.1</span> Understanding Data
+<h2 data-number="12.1" id="understanding-data-grouping"><span class="header-section-number">12.1</span> Understanding Data
 Grouping</h2>
-<p>The last lesson discussed how to use aggregate functions to create
-summary calculations in a query result. These summary calculations were
-used to calculate a total (SUM) and an average (AVG) as well as counting
-rows (COUNT), finding the largest value (MAX), and finding the smallest
-value (MIN) in a column. When using these functions, the query would
-return a single row which represents the result of the calculation for
-all of the values in the column or that met the criteria set in the
+<p>The last lesson discussed how to use aggregate functions to create
+summary calculations in a query result. These summary calculations were
+used to calculate a total (SUM) and an average (AVG) as well as counting
+rows (COUNT), finding the largest value (MAX), and finding the smallest
+value (MIN) in a column. When using these functions, the query would
+return a single row which represents the result of the calculation for
+all of the values in the column or that met the criteria set in the
 WHERE clause of the SQL statement.</p>
-<p>By way of review, the following SQL statement will calculate the
-average area (in square inches) of all of the artwork with a style of
+<p>By way of review, the following SQL statement will calculate the
+average area (in square inches) of all of the artwork with a style of
 Renaissance:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(width <span class="op">*</span> height) <span class="kw">AS</span> average_renaissance_area</span>
-<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(width <span class="op">*</span> height) <span class="kw">AS</span> average_renaissance_area</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
 <span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="kw">WHERE</span> style <span class="op">=</span> <span class="st">'Renaissance'</span>;</span></code></pre></div>
-<p>Recall some important elements of this query. The WHERE clause
-ensures that only the Renaissance artwork will be included in the query
-result. The values for the width and height columns are multiplied
-together to calculate the area for each piece of art included in the
-query result. These calculated areas are summarized by the AVG function
-which will return the average area. This calculation is aliased with the
-name average_renaissance_area. The result of the query is a single
-column (average_renaissance_area) and a single row that contains the
+<p>Recall some important elements of this query. The WHERE clause
+ensures that only the Renaissance artwork will be included in the query
+result. The values for the width and height columns are multiplied
+together to calculate the area for each piece of art included in the
+query result. These calculated areas are summarized by the AVG function
+which will return the average area. This calculation is aliased with the
+name average_renaissance_area. The result of the query is a single
+column (average_renaissance_area) and a single row that contains the
 calculated average.</p>
-<p>This query is helpful if all you want to know is the average area of
-the Renaissance artwork. What if you wanted to know the average area of
-the other styles? One way to obtain these values would be to rerun this
-query altering the WHERE clause to filter for each of the other
+<p>This query is helpful if all you want to know is the average area of
+the Renaissance artwork. What if you wanted to know the average area of
+the other styles? One way to obtain these values would be to rerun this
+query altering the WHERE clause to filter for each of the other
 styles.</p>
-<p>While this approach would be effective, it would also be time
-consuming. Additionally it could lead to error. You might forget to run
-the query for one or more styles, for example. You could also create
-groups in your query to calculate the average area for each of the
+<p>While this approach would be effective, it would also be time
+consuming. Additionally it could lead to error. You might forget to run
+the query for one or more styles, for example. You could also create
+groups in your query to calculate the average area for each of the
 artwork styles in the same query.</p>
-<p>Grouping involves dividing your query result into categories and
-performing an aggregate calculation on the values in each category
-rather than all of the values in the query at once. A query that uses
-grouping will result in a row for each of the categories. The values for
-each row will be the result of the aggregate function performed on that
+<p>Grouping involves dividing your query result into categories and
+performing an aggregate calculation on the values in each category
+rather than all of the values in the query at once. A query that uses
+grouping will result in a row for each of the categories. The values for
+each row will be the result of the aggregate function performed on that
 group.</p>
 <div class="term">
 <blockquote>
-<p><strong>Grouping</strong> — Dividing your query result into
-categories and performing an aggregate calculation on the values in each
+<p><strong>Grouping</strong> &#8212; Dividing your query result into
+categories and performing an aggregate calculation on the values in each
 category.</p>
 </blockquote>
 </div>
 <h2 data-number="12.2" id="creating-groups"><span class="header-section-number">12.2</span> Creating Groups</h2>
-<p>The GROUP BY clause is used to create these categories. The GROUP BY
-clause appears in a SQL statement after the WHERE clause (or the FROM
-clause if there isn’t a WHERE clause). The GROUP BY clause specifies one
-or more columns from the table to be used to create the categories. A
+<p>The GROUP BY clause is used to create these categories. The GROUP BY
+clause appears in a SQL statement after the WHERE clause (or the FROM
+clause if there isn&#8217;t a WHERE clause). The GROUP BY clause specifies one
+or more columns from the table to be used to create the categories. A
 separate category is created for each unique value in the column.</p>
 <div class="term">
 <blockquote>
-<p><strong>GROUP BY</strong> — The clause in a SELECT statement used to
-create categories of values within which one or more aggregate functions
+<p><strong>GROUP BY</strong> &#8212; The clause in a SELECT statement used to
+create categories of values within which one or more aggregate functions
 can be applied.</p>
 </blockquote>
 </div>
-<p>It is easiest to see how GROUP BY works in a couple of examples.
-Suppose you want to calculate the average area for each style of artwork
-in the database. Name the calculated field ‘average_area_by_style’
-(without the quotes). You can use a chat with an AI assistant to create
+<p>It is easiest to see how GROUP BY works in a couple of examples.
+Suppose you want to calculate the average area for each style of artwork
+in the database. Name the calculated field &#8216;average_area_by_style&#8217;
+(without the quotes). You can use a chat with an AI assistant to create
 the SELECT statement that will do this:</p>
 <div class="ai-conversation" data-prompt="Write a SQL statement to calculate the average area of each style of artwork. Name the calculated field average_area_by_style.">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to calculate the average area of each style of artwork. Name the calculated field average_area_by_style.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>Certainly! Here’s the SQL statement to calculate the average area of
-artworks for each style and name the calculated field as
+<p>Certainly! Here&#8217;s the SQL statement to calculate the average area of
+artworks for each style and name the calculated field as
 average_area_by_style:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> style, <span class="fu">AVG</span>(width <span class="op">*</span> height) <span class="kw">AS</span> average_area_by_style</span>
-<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> style, <span class="fu">AVG</span>(width <span class="op">*</span> height) <span class="kw">AS</span> average_area_by_style</span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
 <span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> style;</span></code></pre></div>
-<p>This query calculates the average area (width * height) for artworks
-in each style from the work table. It groups the results by the style
-column and calculates the average area for each style, naming the
+<p>This query calculates the average area (width * height) for artworks
+in each style from the work table. It groups the results by the style
+column and calculates the average area for each style, naming the
 calculated field as average_area_by_style.</p>
 </blockquote>
 </div>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> style, <span class="fu">AVG</span>(width <span class="op">*</span> height) <span class="kw">AS</span> average_area_by_style</span>
-<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> style, <span class="fu">AVG</span>(width <span class="op">*</span> height) <span class="kw">AS</span> average_area_by_style</span>
+<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
 <span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> style;</span></code></pre></div>
-<p>In this example, the GROUP BY clause is used to create categories in
-the query result based on the values in the style column of the table.
-Each unique value for style will automatically be represented in a row
-of the results. All of the works of art will be first classified by
-style. The values height and width of each artwork will be used to
-calculate the area for each work of art. A separate average will be
+<p>In this example, the GROUP BY clause is used to create categories in
+the query result based on the values in the style column of the table.
+Each unique value for style will automatically be represented in a row
+of the results. All of the works of art will be first classified by
+style. The values height and width of each artwork will be used to
+calculate the area for each work of art. A separate average will be
 calculated for each style of art and returned in the query result.</p>
 <div class="note">
 <blockquote>
-<p><strong>NULL Values in Grouping Columns.</strong> If a column in the
-GROUP BY clause has NULL values, NULL will be one of the categories
-defined in the query result. All rows with NULL values in the grouping
-column will be combined for the aggregate calculation. Notice that the
-style column contains NULL values in the prior example. The rows on the
-work table with a NULL value for style are grouped together. The average
-area for these rows will also be calculated and included in the query
+<p><strong>NULL Values in Grouping Columns.</strong> If a column in the
+GROUP BY clause has NULL values, NULL will be one of the categories
+defined in the query result. All rows with NULL values in the grouping
+column will be combined for the aggregate calculation. Notice that the
+style column contains NULL values in the prior example. The rows on the
+work table with a NULL value for style are grouped together. The average
+area for these rows will also be calculated and included in the query
 results.</p>
 </blockquote>
 </div>
-<p>Notice that the style column is also in the SELECT clause. This
-provides a label for each of the calculations. Each style is listed and
+<p>Notice that the style column is also in the SELECT clause. This
+provides a label for each of the calculations. Each style is listed and
 the calculated average for each style is displayed on the same row.</p>
 <div class="tip">
 <blockquote>
-<p><strong>The SELECT Clause and Aggregate Functions.</strong> When an
-aggregate function is used in a SELECT clause, any column that is not an
-argument of an aggregate function must be part of the GROUP BY clause.
-In the statement <code>SELECT style, AVG(width*height)</code>, notice
-that width and height are part of the argument for the aggregate
-function AVG. Style is not an argument for the aggregate function. It
-must be included in the GROUP BY clause. Additionally, it is a good
-practice to make sure that any fields you use in the GROUP BY clause are
-also listed in the SELECT clause so that the values in the query have
+<p><strong>The SELECT Clause and Aggregate Functions.</strong> When an
+aggregate function is used in a SELECT clause, any column that is not an
+argument of an aggregate function must be part of the GROUP BY clause.
+In the statement <code>SELECT style, AVG(width*height)</code>, notice
+that width and height are part of the argument for the aggregate
+function AVG. Style is not an argument for the aggregate function. It
+must be included in the GROUP BY clause. Additionally, it is a good
+practice to make sure that any fields you use in the GROUP BY clause are
+also listed in the SELECT clause so that the values in the query have
 appropriate labels.</p>
 </blockquote>
 </div>
-<p>You can include more than one aggregate function in a SQL statement.
-Suppose you want to calculate the average <em>and</em> total area for
-each style of artwork in the database. Name the calculated fields
-‘average_area_by_style’ and ‘total_area_by_style’ (without the quotes),
-respectively. You can use a chat with an AI assistant to create the
+<p>You can include more than one aggregate function in a SQL statement.
+Suppose you want to calculate the average <em>and</em> total area for
+each style of artwork in the database. Name the calculated fields
+&#8216;average_area_by_style&#8217; and &#8216;total_area_by_style&#8217; (without the quotes),
+respectively. You can use a chat with an AI assistant to create the
 SELECT statement that will do this:</p>
 <div class="ai-conversation" data-prompt="Write a SQL statement to calculate the average and total area of each style of artwork. Name the calculated fields average_area_by_style and total_area_by_style.">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to calculate the average and total area of each style of artwork. Name the calculated fields average_area_by_style and total_area_by_style.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To calculate both the average and total area of each style of
-artwork, you can use the SQL GROUP BY clause along with the AVG and SUM
-functions. Here’s the SQL statement to achieve that and name the
+<p>To calculate both the average and total area of each style of
+artwork, you can use the SQL GROUP BY clause along with the AVG and SUM
+functions. Here&#8217;s the SQL statement to achieve that and name the
 calculated fields as specified:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> style, <span class="fu">AVG</span>(width <span class="op">*</span> height) <span class="kw">AS</span> average_area_by_style, <span class="fu">SUM</span>(width <span class="op">*</span> height) <span class="kw">AS</span> total_area_by_style</span>
-<span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> style, <span class="fu">AVG</span>(width <span class="op">*</span> height) <span class="kw">AS</span> average_area_by_style, <span class="fu">SUM</span>(width <span class="op">*</span> height) <span class="kw">AS</span> total_area_by_style</span>
+<span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
 <span id="cb4-3"><a aria-hidden="true" href="#cb4-3" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> style;</span></code></pre></div>
-<p>This query calculates the average and total area (width * height) for
-artworks in each style from the work table. It groups the results by the
-style column and calculates the average area and total area for each
-style, naming the calculated fields as average_area_by_style and
+<p>This query calculates the average and total area (width * height) for
+artworks in each style from the work table. It groups the results by the
+style column and calculates the average area and total area for each
+style, naming the calculated fields as average_area_by_style and
 total_area_by_style, respectively.</p>
 </blockquote>
 </div>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> style, <span class="fu">AVG</span>(width <span class="op">*</span> height) <span class="kw">AS</span> average_area_by_style, <span class="fu">SUM</span>(width <span class="op">*</span> height) <span class="kw">AS</span> total_area_by_style</span>
-<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> style, <span class="fu">AVG</span>(width <span class="op">*</span> height) <span class="kw">AS</span> average_area_by_style, <span class="fu">SUM</span>(width <span class="op">*</span> height) <span class="kw">AS</span> total_area_by_style</span>
+<span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="kw">FROM</span> <span class="kw">work</span></span>
 <span id="cb5-3"><a aria-hidden="true" href="#cb5-3" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> style;</span></code></pre></div>
-<p>This example is very similar to the last one. The query calculates
-both the average and total area for each style of artwork in the
-database. The result is grouped by style to ensure that separate
-calculations are made for each unique style. The result is one row for
+<p>This example is very similar to the last one. The query calculates
+both the average and total area for each style of artwork in the
+database. The result is grouped by style to ensure that separate
+calculations are made for each unique style. The result is one row for
 each style each with a calculated average and total area.</p>
-<p>Consider that you want to determine the most recent death of an
-artist for each art style and nationality. Name the calculated field
-‘most_recent_death’ (without the quotes). You can use a chat with an AI
+<p>Consider that you want to determine the most recent death of an
+artist for each art style and nationality. Name the calculated field
+&#8216;most_recent_death&#8217; (without the quotes). You can use a chat with an AI
 assistant to create the SELECT statement that will do this:</p>
 <div class="ai-conversation" data-prompt="Write a SQL statement to categorize artists by their style and nationality. Determine the most recent death in each group. Name the calculated field most_recent_death.">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to categorize artists by their style and nationality. Determine the most recent death in each group. Name the calculated field most_recent_death.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To categorize artists by their style and nationality and determine
-the most recent death in each group, you can use the GROUP BY clause
-along with the MAX function. Here’s the SQL statement to achieve that
+<p>To categorize artists by their style and nationality and determine
+the most recent death in each group, you can use the GROUP BY clause
+along with the MAX function. Here&#8217;s the SQL statement to achieve that
 and name the calculated field as most_recent_death:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> style, nationality, <span class="fu">MAX</span>(death) <span class="kw">AS</span> most_recent_death</span>
-<span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> style, nationality, <span class="fu">MAX</span>(death) <span class="kw">AS</span> most_recent_death</span>
+<span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
 <span id="cb6-3"><a aria-hidden="true" href="#cb6-3" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> style, nationality;</span></code></pre></div>
-<p>This query groups the artists by their style and nationality, then
-calculates the most recent death year for each group using the MAX
+<p>This query groups the artists by their style and nationality, then
+calculates the most recent death year for each group using the MAX
 function and names the calculated field as most_recent_death.</p>
 </blockquote>
 </div>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span> style, nationality, <span class="fu">MAX</span>(death) <span class="kw">AS</span> most_recent_death</span>
-<span id="cb7-2"><a aria-hidden="true" href="#cb7-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span> style, nationality, <span class="fu">MAX</span>(death) <span class="kw">AS</span> most_recent_death</span>
+<span id="cb7-2"><a aria-hidden="true" href="#cb7-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
 <span id="cb7-3"><a aria-hidden="true" href="#cb7-3" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> style, nationality;</span></code></pre></div>
-<p>In order to determine the most recent death for each style and
-nationality, you need to include both fields in the GROUP BY clause.
-Notice that the query result lists each style once for each nationality.
-Each row of the query represents the combination of these groups. The
-most recent death will be determined for the combination of the groups
-using the MAX function. For example, the row that contains Art Nouveau
-as the style and Austrian as the nationality contains the largest death
-year (the most recent death) for an Austrian artist who works in the Art
+<p>In order to determine the most recent death for each style and
+nationality, you need to include both fields in the GROUP BY clause.
+Notice that the query result lists each style once for each nationality.
+Each row of the query represents the combination of these groups. The
+most recent death will be determined for the combination of the groups
+using the MAX function. For example, the row that contains Art Nouveau
+as the style and Austrian as the nationality contains the largest death
+year (the most recent death) for an Austrian artist who works in the Art
 Nouveau style.</p>
-<p>The arrangement of the groups will follow the pattern seen in the
-query result. The values on the source table will be categorized by the
-left-most column in the GROUP BY clause. Each subsequent grouping will
-be done within those groups. In this example, the artists are first
-grouped by style and then nationality. This is why you see all of the
+<p>The arrangement of the groups will follow the pattern seen in the
+query result. The values on the source table will be categorized by the
+left-most column in the GROUP BY clause. Each subsequent grouping will
+be done within those groups. In this example, the artists are first
+grouped by style and then nationality. This is why you see all of the
 entries for a given style appear together in the result.</p>
-<p>You can also sort by calculated fields. Assume you want to determine
-most recent death for each style of artist and you also want to arrange
-the results to show the styles with the most recent deaths first in your
-results. You can use a chat with an AI assistant to create the SELECT
+<p>You can also sort by calculated fields. Assume you want to determine
+most recent death for each style of artist and you also want to arrange
+the results to show the styles with the most recent deaths first in your
+results. You can use a chat with an AI assistant to create the SELECT
 statement that will do this:</p>
 <div class="ai-conversation" data-prompt="Write a SQL statement to determine the most recent death for each artist style. Name the calculated field most_recent_death. Sort the results by most_recent_death in reverse chronological order.">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to determine the most recent death for each artist style. Name the calculated field most_recent_death. Sort the results by most_recent_death in reverse chronological order.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To determine the most recent death for each artist style, sort the
-results by the most recent death year in reverse chronological order,
-you can use the GROUP BY clause along with the MAX function and the
-ORDER BY clause. Here’s the SQL statement to achieve that and name the
+<p>To determine the most recent death for each artist style, sort the
+results by the most recent death year in reverse chronological order,
+you can use the GROUP BY clause along with the MAX function and the
+ORDER BY clause. Here&#8217;s the SQL statement to achieve that and name the
 calculated field as most_recent_death:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="kw">SELECT</span> style, <span class="fu">MAX</span>(death) <span class="kw">AS</span> most_recent_death</span>
-<span id="cb8-2"><a aria-hidden="true" href="#cb8-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb8-3"><a aria-hidden="true" href="#cb8-3" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> style</span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="kw">SELECT</span> style, <span class="fu">MAX</span>(death) <span class="kw">AS</span> most_recent_death</span>
+<span id="cb8-2"><a aria-hidden="true" href="#cb8-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb8-3"><a aria-hidden="true" href="#cb8-3" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> style</span>
 <span id="cb8-4"><a aria-hidden="true" href="#cb8-4" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> most_recent_death <span class="kw">DESC</span>;</span></code></pre></div>
-<p>This query groups the artists by their style, calculates the most
-recent death year for each style using the MAX function, and then orders
-the results in reverse chronological order based on the
+<p>This query groups the artists by their style, calculates the most
+recent death year for each style using the MAX function, and then orders
+the results in reverse chronological order based on the
 most_recent_death field.</p>
 </blockquote>
 </div>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="kw">SELECT</span> style, <span class="fu">MAX</span>(death) <span class="kw">AS</span> most_recent_death</span>
-<span id="cb9-2"><a aria-hidden="true" href="#cb9-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb9-3"><a aria-hidden="true" href="#cb9-3" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> style</span>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="kw">SELECT</span> style, <span class="fu">MAX</span>(death) <span class="kw">AS</span> most_recent_death</span>
+<span id="cb9-2"><a aria-hidden="true" href="#cb9-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb9-3"><a aria-hidden="true" href="#cb9-3" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> style</span>
 <span id="cb9-4"><a aria-hidden="true" href="#cb9-4" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> most_recent_death <span class="kw">DESC</span>;</span></code></pre></div>
-<p>In this example, the most recent death is calculated for each style
-of artist using the MAX function. The name of this calculated field is
-most_recent_death. Notice that the query is sorted by this calculation.
-The ORDER BY clause arranges the result by most_recent_death in
-descending order. Because the SELECT clause executes before the ORDER BY
-clause, you can use the alias for the most recent death in the ORDER BY
+<p>In this example, the most recent death is calculated for each style
+of artist using the MAX function. The name of this calculated field is
+most_recent_death. Notice that the query is sorted by this calculation.
+The ORDER BY clause arranges the result by most_recent_death in
+descending order. Because the SELECT clause executes before the ORDER BY
+clause, you can use the alias for the most recent death in the ORDER BY
 clause.</p>
 <div class="caution">
 <blockquote>
-<p><strong>Using Aliases in the GROUP BY Clause.</strong> If you use an
-alias to rename a column in the SELECT statement, that alias cannot be
-used in the GROUP BY clause even though it can be used in the ORDER BY
-clause (as shown in the last example). This is due to the order of
-execution. GROUP BY executes before SELECT, so any aliases defined in
-the SELECT clause will not be in effect when the GROUP BY clause
+<p><strong>Using Aliases in the GROUP BY Clause.</strong> If you use an
+alias to rename a column in the SELECT statement, that alias cannot be
+used in the GROUP BY clause even though it can be used in the ORDER BY
+clause (as shown in the last example). This is due to the order of
+execution. GROUP BY executes before SELECT, so any aliases defined in
+the SELECT clause will not be in effect when the GROUP BY clause
 executes.</p>
 </blockquote>
 </div>
-<p>Here are some important things to keep in mind about using GROUP
+<p>Here are some important things to keep in mind about using GROUP
 BY:</p>
 <ul>
-<li>You can create as many categories in your query as you need. The
+<li>You can create as many categories in your query as you need. The
 GROUP BY clause can have any number of columns.</li>
-<li>If you have more than one column in the GROUP BY clause, the values
-included in each group will be determined by the combination of the
-categories defined in the GROUP BY clause. This means you will not get
+<li>If you have more than one column in the GROUP BY clause, the values
+included in each group will be determined by the combination of the
+categories defined in the GROUP BY clause. This means you will not get
 summary data for each GROUP BY level.</li>
-<li>Every column listed in the GROUP BY clause should also be part of
-the SELECT clause if it is not an argument for an aggregate
+<li>Every column listed in the GROUP BY clause should also be part of
+the SELECT clause if it is not an argument for an aggregate
 function.</li>
-<li>Every column listed in the SELECT clause that is not an argument for
+<li>Every column listed in the SELECT clause that is not an argument for
 an aggregate function must be included in the GROUP BY clause.</li>
-<li>If the grouping column contains NULL values, NULL will be used as a
-category. If more than one row has a NULL value, those rows will be
+<li>If the grouping column contains NULL values, NULL will be used as a
+category. If more than one row has a NULL value, those rows will be
 grouped together for the aggregate calculation.</li>
 </ul>
 <h2 data-number="12.3" id="filtering-groups"><span class="header-section-number">12.3</span> Filtering Groups</h2>
-<p>Not only can you create categories of data using the GROUP BY clause,
-but you can also create a filter to determine which categories to
+<p>Not only can you create categories of data using the GROUP BY clause,
+but you can also create a filter to determine which categories to
 include in a query result. This is done using the HAVING clause.</p>
-<p>The filters created in the HAVING clause use logical tests to
-determine which categories to include in a query result much like the
-WHERE clause. In fact all of the operators you learned about using in
-the WHERE clause will also work in the HAVING clause. Those categories
+<p>The filters created in the HAVING clause use logical tests to
+determine which categories to include in a query result much like the
+WHERE clause. In fact all of the operators you learned about using in
+the WHERE clause will also work in the HAVING clause. Those categories
 that meet the logical test are included in the query result.</p>
-<p>This is an important distinction between HAVING and WHERE. A logical
-test in the WHERE clause applies to the individual rows of the source
-table. It determines which rows to include in a query result. A logical
-test in the HAVING clause filters groups based on the aggregate
+<p>This is an important distinction between HAVING and WHERE. A logical
+test in the WHERE clause applies to the individual rows of the source
+table. It determines which rows to include in a query result. A logical
+test in the HAVING clause filters groups based on the aggregate
 calculations that relate to those groups.</p>
-<p>This is also best seen in an example. Assume you want to list all of
-the nationalities with more than 25 artists. Name the calculated field
-‘number_of_artists’ (without the quotes). You can use a chat with an AI
+<p>This is also best seen in an example. Assume you want to list all of
+the nationalities with more than 25 artists. Name the calculated field
+&#8216;number_of_artists&#8217; (without the quotes). You can use a chat with an AI
 assistant to create the SELECT statement that will do this:</p>
 <div class="ai-conversation" data-prompt="Write an SQL statement to list the nationalities with more than 25 artists. Name the calculated field number_of_artists.">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write an SQL statement to list the nationalities with more than 25 artists. Name the calculated field number_of_artists.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To list the nationalities with more than 25 artists and name the
-calculated field as number_of_artists, you can use the GROUP BY clause
-along with the COUNT function and a HAVING clause. Here’s the SQL
+<p>To list the nationalities with more than 25 artists and name the
+calculated field as number_of_artists, you can use the GROUP BY clause
+along with the COUNT function and a HAVING clause. Here&#8217;s the SQL
 statement to achieve that:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a aria-hidden="true" href="#cb10-1" tabindex="-1"></a><span class="kw">SELECT</span> nationality, <span class="fu">COUNT</span>( <span class="op">*</span> ) <span class="kw">AS</span> number_of_artists</span>
-<span id="cb10-2"><a aria-hidden="true" href="#cb10-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb10-3"><a aria-hidden="true" href="#cb10-3" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> nationality</span>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a aria-hidden="true" href="#cb10-1" tabindex="-1"></a><span class="kw">SELECT</span> nationality, <span class="fu">COUNT</span>( <span class="op">*</span> ) <span class="kw">AS</span> number_of_artists</span>
+<span id="cb10-2"><a aria-hidden="true" href="#cb10-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb10-3"><a aria-hidden="true" href="#cb10-3" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> nationality</span>
 <span id="cb10-4"><a aria-hidden="true" href="#cb10-4" tabindex="-1"></a><span class="kw">HAVING</span> <span class="fu">COUNT</span>( <span class="op">*</span> ) <span class="op">&gt;</span> <span class="dv">25</span>;</span></code></pre></div>
-<p>This query groups the artists by their nationality, calculates the
-number of artists for each nationality using the COUNT function, and
-then filters the results using the HAVING clause to only include
-nationalities with more than 25 artists. The calculated field is named
+<p>This query groups the artists by their nationality, calculates the
+number of artists for each nationality using the COUNT function, and
+then filters the results using the HAVING clause to only include
+nationalities with more than 25 artists. The calculated field is named
 number_of_artists.</p>
 </blockquote>
 </div>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb11-1"><a aria-hidden="true" href="#cb11-1" tabindex="-1"></a><span class="kw">SELECT</span> nationality, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> number_of_artists</span>
-<span id="cb11-2"><a aria-hidden="true" href="#cb11-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb11-3"><a aria-hidden="true" href="#cb11-3" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> nationality</span>
-<span id="cb11-4"><a aria-hidden="true" href="#cb11-4" tabindex="-1"></a><span class="kw">HAVING</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;</span> <span class="dv">25</span>;</span>
-<span id="cb11-5"><a aria-hidden="true" href="#cb11-5" tabindex="-1"></a></span>
-<span id="cb11-6"><a aria-hidden="true" href="#cb11-6" tabindex="-1"></a><span class="kw">SELECT</span> nationality, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> number_of_artists</span>
-<span id="cb11-7"><a aria-hidden="true" href="#cb11-7" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb11-1"><a aria-hidden="true" href="#cb11-1" tabindex="-1"></a><span class="kw">SELECT</span> nationality, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> number_of_artists</span>
+<span id="cb11-2"><a aria-hidden="true" href="#cb11-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb11-3"><a aria-hidden="true" href="#cb11-3" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> nationality</span>
+<span id="cb11-4"><a aria-hidden="true" href="#cb11-4" tabindex="-1"></a><span class="kw">HAVING</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;</span> <span class="dv">25</span>;</span>
+<span id="cb11-5"><a aria-hidden="true" href="#cb11-5" tabindex="-1"></a></span>
+<span id="cb11-6"><a aria-hidden="true" href="#cb11-6" tabindex="-1"></a><span class="kw">SELECT</span> nationality, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> number_of_artists</span>
+<span id="cb11-7"><a aria-hidden="true" href="#cb11-7" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
 <span id="cb11-8"><a aria-hidden="true" href="#cb11-8" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> nationality</span></code></pre></div>
-<p>For comparison, this example also shows the query without the HAVING
-clause. Without the HAVING clause each of the different nationalities
-for artists on the artist table are displayed. The number of artists
-with that nationality are calculated for each. The HAVING clause creates
-a filter condition on the nationality groups. Only those nationalities
+<p>For comparison, this example also shows the query without the HAVING
+clause. Without the HAVING clause each of the different nationalities
+for artists on the artist table are displayed. The number of artists
+with that nationality are calculated for each. The HAVING clause creates
+a filter condition on the nationality groups. Only those nationalities
 with more than 25 artists will be displayed in the query result.</p>
 <div class="caution">
 <blockquote>
-<p><strong>Using Aliases in the HAVING Clause.</strong> If you use an
-alias to rename a column in the SELECT statement, that alias cannot be
-used in the HAVING clause, even though it would be convenient if you
-could. In the prior example, the HAVING clause is
-<code>HAVING COUNT(*) &gt; 25</code>. Intuitively, it would be nice if
-you could restate this as <code>HAVING number_of_artists &gt; 25</code>.
-This doesn’t work because of the order of execution. HAVING executes
-before SELECT, so any aliases defined in the SELECT clause will not be
+<p><strong>Using Aliases in the HAVING Clause.</strong> If you use an
+alias to rename a column in the SELECT statement, that alias cannot be
+used in the HAVING clause, even though it would be convenient if you
+could. In the prior example, the HAVING clause is
+<code>HAVING COUNT(*) &gt; 25</code>. Intuitively, it would be nice if
+you could restate this as <code>HAVING number_of_artists &gt; 25</code>.
+This doesn&#8217;t work because of the order of execution. HAVING executes
+before SELECT, so any aliases defined in the SELECT clause will not be
 in effect when the HAVING clause executes.</p>
 </blockquote>
 </div>
-<p>It is important to note why a WHERE clause could not be used to
-create the filter for this example. Recall that the WHERE clause creates
-filters that apply to the individual rows of the source table. Each row
-on the artist table contains information about a single artist. Each
-artist only has one nationality, so no single artist could possibly meet
+<p>It is important to note why a WHERE clause could not be used to
+create the filter for this example. Recall that the WHERE clause creates
+filters that apply to the individual rows of the source table. Each row
+on the artist table contains information about a single artist. Each
+artist only has one nationality, so no single artist could possibly meet
 the criteria.</p>
-<p>More importantly, the WHERE clause would not “know” what a category
-is. Recall that the WHERE clause executes before the GROUP BY clause.
-Any groups created by the GROUP BY clause would not be available to the
-WHERE clause anyway. Both of these situations explain why WHERE cannot
-be used to create filter conditions on the groups or classifications in
+<p>More importantly, the WHERE clause would not &#8220;know&#8221; what a category
+is. Recall that the WHERE clause executes before the GROUP BY clause.
+Any groups created by the GROUP BY clause would not be available to the
+WHERE clause anyway. Both of these situations explain why WHERE cannot
+be used to create filter conditions on the groups or classifications in
 a query.</p>
-<p>It is possible (and appropriate) to use both the HAVING and WHERE
-clauses in the same query. Consider that you want to list all of the
-nationalities with more than 25 artists who were born after the year
-1800. Name the calculated field ‘number_of_artists’ (without the
-quotes). You can use a chat with an AI assistant to create the SELECT
+<p>It is possible (and appropriate) to use both the HAVING and WHERE
+clauses in the same query. Consider that you want to list all of the
+nationalities with more than 25 artists who were born after the year
+1800. Name the calculated field &#8216;number_of_artists&#8217; (without the
+quotes). You can use a chat with an AI assistant to create the SELECT
 statement that will do this:</p>
 <div class="ai-conversation" data-prompt="Write an SQL statement to list the nationalities with more than 25 artists who were born after the year 1800. Name the calculated field number_of_artists.">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write an SQL statement to list the nationalities with more than 25 artists who were born after the year 1800. Name the calculated field number_of_artists.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To list the nationalities with more than 25 artists who were born
-after the year 1800 and name the calculated field as number_of_artists,
-you can use the GROUP BY clause along with the COUNT function and a
-HAVING clause to apply both conditions. Here’s the SQL statement to
+<p>To list the nationalities with more than 25 artists who were born
+after the year 1800 and name the calculated field as number_of_artists,
+you can use the GROUP BY clause along with the COUNT function and a
+HAVING clause to apply both conditions. Here&#8217;s the SQL statement to
 achieve that:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a><span class="kw">SELECT</span> nationality, <span class="fu">COUNT</span>( <span class="op">*</span> ) <span class="kw">AS</span> number_of_artists</span>
-<span id="cb12-2"><a aria-hidden="true" href="#cb12-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb12-3"><a aria-hidden="true" href="#cb12-3" tabindex="-1"></a><span class="kw">WHERE</span> birth <span class="op">&gt;</span> <span class="dv">1800</span></span>
-<span id="cb12-4"><a aria-hidden="true" href="#cb12-4" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> nationality</span>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a><span class="kw">SELECT</span> nationality, <span class="fu">COUNT</span>( <span class="op">*</span> ) <span class="kw">AS</span> number_of_artists</span>
+<span id="cb12-2"><a aria-hidden="true" href="#cb12-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb12-3"><a aria-hidden="true" href="#cb12-3" tabindex="-1"></a><span class="kw">WHERE</span> birth <span class="op">&gt;</span> <span class="dv">1800</span></span>
+<span id="cb12-4"><a aria-hidden="true" href="#cb12-4" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> nationality</span>
 <span id="cb12-5"><a aria-hidden="true" href="#cb12-5" tabindex="-1"></a><span class="kw">HAVING</span> <span class="fu">COUNT</span>( <span class="op">*</span> ) <span class="op">&gt;</span> <span class="dv">25</span>;</span></code></pre></div>
-<p>This query filters the artists who were born after the year 1800
-using the WHERE clause, groups the remaining artists by their
-nationality, calculates the number of artists for each nationality using
-the COUNT function, and then filters the results using the HAVING clause
-to only include nationalities with more than 25 artists. The calculated
+<p>This query filters the artists who were born after the year 1800
+using the WHERE clause, groups the remaining artists by their
+nationality, calculates the number of artists for each nationality using
+the COUNT function, and then filters the results using the HAVING clause
+to only include nationalities with more than 25 artists. The calculated
 field is named number_of_artists.</p>
 </blockquote>
 </div>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb13-1"><a aria-hidden="true" href="#cb13-1" tabindex="-1"></a><span class="kw">SELECT</span> nationality, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> number_of_artists</span>
-<span id="cb13-2"><a aria-hidden="true" href="#cb13-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb13-3"><a aria-hidden="true" href="#cb13-3" tabindex="-1"></a><span class="kw">WHERE</span> birth <span class="op">&gt;</span> <span class="dv">1800</span></span>
-<span id="cb13-4"><a aria-hidden="true" href="#cb13-4" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> nationality</span>
-<span id="cb13-5"><a aria-hidden="true" href="#cb13-5" tabindex="-1"></a><span class="kw">HAVING</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;</span> <span class="dv">25</span>;</span>
-<span id="cb13-6"><a aria-hidden="true" href="#cb13-6" tabindex="-1"></a></span>
-<span id="cb13-7"><a aria-hidden="true" href="#cb13-7" tabindex="-1"></a><span class="kw">SELECT</span> nationality, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> number_of_artists</span>
-<span id="cb13-8"><a aria-hidden="true" href="#cb13-8" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
-<span id="cb13-9"><a aria-hidden="true" href="#cb13-9" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> nationality</span>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb13-1"><a aria-hidden="true" href="#cb13-1" tabindex="-1"></a><span class="kw">SELECT</span> nationality, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> number_of_artists</span>
+<span id="cb13-2"><a aria-hidden="true" href="#cb13-2" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb13-3"><a aria-hidden="true" href="#cb13-3" tabindex="-1"></a><span class="kw">WHERE</span> birth <span class="op">&gt;</span> <span class="dv">1800</span></span>
+<span id="cb13-4"><a aria-hidden="true" href="#cb13-4" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> nationality</span>
+<span id="cb13-5"><a aria-hidden="true" href="#cb13-5" tabindex="-1"></a><span class="kw">HAVING</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;</span> <span class="dv">25</span>;</span>
+<span id="cb13-6"><a aria-hidden="true" href="#cb13-6" tabindex="-1"></a></span>
+<span id="cb13-7"><a aria-hidden="true" href="#cb13-7" tabindex="-1"></a><span class="kw">SELECT</span> nationality, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> number_of_artists</span>
+<span id="cb13-8"><a aria-hidden="true" href="#cb13-8" tabindex="-1"></a><span class="kw">FROM</span> artist</span>
+<span id="cb13-9"><a aria-hidden="true" href="#cb13-9" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> nationality</span>
 <span id="cb13-10"><a aria-hidden="true" href="#cb13-10" tabindex="-1"></a><span class="kw">HAVING</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;</span> <span class="dv">25</span>;</span></code></pre></div>
-<p>In this example, only those artists born after the year 1800 will be
-included in the query result. This is accomplished with the WHERE clause
-(<code>WHERE birth &gt; 1800</code>). Once this row-level filter is
-applied, the GROUP BY clause creates categories of artists based on
-their nationality. The HAVING clause creates the group filter so that
-only those nationalities with more than 25 artists will be included in
-the query result. In this case, there are only two nationalities with
+<p>In this example, only those artists born after the year 1800 will be
+included in the query result. This is accomplished with the WHERE clause
+(<code>WHERE birth &gt; 1800</code>). Once this row-level filter is
+applied, the GROUP BY clause creates categories of artists based on
+their nationality. The HAVING clause creates the group filter so that
+only those nationalities with more than 25 artists will be included in
+the query result. In this case, there are only two nationalities with
 more than 25 artists born after 1800.</p>
-<p>The prior example is included here for comparison. In this example,
-the WHERE clause is omitted. This means that all artists will be
-included in the query result. When all artists are included (not just
-those born after 1800), there are five nationalities with more than 25
-artists. Notice how the effect of the WHERE clause impacts the query
+<p>The prior example is included here for comparison. In this example,
+the WHERE clause is omitted. This means that all artists will be
+included in the query result. When all artists are included (not just
+those born after 1800), there are five nationalities with more than 25
+artists. Notice how the effect of the WHERE clause impacts the query
 results.</p>
-<h2 data-number="12.4" id="select-statement-clause-listing-order-and-execution-order"><span class="header-section-number">12.4</span> Select Statement Clause
+<h2 data-number="12.4" id="select-statement-clause-listing-order-and-execution-order"><span class="header-section-number">12.4</span> Select Statement Clause
 Listing Order and Execution Order</h2>
-<p>At this point, all of the clauses of the select statement have been
-discussed. The table below summarizes the clauses and what they do. It
-also details the order they appear in the select statement and the order
+<p>At this point, all of the clauses of the select statement have been
+discussed. The table below summarizes the clauses and what they do. It
+also details the order they appear in the select statement and the order
 they are executed.</p>
-<h4 data-number="12.4.0.1" id="select-statement-clauses"><span class="header-section-number">12.4.0.1</span> Select Statement
+<h4 data-number="12.4.0.1" id="select-statement-clauses"><span class="header-section-number">12.4.0.1</span> Select Statement
 Clauses</h4>
 <div class="table">
 <table>
@@ -567,7 +570,7 @@ Clauses</h4>
 <tr>
 <td style="text-align: center;">GROUP BY</td>
 <td>Create groups for aggregate calculations</td>
-<td>No (unless there are columns in the SELECT clause that are not an
+<td>No (unless there are columns in the SELECT clause that are not an
 argument to an aggregate function)</td>
 <td>4th</td>
 <td>3rd</td>
@@ -589,34 +592,34 @@ argument to an aggregate function)</td>
 </tbody>
 </table>
 </div>
-<p>The select statement provides a standard way to retrieve data from a
-database. The six clauses of the select statement are used in specific
-and standard ways as well. Recall that only the SELECT and FROM clauses
-are required when creating a select statement. When a clause is not
-included in a query, it is just omitted and the other clauses appear in
+<p>The select statement provides a standard way to retrieve data from a
+database. The six clauses of the select statement are used in specific
+and standard ways as well. Recall that only the SELECT and FROM clauses
+are required when creating a select statement. When a clause is not
+included in a query, it is just omitted and the other clauses appear in
 the prescribed order.</p>
-<p>You may be wondering why there is a different order that the clauses
-are listed in a select statement than when they are executed by the
-DBMS. Perhaps the best reason for this is that they are specified in a
-way that makes the statement more conversational. If we were to use
-normal English to request data, we might use a similar structure. We
-would likely say that we want to see specific data from a particular
-source and then describe any specialized instructions for how we see the
+<p>You may be wondering why there is a different order that the clauses
+are listed in a select statement than when they are executed by the
+DBMS. Perhaps the best reason for this is that they are specified in a
+way that makes the statement more conversational. If we were to use
+normal English to request data, we might use a similar structure. We
+would likely say that we want to see specific data from a particular
+source and then describe any specialized instructions for how we see the
 data after that.</p>
-<p>The order of execution follows a more logical ordering that aids in
-the automated retrieval of the data. While having a different order for
-executing the statements may seem odd, it is important to understand
-this ordering. This way you will understand how the different clauses
-work together and why something you define in one clause of the SELECT
-statement is “known” in some later clauses but not others.</p>
+<p>The order of execution follows a more logical ordering that aids in
+the automated retrieval of the data. While having a different order for
+executing the statements may seem odd, it is important to understand
+this ordering. This way you will understand how the different clauses
+work together and why something you define in one clause of the SELECT
+statement is &#8220;known&#8221; in some later clauses but not others.</p>
 <h2 data-number="12.5" id="summary"><span class="header-section-number">12.5</span> Summary</h2>
-<p>This lesson described how to use the GROUP BY clause to create
-categories in a query result. Aggregate functions are then applied to
-these categories to summarize the values in each. The HAVING clause was
-also discussed. The HAVING clause is used to create filters on the
-groups defined in the GROUP BY clause. At this point, all of the clauses
-of the SELECT statement have been defined. This lesson reviews each,
-describing their function, when they are included in a SQL statement,
+<p>This lesson described how to use the GROUP BY clause to create
+categories in a query result. Aggregate functions are then applied to
+these categories to summarize the values in each. The HAVING clause was
+also discussed. The HAVING clause is used to create filters on the
+groups defined in the GROUP BY clause. At this point, all of the clauses
+of the SELECT statement have been defined. This lesson reviews each,
+describing their function, when they are included in a SQL statement,
 and when each is executed by the DBMS.</p>
 <!--postEnd-->
               </div>
@@ -640,7 +643,7 @@ and when each is executed by the DBMS.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZqpnDN7AqaZLyNbL66rsGUl:1785332716110';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//sql.availabooks.com/2000/02/12.html','3986204447440040189');
+window['__wavt'] = 'ACvIOeBOzX120RvvALeskN5CfSW6:1785432994077';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//sql.availabooks.com/2000/02/12.html','3986204447440040189');
 _WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://sql.availabooks.com/2000/02/12.html', 'canonicalUrl': 'https://sql.availabooks.com/2000/02/12.html', 'homepageUrl': 'https://sql.availabooks.com/', 'searchUrl': 'https://sql.availabooks.com/search', 'canonicalHomepageUrl': 'https://sql.availabooks.com/', 'blogspotFaviconUrl': 'https://sql.availabooks.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': true, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://sql.availabooks.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://sql.availabooks.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://sql.availabooks.com/feeds/1926592971992986755/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/68dd02567aef746f', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '1926592971992986755', 'pageName': '12. Grouping Data', 'pageTitle': 'book1014 SQL: 12. Grouping Data'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '12. Grouping Data', 'description': 'websql  12  Grouping Data   Learning Objectives    :   Use the GROUP BY clause of the SELECT statement to create summary\r categories for an ...', 'url': 'https://sql.availabooks.com/2000/02/12.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 1926592971992986755}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>

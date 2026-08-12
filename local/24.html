@@ -33,6 +33,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 --></style>
 <script type='text/javascript'>
 //<![CDATA[
+    //const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
 	async function initialize(){
 
       const kind = document.getElementById(`kind`).innerHTML
@@ -60,7 +61,8 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 
     function getSystemModule(moduleName="system"){
 		console.log(typeof location.hostname)
-		if(location.hostname==="local.availabooks.com"){
+		if(location.hostname.startsWith("local.availabooks.com")){
+            console.log("=======> looks like local dev")
             // get files from localhost
 			fetch(`${location.origin}/tools/api/${moduleName}.js`).then(response => {
                 return response.text(); 
@@ -70,6 +72,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
               })		
 		}else{
             //get files from blogger production server
+            console.log("=======> looks like production from server")
       		const systemVersion=document.getElementById("cssScript").src.split("/")[7]
       		loadCrossOrigin(`https://system.availabooks.com/feeds/posts/default/-/${systemVersion}/${moduleName}?alt=json-in-script&max-results=1&callback=loadCode`);      
 
@@ -96,7 +99,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
     
 //]]>
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=5bb5ec5d-4faf-45aa-a658-fe48a34270d7' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=5bb5ec5d-4faf-45aa-a658-fe48a34270d7' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=350edb71-14db-4960-9a7a-4ffca2c625a9' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=350edb71-14db-4960-9a7a-4ffca2c625a9' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -125,278 +128,278 @@ Processing</span></h1>
 <button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
               
               <!--postBegin--><div class="module">websql</div>
-<h1 data-number="24" id="managing-transaction-processing"><span
-class="header-section-number">24</span> Managing Transaction
-Processing</h1>
-<div class="learning">
-<p>Learning Objectives</p>
-<div class="objectives">
-<blockquote>
-<p>:</p>
-<ol type="1">
-<li>Describe why transaction processing is needed to maintain database
-integrity.</li>
-<li>Define the terms transaction, commit, rollback, and savepoint.</li>
-<li>Use BEGIN and COMMIT to control a transaction block in
-PostgreSQL.</li>
-<li>Use ROLLBACK to undo an uncommitted transaction.</li>
-<li>Use SAVEPOINT and ROLLBACK TO SAVEPOINT to undo part of a
-transaction.</li>
-</ol>
-</blockquote>
-</div>
-</div>
-<h2 data-number="24.1" id="understanding-transaction-processing"><span
-class="header-section-number">24.1</span> Understanding Transaction
-Processing</h2>
-<p>Transaction processing is used to maintain database integrity by
-ensuring that batches of SQL operations execute completely or not at
-all.</p>
-<p>As explained back in the lesson on joining tables, relational
-databases are designed so that data is stored in multiple tables to
-facilitate easier data manipulation, management, and reuse. Without
-going in to the hows and whys of relational database design, take it as
-a given that well-designed database schemas are relational to some
-degree.</p>
-<p>The artist, work, and subject tables that you’ve been using
-throughout this book are a good example of this. A cataloguing operation
-touches all three: artist stores the artists themselves, work stores the
-individual works of art, and subject stores the individual subjects
-depicted in each work. These tables are related to each other using
-unique IDs called primary keys (as discussed in the lesson on
-understanding SQL).</p>
-<p>The process of cataloguing a new work is as follows:</p>
-<ol type="1">
-<li>Check if the artist is already in the database. If not, add
-them.</li>
-<li>Retrieve the artist’s ID.</li>
-<li>Add a row to the work table associating it with the artist’s ID (and
-the appropriate museum ID).</li>
-<li>Retrieve the new work ID assigned in the work table.</li>
-<li>Add one row to the subject table for each subject depicted in the
-work, associating it with the work table by the retrieved work ID.</li>
-</ol>
-<p>Now imagine that some database failure (for example, out of disk
-space, security restrictions, table locks) prevents this entire sequence
-from completing. What would happen to your data?</p>
-<p>Well, if the failure occurred after the artist was added and before
-the work row was added, there is no real problem. It is perfectly valid
-to have artists without any catalogued works. When you run the sequence
-again, the inserted artist record will be retrieved and used. You can
-effectively pick up where you left off.</p>
-<p>But what if the failure occurred after the work row was added but
-before the subject rows were added? Now you’d have an unclassified work
-sitting in your database.</p>
-<p>Worse, what if the system failed during adding the subject rows? Now
-you’d end up with a partially catalogued work in your database, but you
-wouldn’t know it.</p>
-<p>How do you solve this problem? That’s where transaction processing
-comes in. Transaction processing is a mechanism used to manage sets of
-SQL operations that must be executed in batches so as to ensure that
-databases never contain the results of partial operations. With
-transaction processing, you can ensure that sets of operations are not
-aborted mid-processing — they either execute in their entirety or not at
-all (unless explicitly instructed otherwise). If no error occurs, the
-entire set of statements is committed (written) to the database tables.
-If an error does occur, then a rollback (undo) can occur to restore the
-database to a known and safe state.</p>
-<p>So, if we look at the same example, this is how the process would
-work:</p>
-<ol type="1">
-<li>Check if the artist is already in the database; if not, add
-them.</li>
-<li>Commit the artist information.</li>
-<li>Retrieve the artist’s ID.</li>
-<li>Add a row to the work table.</li>
-<li>If a failure occurs while adding the row to work, roll back.</li>
-<li>Retrieve the new work ID assigned in the work table.</li>
-<li>Add one row to the subject table for each subject depicted.</li>
-<li>If a failure occurs while adding rows to subject, roll back all the
-subject rows added and the work row.</li>
-</ol>
-<p>When you’re working with transactions and transaction processing, a
-few keywords will keep reappearing. Here are the terms you need to
-know:</p>
-<ul>
-<li><strong>Transaction</strong> — A block of SQL statements</li>
-<li><strong>Rollback</strong> — The process of undoing specified SQL
-statements</li>
-<li><strong>Commit</strong> — Writing unsaved SQL statements to the
-database tables</li>
-<li><strong>Savepoint</strong> — A temporary placeholder in a
-transaction set to which you can issue a rollback (as opposed to rolling
-back an entire transaction)</li>
-</ul>
-<div class="tip">
-<blockquote>
-<p><strong>Which Statements Can You Roll Back?</strong> Transaction
-processing is used to manage INSERT, UPDATE, and DELETE statements —
-these can always be rolled back. Unlike many other DBMSs, PostgreSQL
-also supports fully transactional DDL: statements like CREATE TABLE,
-ALTER TABLE, and DROP TABLE can be rolled back too, as long as they
-occur within an explicit transaction block. The one real exception is
-SELECT — there is nothing to roll back, since a SELECT never changes any
-data in the first place.</p>
-</blockquote>
-</div>
-<h2 data-number="24.2" id="controlling-transactions"><span
-class="header-section-number">24.2</span> Controlling Transactions</h2>
-<p>Now that you know what transaction processing is, let’s look at what
-is involved in managing transactions.</p>
-<p>The key to managing transactions involves breaking your SQL
-statements into logical chunks and explicitly stating when data should
-be rolled back and when it should not.</p>
-<p>PostgreSQL requires that you explicitly mark the start of a
-transaction block using BEGIN (the ANSI-standard
-<code>START TRANSACTION</code> also works, if you prefer that
-spelling):</p>
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span>;</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">..</span>.</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">COMMIT</span>;</span></code></pre></div>
-<p>In this example, any SQL between the BEGIN and COMMIT statements must
-be executed entirely or not at all. Notice that there isn’t an explicit
-“end of transaction” keyword the way there is a BEGIN — the transaction
-simply continues until something terminates it, usually a COMMIT to save
-changes or a ROLLBACK to undo them, as will be explained next.</p>
-<div class="caution">
-<blockquote>
-<p><strong>Autocommit Mode.</strong> Outside of an explicit BEGIN…COMMIT
-block, PostgreSQL runs each individual statement as its own transaction,
-automatically committed the moment it succeeds. This is important to
-keep in mind: if you don’t wrap a set of related statements in BEGIN,
-each one is saved permanently as soon as it runs, whether or not the
-statements that follow it succeed.</p>
-</blockquote>
-</div>
-<h2 data-number="24.3" id="using-rollback"><span
-class="header-section-number">24.3</span> Using ROLLBACK</h2>
-<p>The SQL ROLLBACK command is used to roll back (undo) SQL statements,
-as seen in this next example:</p>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span>;</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> <span class="kw">work</span>;</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ROLLBACK</span>;</span></code></pre></div>
-<p>In this example, a DELETE operation is performed and then undone
-using a ROLLBACK statement. Notice the explicit BEGIN — without it, the
-DELETE would run in autocommit mode and be permanently saved the instant
-it executed, leaving nothing for the ROLLBACK to undo. Although not the
-most useful example, it does demonstrate that, within a transaction
-block, DELETE operations (like INSERT and UPDATE operations) are never
-final until committed.</p>
-<h2 data-number="24.4" id="using-commit"><span
-class="header-section-number">24.4</span> Using COMMIT</h2>
-<p>Outside of an explicit transaction, PostgreSQL statements are
-executed and written directly to the database tables the moment they
-succeed. This is known as an implicit commit — the commit (write or
-save) operation happens automatically.</p>
-<p>Within a transaction block, however, nothing is written to the
-database tables until an explicit COMMIT is issued (or the transaction
-is rolled back instead).</p>
-<p>To force an explicit commit, you use the COMMIT statement. The
-following example deletes the work with work_id 210 entirely from the
-system:</p>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span>;</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> subject <span class="kw">WHERE</span> work_id <span class="op">=</span> <span class="dv">210</span>;</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> <span class="kw">work</span> <span class="kw">WHERE</span> work_id <span class="op">=</span> <span class="dv">210</span>;</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">COMMIT</span>;</span></code></pre></div>
-<p>In this example, work number 210 is deleted entirely from the system.
-Because this involves updating two database tables, work and subject, a
-transaction block is used to ensure that the work is not partially
-deleted. The final COMMIT statement writes the changes only if no error
-occurred. If the first DELETE worked but the second failed, neither
-DELETE would be committed — PostgreSQL would instead leave the
-transaction in a failed state, waiting for you to issue a ROLLBACK.</p>
-<h2 data-number="24.5" id="using-savepoints"><span
-class="header-section-number">24.5</span> Using Savepoints</h2>
-<p>Simple ROLLBACK and COMMIT statements enable you to write or undo an
-entire transaction. Although this approach works for simple
-transactions, more complex transactions might require partial commits or
-rollbacks.</p>
-<p>For example, the process of cataloguing a new work described
-previously is a single transaction. If an error occurs while adding the
-work or its subjects, you only want to roll back to the point before the
-work row was added. You do not want to roll back the addition to the
-artist table (if there was one).</p>
-<p>To support the rollback of partial transactions, you must be able to
-put placeholders at strategic locations in the transaction block. Then,
-if a rollback is required, you can roll back to one of the
-placeholders.</p>
-<p>In PostgreSQL, these placeholders are called savepoints, created with
-the SAVEPOINT statement:</p>
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SAVEPOINT</span> start_work;</span></code></pre></div>
-<p>Each savepoint takes a unique name that identifies it so that, when
-you roll back, the DBMS knows where you are rolling back to. To roll
-back to this savepoint, you do the following:</p>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ROLLBACK</span> <span class="kw">TO</span> <span class="kw">SAVEPOINT</span> start_work;</span></code></pre></div>
-<p>The following is a complete example:</p>
-<div class="sourceCode" id="cb6"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span>;</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> artist (artist_id, full_name, first_name, last_name, nationality)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">502</span>, <span class="st">&#39;Mira Petrova&#39;</span>, <span class="st">&#39;Mira&#39;</span>, <span class="st">&#39;Petrova&#39;</span>, <span class="st">&#39;Bulgarian&#39;</span>);</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">SAVEPOINT</span> start_work;</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="kw">work</span> (work_id, artist_id, museum_id, name, style)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">301</span>, <span class="dv">502</span>, <span class="dv">3</span>, <span class="st">&#39;Winter Market&#39;</span>, <span class="st">&#39;Realist&#39;</span>);</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> subject (work_id, subject)</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">301</span>, <span class="st">&#39;Marketplace&#39;</span>);</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> subject (work_id, subject)</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">301</span>, <span class="st">&#39;Winter Landscape&#39;</span>);</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="kw">COMMIT</span>;</span></code></pre></div>
-<p>Here four INSERT statements are enclosed within a transaction block.
-A savepoint is defined after the first INSERT so that, if any of the
-subsequent INSERT operations fail, the transaction can be rolled back
-only that far, rather than losing the artist row too.</p>
-<div class="caution">
-<blockquote>
-<p><strong>Error Handling Is Stricter in PostgreSQL.</strong> Unlike
-some other DBMSs, plain PostgreSQL SQL has no equivalent of an inline
-<code>@@ERROR</code>-style variable that lets you check the outcome of
-the previous statement and decide whether to continue. Instead,
-PostgreSQL takes a stricter approach: the moment any statement inside a
-transaction fails, the entire transaction is marked as aborted, and
-every subsequent statement is rejected until you issue either ROLLBACK
-(undoing everything back to BEGIN) or ROLLBACK TO SAVEPOINT (undoing
-everything back to a named savepoint). In practice, this means that if,
-say, the second INSERT INTO subject above were to fail, you would
-recover with:</p>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ROLLBACK</span> <span class="kw">TO</span> <span class="kw">SAVEPOINT</span> start_work;</span></code></pre></div>
-<p>This would undo the failed work and both subject inserts, while
-leaving the artist row (added before the savepoint) intact and still
-pending inside the open transaction. You could then correct the problem
-and try the work and subject inserts again, or simply COMMIT with just
-the artist row saved.</p>
-</blockquote>
-</div>
-<div class="tip">
-<blockquote>
-<p><strong>The More Savepoints the Better.</strong> You can have as many
-savepoints as you’d like within your SQL code, and the more the better.
-Why? Because the more savepoints you have, the more flexibility you have
-in managing rollbacks exactly as you need them.</p>
-</blockquote>
-</div>
-<h2 data-number="24.6" id="summary"><span
-class="header-section-number">24.6</span> Summary</h2>
-<p>In this lesson, you learned that transactions are blocks of SQL
-statements that must be executed as a batch. You learned that COMMIT and
-ROLLBACK statements are used to explicitly manage when data is written
-and when it is undone. You also learned that savepoints provide a
-greater level of control over rollback operations, and that PostgreSQL’s
-stricter transaction-abort behavior means you must roll back (fully or
-to a savepoint) before a failed transaction can continue. Transaction
-processing is a really important topic, and one that is far beyond the
-scope of one lesson. Refer to the PostgreSQL documentation for further
-details.</p>
+<h1 data-number="24" id="managing-transaction-processing"><span
+class="header-section-number">24</span> Managing Transaction
+Processing</h1>
+<div class="learning">
+<p>Learning Objectives</p>
+<div class="objectives">
+<blockquote>
+<p>:</p>
+<ol type="1">
+<li>Describe why transaction processing is needed to maintain database
+integrity.</li>
+<li>Define the terms transaction, commit, rollback, and savepoint.</li>
+<li>Use BEGIN and COMMIT to control a transaction block in
+PostgreSQL.</li>
+<li>Use ROLLBACK to undo an uncommitted transaction.</li>
+<li>Use SAVEPOINT and ROLLBACK TO SAVEPOINT to undo part of a
+transaction.</li>
+</ol>
+</blockquote>
+</div>
+</div>
+<h2 data-number="24.1" id="understanding-transaction-processing"><span
+class="header-section-number">24.1</span> Understanding Transaction
+Processing</h2>
+<p>Transaction processing is used to maintain database integrity by
+ensuring that batches of SQL operations execute completely or not at
+all.</p>
+<p>As explained back in the lesson on joining tables, relational
+databases are designed so that data is stored in multiple tables to
+facilitate easier data manipulation, management, and reuse. Without
+going in to the hows and whys of relational database design, take it as
+a given that well-designed database schemas are relational to some
+degree.</p>
+<p>The artist, work, and subject tables that you&#8217;ve been using
+throughout this book are a good example of this. A cataloguing operation
+touches all three: artist stores the artists themselves, work stores the
+individual works of art, and subject stores the individual subjects
+depicted in each work. These tables are related to each other using
+unique IDs called primary keys (as discussed in the lesson on
+understanding SQL).</p>
+<p>The process of cataloguing a new work is as follows:</p>
+<ol type="1">
+<li>Check if the artist is already in the database. If not, add
+them.</li>
+<li>Retrieve the artist&#8217;s ID.</li>
+<li>Add a row to the work table associating it with the artist&#8217;s ID (and
+the appropriate museum ID).</li>
+<li>Retrieve the new work ID assigned in the work table.</li>
+<li>Add one row to the subject table for each subject depicted in the
+work, associating it with the work table by the retrieved work ID.</li>
+</ol>
+<p>Now imagine that some database failure (for example, out of disk
+space, security restrictions, table locks) prevents this entire sequence
+from completing. What would happen to your data?</p>
+<p>Well, if the failure occurred after the artist was added and before
+the work row was added, there is no real problem. It is perfectly valid
+to have artists without any catalogued works. When you run the sequence
+again, the inserted artist record will be retrieved and used. You can
+effectively pick up where you left off.</p>
+<p>But what if the failure occurred after the work row was added but
+before the subject rows were added? Now you&#8217;d have an unclassified work
+sitting in your database.</p>
+<p>Worse, what if the system failed during adding the subject rows? Now
+you&#8217;d end up with a partially catalogued work in your database, but you
+wouldn&#8217;t know it.</p>
+<p>How do you solve this problem? That&#8217;s where transaction processing
+comes in. Transaction processing is a mechanism used to manage sets of
+SQL operations that must be executed in batches so as to ensure that
+databases never contain the results of partial operations. With
+transaction processing, you can ensure that sets of operations are not
+aborted mid-processing &#8212; they either execute in their entirety or not at
+all (unless explicitly instructed otherwise). If no error occurs, the
+entire set of statements is committed (written) to the database tables.
+If an error does occur, then a rollback (undo) can occur to restore the
+database to a known and safe state.</p>
+<p>So, if we look at the same example, this is how the process would
+work:</p>
+<ol type="1">
+<li>Check if the artist is already in the database; if not, add
+them.</li>
+<li>Commit the artist information.</li>
+<li>Retrieve the artist&#8217;s ID.</li>
+<li>Add a row to the work table.</li>
+<li>If a failure occurs while adding the row to work, roll back.</li>
+<li>Retrieve the new work ID assigned in the work table.</li>
+<li>Add one row to the subject table for each subject depicted.</li>
+<li>If a failure occurs while adding rows to subject, roll back all the
+subject rows added and the work row.</li>
+</ol>
+<p>When you&#8217;re working with transactions and transaction processing, a
+few keywords will keep reappearing. Here are the terms you need to
+know:</p>
+<ul>
+<li><strong>Transaction</strong> &#8212; A block of SQL statements</li>
+<li><strong>Rollback</strong> &#8212; The process of undoing specified SQL
+statements</li>
+<li><strong>Commit</strong> &#8212; Writing unsaved SQL statements to the
+database tables</li>
+<li><strong>Savepoint</strong> &#8212; A temporary placeholder in a
+transaction set to which you can issue a rollback (as opposed to rolling
+back an entire transaction)</li>
+</ul>
+<div class="tip">
+<blockquote>
+<p><strong>Which Statements Can You Roll Back?</strong> Transaction
+processing is used to manage INSERT, UPDATE, and DELETE statements &#8212;
+these can always be rolled back. Unlike many other DBMSs, PostgreSQL
+also supports fully transactional DDL: statements like CREATE TABLE,
+ALTER TABLE, and DROP TABLE can be rolled back too, as long as they
+occur within an explicit transaction block. The one real exception is
+SELECT &#8212; there is nothing to roll back, since a SELECT never changes any
+data in the first place.</p>
+</blockquote>
+</div>
+<h2 data-number="24.2" id="controlling-transactions"><span
+class="header-section-number">24.2</span> Controlling Transactions</h2>
+<p>Now that you know what transaction processing is, let&#8217;s look at what
+is involved in managing transactions.</p>
+<p>The key to managing transactions involves breaking your SQL
+statements into logical chunks and explicitly stating when data should
+be rolled back and when it should not.</p>
+<p>PostgreSQL requires that you explicitly mark the start of a
+transaction block using BEGIN (the ANSI-standard
+<code>START TRANSACTION</code> also works, if you prefer that
+spelling):</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="cf">BEGIN</span>;</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="op">..</span>.</span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="kw">COMMIT</span>;</span></code></pre></div>
+<p>In this example, any SQL between the BEGIN and COMMIT statements must
+be executed entirely or not at all. Notice that there isn&#8217;t an explicit
+&#8220;end of transaction&#8221; keyword the way there is a BEGIN &#8212; the transaction
+simply continues until something terminates it, usually a COMMIT to save
+changes or a ROLLBACK to undo them, as will be explained next.</p>
+<div class="caution">
+<blockquote>
+<p><strong>Autocommit Mode.</strong> Outside of an explicit BEGIN&#8230;COMMIT
+block, PostgreSQL runs each individual statement as its own transaction,
+automatically committed the moment it succeeds. This is important to
+keep in mind: if you don&#8217;t wrap a set of related statements in BEGIN,
+each one is saved permanently as soon as it runs, whether or not the
+statements that follow it succeed.</p>
+</blockquote>
+</div>
+<h2 data-number="24.3" id="using-rollback"><span
+class="header-section-number">24.3</span> Using ROLLBACK</h2>
+<p>The SQL ROLLBACK command is used to roll back (undo) SQL statements,
+as seen in this next example:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="cf">BEGIN</span>;</span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> <span class="kw">work</span>;</span>
+<span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a><span class="kw">ROLLBACK</span>;</span></code></pre></div>
+<p>In this example, a DELETE operation is performed and then undone
+using a ROLLBACK statement. Notice the explicit BEGIN &#8212; without it, the
+DELETE would run in autocommit mode and be permanently saved the instant
+it executed, leaving nothing for the ROLLBACK to undo. Although not the
+most useful example, it does demonstrate that, within a transaction
+block, DELETE operations (like INSERT and UPDATE operations) are never
+final until committed.</p>
+<h2 data-number="24.4" id="using-commit"><span
+class="header-section-number">24.4</span> Using COMMIT</h2>
+<p>Outside of an explicit transaction, PostgreSQL statements are
+executed and written directly to the database tables the moment they
+succeed. This is known as an implicit commit &#8212; the commit (write or
+save) operation happens automatically.</p>
+<p>Within a transaction block, however, nothing is written to the
+database tables until an explicit COMMIT is issued (or the transaction
+is rolled back instead).</p>
+<p>To force an explicit commit, you use the COMMIT statement. The
+following example deletes the work with work_id 210 entirely from the
+system:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="cf">BEGIN</span>;</span>
+<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> subject <span class="kw">WHERE</span> work_id <span class="op">=</span> <span class="dv">210</span>;</span>
+<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> <span class="kw">work</span> <span class="kw">WHERE</span> work_id <span class="op">=</span> <span class="dv">210</span>;</span>
+<span id="cb3-4"><a aria-hidden="true" href="#cb3-4" tabindex="-1"></a><span class="kw">COMMIT</span>;</span></code></pre></div>
+<p>In this example, work number 210 is deleted entirely from the system.
+Because this involves updating two database tables, work and subject, a
+transaction block is used to ensure that the work is not partially
+deleted. The final COMMIT statement writes the changes only if no error
+occurred. If the first DELETE worked but the second failed, neither
+DELETE would be committed &#8212; PostgreSQL would instead leave the
+transaction in a failed state, waiting for you to issue a ROLLBACK.</p>
+<h2 data-number="24.5" id="using-savepoints"><span
+class="header-section-number">24.5</span> Using Savepoints</h2>
+<p>Simple ROLLBACK and COMMIT statements enable you to write or undo an
+entire transaction. Although this approach works for simple
+transactions, more complex transactions might require partial commits or
+rollbacks.</p>
+<p>For example, the process of cataloguing a new work described
+previously is a single transaction. If an error occurs while adding the
+work or its subjects, you only want to roll back to the point before the
+work row was added. You do not want to roll back the addition to the
+artist table (if there was one).</p>
+<p>To support the rollback of partial transactions, you must be able to
+put placeholders at strategic locations in the transaction block. Then,
+if a rollback is required, you can roll back to one of the
+placeholders.</p>
+<p>In PostgreSQL, these placeholders are called savepoints, created with
+the SAVEPOINT statement:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SAVEPOINT</span> start_work;</span></code></pre></div>
+<p>Each savepoint takes a unique name that identifies it so that, when
+you roll back, the DBMS knows where you are rolling back to. To roll
+back to this savepoint, you do the following:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">ROLLBACK</span> <span class="kw">TO</span> <span class="kw">SAVEPOINT</span> start_work;</span></code></pre></div>
+<p>The following is a complete example:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="cf">BEGIN</span>;</span>
+<span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a></span>
+<span id="cb6-3"><a aria-hidden="true" href="#cb6-3" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> artist (artist_id, full_name, first_name, last_name, nationality)</span>
+<span id="cb6-4"><a aria-hidden="true" href="#cb6-4" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">502</span>, <span class="st">&#39;Mira Petrova&#39;</span>, <span class="st">&#39;Mira&#39;</span>, <span class="st">&#39;Petrova&#39;</span>, <span class="st">&#39;Bulgarian&#39;</span>);</span>
+<span id="cb6-5"><a aria-hidden="true" href="#cb6-5" tabindex="-1"></a></span>
+<span id="cb6-6"><a aria-hidden="true" href="#cb6-6" tabindex="-1"></a><span class="kw">SAVEPOINT</span> start_work;</span>
+<span id="cb6-7"><a aria-hidden="true" href="#cb6-7" tabindex="-1"></a></span>
+<span id="cb6-8"><a aria-hidden="true" href="#cb6-8" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> <span class="kw">work</span> (work_id, artist_id, museum_id, name, style)</span>
+<span id="cb6-9"><a aria-hidden="true" href="#cb6-9" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">301</span>, <span class="dv">502</span>, <span class="dv">3</span>, <span class="st">&#39;Winter Market&#39;</span>, <span class="st">&#39;Realist&#39;</span>);</span>
+<span id="cb6-10"><a aria-hidden="true" href="#cb6-10" tabindex="-1"></a></span>
+<span id="cb6-11"><a aria-hidden="true" href="#cb6-11" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> subject (work_id, subject)</span>
+<span id="cb6-12"><a aria-hidden="true" href="#cb6-12" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">301</span>, <span class="st">&#39;Marketplace&#39;</span>);</span>
+<span id="cb6-13"><a aria-hidden="true" href="#cb6-13" tabindex="-1"></a></span>
+<span id="cb6-14"><a aria-hidden="true" href="#cb6-14" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> subject (work_id, subject)</span>
+<span id="cb6-15"><a aria-hidden="true" href="#cb6-15" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">301</span>, <span class="st">&#39;Winter Landscape&#39;</span>);</span>
+<span id="cb6-16"><a aria-hidden="true" href="#cb6-16" tabindex="-1"></a></span>
+<span id="cb6-17"><a aria-hidden="true" href="#cb6-17" tabindex="-1"></a><span class="kw">COMMIT</span>;</span></code></pre></div>
+<p>Here four INSERT statements are enclosed within a transaction block.
+A savepoint is defined after the first INSERT so that, if any of the
+subsequent INSERT operations fail, the transaction can be rolled back
+only that far, rather than losing the artist row too.</p>
+<div class="caution">
+<blockquote>
+<p><strong>Error Handling Is Stricter in PostgreSQL.</strong> Unlike
+some other DBMSs, plain PostgreSQL SQL has no equivalent of an inline
+<code>@@ERROR</code>-style variable that lets you check the outcome of
+the previous statement and decide whether to continue. Instead,
+PostgreSQL takes a stricter approach: the moment any statement inside a
+transaction fails, the entire transaction is marked as aborted, and
+every subsequent statement is rejected until you issue either ROLLBACK
+(undoing everything back to BEGIN) or ROLLBACK TO SAVEPOINT (undoing
+everything back to a named savepoint). In practice, this means that if,
+say, the second INSERT INTO subject above were to fail, you would
+recover with:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">ROLLBACK</span> <span class="kw">TO</span> <span class="kw">SAVEPOINT</span> start_work;</span></code></pre></div>
+<p>This would undo the failed work and both subject inserts, while
+leaving the artist row (added before the savepoint) intact and still
+pending inside the open transaction. You could then correct the problem
+and try the work and subject inserts again, or simply COMMIT with just
+the artist row saved.</p>
+</blockquote>
+</div>
+<div class="tip">
+<blockquote>
+<p><strong>The More Savepoints the Better.</strong> You can have as many
+savepoints as you&#8217;d like within your SQL code, and the more the better.
+Why? Because the more savepoints you have, the more flexibility you have
+in managing rollbacks exactly as you need them.</p>
+</blockquote>
+</div>
+<h2 data-number="24.6" id="summary"><span
+class="header-section-number">24.6</span> Summary</h2>
+<p>In this lesson, you learned that transactions are blocks of SQL
+statements that must be executed as a batch. You learned that COMMIT and
+ROLLBACK statements are used to explicitly manage when data is written
+and when it is undone. You also learned that savepoints provide a
+greater level of control over rollback operations, and that PostgreSQL&#8217;s
+stricter transaction-abort behavior means you must roll back (fully or
+to a savepoint) before a failed transaction can continue. Transaction
+processing is a really important topic, and one that is far beyond the
+scope of one lesson. Refer to the PostgreSQL documentation for further
+details.</p>
 <!--postEnd-->
               </div>
 </div>
@@ -419,7 +422,7 @@ details.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZpmEQBsfUWkGcrX5L-PP_7p:1785332728829';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//sql.availabooks.com/2000/02/24.html','3986204447440040189');
+window['__wavt'] = 'ACvIOeBdSaRZj2f1CxSuYmRMYBFR:1785433004290';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//sql.availabooks.com/2000/02/24.html','3986204447440040189');
 _WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://sql.availabooks.com/2000/02/24.html', 'canonicalUrl': 'https://sql.availabooks.com/2000/02/24.html', 'homepageUrl': 'https://sql.availabooks.com/', 'searchUrl': 'https://sql.availabooks.com/search', 'canonicalHomepageUrl': 'https://sql.availabooks.com/', 'blogspotFaviconUrl': 'https://sql.availabooks.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': true, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://sql.availabooks.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://sql.availabooks.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://sql.availabooks.com/feeds/6555716424631740302/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/68dd02567aef746f', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '6555716424631740302', 'pageName': '24. Managing Transaction\nProcessing', 'pageTitle': 'book1014 SQL: 24. Managing Transaction\nProcessing'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '24. Managing Transaction\nProcessing', 'description': 'websql  24  Managing Transaction\r Processing \r \r Learning Objectives \r \r \r : \r \r Describe why transaction processing is needed to maintain d...', 'url': 'https://sql.availabooks.com/2000/02/24.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 6555716424631740302}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>

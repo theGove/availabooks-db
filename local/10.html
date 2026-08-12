@@ -33,6 +33,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 --></style>
 <script type='text/javascript'>
 //<![CDATA[
+    //const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
 	async function initialize(){
 
       const kind = document.getElementById(`kind`).innerHTML
@@ -60,7 +61,8 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 
     function getSystemModule(moduleName="system"){
 		console.log(typeof location.hostname)
-		if(location.hostname==="local.availabooks.com"){
+		if(location.hostname.startsWith("local.availabooks.com")){
+            console.log("=======> looks like local dev")
             // get files from localhost
 			fetch(`${location.origin}/tools/api/${moduleName}.js`).then(response => {
                 return response.text(); 
@@ -70,6 +72,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
               })		
 		}else{
             //get files from blogger production server
+            console.log("=======> looks like production from server")
       		const systemVersion=document.getElementById("cssScript").src.split("/")[7]
       		loadCrossOrigin(`https://system.availabooks.com/feeds/posts/default/-/${systemVersion}/${moduleName}?alt=json-in-script&max-results=1&callback=loadCode`);      
 
@@ -96,7 +99,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
     
 //]]>
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=5bb5ec5d-4faf-45aa-a658-fe48a34270d7' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=5bb5ec5d-4faf-45aa-a658-fe48a34270d7' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=350edb71-14db-4960-9a7a-4ffca2c625a9' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=350edb71-14db-4960-9a7a-4ffca2c625a9' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -125,7 +128,7 @@ Functions</span></h1>
 <button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
               
               <!--postBegin--><div class="module">websql</div>
-<h1 data-number="10" id="using-data-manipulation-functions"><span class="header-section-number">10</span> Using Data Manipulation
+<h1 data-number="10" id="using-data-manipulation-functions"><span class="header-section-number">10</span> Using Data Manipulation
 Functions</h1>
 <div class="learning">
 <p>Learning Objectives</p>
@@ -133,7 +136,7 @@ Functions</h1>
 <blockquote>
 <p>:</p>
 <ol type="1">
-<li>Describe the uses and limitations of data manipulation
+<li>Describe the uses and limitations of data manipulation
 functions.</li>
 <li>Use functions to manipulate text.</li>
 <li>Use functions to manipulate dates and times.</li>
@@ -143,100 +146,100 @@ functions.</li>
 </div>
 </div>
 <h2 data-number="10.1" id="understanding-functions"><span class="header-section-number">10.1</span> Understanding Functions</h2>
-<p>Structured query language supports the use of built-in functions. A
-function uses a defined algorithm to manipulate input data into a
-desired output. Functions are helpful and an important feature of
+<p>Structured query language supports the use of built-in functions. A
+function uses a defined algorithm to manipulate input data into a
+desired output. Functions are helpful and an important feature of
 SQL.</p>
 <div class="term">
 <blockquote>
-<p><strong>Function</strong> — A feature of SQL that uses a defined
+<p><strong>Function</strong> &#8212; A feature of SQL that uses a defined
 algorithm to manipulate input data into a desired output.</p>
 </blockquote>
 </div>
-<p>Functions can be used to manipulate different types of data including
-text, dates and time, and numbers. Functions can perform both simple and
-complex calculations. Functions can also be used to perform calculations
-on the data in individual rows of a query result or across the rows of a
-query result. In this lesson, you will learn how to use scalar
-functions, or functions that manipulate data on individual rows.
-Aggregate functions, or functions that perform calculations across the
+<p>Functions can be used to manipulate different types of data including
+text, dates and time, and numbers. Functions can perform both simple and
+complex calculations. Functions can also be used to perform calculations
+on the data in individual rows of a query result or across the rows of a
+query result. In this lesson, you will learn how to use scalar
+functions, or functions that manipulate data on individual rows.
+Aggregate functions, or functions that perform calculations across the
 rows in a query result, will be discussed in a subsequent lesson.</p>
 <div class="term">
 <blockquote>
-<p><strong>Scalar Function</strong> — Functions that manipulate data on
+<p><strong>Scalar Function</strong> &#8212; Functions that manipulate data on
 individual rows of a query result.</p>
 </blockquote>
 </div>
 <h2 data-number="10.2" id="using-functions"><span class="header-section-number">10.2</span> Using Functions</h2>
-<p>Functions can be used to perform several different types of
+<p>Functions can be used to perform several different types of
 operations. These include:</p>
 <ul>
-<li><strong>Text functions.</strong> Used to manipulate text. For
-example, you can use a function to convert all of the text to upper or
+<li><strong>Text functions.</strong> Used to manipulate text. For
+example, you can use a function to convert all of the text to upper or
 lower case.</li>
-<li><strong>Date and time functions.</strong> Used to work with date and
-time values. One use of a date or time function would be to extract the
+<li><strong>Date and time functions.</strong> Used to work with date and
+time values. One use of a date or time function would be to extract the
 year from a date.</li>
-<li><strong>Numeric functions.</strong> Used to perform math. You would
-use a numeric function to calculate the square root of a number, for
+<li><strong>Numeric functions.</strong> Used to perform math. You would
+use a numeric function to calculate the square root of a number, for
 example.</li>
-<li><strong>Formatting functions.</strong> Used to display data in a
-presentable way. For example, a formatting function would be used to
+<li><strong>Formatting functions.</strong> Used to display data in a
+presentable way. For example, a formatting function would be used to
 display a monetary value using local formatting customs.</li>
-<li><strong>System functions.</strong> Used to return information about
-the working environment or the DBMS used. A system function would be
+<li><strong>System functions.</strong> Used to return information about
+the working environment or the DBMS used. A system function would be
 used to retrieve login information.</li>
 </ul>
-<p>Functions are versatile. They can be used in the SELECT statement to
-manipulate data before it is displayed to the user. They can also be
-included in the WHERE clause to create more advanced filtering
+<p>Functions are versatile. They can be used in the SELECT statement to
+manipulate data before it is displayed to the user. They can also be
+included in the WHERE clause to create more advanced filtering
 criteria.</p>
 <div class="caution">
 <blockquote>
-<p><strong>DBMS and Function Support.</strong> Although SQL statements
-are generally supported the same by most DBMS, functions may not be. You
-may find that a function does not work if you migrate from using one
+<p><strong>DBMS and Function Support.</strong> Although SQL statements
+are generally supported the same by most DBMS, functions may not be. You
+may find that a function does not work if you migrate from using one
 DBMS to another.</p>
 </blockquote>
 </div>
-<p>To use a function, you insert the name of the function, then in
-parentheses list the arguments for the function. An argument is a piece
-of data used in the function to complete the work of the function.
-Arguments can be required, or necessary for the algorithm to work, or
-optional. A function may also use more than one argument. Additionally,
+<p>To use a function, you insert the name of the function, then in
+parentheses list the arguments for the function. An argument is a piece
+of data used in the function to complete the work of the function.
+Arguments can be required, or necessary for the algorithm to work, or
+optional. A function may also use more than one argument. Additionally,
 a function can be used as the argument for another function.</p>
 <div class="term">
 <blockquote>
-<p><strong>Argument</strong> — Data used by a function to complete the
+<p><strong>Argument</strong> &#8212; Data used by a function to complete the
 work of the function.</p>
 </blockquote>
 </div>
-<p>An example function call would be <code>UPPER('text')</code>. The
-name of the function is UPPER. The argument for this function is a
-string of text (in this case the word ‘text’). Notice that the argument
-is in parentheses. The function will manipulate this text and return the
-word ‘TEXT’ all in upper-case letters.</p>
+<p>An example function call would be <code>UPPER('text')</code>. The
+name of the function is UPPER. The argument for this function is a
+string of text (in this case the word &#8216;text&#8217;). Notice that the argument
+is in parentheses. The function will manipulate this text and return the
+word &#8216;TEXT&#8217; all in upper-case letters.</p>
 <div class="note">
 <blockquote>
-<p><strong>Function Names and Case Sensitivity.</strong> Keywords in the
-SQL language are not case sensitive. The same is true of function calls
-as well. You can invoke the UPPER function by referring to it in
-uppercase letters (UPPER), lowercase letters (upper), or mixed-case
-letters (UpPeR). This book will use uppercase letters to refer to
+<p><strong>Function Names and Case Sensitivity.</strong> Keywords in the
+SQL language are not case sensitive. The same is true of function calls
+as well. You can invoke the UPPER function by referring to it in
+uppercase letters (UPPER), lowercase letters (upper), or mixed-case
+letters (UpPeR). This book will use uppercase letters to refer to
 functions.</p>
 </blockquote>
 </div>
-<p>This lesson will provide examples of various types of functions. In
-particular it will discuss functions that manipulate text, dates and
+<p>This lesson will provide examples of various types of functions. In
+particular it will discuss functions that manipulate text, dates and
 times, and numbers.</p>
-<h2 data-number="10.3" id="text-manipulation-functions"><span class="header-section-number">10.3</span> Text Manipulation
+<h2 data-number="10.3" id="text-manipulation-functions"><span class="header-section-number">10.3</span> Text Manipulation
 Functions</h2>
-<p>Text manipulation functions are used to transform text-based data in
-a SQL statement. It is important to note that using functions in an SQL
-query will not change the underlying data in the database. There are a
-number of different text manipulation functions. Common functions are
+<p>Text manipulation functions are used to transform text-based data in
+a SQL statement. It is important to note that using functions in an SQL
+query will not change the underlying data in the database. There are a
+number of different text manipulation functions. Common functions are
 presented in the following table.</p>
-<h4 data-number="10.3.0.1" id="commonly-used-text-manipulation-functions"><span class="header-section-number">10.3.0.1</span> Commonly Used Text
+<h4 data-number="10.3.0.1" id="commonly-used-text-manipulation-functions"><span class="header-section-number">10.3.0.1</span> Commonly Used Text
 Manipulation Functions</h4>
 <div class="table">
 <table>
@@ -270,16 +273,16 @@ Manipulation Functions</h4>
 </tr>
 <tr>
 <td style="text-align: center;">SUBSTR</td>
-<td>A string of text, the starting position, and the number of
+<td>A string of text, the starting position, and the number of
 characters to return</td>
-<td>Returns the specified number of characters starting at the specified
+<td>Returns the specified number of characters starting at the specified
 starting position in the text</td>
 </tr>
 <tr>
 <td style="text-align: center;">STRPOS</td>
-<td>A string of text and a string of text to find within the first
+<td>A string of text and a string of text to find within the first
 string</td>
-<td>Returns the position number within the first string where the second
+<td>Returns the position number within the first string where the second
 string begins</td>
 </tr>
 <tr>
@@ -295,147 +298,147 @@ string begins</td>
 </tbody>
 </table>
 </div>
-<p>Suppose you want to view the full name of the artists all in
-uppercase letters. You can use a chat with an AI assistant to create the
+<p>Suppose you want to view the full name of the artists all in
+uppercase letters. You can use a chat with an AI assistant to create the
 SELECT statement that will do this:</p>
 <div class="ai-conversation" data-prompt="Write an SQL statement to display the full_name of artists in uppercase letters. Name the column full_name_uppercase.">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write an SQL statement to display the full_name of artists in uppercase letters. Name the column full_name_uppercase.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To display the full_name of artists in uppercase letters, you can use
-the UPPER() function. Here’s the SQL statement:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">UPPER</span>(full_name) <span class="kw">as</span> full_name_uppercase</span>
+<p>To display the full_name of artists in uppercase letters, you can use
+the UPPER() function. Here&#8217;s the SQL statement:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">UPPER</span>(full_name) <span class="kw">as</span> full_name_uppercase</span>
 <span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
-<p>In this query, the UPPER() function is applied to the full_name
-column, which converts the text to uppercase letters. The result is
-aliased as full_name_uppercase. The query will return the full_name of
-artists in uppercase letters under the column name
+<p>In this query, the UPPER() function is applied to the full_name
+column, which converts the text to uppercase letters. The result is
+aliased as full_name_uppercase. The query will return the full_name of
+artists in uppercase letters under the column name
 full_name_uppercase.</p>
 </blockquote>
 </div>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">UPPER</span>(full_name) <span class="kw">as</span> full_name_uppercase</span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">UPPER</span>(full_name) <span class="kw">as</span> full_name_uppercase</span>
 <span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
-<p>Notice the syntax of the use of the UPPER function in the SELECT
-clause. The name of the function is UPPER. The argument for the UPPER
-function is a string of text. The values in the full_name column are
-text. The UPPER function will transform all of the text to
+<p>Notice the syntax of the use of the UPPER function in the SELECT
+clause. The name of the function is UPPER. The argument for the UPPER
+function is a string of text. The values in the full_name column are
+text. The UPPER function will transform all of the text to
 uppercase.</p>
-<p>For the next example, suppose you want to calculate the number of
-characters in each artist’s full name. Name the calculated column
-‘characters_in_name’ (without the quotes). You can use a chat with an AI
+<p>For the next example, suppose you want to calculate the number of
+characters in each artist&#8217;s full name. Name the calculated column
+&#8216;characters_in_name&#8217; (without the quotes). You can use a chat with an AI
 assistant to create the SELECT statement that will do this:</p>
 <div class="ai-conversation" data-prompt="Write an SQL statement to calculate the number of characters in each artists' full_name. Name the calculated field characters_in_name.">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write an SQL statement to calculate the number of characters in each artists' full_name. Name the calculated field characters_in_name.</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To calculate the number of characters in each artist’s full_name and
-name the calculated field as characters_in_name, you can use the
-LENGTH() function. Here’s the SQL statement:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, <span class="fu">LENGTH</span>(full_name) <span class="kw">as</span> characters_in_name</span>
+<p>To calculate the number of characters in each artist&#8217;s full_name and
+name the calculated field as characters_in_name, you can use the
+LENGTH() function. Here&#8217;s the SQL statement:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, <span class="fu">LENGTH</span>(full_name) <span class="kw">as</span> characters_in_name</span>
 <span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
-<p>In this query, the LENGTH() function is applied to the full_name
-column, which calculates the number of characters in each artist’s full
-name. The result is aliased as characters_in_name. The query will return
-the full_name of artists along with the corresponding number of
-characters in their full names under the column name
+<p>In this query, the LENGTH() function is applied to the full_name
+column, which calculates the number of characters in each artist&#8217;s full
+name. The result is aliased as characters_in_name. The query will return
+the full_name of artists along with the corresponding number of
+characters in their full names under the column name
 characters_in_name.</p>
 </blockquote>
 </div>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, <span class="fu">LENGTH</span>(full_name) <span class="kw">as</span> characters_in_name</span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, <span class="fu">LENGTH</span>(full_name) <span class="kw">as</span> characters_in_name</span>
 <span id="cb4-2"><a aria-hidden="true" href="#cb4-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
-<p>Notice the syntax of the use of the LENGTH function in the SELECT
-clause. The argument for the LENGTH function is a string of text. The
-values in the full_name column are text. The LENGTH function will
-calculate the number of characters in each artist’s full name. Notice
-that, as expected, the number of characters is different for each
+<p>Notice the syntax of the use of the LENGTH function in the SELECT
+clause. The argument for the LENGTH function is a string of text. The
+values in the full_name column are text. The LENGTH function will
+calculate the number of characters in each artist&#8217;s full name. Notice
+that, as expected, the number of characters is different for each
 artist.</p>
-<p>In the next example assume you want to extract the first two
-characters of the artists’ names. Name the calculated column
-‘artist_first_letters’ (without the quotes). You can use a chat with an
+<p>In the next example assume you want to extract the first two
+characters of the artists&#8217; names. Name the calculated column
+&#8216;artist_first_letters&#8217; (without the quotes). You can use a chat with an
 AI assistant to create the SELECT statement that will do this:</p>
 <div class="ai-conversation" data-prompt="Write an SQL statement to extract the first two characters from each artist's full name. Name the calculated column 'artist_first_letters' (without the quotes).">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write an SQL statement to extract the first two characters from each artist's full name. Name the calculated column 'artist_first_letters' (without the quotes).</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To extract the first two characters from each artist’s full name and
-name the calculated column as artist_first_letters, you can use the
+<p>To extract the first two characters from each artist&#8217;s full name and
+name the calculated column as artist_first_letters, you can use the
 following SQL statement:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, <span class="fu">SUBSTR</span>(full_name, <span class="dv">1</span>, <span class="dv">2</span>) <span class="kw">AS</span> artist_first_letters</span>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a aria-hidden="true" href="#cb5-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, <span class="fu">SUBSTR</span>(full_name, <span class="dv">1</span>, <span class="dv">2</span>) <span class="kw">AS</span> artist_first_letters</span>
 <span id="cb5-2"><a aria-hidden="true" href="#cb5-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
-<p>In this query, the SUBSTR() function is used to extract the substring
-from the beginning of the full_name column up to the second character.
-The result is aliased as artist_first_letters. The query will return the
-full_name of artists along with the first two characters of their full
+<p>In this query, the SUBSTR() function is used to extract the substring
+from the beginning of the full_name column up to the second character.
+The result is aliased as artist_first_letters. The query will return the
+full_name of artists along with the first two characters of their full
 names under the column name artist_first_letters.</p>
 </blockquote>
 </div>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, <span class="fu">SUBSTR</span>(full_name, <span class="dv">1</span>, <span class="dv">2</span>) <span class="kw">AS</span> artist_first_letters</span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb6-1"><a aria-hidden="true" href="#cb6-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, <span class="fu">SUBSTR</span>(full_name, <span class="dv">1</span>, <span class="dv">2</span>) <span class="kw">AS</span> artist_first_letters</span>
 <span id="cb6-2"><a aria-hidden="true" href="#cb6-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
-<p>The SUBSTR function is used to parse text by extracting a subset of
-text from another block of text. Notice the syntax of the SUBSTR
-function. It requires three arguments: the text to parse, where to start
-extracting text from the text, and how many characters to extract from
-the text. In this case, the text to parse is the values in the full_name
-column. You want to extract the first two characters, so you wish to
-start extracting at the first position. The final argument, the number
-of characters to extract, is 2. The result of this function is the first
-two characters of each artist’s name.</p>
-<p>In the last example of text functions you will need to use two
-functions. Suppose you want to extract the first name for each artist
-from the full name column. You will need to use the SUBSTR and STRPOS
-functions. Name the calculated column ‘artist_first_name’ (without the
-quotes). You can use a chat with an AI assistant to create the SELECT
+<p>The SUBSTR function is used to parse text by extracting a subset of
+text from another block of text. Notice the syntax of the SUBSTR
+function. It requires three arguments: the text to parse, where to start
+extracting text from the text, and how many characters to extract from
+the text. In this case, the text to parse is the values in the full_name
+column. You want to extract the first two characters, so you wish to
+start extracting at the first position. The final argument, the number
+of characters to extract, is 2. The result of this function is the first
+two characters of each artist&#8217;s name.</p>
+<p>In the last example of text functions you will need to use two
+functions. Suppose you want to extract the first name for each artist
+from the full name column. You will need to use the SUBSTR and STRPOS
+functions. Name the calculated column &#8216;artist_first_name&#8217; (without the
+quotes). You can use a chat with an AI assistant to create the SELECT
 statement that will do this:</p>
 <div class="ai-conversation" data-prompt="Write a SQL statement to extract the first name for each artist from the full name column using a combination of the SUBSTR and STRPOS functions. Name the calculated column 'artist_first_name' (without the quotes).">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to extract the first name for each artist from the full name column using a combination of the SUBSTR and STRPOS functions. Name the calculated column 'artist_first_name' (without the quotes).</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To extract the first name for each artist from the full_name column
-using a combination of the SUBSTR() and STRPOS() functions and to name
-the calculated column as artist_first_name, you can use the following
+<p>To extract the first name for each artist from the full_name column
+using a combination of the SUBSTR() and STRPOS() functions and to name
+the calculated column as artist_first_name, you can use the following
 SQL statement:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, <span class="fu">SUBSTR</span>(full_name, <span class="dv">1</span>, STRPOS(full_name, <span class="st">' '</span>) <span class="op">-</span> <span class="dv">1</span>) <span class="kw">AS</span> artist_first_name</span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a aria-hidden="true" href="#cb7-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, <span class="fu">SUBSTR</span>(full_name, <span class="dv">1</span>, STRPOS(full_name, <span class="st">' '</span>) <span class="op">-</span> <span class="dv">1</span>) <span class="kw">AS</span> artist_first_name</span>
 <span id="cb7-2"><a aria-hidden="true" href="#cb7-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
-<p>In this query, the STRPOS() function is used to find the position of
-the first space character in the full_name column. The SUBSTR() function
-is then used to extract the substring from the beginning of the
-full_name column up to the position of the first space character
-(effectively extracting the first name). The result is aliased as
-artist_first_name. The query will return the full_name of artists along
-with their extracted first name under the column name artist_first_name,
+<p>In this query, the STRPOS() function is used to find the position of
+the first space character in the full_name column. The SUBSTR() function
+is then used to extract the substring from the beginning of the
+full_name column up to the position of the first space character
+(effectively extracting the first name). The result is aliased as
+artist_first_name. The query will return the full_name of artists along
+with their extracted first name under the column name artist_first_name,
 using the specified combination of functions.</p>
 </blockquote>
 </div>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, <span class="fu">SUBSTR</span>(full_name, <span class="dv">1</span>, STRPOS(full_name, <span class="st">' '</span>) <span class="op">-</span> <span class="dv">1</span>) <span class="kw">AS</span> artist_first_name</span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb8-1"><a aria-hidden="true" href="#cb8-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, <span class="fu">SUBSTR</span>(full_name, <span class="dv">1</span>, STRPOS(full_name, <span class="st">' '</span>) <span class="op">-</span> <span class="dv">1</span>) <span class="kw">AS</span> artist_first_name</span>
 <span id="cb8-2"><a aria-hidden="true" href="#cb8-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
-<p>This is a significantly more complicated example. It demonstrates a
-couple of important elements of using functions. First, it demonstrates
-that a function result can be used as an argument for a different
-function. This is called “nesting” a function. Second, it also
-demonstrates that the result of a function may need to be adjusted to
+<p>This is a significantly more complicated example. It demonstrates a
+couple of important elements of using functions. First, it demonstrates
+that a function result can be used as an argument for a different
+function. This is called &#8220;nesting&#8221; a function. Second, it also
+demonstrates that the result of a function may need to be adjusted to
 achieve the goal of the query.</p>
-<p>The SUBSTR function is used to extract the first name of the artists
-from the full_name column. Recall that the SUBSTR function requires
-three arguments: the text to parse, the position of the first character
-to extract, and the number of characters to extract. In this example,
-the first name begins in the first character of the full_name column.
-Therefore, the first argument for the SUBSTR function is full_name and
-the second argument (where to start extracting the text) is 1, or the
+<p>The SUBSTR function is used to extract the first name of the artists
+from the full_name column. Recall that the SUBSTR function requires
+three arguments: the text to parse, the position of the first character
+to extract, and the number of characters to extract. In this example,
+the first name begins in the first character of the full_name column.
+Therefore, the first argument for the SUBSTR function is full_name and
+the second argument (where to start extracting the text) is 1, or the
 first position in the full_name column.</p>
-<p>The number of characters to extract will be different for each
-artist, since the first name of each artist is different. The first name
-ends one character before the position of the first space (’ ‘) in the
-full_name column for each artist. The STRPOS function is used to find
-the location of the space character (’ ‘). The first argument of the
-STRPOS function is the text to search — in this case full_name. The
-second argument is the character to find, which is the space (’ ‘). The
-result of the STRPOS function for each artist will be the location of
-the space character. This position must be adjusted by subtracting 1
-character to reach the last character of the artists’ first names. This
-is the third argument to the SUBSTR function
+<p>The number of characters to extract will be different for each
+artist, since the first name of each artist is different. The first name
+ends one character before the position of the first space (&#8217; &#8216;) in the
+full_name column for each artist. The STRPOS function is used to find
+the location of the space character (&#8217; &#8216;). The first argument of the
+STRPOS function is the text to search &#8212; in this case full_name. The
+second argument is the character to find, which is the space (&#8217; &#8216;). The
+result of the STRPOS function for each artist will be the location of
+the space character. This position must be adjusted by subtracting 1
+character to reach the last character of the artists&#8217; first names. This
+is the third argument to the SUBSTR function
 (<code>STRPOS(full_name, ' ') - 1</code>).</p>
-<h2 data-number="10.4" id="date-and-time-manipulation-functions"><span class="header-section-number">10.4</span> Date and Time Manipulation
+<h2 data-number="10.4" id="date-and-time-manipulation-functions"><span class="header-section-number">10.4</span> Date and Time Manipulation
 Functions</h2>
-<p>Date and time functions are among the most useful SQL functions.
-Common date and time functions in PostgreSQL are shown on the following
+<p>Date and time functions are among the most useful SQL functions.
+Common date and time functions in PostgreSQL are shown on the following
 table:</p>
-<h4 data-number="10.4.0.1" id="commonly-used-date-and-time-functions"><span class="header-section-number">10.4.0.1</span> Commonly Used Date and
+<h4 data-number="10.4.0.1" id="commonly-used-date-and-time-functions"><span class="header-section-number">10.4.0.1</span> Commonly Used Date and
 Time Functions</h4>
 <div class="table">
 <table>
@@ -469,86 +472,86 @@ Time Functions</h4>
 </tr>
 <tr>
 <td style="text-align: center;">EXTRACT</td>
-<td>A date or time part (YEAR, MONTH, DAY, and so on) and a date/time
+<td>A date or time part (YEAR, MONTH, DAY, and so on) and a date/time
 value</td>
 <td>Extracts the specified part from a date/time value as a number.</td>
 </tr>
 <tr>
 <td style="text-align: center;">TO_CHAR</td>
 <td>A date/time value and a format string</td>
-<td>Converts a date/time value to text, formatted according to the
+<td>Converts a date/time value to text, formatted according to the
 format string.</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>Notice that CURRENT_DATE and CURRENT_TIME are used without
-parentheses — they are treated more like keywords than ordinary
+<p>Notice that CURRENT_DATE and CURRENT_TIME are used without
+parentheses &#8212; they are treated more like keywords than ordinary
 functions.</p>
-<p>The first example of using date and time functions is
-straightforward. Suppose you want to list the names of museums and the
-current date. Name the date column ‘current_date’ (without the quotes).
-You can use a chat with an AI assistant to create the SELECT statement
+<p>The first example of using date and time functions is
+straightforward. Suppose you want to list the names of museums and the
+current date. Name the date column &#8216;current_date&#8217; (without the quotes).
+You can use a chat with an AI assistant to create the SELECT statement
 that will do this:</p>
 <div class="ai-conversation" data-prompt="Write a SQL statement to list the museums and today's date. Name the date column 'current_date' (without the quotes).">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to list the museums and today's date. Name the date column 'current_date' (without the quotes).</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To list the museums along with today’s date and name the date column
-as ‘current_date’, you can use the following SQL statement:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="kw">SELECT</span> name, <span class="fu">CURRENT_DATE</span> <span class="kw">AS</span> <span class="fu">current_date</span></span>
+<p>To list the museums along with today&#8217;s date and name the date column
+as &#8216;current_date&#8217;, you can use the following SQL statement:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a aria-hidden="true" href="#cb9-1" tabindex="-1"></a><span class="kw">SELECT</span> name, <span class="fu">CURRENT_DATE</span> <span class="kw">AS</span> <span class="fu">current_date</span></span>
 <span id="cb9-2"><a aria-hidden="true" href="#cb9-2" tabindex="-1"></a><span class="kw">FROM</span> museum;</span></code></pre></div>
-<p>CURRENT_DATE returns today’s date, and it’s aliased as current_date.
-The query will return the names of museums along with today’s date under
+<p>CURRENT_DATE returns today&#8217;s date, and it&#8217;s aliased as current_date.
+The query will return the names of museums along with today&#8217;s date under
 the column name current_date.</p>
 </blockquote>
 </div>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb10-1"><a aria-hidden="true" href="#cb10-1" tabindex="-1"></a><span class="kw">SELECT</span> name, <span class="fu">CURRENT_DATE</span> <span class="kw">AS</span> <span class="fu">current_date</span></span>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb10-1"><a aria-hidden="true" href="#cb10-1" tabindex="-1"></a><span class="kw">SELECT</span> name, <span class="fu">CURRENT_DATE</span> <span class="kw">AS</span> <span class="fu">current_date</span></span>
 <span id="cb10-2"><a aria-hidden="true" href="#cb10-2" tabindex="-1"></a><span class="kw">FROM</span> museum;</span></code></pre></div>
-<p>This query lists the name of museums. It also includes the calculated
-field current_date, which used CURRENT_DATE to return the current date.
-Notice that the value for current_date is the same for each row of the
-query result. CURRENT_TIME works in a similar manner and returns the
-current time, and NOW() returns both the date and time together as a
+<p>This query lists the name of museums. It also includes the calculated
+field current_date, which used CURRENT_DATE to return the current date.
+Notice that the value for current_date is the same for each row of the
+query result. CURRENT_TIME works in a similar manner and returns the
+current time, and NOW() returns both the date and time together as a
 single timestamp value.</p>
-<p>The next example is trickier. Suppose you want to list the names of
-museums and the year of the current date. Name the date column
-‘current_year’ (without the quotes). You will use the EXTRACT function
-for this query. You can use a chat with an AI assistant to create the
+<p>The next example is trickier. Suppose you want to list the names of
+museums and the year of the current date. Name the date column
+&#8216;current_year&#8217; (without the quotes). You will use the EXTRACT function
+for this query. You can use a chat with an AI assistant to create the
 SELECT statement that will do this:</p>
 <div class="ai-conversation" data-prompt="Write a SQL statement to list the museums and the year part of today's date. Use the EXTRACT function. Name the date column 'current_year' (without the quotes).">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write a SQL statement to list the museums and the year part of today's date. Use the EXTRACT function. Name the date column 'current_year' (without the quotes).</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To list the museums along with the year part of today’s date using
-the EXTRACT function and name the date column as ‘current_year’, you can
+<p>To list the museums along with the year part of today&#8217;s date using
+the EXTRACT function and name the date column as &#8216;current_year&#8217;, you can
 use the following SQL statement:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb11-1"><a aria-hidden="true" href="#cb11-1" tabindex="-1"></a><span class="kw">SELECT</span> name, <span class="fu">EXTRACT</span>(<span class="dt">YEAR</span> <span class="kw">FROM</span> <span class="fu">CURRENT_DATE</span>) <span class="kw">AS</span> current_year</span>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb11-1"><a aria-hidden="true" href="#cb11-1" tabindex="-1"></a><span class="kw">SELECT</span> name, <span class="fu">EXTRACT</span>(<span class="dt">YEAR</span> <span class="kw">FROM</span> <span class="fu">CURRENT_DATE</span>) <span class="kw">AS</span> current_year</span>
 <span id="cb11-2"><a aria-hidden="true" href="#cb11-2" tabindex="-1"></a><span class="kw">FROM</span> museum;</span></code></pre></div>
-<p>In this query, the SELECT clause selects the name column from the
-museum table. EXTRACT(YEAR FROM CURRENT_DATE) pulls just the year part
-out of today’s date, and it’s aliased as current_year. The query will
-return the names of museums along with the year part of today’s date
+<p>In this query, the SELECT clause selects the name column from the
+museum table. EXTRACT(YEAR FROM CURRENT_DATE) pulls just the year part
+out of today&#8217;s date, and it&#8217;s aliased as current_year. The query will
+return the names of museums along with the year part of today&#8217;s date
 under the column name current_year.</p>
 </blockquote>
 </div>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a><span class="kw">SELECT</span> name, <span class="fu">EXTRACT</span>(<span class="dt">YEAR</span> <span class="kw">FROM</span> <span class="fu">CURRENT_DATE</span>) <span class="kw">AS</span> current_year</span>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb12-1"><a aria-hidden="true" href="#cb12-1" tabindex="-1"></a><span class="kw">SELECT</span> name, <span class="fu">EXTRACT</span>(<span class="dt">YEAR</span> <span class="kw">FROM</span> <span class="fu">CURRENT_DATE</span>) <span class="kw">AS</span> current_year</span>
 <span id="cb12-2"><a aria-hidden="true" href="#cb12-2" tabindex="-1"></a><span class="kw">FROM</span> museum;</span></code></pre></div>
-<p>This query lists the name of museums. It also includes the calculated
-field current_year. The calculated field uses the EXTRACT function.
-EXTRACT takes two things: the part of the date/time value you want
-(here, YEAR) and the date/time value to pull it from (here,
-CURRENT_DATE), separated by the keyword FROM rather than a comma. The
-calculated field will calculate the current year (the year part of the
-current date). If you needed a specific display format instead of a
-plain number — say, a date formatted as “March 2026” — you would reach
-for TO_CHAR instead, for example
+<p>This query lists the name of museums. It also includes the calculated
+field current_year. The calculated field uses the EXTRACT function.
+EXTRACT takes two things: the part of the date/time value you want
+(here, YEAR) and the date/time value to pull it from (here,
+CURRENT_DATE), separated by the keyword FROM rather than a comma. The
+calculated field will calculate the current year (the year part of the
+current date). If you needed a specific display format instead of a
+plain number &#8212; say, a date formatted as &#8220;March 2026&#8221; &#8212; you would reach
+for TO_CHAR instead, for example
 <code>TO_CHAR(CURRENT_DATE, 'Month YYYY')</code>.</p>
-<h2 data-number="10.5" id="numeric-manipulation-functions"><span class="header-section-number">10.5</span> Numeric Manipulation
+<h2 data-number="10.5" id="numeric-manipulation-functions"><span class="header-section-number">10.5</span> Numeric Manipulation
 Functions</h2>
-<p>Numeric functions are used to perform calculations on numbers that
-are more complicated than simple arithmetic. Unlike the text and date
-and time manipulation functions, these functions tend to be supported by
+<p>Numeric functions are used to perform calculations on numbers that
+are more complicated than simple arithmetic. Unlike the text and date
+and time manipulation functions, these functions tend to be supported by
 most DBMS. The table below contains some example numeric functions.</p>
-<h4 data-number="10.5.0.1" id="commonly-used-numeric-manipulation-functions"><span class="header-section-number">10.5.0.1</span> Commonly Used Numeric
+<h4 data-number="10.5.0.1" id="commonly-used-numeric-manipulation-functions"><span class="header-section-number">10.5.0.1</span> Commonly Used Numeric
 Manipulation Functions</h4>
 <div class="table">
 <table>
@@ -583,49 +586,49 @@ Manipulation Functions</h4>
 </tbody>
 </table>
 </div>
-<p>Most numeric functions require numbers as arguments since they
-perform mathematical calculations. Some, like the PI function, return a
-known constant. Functions like PI are often used as part of a larger
-calculation. There are dozens of numeric functions implemented in most
+<p>Most numeric functions require numbers as arguments since they
+perform mathematical calculations. Some, like the PI function, return a
+known constant. Functions like PI are often used as part of a larger
+calculation. There are dozens of numeric functions implemented in most
 DBMS.</p>
-<p>Suppose you want to calculate the approximate age of each artist at
-their death. This can be calculated as the difference between the birth
-and death value in the artist table. If you subtract the death year from
-the birth year, you will end up with a negative number. Use the ABS
-function to take the absolute value of this calculation. Name the
-calculated column ‘age_at_death’ (without the quotes). You can use a
-chat with an AI assistant to create the SELECT statement that will do
+<p>Suppose you want to calculate the approximate age of each artist at
+their death. This can be calculated as the difference between the birth
+and death value in the artist table. If you subtract the death year from
+the birth year, you will end up with a negative number. Use the ABS
+function to take the absolute value of this calculation. Name the
+calculated column &#8216;age_at_death&#8217; (without the quotes). You can use a
+chat with an AI assistant to create the SELECT statement that will do
 this:</p>
 <div class="ai-conversation" data-prompt="Write an SQL statement to list the artists and the absolute value of their birth minus their death. Name the date column 'age_at_death' (without the quotes).">
 <blockquote><div class="ai-prompt"><span class="ai-prompt-text">Write an SQL statement to list the artists and the absolute value of their birth minus their death. Name the date column 'age_at_death' (without the quotes).</span><span class="ai-prompt-x material-symbols-outlined" onclick="copyThisPrompt(event)">send</span></div>
-<p>To list the artists along with the absolute value of their birth year
-minus their death year, and name the calculated column as
-‘age_at_death’, you can use the following SQL statement:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb13-1"><a aria-hidden="true" href="#cb13-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, <span class="fu">ABS</span>(birth <span class="op">-</span> death) <span class="kw">AS</span> age_at_death</span>
+<p>To list the artists along with the absolute value of their birth year
+minus their death year, and name the calculated column as
+&#8216;age_at_death&#8217;, you can use the following SQL statement:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb13-1"><a aria-hidden="true" href="#cb13-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, <span class="fu">ABS</span>(birth <span class="op">-</span> death) <span class="kw">AS</span> age_at_death</span>
 <span id="cb13-2"><a aria-hidden="true" href="#cb13-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
-<p>In this query, the SELECT clause selects the full_name column from
-the artist table. The ABS(birth - death) calculates the absolute value
-of the difference between the birth and death years, and it’s aliased as
-age_at_death. The query will return the names of artists along with the
-calculated absolute difference between their birth and death years under
+<p>In this query, the SELECT clause selects the full_name column from
+the artist table. The ABS(birth - death) calculates the absolute value
+of the difference between the birth and death years, and it&#8217;s aliased as
+age_at_death. The query will return the names of artists along with the
+calculated absolute difference between their birth and death years under
 the column name age_at_death.</p>
 </blockquote>
 </div>
 <p><strong>Try the SQL statement.</strong></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb14-1"><a aria-hidden="true" href="#cb14-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, <span class="fu">ABS</span>(birth <span class="op">-</span> death) <span class="kw">AS</span> age_at_death</span>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb14-1"><a aria-hidden="true" href="#cb14-1" tabindex="-1"></a><span class="kw">SELECT</span> full_name, <span class="fu">ABS</span>(birth <span class="op">-</span> death) <span class="kw">AS</span> age_at_death</span>
 <span id="cb14-2"><a aria-hidden="true" href="#cb14-2" tabindex="-1"></a><span class="kw">FROM</span> artist;</span></code></pre></div>
-<p>This query demonstrates the use of the ABS function. Admittedly, you
-would not subtract the larger number death from birth to calculate the
-approximate age at birth. Notice that birth - death will produce a
-negative number. The ABS function calculates and returns the absolute
+<p>This query demonstrates the use of the ABS function. Admittedly, you
+would not subtract the larger number death from birth to calculate the
+approximate age at birth. Notice that birth - death will produce a
+negative number. The ABS function calculates and returns the absolute
 value of each calculation.</p>
 <h2 data-number="10.6" id="summary"><span class="header-section-number">10.6</span> Summary</h2>
-<p>Functions are useful and can be used to perform calculations for each
-row of a query result and across the rows of a query result. This lesson
-described how to perform scalar calculations, or calculations on each
-row of the query results. It discussed how to use functions to
-manipulate text, dates and times, and numeric values. Unfortunately, not
-all DBMS implement these calculations the same way. Consult the
+<p>Functions are useful and can be used to perform calculations for each
+row of a query result and across the rows of a query result. This lesson
+described how to perform scalar calculations, or calculations on each
+row of the query results. It discussed how to use functions to
+manipulate text, dates and times, and numeric values. Unfortunately, not
+all DBMS implement these calculations the same way. Consult the
 documentation of your DBMS to learn which functions are supported.</p>
 <!--postEnd-->
               </div>
@@ -649,7 +652,7 @@ documentation of your DBMS to learn which functions are supported.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZquclJguStXjZdxj-JjEBFz:1785332714358';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//sql.availabooks.com/2000/02/10.html','3986204447440040189');
+window['__wavt'] = 'ACvIOeBN8S5R8M2cnJl8Fl8ITpVL:1785432992512';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//sql.availabooks.com/2000/02/10.html','3986204447440040189');
 _WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://sql.availabooks.com/2000/02/10.html', 'canonicalUrl': 'https://sql.availabooks.com/2000/02/10.html', 'homepageUrl': 'https://sql.availabooks.com/', 'searchUrl': 'https://sql.availabooks.com/search', 'canonicalHomepageUrl': 'https://sql.availabooks.com/', 'blogspotFaviconUrl': 'https://sql.availabooks.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': true, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://sql.availabooks.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://sql.availabooks.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://sql.availabooks.com/feeds/9204703625674249288/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/68dd02567aef746f', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '9204703625674249288', 'pageName': '10. Using Data Manipulation\nFunctions', 'pageTitle': 'book1014 SQL: 10. Using Data Manipulation\nFunctions'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '10. Using Data Manipulation\nFunctions', 'description': 'websql  10  Using Data Manipulation\r Functions   Learning Objectives    :   Describe the uses and limitations of data manipulation\r function...', 'url': 'https://sql.availabooks.com/2000/02/10.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 9204703625674249288}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>

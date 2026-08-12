@@ -33,6 +33,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 --></style>
 <script type='text/javascript'>
 //<![CDATA[
+    //const localhost = location.hostname===`127.0.0.1` || location.hostname===`localhost`
 	async function initialize(){
 
       const kind = document.getElementById(`kind`).innerHTML
@@ -60,7 +61,8 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 
     function getSystemModule(moduleName="system"){
 		console.log(typeof location.hostname)
-		if(location.hostname==="local.availabooks.com"){
+		if(location.hostname.startsWith("local.availabooks.com")){
+            console.log("=======> looks like local dev")
             // get files from localhost
 			fetch(`${location.origin}/tools/api/${moduleName}.js`).then(response => {
                 return response.text(); 
@@ -70,6 +72,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
               })		
 		}else{
             //get files from blogger production server
+            console.log("=======> looks like production from server")
       		const systemVersion=document.getElementById("cssScript").src.split("/")[7]
       		loadCrossOrigin(`https://system.availabooks.com/feeds/posts/default/-/${systemVersion}/${moduleName}?alt=json-in-script&max-results=1&callback=loadCode`);      
 
@@ -96,7 +99,7 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
     
 //]]>
   </script>
-<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=5bb5ec5d-4faf-45aa-a658-fe48a34270d7' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=5bb5ec5d-4faf-45aa-a658-fe48a34270d7' rel='stylesheet'/></noscript>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=350edb71-14db-4960-9a7a-4ffca2c625a9' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3986204447440040189&amp;zx=350edb71-14db-4960-9a7a-4ffca2c625a9' rel='stylesheet'/></noscript>
 <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
 <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 
@@ -124,196 +127,196 @@ function loadCss(x){document.getElementById('dynamic-css').textContent = x.feed.
 <button class='nav' id='next-button' onclick='navigate(&#39;next&#39;)'><span class='material-symbols-outlined'>arrow_forward</span></button>
               
               <!--postBegin--><div class="module">websql</div>
-<h1 data-number="25" id="using-cursors"><span
-class="header-section-number">25</span> Using Cursors</h1>
-<div class="learning">
-<p>Learning Objectives</p>
-<div class="objectives">
-<blockquote>
-<p>:</p>
-<ol type="1">
-<li>Describe what a cursor is and why it’s used.</li>
-<li>Describe the declare-open-fetch-close lifecycle of a cursor.</li>
-<li>Declare and open a cursor in PostgreSQL, using both plain SQL and
-PL/pgSQL.</li>
-<li>Use FETCH within a loop to step through a cursor’s result set,
-checking FOUND to detect the end of the data.</li>
-<li>Close a cursor when you are finished with it.</li>
-</ol>
-</blockquote>
-</div>
-</div>
-<p>SQL retrieval operations work with sets of rows known as result sets.
-The rows returned are all the rows that match a SQL statement — zero or
-more of them. When you use simple SELECT statements, there is no way to
-get the first row, the next row, or the previous 10 rows. This is an
-integral part of how a relational DBMS works.</p>
-<div class="term">
-<blockquote>
-<p><strong>Result Set</strong> — The results retrieved by a SQL
-query.</p>
-</blockquote>
-</div>
-<p>Sometimes you need to step through rows forward or backward and one
-or more at a time. This is what cursors are used for. A cursor is a
-database query stored on the DBMS server — not a SELECT statement, but
-the result set retrieved by that statement. Once the cursor is stored,
-applications can scroll or browse up and down through the data as
-needed.</p>
-<p>Different DBMSs support different cursor options and features. Some
-of the more common ones are:</p>
-<ul>
-<li>The capability to flag a cursor as read-only so that data can be
-read but not updated or deleted</li>
-<li>The capability to control the directional operations that can be
-performed (forward, backward, first, last, absolute position, relative
-position, and so on)</li>
-<li>The capability to flag some columns as editable and others as not
-editable</li>
-<li>Scope specification so as to be able to make the cursor accessible
-to the specific request that created it (a function or procedure, for
-example) or to all requests</li>
-<li>Instructing the DBMS to make a copy of the retrieved data (as
-opposed to pointing to the live data in the table) so that data does not
-change between the time the cursor is opened and the time it is
-accessed</li>
-</ul>
-<p>PostgreSQL supports most of these: cursors can be marked SCROLL (to
-allow backward movement and jumping to arbitrary positions) or NO SCROLL
-(forward-only), and can be declared WITH HOLD so that they remain open
-beyond the transaction that created them.</p>
-<p>Cursors are used primarily by interactive applications in which users
-need to scroll up and down through screens of data, browsing or making
-changes.</p>
-<h2 data-number="25.1" id="working-with-cursors"><span
-class="header-section-number">25.1</span> Working with Cursors</h2>
-<p>Using cursors involves several distinct steps:</p>
-<ul>
-<li>Before a cursor can be used, it must be declared (defined). This
-process does not actually retrieve any data; it merely defines the
-SELECT statement to be used and any cursor options.</li>
-<li>Once it is declared, the cursor must be opened for use. This process
-actually retrieves the data using the previously defined SELECT
-statement.</li>
-<li>With the cursor populated with data, individual rows can be fetched
-(retrieved) as needed.</li>
-<li>When it is done, the cursor must be closed.</li>
-</ul>
-<p>Once a cursor is declared, it may be opened and closed as often as
-needed. Once it is open, fetch operations can be performed as often as
-needed.</p>
-<div class="caution">
-<blockquote>
-<p><strong>Cursors Live Inside Transactions.</strong> In PostgreSQL, a
-cursor only exists within a transaction (unless it was declared WITH
-HOLD). This means the entire declare-open-fetch-close sequence for a
-plain SQL cursor must happen inside a BEGIN…COMMIT block, as described
-in the previous lesson on transaction processing.</p>
-</blockquote>
-</div>
-<h2 data-number="25.2" id="creating-cursors"><span
-class="header-section-number">25.2</span> Creating Cursors</h2>
-<p>To demonstrate cursors, we’ll create one that retrieves all museums
-without a website on file, as part of an application enabling an
-operator to fill in the missing websites one at a time.</p>
-<p>PostgreSQL actually supports two related but distinct forms of
-cursor. The first is a plain SQL cursor, declared and used directly in a
-transaction:</p>
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span>;</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">DECLARE</span> museum_cursor <span class="kw">CURSOR</span> <span class="cf">FOR</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> museum <span class="kw">WHERE</span> url <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code></pre></div>
-<p>Notice that, at this top level, DECLARE both defines and opens the
-cursor in a single step — there is no separate OPEN statement here. The
-cursor is now ready to be fetched from.</p>
-<p>The second form is used inside PL/pgSQL — the procedural language you
-used in the lesson on stored procedures — such as within a function, a
-procedure, or a one-off anonymous code block. There, DECLARE only
-defines the cursor; it must still be opened explicitly with OPEN,
-matching the full declare-open-fetch-close lifecycle described above.
-The rest of this lesson focuses on this PL/pgSQL form, since it
-demonstrates every step of that lifecycle.</p>
-<h2 data-number="25.3" id="using-cursors-1"><span
-class="header-section-number">25.3</span> Using Cursors</h2>
-<p>The following anonymous PL/pgSQL block declares the same cursor,
-opens it, fetches a single row from it, and closes it again:</p>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>DO $$</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">DECLARE</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    museum_cursor <span class="kw">CURSOR</span> <span class="cf">FOR</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> museum <span class="kw">WHERE</span> url <span class="kw">IS</span> <span class="kw">NULL</span>;</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    museum_record museum<span class="dt">%ROWTYPE</span>;</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">OPEN</span> museum_cursor;</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    FETCH museum_cursor <span class="kw">INTO</span> museum_record;</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">CLOSE</span> museum_cursor;</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span> $$;</span></code></pre></div>
-<p>In this example, museum_cursor is declared in the DECLARE section
-along with a variable, museum_record, typed as
-<code>museum%ROWTYPE</code> (a row with the same shape as a row of the
-museum table). The BEGIN…END block then opens the cursor, uses FETCH to
-retrieve the current row (it starts at the first row automatically) into
-museum_record, and closes the cursor. Nothing is done with the retrieved
-data.</p>
-<p>In the next example, the retrieved data is looped through from the
-first row to the last:</p>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>DO $$</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">DECLARE</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    museum_cursor <span class="kw">CURSOR</span> <span class="cf">FOR</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> museum <span class="kw">WHERE</span> url <span class="kw">IS</span> <span class="kw">NULL</span>;</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    museum_record museum<span class="dt">%ROWTYPE</span>;</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">OPEN</span> museum_cursor;</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">LOOP</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        FETCH museum_cursor <span class="kw">INTO</span> museum_record;</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        EXIT <span class="cf">WHEN</span> <span class="kw">NOT</span> FOUND;</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- process museum_record here</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">END</span> <span class="cf">LOOP</span>;</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">CLOSE</span> museum_cursor;</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span> $$;</span></code></pre></div>
-<p>Like the previous example, this example uses FETCH to retrieve the
-current row into museum_record. Unlike the previous example, the FETCH
-here is within a LOOP so that it is repeated over and over. PostgreSQL
-automatically sets a special boolean, FOUND, after every FETCH — true if
-a row was retrieved, false if there were no more rows left. The line
-<code>EXIT WHEN NOT FOUND;</code> uses this to terminate the loop
-(exiting it) once the cursor is exhausted. This example also does no
-actual processing; in real-world code you’d replace the
-<code>-- process museum_record here</code> comment with your own logic —
-for example, code that prompts an operator for a website and issues an
-UPDATE for that row.</p>
-<div class="tip">
-<blockquote>
-<p><strong>FETCH Directions.</strong> The examples above always fetch
-the next row. PostgreSQL’s FETCH also supports FIRST, LAST, ABSOLUTE
-count, RELATIVE count, FORWARD count, and BACKWARD count, letting you
-move through a cursor’s result set in more than one direction — provided
-the cursor was declared SCROLL rather than the default NO SCROLL.</p>
-</blockquote>
-</div>
-<h2 data-number="25.4" id="closing-cursors"><span
-class="header-section-number">25.4</span> Closing Cursors</h2>
-<p>As already mentioned and seen in the previous examples, cursors need
-to be closed after they have been used:</p>
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CLOSE</span> museum_cursor;</span></code></pre></div>
-<p>The CLOSE statement is used to close cursors; once a cursor is
-closed, it cannot be reused without being opened again (for a plain SQL
-cursor, that means running DECLARE again; for a PL/pgSQL cursor, an OPEN
-statement is sufficient). Unlike some other DBMSs, PostgreSQL does not
-require a separate step to deallocate the resources used by a cursor —
-closing it (or simply letting the enclosing transaction end) is
-enough.</p>
-<h2 data-number="25.5" id="summary"><span
-class="header-section-number">25.5</span> Summary</h2>
-<p>In this lesson, you were introduced to cursors, what they are, and
-why they are used. You saw that PostgreSQL supports both a simple,
-auto-opening form of cursor for use directly inside a transaction, and a
-more explicit declare-open-fetch-close form for use inside PL/pgSQL
-functions, procedures, and anonymous code blocks. Refer to the
-PostgreSQL documentation for more details.</p>
+<h1 data-number="25" id="using-cursors"><span
+class="header-section-number">25</span> Using Cursors</h1>
+<div class="learning">
+<p>Learning Objectives</p>
+<div class="objectives">
+<blockquote>
+<p>:</p>
+<ol type="1">
+<li>Describe what a cursor is and why it&#8217;s used.</li>
+<li>Describe the declare-open-fetch-close lifecycle of a cursor.</li>
+<li>Declare and open a cursor in PostgreSQL, using both plain SQL and
+PL/pgSQL.</li>
+<li>Use FETCH within a loop to step through a cursor&#8217;s result set,
+checking FOUND to detect the end of the data.</li>
+<li>Close a cursor when you are finished with it.</li>
+</ol>
+</blockquote>
+</div>
+</div>
+<p>SQL retrieval operations work with sets of rows known as result sets.
+The rows returned are all the rows that match a SQL statement &#8212; zero or
+more of them. When you use simple SELECT statements, there is no way to
+get the first row, the next row, or the previous 10 rows. This is an
+integral part of how a relational DBMS works.</p>
+<div class="term">
+<blockquote>
+<p><strong>Result Set</strong> &#8212; The results retrieved by a SQL
+query.</p>
+</blockquote>
+</div>
+<p>Sometimes you need to step through rows forward or backward and one
+or more at a time. This is what cursors are used for. A cursor is a
+database query stored on the DBMS server &#8212; not a SELECT statement, but
+the result set retrieved by that statement. Once the cursor is stored,
+applications can scroll or browse up and down through the data as
+needed.</p>
+<p>Different DBMSs support different cursor options and features. Some
+of the more common ones are:</p>
+<ul>
+<li>The capability to flag a cursor as read-only so that data can be
+read but not updated or deleted</li>
+<li>The capability to control the directional operations that can be
+performed (forward, backward, first, last, absolute position, relative
+position, and so on)</li>
+<li>The capability to flag some columns as editable and others as not
+editable</li>
+<li>Scope specification so as to be able to make the cursor accessible
+to the specific request that created it (a function or procedure, for
+example) or to all requests</li>
+<li>Instructing the DBMS to make a copy of the retrieved data (as
+opposed to pointing to the live data in the table) so that data does not
+change between the time the cursor is opened and the time it is
+accessed</li>
+</ul>
+<p>PostgreSQL supports most of these: cursors can be marked SCROLL (to
+allow backward movement and jumping to arbitrary positions) or NO SCROLL
+(forward-only), and can be declared WITH HOLD so that they remain open
+beyond the transaction that created them.</p>
+<p>Cursors are used primarily by interactive applications in which users
+need to scroll up and down through screens of data, browsing or making
+changes.</p>
+<h2 data-number="25.1" id="working-with-cursors"><span
+class="header-section-number">25.1</span> Working with Cursors</h2>
+<p>Using cursors involves several distinct steps:</p>
+<ul>
+<li>Before a cursor can be used, it must be declared (defined). This
+process does not actually retrieve any data; it merely defines the
+SELECT statement to be used and any cursor options.</li>
+<li>Once it is declared, the cursor must be opened for use. This process
+actually retrieves the data using the previously defined SELECT
+statement.</li>
+<li>With the cursor populated with data, individual rows can be fetched
+(retrieved) as needed.</li>
+<li>When it is done, the cursor must be closed.</li>
+</ul>
+<p>Once a cursor is declared, it may be opened and closed as often as
+needed. Once it is open, fetch operations can be performed as often as
+needed.</p>
+<div class="caution">
+<blockquote>
+<p><strong>Cursors Live Inside Transactions.</strong> In PostgreSQL, a
+cursor only exists within a transaction (unless it was declared WITH
+HOLD). This means the entire declare-open-fetch-close sequence for a
+plain SQL cursor must happen inside a BEGIN&#8230;COMMIT block, as described
+in the previous lesson on transaction processing.</p>
+</blockquote>
+</div>
+<h2 data-number="25.2" id="creating-cursors"><span
+class="header-section-number">25.2</span> Creating Cursors</h2>
+<p>To demonstrate cursors, we&#8217;ll create one that retrieves all museums
+without a website on file, as part of an application enabling an
+operator to fill in the missing websites one at a time.</p>
+<p>PostgreSQL actually supports two related but distinct forms of
+cursor. The first is a plain SQL cursor, declared and used directly in a
+transaction:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode sql websql data-art"><code class="sourceCode sql"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="cf">BEGIN</span>;</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a></span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a><span class="kw">DECLARE</span> museum_cursor <span class="kw">CURSOR</span> <span class="cf">FOR</span></span>
+<span id="cb1-4"><a aria-hidden="true" href="#cb1-4" tabindex="-1"></a>    <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> museum <span class="kw">WHERE</span> url <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code></pre></div>
+<p>Notice that, at this top level, DECLARE both defines and opens the
+cursor in a single step &#8212; there is no separate OPEN statement here. The
+cursor is now ready to be fetched from.</p>
+<p>The second form is used inside PL/pgSQL &#8212; the procedural language you
+used in the lesson on stored procedures &#8212; such as within a function, a
+procedure, or a one-off anonymous code block. There, DECLARE only
+defines the cursor; it must still be opened explicitly with OPEN,
+matching the full declare-open-fetch-close lifecycle described above.
+The rest of this lesson focuses on this PL/pgSQL form, since it
+demonstrates every step of that lifecycle.</p>
+<h2 data-number="25.3" id="using-cursors-1"><span
+class="header-section-number">25.3</span> Using Cursors</h2>
+<p>The following anonymous PL/pgSQL block declares the same cursor,
+opens it, fetches a single row from it, and closes it again:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb2-1"><a aria-hidden="true" href="#cb2-1" tabindex="-1"></a>DO $$</span>
+<span id="cb2-2"><a aria-hidden="true" href="#cb2-2" tabindex="-1"></a><span class="kw">DECLARE</span></span>
+<span id="cb2-3"><a aria-hidden="true" href="#cb2-3" tabindex="-1"></a>    museum_cursor <span class="kw">CURSOR</span> <span class="cf">FOR</span></span>
+<span id="cb2-4"><a aria-hidden="true" href="#cb2-4" tabindex="-1"></a>        <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> museum <span class="kw">WHERE</span> url <span class="kw">IS</span> <span class="kw">NULL</span>;</span>
+<span id="cb2-5"><a aria-hidden="true" href="#cb2-5" tabindex="-1"></a>    museum_record museum<span class="dt">%ROWTYPE</span>;</span>
+<span id="cb2-6"><a aria-hidden="true" href="#cb2-6" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb2-7"><a aria-hidden="true" href="#cb2-7" tabindex="-1"></a>    <span class="kw">OPEN</span> museum_cursor;</span>
+<span id="cb2-8"><a aria-hidden="true" href="#cb2-8" tabindex="-1"></a>    FETCH museum_cursor <span class="kw">INTO</span> museum_record;</span>
+<span id="cb2-9"><a aria-hidden="true" href="#cb2-9" tabindex="-1"></a>    <span class="kw">CLOSE</span> museum_cursor;</span>
+<span id="cb2-10"><a aria-hidden="true" href="#cb2-10" tabindex="-1"></a><span class="cf">END</span> $$;</span></code></pre></div>
+<p>In this example, museum_cursor is declared in the DECLARE section
+along with a variable, museum_record, typed as
+<code>museum%ROWTYPE</code> (a row with the same shape as a row of the
+museum table). The BEGIN&#8230;END block then opens the cursor, uses FETCH to
+retrieve the current row (it starts at the first row automatically) into
+museum_record, and closes the cursor. Nothing is done with the retrieved
+data.</p>
+<p>In the next example, the retrieved data is looped through from the
+first row to the last:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb3-1"><a aria-hidden="true" href="#cb3-1" tabindex="-1"></a>DO $$</span>
+<span id="cb3-2"><a aria-hidden="true" href="#cb3-2" tabindex="-1"></a><span class="kw">DECLARE</span></span>
+<span id="cb3-3"><a aria-hidden="true" href="#cb3-3" tabindex="-1"></a>    museum_cursor <span class="kw">CURSOR</span> <span class="cf">FOR</span></span>
+<span id="cb3-4"><a aria-hidden="true" href="#cb3-4" tabindex="-1"></a>        <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> museum <span class="kw">WHERE</span> url <span class="kw">IS</span> <span class="kw">NULL</span>;</span>
+<span id="cb3-5"><a aria-hidden="true" href="#cb3-5" tabindex="-1"></a>    museum_record museum<span class="dt">%ROWTYPE</span>;</span>
+<span id="cb3-6"><a aria-hidden="true" href="#cb3-6" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb3-7"><a aria-hidden="true" href="#cb3-7" tabindex="-1"></a>    <span class="kw">OPEN</span> museum_cursor;</span>
+<span id="cb3-8"><a aria-hidden="true" href="#cb3-8" tabindex="-1"></a>    <span class="cf">LOOP</span></span>
+<span id="cb3-9"><a aria-hidden="true" href="#cb3-9" tabindex="-1"></a>        FETCH museum_cursor <span class="kw">INTO</span> museum_record;</span>
+<span id="cb3-10"><a aria-hidden="true" href="#cb3-10" tabindex="-1"></a>        EXIT <span class="cf">WHEN</span> <span class="kw">NOT</span> FOUND;</span>
+<span id="cb3-11"><a aria-hidden="true" href="#cb3-11" tabindex="-1"></a>        <span class="co">-- process museum_record here</span></span>
+<span id="cb3-12"><a aria-hidden="true" href="#cb3-12" tabindex="-1"></a>    <span class="cf">END</span> <span class="cf">LOOP</span>;</span>
+<span id="cb3-13"><a aria-hidden="true" href="#cb3-13" tabindex="-1"></a>    <span class="kw">CLOSE</span> museum_cursor;</span>
+<span id="cb3-14"><a aria-hidden="true" href="#cb3-14" tabindex="-1"></a><span class="cf">END</span> $$;</span></code></pre></div>
+<p>Like the previous example, this example uses FETCH to retrieve the
+current row into museum_record. Unlike the previous example, the FETCH
+here is within a LOOP so that it is repeated over and over. PostgreSQL
+automatically sets a special boolean, FOUND, after every FETCH &#8212; true if
+a row was retrieved, false if there were no more rows left. The line
+<code>EXIT WHEN NOT FOUND;</code> uses this to terminate the loop
+(exiting it) once the cursor is exhausted. This example also does no
+actual processing; in real-world code you&#8217;d replace the
+<code>-- process museum_record here</code> comment with your own logic &#8212;
+for example, code that prompts an operator for a website and issues an
+UPDATE for that row.</p>
+<div class="tip">
+<blockquote>
+<p><strong>FETCH Directions.</strong> The examples above always fetch
+the next row. PostgreSQL&#8217;s FETCH also supports FIRST, LAST, ABSOLUTE
+count, RELATIVE count, FORWARD count, and BACKWARD count, letting you
+move through a cursor&#8217;s result set in more than one direction &#8212; provided
+the cursor was declared SCROLL rather than the default NO SCROLL.</p>
+</blockquote>
+</div>
+<h2 data-number="25.4" id="closing-cursors"><span
+class="header-section-number">25.4</span> Closing Cursors</h2>
+<p>As already mentioned and seen in the previous examples, cursors need
+to be closed after they have been used:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode sql websql"><code class="sourceCode sql"><span id="cb4-1"><a aria-hidden="true" href="#cb4-1" tabindex="-1"></a><span class="kw">CLOSE</span> museum_cursor;</span></code></pre></div>
+<p>The CLOSE statement is used to close cursors; once a cursor is
+closed, it cannot be reused without being opened again (for a plain SQL
+cursor, that means running DECLARE again; for a PL/pgSQL cursor, an OPEN
+statement is sufficient). Unlike some other DBMSs, PostgreSQL does not
+require a separate step to deallocate the resources used by a cursor &#8212;
+closing it (or simply letting the enclosing transaction end) is
+enough.</p>
+<h2 data-number="25.5" id="summary"><span
+class="header-section-number">25.5</span> Summary</h2>
+<p>In this lesson, you were introduced to cursors, what they are, and
+why they are used. You saw that PostgreSQL supports both a simple,
+auto-opening form of cursor for use directly inside a transaction, and a
+more explicit declare-open-fetch-close form for use inside PL/pgSQL
+functions, procedures, and anonymous code blocks. Refer to the
+PostgreSQL documentation for more details.</p>
 <!--postEnd-->
               </div>
 </div>
@@ -336,7 +339,7 @@ PostgreSQL documentation for more details.</p>
 
 <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3432011497-widgets.js"></script>
 <script type='text/javascript'>
-window['__wavt'] = 'AEUoTZrQQK8zJr9X_DBvI-8jPLKA:1785332729811';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//sql.availabooks.com/2000/02/25.html','3986204447440040189');
+window['__wavt'] = 'ACvIOeBs7BGhn86DDn6eld3_hypx:1785433005074';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3986204447440040189','//sql.availabooks.com/2000/02/25.html','3986204447440040189');
 _WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3986204447440040189', 'title': 'book1014 SQL', 'url': 'https://sql.availabooks.com/2000/02/25.html', 'canonicalUrl': 'https://sql.availabooks.com/2000/02/25.html', 'homepageUrl': 'https://sql.availabooks.com/', 'searchUrl': 'https://sql.availabooks.com/search', 'canonicalHomepageUrl': 'https://sql.availabooks.com/', 'blogspotFaviconUrl': 'https://sql.availabooks.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': true, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://sql.availabooks.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22book1014 SQL - RSS\x22 href\x3d\x22https://sql.availabooks.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3986204447440040189/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22book1014 SQL - Atom\x22 href\x3d\x22https://sql.availabooks.com/feeds/962522291906036430/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': true, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/68dd02567aef746f', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'X', 'key': 'twitter', 'shareMessage': 'Share to X', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '962522291906036430', 'pageName': '25. Using Cursors', 'pageTitle': 'book1014 SQL: 25. Using Cursors'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': '25. Using Cursors', 'description': 'websql  25  Using Cursors \r \r Learning Objectives \r \r \r : \r \r Describe what a cursor is and why it\u2019s used. \r Describe the declare-open-fetch...', 'url': 'https://sql.availabooks.com/2000/02/25.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 962522291906036430}}]);
 _WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainblogsec', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3899201366-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/828616780-lightbox_bundle.css'}, 'displayModeFull'));
 </script>
