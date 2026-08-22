@@ -1,0 +1,61 @@
+{
+  "labels": [
+    "schema",
+    "assessmentType"
+  ],
+  "title": "New Data Quality Analyst at Hudson University Store",
+  "text": "Welcome to the <b>Hudson University Bookstore!</b> As the newly appointed Data Quality Analyst, your job is to make sense of messy, incomplete records and to search for information when you only know part of what you’re looking for. You’ll rely on pattern matching to find records that partially match a value, and on checks for missing data to find records where information was never entered. <br> <br> Remember that lists don’t include duplicates. When a question asks for a list, make sure your query produces a record set with no duplicates.",
+  "schema": "hudson-u-store",
+  "assessmentType": "sql",
+  "scoreVisibility": [
+    "student",
+    "professor"
+  ],
+  "tasks": [
+    {
+      "text": "You’ve been asked to follow up with every customer whose last name starts with the letter 'S'. Retrieve those customers using a wildcard pattern rather than listing out every possible last name. Order by last name. Include the first name and last name.",
+      "start": "",
+      "key": [
+        "SELECT first_name, last_name FROM customer WHERE last_name LIKE 'S%' ORDER BY last_name;"
+      ],
+      "lines": 5,
+      "points": 10
+    },
+    {
+      "text": "While reviewing customer records, you want to find everyone whose last name has the letter 'a' as the second letter. Since you only know the position of one letter, use a wildcard pattern to match it. Order by last name. Include the first name and last name.",
+      "start": "",
+      "key": [
+        "SELECT first_name, last_name FROM customer WHERE last_name LIKE '_a%' ORDER BY last_name;"
+      ],
+      "lines": 5,
+      "points": 10
+    },
+    {
+      "text": "The store is auditing which customers use a Yahoo email address, but you don’t know the exact usernames, just that 'yahoo' appears somewhere in the address. Retrieve the emails of customers whose email contains 'yahoo'. Include just the email addresses.",
+      "start": "",
+      "key": [
+        "SELECT email FROM customer WHERE email LIKE '%yahoo%';"
+      ],
+      "lines": 5,
+      "points": 10
+    },
+    {
+      "text": "Not every vendor record was filled out completely when it was first entered. Retrieve a list of vendors who do not have a fax number on file. Include all vendor columns.",
+      "start": "",
+      "key": [
+        "SELECT * FROM vendor WHERE fax IS NULL;"
+      ],
+      "lines": 5,
+      "points": 10
+    },
+    {
+      "text": "Some newly added products were entered into the system before their pricing was finalized. Retrieve a list of products that do not yet have a current price set. Order alphabetically by product name. Include the product name.",
+      "start": "",
+      "key": [
+        "SELECT name FROM product WHERE current_price IS NULL ORDER BY name;"
+      ],
+      "lines": 5,
+      "points": 10
+    }
+  ]
+}

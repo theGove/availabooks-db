@@ -1,77 +1,106 @@
-{ 
-    
-  "labels":["schema", "renderEngine"],  
-  "title":"New inventory Specialist at Hudson University Store",
-  "text":"Welcome to the Hudson University Bookstore! As the newly appointed Inventory Specialist you know that efficient inventory management is vital to the store’s success. You will play a pivotal role in creating and maintaining a well-stocked and organized bookstore that meets the academic and personal needs of the Hudson University community. <br> <br> Remember that lists don’t include duplicates. When a question asks for a list, make sure your query produces a record set with no duplicates.",
-  "schema":"hudson-u-store",
-  "renderEngine":"sql",
-  "scoreVisibility":["student","professor"],
-  "tasks":[{
-      "text":"The previous inventory specialist was non-existent so, there isn’t a clear record of what customers have bought and what the remaining inventory is. Start organizing the data by retrieving customer data ordered by last name. Include each customer’s first and last name.",
-      "start":"",
-      "key":["SELECT first_name, last_name from customer ORDER BY last_name;"],
-      "lines":5,
-      "points":10
-    },{
-      "text":"Inventory is centered around knowing what products are available and when. Create a list of possible combinations of product graphic types and seasons. Order by the season. Include the graphic type and season code.",
-      "start":"",
-      "key":["SELECT DISTINCT graphic_type, season_code from product ORDER BY season_code;"],
-      "lines":5,
-      "points":10
-    },{
-      "text":"Continue the product organization by creating a list of unique product categories and subcategories combinations. Order by category then subcategory. Include the category and subcategory in the final list.",
-      "start":"",
-      "key":["SELECT DISTINCT category, subcategory from product ORDER BY category, subcategory;"],
-      "lines":5,
-      "points":10
-    },{
-      "text":"As the inventory specialist, you need to know who the store vendors are and organize the information in a way to easily locate their contact information. Retrieve the vendor information. Order by the vendor's name and then by their phone number. Include the vendor name, phone number, and fax number.",
-      "start":"",
-      "key":["SELECT name, phone, fax from vendor ORDER BY name, phone;"],
-      "lines":5,
-      "points":10
-      
-    },{
-      "text":"While going through the vendor contact information, you realized that contact information isn’t the only information needed in the vendor list. For example, you need to know where exactly the product is coming from. Create a vendor information sheet that includes all columns in the vendor table. Order in reverse alphabetical order by state then reverse alphabetical order by vendor name. Include all vendor information.",
-      "start":"",
-      "key":["SELECT * from vendor ORDER BY state DESC, name DESC;"],
-      "lines":5,
-      "points":10
-      
-    },{
-      "text":"Inventory doesn’t stay the same. As customers buy products, new products are needed to replace the sold product. Learn how to predict inventory changes by creating a list of the different quantities present in all sales. Order by quantity in ascending order. The final list should just include the quantity.",
-      "start":"",
-      "key":["SELECT DISTINCT qty from sale_product ORDER BY qty;"],
-      "lines":5,
-      "points":10
-      
-    },{
-      "text":"Continue the product organization by creating a product list from most expensive to least expensive. If multiple products have the same price, sort alphabetically by the product name. Include the product name and the price.",
-      "start":"",
-      "key":["SELECT DISTINCT name, current_price FROM product ORDER BY current_price DESC, name;"],
-      "lines":5,
-      "points":10
-      
-    },{
-      "text":"Continue the product organization task by creating a list of unique product fabric and fit combinations. Order first by fit in reverse alphabetical order then by fabric in reverse alphabetical order. Include the fabric and fit columns.",
-      "start":"",
-      "key":["SELECT DISTINCT fabric, fit FROM product ORDER BY fit DESC, fabric DESC;"],
-      "lines":5,
-      "points":10
-      
-    },{
-      "text":"Knowing where customers are from will help predict what products they are more likely to buy. Continue organizing customer data by retrieving the region table. Order alphabetically by state code, division, and then region. Include all columns in the region table.",
-      "start":"",
-      "key":["SELECT * FROM region ORDER BY state_code, division, region;"],
-      "lines":5,
-      "points":10
-      
-    },{
-      "text":"As you look at the result from the previous question, you notice that each state is unique but each region can have multiple divisions and each division can have multiple states. Because of this, the data would be clearer if it was ordered in the opposite way. Retrieve the region table again. Order alphabetically by region, division, and then state code. Include all columns in the region table.",
-      "start":"",
-      "key":["SELECT * FROM region ORDER BY region, division, state_code;"],
-      "lines":5,
-      "points":10
-      
-    }]
+{
+  "labels": [
+    "schema",
+    "assessmentType"
+  ],
+  "title": "New inventory Specialist at Hudson University Store",
+  "text": "Welcome to the Hudson University Bookstore! As the newly appointed Inventory Specialist you know that efficient inventory management is vital to the store’s success. You will play a pivotal role in creating and maintaining a well-stocked and organized bookstore that meets the academic and personal needs of the Hudson University community. <br> <br> Remember that lists don’t include duplicates. When a question asks for a list, make sure your query produces a record set with no duplicates.",
+  "schema": "hudson-u-store",
+  "assessmentType": "sql",
+  "scoreVisibility": [
+    "student",
+    "professor"
+  ],
+  "tasks": [
+    {
+      "text": "The previous inventory specialist was non-existent so, there isn’t a clear record of what customers have bought and what the remaining inventory is. Start organizing the data by retrieving customer data ordered by last name. Include each customer’s first and last name.",
+      "start": "",
+      "key": [
+        "SELECT first_name, last_name from customer ORDER BY last_name;"
+      ],
+      "lines": 5,
+      "points": 10
+    },
+    {
+      "text": "Inventory is centered around knowing what products are available and when. Create a list of possible combinations of product graphic types and seasons. Order by the season. Include the graphic type and season code.",
+      "start": "",
+      "key": [
+        "SELECT DISTINCT graphic_type, season_code from product ORDER BY season_code;"
+      ],
+      "lines": 5,
+      "points": 10
+    },
+    {
+      "text": "Continue the product organization by creating a list of unique product categories and subcategories combinations. Order by category then subcategory. Include the category and subcategory in the final list.",
+      "start": "",
+      "key": [
+        "SELECT DISTINCT category, subcategory from product ORDER BY category, subcategory;"
+      ],
+      "lines": 5,
+      "points": 10
+    },
+    {
+      "text": "As the inventory specialist, you need to know who the store vendors are and organize the information in a way to easily locate their contact information. Retrieve the vendor information. Order by the vendor's name and then by their phone number. Include the vendor name, phone number, and fax number.",
+      "start": "",
+      "key": [
+        "SELECT name, phone, fax from vendor ORDER BY name, phone;"
+      ],
+      "lines": 5,
+      "points": 10
+    },
+    {
+      "text": "While going through the vendor contact information, you realized that contact information isn’t the only information needed in the vendor list. For example, you need to know where exactly the product is coming from. Create a vendor information sheet that includes all columns in the vendor table. Order in reverse alphabetical order by state then reverse alphabetical order by vendor name. Include all vendor information.",
+      "start": "",
+      "key": [
+        "SELECT * from vendor ORDER BY state DESC, name DESC;"
+      ],
+      "lines": 5,
+      "points": 10
+    },
+    {
+      "text": "Inventory doesn’t stay the same. As customers buy products, new products are needed to replace the sold product. Learn how to predict inventory changes by creating a list of the different quantities present in all sales. Order by quantity in ascending order. The final list should just include the quantity.",
+      "start": "",
+      "key": [
+        "SELECT DISTINCT qty from sale_product ORDER BY qty;"
+      ],
+      "lines": 5,
+      "points": 10
+    },
+    {
+      "text": "Continue the product organization by creating a product list from most expensive to least expensive. If multiple products have the same price, sort alphabetically by the product name. Include the product name and the price.",
+      "start": "",
+      "key": [
+        "SELECT DISTINCT name, current_price FROM product ORDER BY current_price DESC, name;"
+      ],
+      "lines": 5,
+      "points": 10
+    },
+    {
+      "text": "Continue the product organization task by creating a list of unique product fabric and fit combinations. Order first by fit in reverse alphabetical order then by fabric in reverse alphabetical order. Include the fabric and fit columns.",
+      "start": "",
+      "key": [
+        "SELECT DISTINCT fabric, fit FROM product ORDER BY fit DESC, fabric DESC;"
+      ],
+      "lines": 5,
+      "points": 10
+    },
+    {
+      "text": "Knowing where customers are from will help predict what products they are more likely to buy. Continue organizing customer data by retrieving the region table. Order alphabetically by state code, division, and then region. Include all columns in the region table.",
+      "start": "",
+      "key": [
+        "SELECT * FROM region ORDER BY state_code, division, region;"
+      ],
+      "lines": 5,
+      "points": 10
+    },
+    {
+      "text": "As you look at the result from the previous question, you notice that each state is unique but each region can have multiple divisions and each division can have multiple states. Because of this, the data would be clearer if it was ordered in the opposite way. Retrieve the region table again. Order alphabetically by region, division, and then state code. Include all columns in the region table.",
+      "start": "",
+      "key": [
+        "SELECT * FROM region ORDER BY region, division, state_code;"
+      ],
+      "lines": 5,
+      "points": 10
+    }
+  ]
 }

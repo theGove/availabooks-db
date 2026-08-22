@@ -1,76 +1,106 @@
-{ 
-  "labels":["schema", "renderEngine"],  
-  "title":"New Marketing Specialist at Hudson University Store",
-  "text":"Welcome to the Hudson University Bookstore! As the newly appointed Marketing Strategist, you have joined at an exciting time as a new marketing strategy is being implemented. Your role will be instrumental in developing innovative marketing strategies that drive customer acquisition, boost brand loyalty, and promote our extensive range of books, merchandise, and services. By leveraging your expertise and staying attuned to market trends, you will play a vital role in shaping the future success of the bookstore. <br> <br> Remember that lists don’t include duplicates. When a question asks for a list, make sure your query produces a record set with no duplicates.",
-  "schema":"hudson-u-store",
-  "renderEngine":"sql",
-  "scoreVisibility":["student","professor"],
-  "tasks":[{
-      "text":"Each successful marketing strategy is based on knowing the customer. To get to know the customers of the Hudson University Bookstore, start by retrieving all customer ID’s. Include just the customer ID’s.",
-      "start":"",
-      "key":["SELECT  customer_id FROM  customer"],
-      "lines":5,
-      "points":10
-    },{
-      "text":"You realize the ID is just a number and doesn’t give relevant information for marketing. Try again by retrieving the first and last names of the customers. Include the first name, last name, and customer ID.",
-      "start":"",
-      "key":["SELECT first_name, last_name, customer_id from customer"],
-      "lines":5,
-      "points":10
-    },{
-      "text":"Another way to get to know the customers is by knowing how much they are spending. Compile a list of sale ID’s and their accompanying price.",
-      "start":"",
-      "key":["SELECT DISTINCT sale_id, price from sale_product"],
-      "lines":5,
-      "points":10
-    },{
-      "text":"As part of the new marketing strategy, an analysis on where customers are coming from based on region is needed. To start the analysis, show all the information from the region table. In the query, retrieve columns in the region table even if the name of the column changes.",
-      "start":"",
-      "key":["SELECT * from region"],
-      "lines":5,
-      "points":10
-      
-    },{
-      "text":"What products are available to market? The answer to that question starts with knowing the current products and vendors. Create a list of vendor IDs with at least one product in the product list. Include just the vendor ID’s in the final result.",
-      "start":"",
-      "key":["SELECT DISTINCT vendor_ID from product"],
-      "lines":5,
-      "points":10
-      
-    },{
-      "text":"To gain insights on the geographical distribution of customers for the new marketing strategy, create a list of region, division, and state combinations where customers are from. Include the region, division, and state code.",
-      "start":"",
-      "key":["SELECT  DISTINCT region, division, state_code FROM  region"],
-      "lines":5,
-      "points":10
-      
-    },{
-      "text":"As you’ve looked into the different vendor ID’s, you decide to create an information sheet for the first 10 vendors. This sheet should include comprehensive details about each vendor.",
-      "start":"",
-      "key":["SELECT * FROM vendor LIMIT 10;"],
-      "lines":5,
-      "points":10
-      
-    },{
-      "text":"For the new marketing strategy, you want to start an email campaign. However, the current mass email provider you’re attempting to use can only handle 100 subscribers. Retrieve the emails for the first 100 customers. Include just the email addresses in this list.",
-      "start":"",
-      "key":["SELECT email FROM customer LIMIT 100;"],
-      "lines":5,
-      "points":10
-      
-    },{
-      "text":"As you’ve been working on different things, different reports are getting mixed up. It’s hard to tell which report is for which task. To get more organized, recreate the last question but comment the question before the query.",
-      "start":"",
-      "key":["/*For the new marketing strategy, you want to start an email campaign. However, the current mass email provider you’re attempting to use can only handle 100 subscribers. Retrieve the emails for the first 100 customers. Include just the email addresses in this list.*/ SELECT email FROM customer LIMIT 100;"],
-      "lines":5,
-      "points":10
-      
-    },{
-      "text":"Continue the region report by finding how many regions a customer could be from. For the query, retrieve the region table. After the query, comment how many rows are in the region table. Include all columns in the region table.",
-      "start":"",
-      "key":["SELECT * from region --50"],
-      "lines":5,
-      "points":10
-      
-    }]
+{
+  "labels": [
+    "schema",
+    "assessmentType"
+  ],
+  "title": "New Marketing Specialist at Hudson University Store",
+  "text": "Welcome to the <b>Hudson University Bookstore!</b> As the newly appointed Marketing Strategist, you have joined at an exciting time as a new marketing strategy is being implemented. Your role will be instrumental in developing innovative marketing strategies that drive customer acquisition, boost brand loyalty, and promote our extensive range of books, merchandise, and services. By leveraging your expertise and staying attuned to market trends, you will play a vital role in shaping the future success of the bookstore. <br> <br> Remember that lists don’t include duplicates. When a question asks for a list, make sure your query produces a record set with no duplicates.",
+  "schema": "hudson-u-store",
+  "assessmentType": "sql",
+  "scoreVisibility": [
+    "student",
+    "professor"
+  ],
+  "tasks": [
+    {
+      "text": "Each successful marketing strategy is based on knowing the customer. To get to know the customers of the Hudson University Bookstore, start by retrieving all customer ID’s. Include just the customer ID’s.",
+      "start": "",
+      "key": [
+        "SELECT  customer_id FROM  customer"
+      ],
+      "lines": 5,
+      "points": 10
+    },
+    {
+      "text": "You realize the ID is just a number and doesn’t give relevant information for marketing. Try again by retrieving the first and last names of the customers. Include the first name, last name, and customer ID.",
+      "start": "",
+      "key": [
+        "SELECT first_name, last_name, customer_id from customer"
+      ],
+      "lines": 5,
+      "points": 10
+    },
+    {
+      "text": "Another way to get to know the customers is by knowing how much they are spending. Compile a list of sale ID’s and their accompanying price.",
+      "start": "",
+      "key": [
+        "SELECT DISTINCT sale_id, price from sale_product"
+      ],
+      "lines": 5,
+      "points": 10
+    },
+    {
+      "text": "As part of the new marketing strategy, an analysis on where customers are coming from based on region is needed. To start the analysis, show all the information from the region table. In the query, retrieve columns in the region table even if the name of the column changes.",
+      "start": "",
+      "key": [
+        "SELECT * from region"
+      ],
+      "lines": 5,
+      "points": 10
+    },
+    {
+      "text": "What products are available to market? The answer to that question starts with knowing the current products and vendors. Create a list of vendor IDs with at least one product in the product list. Include just the vendor ID’s in the final result.",
+      "start": "",
+      "key": [
+        "SELECT DISTINCT vendor_ID from product"
+      ],
+      "lines": 5,
+      "points": 10
+    },
+    {
+      "text": "To gain insights on the geographical distribution of customers for the new marketing strategy, create a list of region, division, and state combinations where customers are from. Include the region, division, and state code.",
+      "start": "",
+      "key": [
+        "SELECT  DISTINCT region, division, state_code FROM  region"
+      ],
+      "lines": 5,
+      "points": 10
+    },
+    {
+      "text": "As you’ve looked into the different vendor ID’s, you decide to create an information sheet for the first 10 vendors. This sheet should include comprehensive details about each vendor.",
+      "start": "",
+      "key": [
+        "SELECT * FROM vendor LIMIT 10;"
+      ],
+      "lines": 5,
+      "points": 10
+    },
+    {
+      "text": "For the new marketing strategy, you want to start an email campaign. However, the current mass email provider you’re attempting to use can only handle 100 subscribers. Retrieve the emails for the first 100 customers. Include just the email addresses in this list.",
+      "start": "",
+      "key": [
+        "SELECT email FROM customer LIMIT 100;"
+      ],
+      "lines": 5,
+      "points": 10
+    },
+    {
+      "text": "As you’ve been working on different things, different reports are getting mixed up. It’s hard to tell which report is for which task. To get more organized, recreate the last question but comment the question before the query.",
+      "start": "",
+      "key": [
+        "/*For the new marketing strategy, you want to start an email campaign. However, the current mass email provider you’re attempting to use can only handle 100 subscribers. Retrieve the emails for the first 100 customers. Include just the email addresses in this list.*/ SELECT email FROM customer LIMIT 100;"
+      ],
+      "lines": 5,
+      "points": 10
+    },
+    {
+      "text": "Continue the region report by finding how many regions a customer could be from. For the query, retrieve the region table. After the query, comment how many rows are in the region table. Include all columns in the region table.",
+      "start": "",
+      "key": [
+        "SELECT * from region --50"
+      ],
+      "lines": 5,
+      "points": 10
+    }
+  ]
 }
